@@ -5,9 +5,8 @@ import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/Decorators/MapHeader/MapHeader";
-import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
 
-const Play: React.FC = () => {
+const Snow: React.FC = () => {
   const router = useRouter();
 
   const navigate = (link: string) => {
@@ -43,34 +42,13 @@ const Play: React.FC = () => {
           }}
         />
       </Box>
-      <MapHeader text="World Map" />
-      <CombinedLocationMarker
-        left="20%"
-        top="70%"
-        link="/Location/Beach"
-        text="TidalFlame Beaches"
-        navigate={navigate}
-      />
-      <CombinedLocationMarker
-        left="60%"
-        top="70%"
-        link="/Location/Forest"
-        text="Whisperwood Valleys"
-        navigate={navigate}
-      />
-      <CombinedLocationMarker
-        left="63%"
-        top="35%"
-        link="/Location/Snow"
-        text="Mistcloak Tundra"
-        navigate={navigate}
-      />
+      <MapHeader text="Mistcloak Tundra" />
     </GameLayout>
   );
 };
 
 const App: React.FC = () => {
-  return <Play />;
+  return <Snow />;
 };
 
 export default App;

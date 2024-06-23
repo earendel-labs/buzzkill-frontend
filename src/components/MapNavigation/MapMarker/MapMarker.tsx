@@ -1,22 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { keyframes } from "@mui/system";
 
 interface MapMarkerProps {
   left: string;
   top: string;
+  link: string; // Added link prop
+  navigate: (link: string) => void; // Function to handle navigation
+  onMouseEnter: () => void; // Function to handle mouse enter
+  onMouseLeave: () => void; // Function to handle mouse leave
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ left, top }) => {
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+
+const MapMarker: React.FC<MapMarkerProps> = ({
+  left,
+  top,
+  link,
+  navigate,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [animationDelay, setAnimationDelay] = useState<string>("0s");
+
+  useEffect(() => {
+    // Set a random delay between 0 and 0.2 seconds
+    const delay = Math.random() * 0.2;
+    setAnimationDelay(`${delay}s`);
+  }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    onMouseEnter();
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsPressed(false); // Ensure the pressed state is reset when the mouse leaves
+    onMouseLeave();
   };
 
   const handleMouseDown = () => {
@@ -25,15 +55,16 @@ const MapMarker: React.FC<MapMarkerProps> = ({ left, top }) => {
 
   const handleMouseUp = () => {
     setIsPressed(false);
+    navigate(link); // Navigate to the link when the mouse is released
   };
 
   const getImageSrc = () => {
     if (isPressed) {
-      return "/MapMarker/MapMarkerPressed.svg";
+      return "/MapNavigation/MapMarker/MapMarkerPressed.svg";
     }
     return isHovered
-      ? "/MapMarker/MapMarkerHover.svg"
-      : "/MapMarker/MapMarker.svg";
+      ? "/MapNavigation/MapMarker/MapMarkerHover.svg"
+      : "/MapNavigation/MapMarker/MapMarker.svg";
   };
 
   return (
@@ -54,6 +85,8 @@ const MapMarker: React.FC<MapMarkerProps> = ({ left, top }) => {
         alignItems: "center",
         transform: isHovered ? "scale(1.1)" : "scale(1)",
         transition: "transform 0.2s ease-in-out",
+        animation: isHovered ? "none" : `${bounce} 4s infinite`,
+        animationDelay: isHovered ? "0s" : animationDelay, // Apply the random delay
       }}
     >
       <Box

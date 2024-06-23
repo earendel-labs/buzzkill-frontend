@@ -2,29 +2,31 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-interface MapHeaderProps {
+interface LocationHeaderProps {
   text: string;
+  left?: string;
+  top?: string;
 }
 
-const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
+const LocationHeader: React.FC<LocationHeaderProps> = ({ text, left, top }) => {
   return (
     <Box
       sx={{
         position: "absolute",
-        top: "65px", // Push it down by the height of the AppBar
-        left: "50%",
-        transform: "translateX(-50%)",  
-        width: "40%",  
-        height: "150px",
+        top: top || "65px",
+        left: left || "50%",
+        transform: left ? "none" : "translateX(-50%)",
+        width: "28%",
+        height: "70px",
         textAlign: "center",
-        backgroundImage: `url('/Frames/small-header.png')`,
+        backgroundImage: `url('/Frames/location-map-header2.png')`,
         backgroundRepeat: "no-repeat",
-        backgroundSize: "contain", // Ensure the entire image fits within the container
+        backgroundSize: "contain",
         backgroundPosition: "center",
       }}
     >
       <Typography
-        variant="h4"
+        variant="h6"
         component="div"
         sx={{
           position: "absolute",
@@ -41,4 +43,4 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
   );
 };
 
-export default MapHeader;
+export default LocationHeader;

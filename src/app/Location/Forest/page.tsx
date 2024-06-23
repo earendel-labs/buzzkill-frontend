@@ -2,17 +2,18 @@
 
 import React from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/Decorators/MapHeader/MapHeader";
-import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
+import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
 
-const Play: React.FC = () => {
+const Forest: React.FC = () => {
   const router = useRouter();
 
   const navigate = (link: string) => {
     router.push(link);
   };
+
   return (
     <GameLayout>
       <Box
@@ -27,11 +28,8 @@ const Play: React.FC = () => {
         }}
       >
         <Box
-          component="video"
-          src="/Animations/map-video.mp4"
-          autoPlay
-          loop
-          muted
+          component="img"
+          src="/Maps/ForestMap.png"
           sx={{
             position: "absolute",
             top: 0,
@@ -43,34 +41,14 @@ const Play: React.FC = () => {
           }}
         />
       </Box>
-      <MapHeader text="World Map" />
-      <CombinedLocationMarker
-        left="20%"
-        top="70%"
-        link="/Location/Beach"
-        text="TidalFlame Beaches"
-        navigate={navigate}
-      />
-      <CombinedLocationMarker
-        left="60%"
-        top="70%"
-        link="/Location/Forest"
-        text="Whisperwood Valleys"
-        navigate={navigate}
-      />
-      <CombinedLocationMarker
-        left="63%"
-        top="35%"
-        link="/Location/Snow"
-        text="Mistcloak Tundra"
-        navigate={navigate}
-      />
+      <MapHeader text="Whisperwood Valleys" />
+      <WorldMapButton top="20%" left="87%" />
     </GameLayout>
   );
 };
 
 const App: React.FC = () => {
-  return <Play />;
+  return <Forest />;
 };
 
 export default App;

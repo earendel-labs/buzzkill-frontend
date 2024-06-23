@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import Layout from "@/components/Layout/Layout";
+import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
 
 const HomePage: React.FC = () => {

@@ -83,9 +83,9 @@ const getTheme = (): Theme => {
         dark: "#C3790B",
       },
       GoldFaded: {
-        main: "rgba(242, 180, 23, 0.2)",
-        light: "rgba(242, 180, 23, 0.2)",
-        dark: "rgba(242, 180, 23, 0.2)",
+        main: "rgba(242, 180, 23, 0.4)",
+        light: "rgba(242, 180, 23, 0.4)",
+        dark: "rgba(242, 180, 23, 0.4)",
       },
       background: {
         default: "#2e447a",
