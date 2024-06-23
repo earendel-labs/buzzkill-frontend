@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -33,7 +33,9 @@ const GameLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             xl: "64px",
           },
         }}
-      ></Container>
+      >
+        {children}
+      </Container>
     </Box>
   );
 };

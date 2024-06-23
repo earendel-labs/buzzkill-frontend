@@ -8,6 +8,7 @@ const linkStyles = (theme: Theme) => ({
           color: "#ffffff",
           textDecoration: "none",
           fontSize: "16px",
+          fontWeight: "500",
           "&:hover": {
             color: theme.palette.GoldFaded.main,
           },
@@ -16,9 +17,9 @@ const linkStyles = (theme: Theme) => ({
           },
         },
         "&.linkStyle2": {
-          fontSize: "18px",
-          fontWeight: theme.typography.h6.fontWeight,
-          color: theme.palette.text.primary,
+          color: "#ffffff",
+          fontSize: "20px",
+          fontWeight: "500",
           textDecoration: "none",
           "&:hover": {
             color: theme.palette.GoldFaded.main,

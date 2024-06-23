@@ -58,14 +58,14 @@ const Header: React.FC = () => {
             padding: "0 0 0 44px",
           }}
         >
-          <Link href="/Play" className="linkStyle1">
+          <Link href="/Play" className="linkStyle2">
             Play
           </Link>
           <Link
             href="/Play"
             color="inherit"
             underline="none"
-            className="linkStyle1"
+            className="linkStyle2"
           >
             Gallery
           </Link>
@@ -73,7 +73,7 @@ const Header: React.FC = () => {
             href="/"
             color="inherit"
             underline="none"
-            className="linkStyle1"
+            className="linkStyle2"
           >
             Mint
           </Link>

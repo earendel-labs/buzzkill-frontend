@@ -5,8 +5,8 @@ const buttonStyles = (theme: Theme) => ({
     styleOverrides: {
       root: {
         fontFamily: '"Poppins", sans-serif',
-        fontSize: "14px",
-        fontWeight: "bold",
+        fontSize: "16x",
+        fontWeight: "600",
         textTransform: "none",
         padding: "5px 30px 5px 30px",
         display: "flex",
@@ -17,7 +17,7 @@ const buttonStyles = (theme: Theme) => ({
         boxSizing: "border-box",
         color: "#ffffff",
         "&.goldButton": {
-          backgroundColor: theme.palette.Gold.main,
+          backgroundColor: theme.palette.Orange.main,
           color: theme.palette.Gold.contrastText,
           borderColor: theme.palette.Gold.main,
           "&:hover": {
