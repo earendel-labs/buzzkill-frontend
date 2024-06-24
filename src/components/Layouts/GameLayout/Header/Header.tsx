@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
+import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,48 +23,11 @@ const Header: React.FC = () => {
   return (
     <>
       {!isMenuOpen && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: 10,
-            right: 20,
-            zIndex: 1000,
-            width: "70px",
-            height: "70px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "transparent",
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              width: "70px",
-              height: "70px",
-              backgroundImage: `url('/Frames/Buttons/circle-frame.png')`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundColor: "transparent",
-            }}
-          />
-          <IconButton
-            color="inherit"
-            aria-label="menu"
-            sx={{
-              width: "50px",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.palette.GoldFaded.main,
-            }}
-            onClick={toggleMenu}
-          >
-            <MenuIcon sx={{ fontSize: "34px", color: "white" }} />
-          </IconButton>
-        </Box>
+        <CircleIconButton
+          icon={<MenuIcon sx={{ fontSize: "34px", color: "white" }} />}
+          onClick={toggleMenu}
+          sx={{ top: "5%", left: "97%", transform: "translate(-50%, -50%)" }}
+        />
       )}
       {isMenuOpen && (
         <AppBar

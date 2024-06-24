@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
+import { useSound } from "@/context/SoundContext";
 
 interface WorldMapButtonProps {
   top: string;
@@ -11,9 +12,23 @@ interface WorldMapButtonProps {
 const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
+    null
+  );
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
+    setPressedSound(new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3"));
+  }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Reset audio to the start
+      hoverSound.play();
+    }
   };
 
   const handleMouseLeave = () => {
@@ -21,6 +36,10 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
   };
 
   const handleClick = () => {
+    if (!isMuted && pressedSound) {
+      pressedSound.currentTime = 0; // Reset audio to the start
+      pressedSound.play();
+    }
     router.push("/Play");
   };
 

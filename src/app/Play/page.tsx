@@ -1,18 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/Decorators/MapHeader/MapHeader";
 import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
+import VolumeControlButton from "@/components/Buttons/VolumeControl/VolumeControlButton";
+import MusicControlButton from "@/components/Buttons/MusicControl/MusicControlButton";
+import { useSound } from "@/context/SoundContext";
 
 const Play: React.FC = () => {
+  const { isMuted, isMusicMuted } = useSound();
+  const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
+    audio.loop = true;
+    audio.volume = 0.6;
+    setMusic(audio);
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (music) {
+      if (isMusicMuted || isMuted) {
+        music.pause();
+      } else {
+        music.play();
+      }
+    }
+  }, [isMusicMuted, isMuted, music]);
 
   const navigate = (link: string) => {
     router.push(link);
   };
+
   return (
     <GameLayout>
       <Box
@@ -65,6 +92,8 @@ const Play: React.FC = () => {
         text="Mistcloak Tundra"
         navigate={navigate}
       />
+      <VolumeControlButton />
+      <MusicControlButton />
     </GameLayout>
   );
 };

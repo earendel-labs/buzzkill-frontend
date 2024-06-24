@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { keyframes } from "@mui/system";
+import { useSound } from "@/context/SoundContext";
 
 interface MapMarkerProps {
   left: string;
@@ -28,18 +29,29 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   onMouseEnter,
   onMouseLeave,
 }) => {
+  const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [animationDelay, setAnimationDelay] = useState<string>("0s");
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
+    null
+  );
 
   useEffect(() => {
     // Set a random delay between 0 and 0.2 seconds
     const delay = Math.random() * 0.2;
     setAnimationDelay(`${delay}s`);
+    setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
+    setPressedSound(new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3"));
   }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Reset audio to the start
+      hoverSound.play();
+    }
     onMouseEnter();
   };
 
@@ -55,6 +67,10 @@ const MapMarker: React.FC<MapMarkerProps> = ({
 
   const handleMouseUp = () => {
     setIsPressed(false);
+    if (!isMuted && pressedSound) {
+      pressedSound.currentTime = 0; // Reset audio to the start
+      pressedSound.play();
+    }
     navigate(link); // Navigate to the link when the mouse is released
   };
 

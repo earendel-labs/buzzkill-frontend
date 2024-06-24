@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../theme/theme";
 import { useState, useMemo } from "react";
+import { SoundProvider } from "@/context/SoundContext";
 
 export default function RootLayout({
   children,
@@ -40,10 +41,12 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <SoundProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {children}
+          </ThemeProvider>
+        </SoundProvider>
       </body>
     </html>
   );
