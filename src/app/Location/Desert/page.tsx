@@ -4,7 +4,7 @@ import React from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
-import MapHeader from "@/components/Decorators/MapHeader/MapHeader";
+import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 
 const Desert: React.FC = () => {
   const router = useRouter();

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
 import Box from "@mui/material/Box";
-import MapHeader from "@/components/Decorators/MapHeader/MapHeader";
+import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
 import VolumeControlButton from "@/components/Buttons/VolumeControl/VolumeControlButton";
 import MusicControlButton from "@/components/Buttons/MusicControl/MusicControlButton";

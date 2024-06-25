@@ -4,7 +4,7 @@ import { useLoading } from "../../../context/LoadingContext";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import Header from "./Header/Header";  
+import Header from "./Header/Header";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface GameLayoutProps {

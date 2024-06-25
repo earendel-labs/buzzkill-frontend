@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LocationHeader from "@/components/Decorators/LocationHeader/LocationHeader";
+import LocationHeader from "../LocationHeader/LocationHeader";
 import MapMarker from "@/components/MapNavigation/MapMarker/MapMarker";
 
 interface CombinedLocationMarkerProps {
@@ -27,16 +27,12 @@ const CombinedLocationMarker: React.FC<CombinedLocationMarkerProps> = ({
     setIsHovered(false);
   };
 
-  // Calculate new position to ensure the header doesn't go off the page
-  const adjustedLeft = parseFloat(left) > 75 ? "75%" : left;
-  const adjustedTop = parseFloat(top) > 75 ? "75%" : top;
-
   return (
     <>
       {isHovered && (
         <LocationHeader
-          left={`calc(${adjustedLeft} - 12%)`} // Center the header above the marker
-          top={`calc(${top} - 7%)`} // Adjust the top position to be above the marker
+          left={`calc(${left} + 30px)`} // Center the header above the marker
+          top={`calc(${top} + 10px)`} // Adjust the top position to be closer to the marker
           text={text}
         />
       )}

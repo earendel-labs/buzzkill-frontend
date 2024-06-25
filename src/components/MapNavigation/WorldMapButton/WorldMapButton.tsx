@@ -11,6 +11,7 @@ interface WorldMapButtonProps {
 
 const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false); // Add pressed state
   const router = useRouter();
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
@@ -33,13 +34,19 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+    setIsPressed(false); // Reset pressed state when mouse leaves
   };
 
-  const handleClick = () => {
+  const handleMouseDown = () => {
+    setIsPressed(true);
     if (!isMuted && pressedSound) {
       pressedSound.currentTime = 0; // Reset audio to the start
       pressedSound.play();
     }
+  };
+
+  const handleMouseUp = () => {
+    setIsPressed(false);
     router.push("/Play");
   };
 
@@ -52,7 +59,11 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
         width: "250px", // Adjust this as needed
         height: "250px", // Adjust this as needed
         transform: "translate(-50%, -50%)",
-        backgroundImage: `url('/MapNavigation/MainMap.png')`,
+        backgroundImage: isPressed
+          ? `url('/MapNavigation/MainMapPressed.svg')`
+          : isHovered
+          ? `url('/MapNavigation/MainMap-Hovered.svg')`
+          : `url('/MapNavigation/MainMap.svg')`,
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
@@ -60,30 +71,9 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      {isHovered && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "48%",
-            left: "49%",
-            transform: "translate(-50%, -50%)",
-            width: "60%",
-            height: "60%",
-            borderRadius: "50%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography variant="h5" component="div" sx={{ color: "white" }}>
-            World Map
-          </Typography>
-        </Box>
-      )}
-    </Box>
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+    ></Box>
   );
 };
 

@@ -77,11 +77,17 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
           position: "absolute",
           width: buttonSize,
           height: buttonSize,
-          backgroundImage: `url('/Frames/Buttons/circle-frame.png')`,
+          backgroundImage: `url('/Frames/Buttons/circle-frame.svg')`,
           backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundColor: "transparent",
+          transition: "width 0.2s ease-in-out, height 0.2s ease-in-out", // Smooth transition
+          "&:hover": {
+            width: `calc(${buttonSize} * 1.1)`,
+            height: `calc(${buttonSize} * 1.1)`,
+            backgroundImage: `url('/Frames/Buttons/circle-frame-hover.svg')`,
+          },
         }}
       />
       <IconButton
