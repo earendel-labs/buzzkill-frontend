@@ -1,12 +1,14 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
 interface MapHeaderProps {
   text: string;
 }
 
 const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -28,21 +30,22 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
       }}
     >
       <Typography
-        variant="h4"
+        variant="h2"
         component="div"
         sx={{
           color: "white",
-          fontWeight: "500",
+          fontWeight: "760",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          padding: "50px 70px", // Add padding to the typography for left and right spacing
+          padding: "50px 80px", // Add padding to the typography for left and right spacing
           fontSize: {
             xs: "1rem", // font size for small screens
             sm: "1.5rem", // font size for medium screens
             md: "2rem", // font size for large screens
-            lg: "2.5rem", // font size for extra-large screens
+            lg: "3rem", // font size for extra-large screens
           },
+          WebkitTextStroke: `1px ${theme.palette.DarkOrange.main}`,
         }}
       >
         {text}

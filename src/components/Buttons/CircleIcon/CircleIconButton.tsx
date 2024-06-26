@@ -60,7 +60,6 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
   return (
     <Box
       sx={{
-        position: "fixed",
         zIndex: 1000,
         width: buttonSize,
         height: buttonSize,

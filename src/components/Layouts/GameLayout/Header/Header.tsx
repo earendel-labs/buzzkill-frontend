@@ -26,7 +26,12 @@ const Header: React.FC = () => {
         <CircleIconButton
           icon={<MenuIcon sx={{ fontSize: "34px", color: "white" }} />}
           onClick={toggleMenu}
-          sx={{ top: "5%", left: "97%", transform: "translate(-50%, -50%)" }}
+          sx={{
+            position: "fixed",
+            top: "70px",
+            right: "20px",
+            transform: "translateY(-50%)",
+          }}
         />
       )}
       {isMenuOpen && (

@@ -29,7 +29,6 @@ declare module "@mui/material/styles" {
 }
 
 const getTheme = (): Theme => {
-  // Create the base theme with your custom palette colors
   const baseTheme = createTheme({
     palette: {
       primary: {
@@ -96,38 +95,47 @@ const getTheme = (): Theme => {
         secondary: "#555555",
       },
     },
-    typography: {
-      fontFamily: '"Poppins", sans-serif',
+    typography: (palette) => ({
+      fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
       h1: {
-        fontFamily: '"Poppins", sans-serif',
-        fontSize: "2.5rem",
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
+        fontSize: "5rem",
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
       },
       h2: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
       },
       h3: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
       },
       h4: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
       },
       h5: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
       },
       h6: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontWeight: "bold",
       },
       body1: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
       },
       body2: {
-        fontFamily: '"Poppins", sans-serif',
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontSize: "16px",
       },
-    },
+    }),
   });
 
-  // Apply button and link styles with the correct theme
   const themeWithStyles = createTheme(baseTheme, {
     components: {
       ...buttonStyles(baseTheme),

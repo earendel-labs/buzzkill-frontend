@@ -31,8 +31,7 @@ const VolumeControlButton: React.FC = () => {
       }
       onClick={handleToggleMute}
       size="small"
-      sx={{ bottom: "5vh", right: "3vw", transform: "translate(50%, 50%)" }}
-      disableClickSound={true} // Disable click sound for CircleIconButton
+      disableClickSound={true}  
     />
   );
 };

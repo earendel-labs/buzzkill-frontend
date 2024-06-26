@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
-import VolumeControlButton from "@/components/Buttons/VolumeControl/VolumeControlButton";
-import MusicControlButton from "@/components/Buttons/MusicControl/MusicControlButton";
+import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
 
 const Play: React.FC = () => {
@@ -92,8 +91,7 @@ const Play: React.FC = () => {
         text="Mistcloak Tundra"
         navigate={navigate}
       />
-      <VolumeControlButton />
-      <MusicControlButton />
+      <AudioPanel />  
     </GameLayout>
   );
 };

@@ -6,10 +6,10 @@ import { useSound } from "@/context/SoundContext";
 
 interface WorldMapButtonProps {
   top: string;
-  left: string;
+  right: string;
 }
 
-const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
+const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, right }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false); // Add pressed state
   const router = useRouter();
@@ -55,9 +55,9 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, left }) => {
       sx={{
         position: "absolute",
         top: top,
-        left: left,
-        width: "250px", // Adjust this as needed
-        height: "250px", // Adjust this as needed
+        right: right,
+        width: "200px", // Adjust this as needed
+        height: "200px", // Adjust this as needed
         transform: "translate(-50%, -50%)",
         backgroundImage: isPressed
           ? `url('/MapNavigation/MainMapPressed.svg')`

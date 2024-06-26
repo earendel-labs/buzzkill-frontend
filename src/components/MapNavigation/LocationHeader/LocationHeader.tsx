@@ -17,7 +17,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({ text, left, top }) => {
         left: left || "50%",
         transform: "translate(-50%, -100%)", // Center horizontally and move up by 100%
         width: "auto",
-        padding: "10px 20px",
+        padding: "10px 30px",
         textAlign: "center",
         backgroundImage: `url('/Frames/location-map-header.svg')`,
         backgroundRepeat: "no-repeat",
@@ -30,13 +30,13 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({ text, left, top }) => {
       }}
     >
       <Typography
-        variant="h6"
+        variant="h5"
         component="div"
         sx={{
           color: "white",
-          fontWeight: "500",
+          fontWeight: "700",
           width: "100%",
-          padding: "20px 40px",  
+          padding: "20px 40px",
         }}
       >
         {text}

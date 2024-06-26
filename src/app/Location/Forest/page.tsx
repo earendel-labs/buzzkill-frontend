@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
-import VolumeControlButton from "@/components/Buttons/VolumeControl/VolumeControlButton";
-import MusicControlButton from "@/components/Buttons/MusicControl/MusicControlButton";
 import { useSound } from "@/context/SoundContext";
+import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -68,9 +67,8 @@ const Forest: React.FC = () => {
         />
       </Box>
       <MapHeader text="Whisperwood Valleys" />
-      <WorldMapButton top="20%" left="87%" />
-      <VolumeControlButton />
-      <MusicControlButton />
+      <WorldMapButton top="180px" right="30px" />
+      <AudioPanel />
     </GameLayout>
   );
 };

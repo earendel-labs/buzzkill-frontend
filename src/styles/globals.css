@@ -5,6 +5,20 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
+@font-face {
+  font-family: "Vera Humana 95";
+  src: url("/fonts/VeraHumana95-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Vera Humana 95";
+  src: url("/fonts/VeraHumana95-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -22,7 +36,7 @@
 /* Let Material-UI handle body color and background */
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Vera Humana 95", "Poppins", sans-serif;
 }
 
 @layer utilities {

@@ -33,8 +33,7 @@ const MusicControlButton: React.FC = () => {
       }
       onClick={handleToggleMusic}
       size="small"
-      sx={{ bottom: "5vh", right: "7.3vw", transform: "translate(50%, 50%)" }}
-      disableClickSound={true} // Disable click sound for CircleIconButton
+      disableClickSound={true}  
     />
   );
 };
