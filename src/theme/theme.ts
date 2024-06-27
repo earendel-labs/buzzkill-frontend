@@ -26,6 +26,25 @@ declare module "@mui/material/styles" {
     Gold?: PaletteOptions["primary"];
     GoldFaded?: PaletteOptions["primary"];
   }
+
+  interface TypographyVariants {
+    ToolTipLabel: React.CSSProperties;
+    ToolTipValue: React.CSSProperties; 
+  }
+
+  // Allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    ToolTipLabel?: React.CSSProperties;
+    ToolTipValue: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    ToolTipLabel: true;
+    ToolTipValue: true;
+  }
 }
 
 const getTheme = (): Theme => {
@@ -126,7 +145,7 @@ const getTheme = (): Theme => {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontSize: "20px",
         fontWeight: "bold",
-        WebkitTextStroke: `0px ${palette.DarkBlue.main}`
+        WebkitTextStroke: `0px ${palette.DarkBlue.main}`,
       },
       body1: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
@@ -135,6 +154,20 @@ const getTheme = (): Theme => {
       body2: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontSize: "16px",
+      },
+      ToolTipLabel: {
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontSize: "18px",
+        fontWeight: "700",
+        lineHeight: "100%",
+        color: palette.Gold.main,
+      },
+      ToolTipValue: {
+        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontSize: "18px",
+        fontWeight: "800",
+        lineHeight: "100%",
+        WebkitTextStroke: `0.3px ${palette.DarkBlue.main}`,
       },
     }),
   });

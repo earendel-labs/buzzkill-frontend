@@ -11,6 +11,10 @@ import SmallToolTip from "@/components/ToolTips/Small/SmallToolTip";
 import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker";
 import { ResourceType } from "@/types/ResourceType";
 import LargeToolTip from "@/components/ToolTips/Large/LargeToolTip";
+import HiveHoverOver from "@/components/ToolTips/HiveHoverOver/HiveHoverOver";
+import LargeTallToolTip from "@/components/ToolTips/LargeTall/LargeTallToolTip";
+import HivePressed from "@/components/ToolTips/HivePressed/HivePressed";
+import ResourcePressed from "@/components/ToolTips/ResourcePressed/ResourcePressed";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -20,6 +24,17 @@ const Forest: React.FC = () => {
 
   const handleClick = () => {
     setIsActive((prev) => !prev);
+  };
+  const handleRaidClick = () => {
+    console.log("Raid button clicked");
+  };
+
+  const handleEnterClick = () => {
+    console.log("Enter button clicked");
+  };
+
+  const handleForageClick = () => {
+    console.log("Forage button clicked");
   };
 
   useEffect(() => {
@@ -75,21 +90,26 @@ const Forest: React.FC = () => {
         />
       </Box>
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
-      <CombinedResourceMarker
-        left="50%"
-        top="80%"
-        link="/resource-details"
-        resourceType={ResourceType.Pollen}
-        navigate={navigate}
-        contentLabel="Quantity:"
-        contentValue="500"
-      />
-      {/* <PrimaryButtonComponent  
-        text="Primary Button"
-        isActiveTab={false}
-        onClick={handleClick}
-      /> */}
 
+      <CombinedResourceMarker
+        left="290px"
+        top="800px"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Cedar Hive"
+        HiveDefenceValue="24"
+        QueenBeesValue="2/3"
+        WorkerBeesValue="40/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+      <CombinedResourceMarker
+        left="600px"
+        top="500px"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="25%"
+      />
       <AudioPanel />
     </GameLayout>
   );

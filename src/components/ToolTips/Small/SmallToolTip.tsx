@@ -1,63 +1,35 @@
-import React, { useEffect, useRef } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import React from "react";
+import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 interface SmallToolTipProps {
   title: string;
   contentLabel?: string; // Mark contentLabel as optional
   contentValue?: string; // Mark contentValue as optional
-  isAction?: boolean; // New optional prop to determine if tooltip acts as a modal
-  onButtonClick?: () => void; // Callback for button click
-  onClose?: () => void; // Callback to close the tooltip
 }
 
 const SmallToolTip: React.FC<SmallToolTipProps> = ({
   title,
   contentLabel,
   contentValue,
-  isAction = false, // Default to false
-  onButtonClick,
-  onClose,
 }) => {
   const theme = useTheme();
-  const tooltipRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      tooltipRef.current &&
-      !tooltipRef.current.contains(event.target as Node)
-    ) {
-      onClose?.();
-    }
-  };
-
-  useEffect(() => {
-    if (isAction) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isAction]);
 
   return (
     <Box
-      ref={tooltipRef}
       sx={{
         position: "relative",
-        padding: "20px 40px",
         backgroundImage: `url('/Frames/ToolTips/smallToolTip.svg')`,
-        backgroundSize: "contain",
+        backgroundSize: "cover", // Ensure the image scales to fit the container
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        display: "inline-flex",
+        display: "flex", // Fit content
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        width: "auto",
-        height: "auto",
-        zIndex: isAction ? 2000 : "auto", // High z-index for modal
+        width: "240px",
+        height: "120px",
       }}
     >
       <Typography
@@ -65,7 +37,6 @@ const SmallToolTip: React.FC<SmallToolTipProps> = ({
         component="div"
         sx={{
           fontWeight: "bold",
-          marginBottom: "5px",
           color: "white",
           letterSpacing: "normal",
         }}
@@ -77,8 +48,7 @@ const SmallToolTip: React.FC<SmallToolTipProps> = ({
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width: "100%",
-            minWidth: "200px",
+            minWidth: "150px",
           }}
         >
           <Typography
@@ -104,16 +74,6 @@ const SmallToolTip: React.FC<SmallToolTipProps> = ({
             {contentValue}
           </Typography>
         </Box>
-      )}
-      {isAction && onButtonClick && (
-        <Button
-          onClick={onButtonClick}
-          variant="contained"
-          color="primary"
-          sx={{ marginTop: "10px" }}
-        >
-          Action Button
-        </Button>
       )}
     </Box>
   );

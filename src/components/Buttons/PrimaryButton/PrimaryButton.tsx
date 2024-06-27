@@ -4,13 +4,13 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { useSound } from "@/context/SoundContext";
 
-interface PrimaryButtonComponentProps {
+interface PrimaryButton {
   text: string;
   isActiveTab?: boolean;
   onClick: () => void;
 }
 
-const PrimaryButtonComponent: React.FC<PrimaryButtonComponentProps> = ({
+const PrimaryButton: React.FC<PrimaryButton> = ({
   text,
   isActiveTab = false,
   onClick,
@@ -73,24 +73,27 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonComponentProps> = ({
       sx={{
         display: "inline-flex",
         backgroundImage: `url(${getImageSrc()})`,
+        wdith: "105px",
+        height: "30px",
+        padding: "5px 30px",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         cursor: "pointer",
         justifyContent: "center",
         alignItems: "center",
-        padding: "8px 16px",
+
         color: "white",
         fontWeight: "bold",
       }}
     >
       <Typography
-        variant="h6"
+        variant="h5"
         component="div"
         sx={{
           whiteSpace: "nowrap",
-          fontSize: "22px",
-          WebkitTextStroke: `0.2px ${theme.palette.DarkOrange.main}`,
+          fontWeight: "1000",
+          fontSize: "18px",
         }}
       >
         {text}
@@ -99,4 +102,4 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonComponentProps> = ({
   );
 };
 
-export default PrimaryButtonComponent;
+export default PrimaryButton;

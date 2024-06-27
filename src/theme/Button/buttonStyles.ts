@@ -4,16 +4,16 @@ const buttonStyles = (theme: Theme) => ({
   MuiButton: {
     styleOverrides: {
       root: {
-        fontFamily: '"Poppins", sans-serif',
-        fontSize: "16x",
+        fontFamily: '"Vera Humana 95", "Poppins"',
+        fontSize: "18px",
         fontWeight: "600",
         textTransform: "none",
-        padding: "5px 30px 5px 30px",
+        padding: "5px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderWidth: "2px",
-        orderStyle: "solid",
+        borderStyle: "solid",
         boxSizing: "border-box",
         color: "#ffffff",
         "&.goldButton": {
@@ -40,6 +40,22 @@ const buttonStyles = (theme: Theme) => ({
           "&:active": {
             backgroundColor: theme.palette.Blue.light,
             borderColor: theme.palette.Blue.light,
+          },
+        },
+        "&.primaryButton": {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "5px 30px",
+          position: "relative",
+          boxSizing: "border-box",
+          background:
+            "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
+
+          "&:hover": {
+            background:
+              "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
           },
         },
       },

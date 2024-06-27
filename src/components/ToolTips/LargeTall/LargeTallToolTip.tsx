@@ -2,29 +2,31 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-interface LargeToolTipProps {
-  children?: React.ReactNode; // Allow injecting different layouts/components
+interface LargeTallToolTipProps {
+  children?: React.ReactNode;
 }
 
-const LargeToolTip: React.FC<LargeToolTipProps> = ({children}) => {
+const LargeTallToolTip: React.FC<LargeTallToolTipProps> = ({
+  children,
+}) => {
   const theme = useTheme();
 
   return (
     <Box
       sx={{
         position: "relative",
-        padding: "20px", // Adjust padding if content is not provided
-        backgroundImage: `url('/Frames/ToolTips/LargeToolTip.svg')`,
-        backgroundSize: "contain", // Ensure the image scales to fit the container
+        padding: "20px",
+        backgroundImage: `url('/Frames/ToolTips/LargeTallToolTip.svg')`,
+        backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        display: "flex", // Fit content
+        display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        width: "280px", // Fixed width for the tooltip
-        height: "170px", // Fixed height for the tooltip
+        width: "280px",
+        height: "200px",
       }}
     >
       <Box
@@ -43,4 +45,4 @@ const LargeToolTip: React.FC<LargeToolTipProps> = ({children}) => {
   );
 };
 
-export default LargeToolTip;
+export default LargeTallToolTip;
