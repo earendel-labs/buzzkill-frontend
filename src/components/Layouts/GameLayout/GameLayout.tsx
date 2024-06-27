@@ -39,26 +39,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({ children }) => {
     >
       <CssBaseline />
       <Header />
-      <Container
-        component="main"
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          paddingX: {
-            xs: "16px",
-            sm: "24px",
-            md: "32px",
-            lg: "48px",
-            xl: "64px",
-          },
-        }}
-      >
-        {children}
-      </Container>
+      <Box>{children}</Box>
     </Box>
   );
 };

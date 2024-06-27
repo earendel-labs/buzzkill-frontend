@@ -7,14 +7,14 @@
 
 @font-face {
   font-family: "Vera Humana 95";
-  src: url("/fonts/VeraHumana95-Regular.ttf") format("truetype");
+  src: url("/Fonts/VeraHumana95-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Vera Humana 95";
-  src: url("/fonts/VeraHumana95-Bold.ttf") format("truetype");
+  src: url("/Fonts/VeraHumana95-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }

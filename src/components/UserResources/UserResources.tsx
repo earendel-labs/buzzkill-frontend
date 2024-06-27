@@ -1,15 +1,12 @@
 import React from "react";
 import { Box } from "@mui/material";
-import Image from "next/image"; // Next.js Image component
+import Image from "next/image";
 import Typography from "@mui/material/Typography";
 
 const UserResourceBar: React.FC = () => {
   return (
     <Box
       sx={{
-        position: "fixed",
-        top: "110px",
-        left: "20px",
         width: "460px",
         height: "60px",
         backgroundImage: "url(/Frames/UserResources/UserResourceBar.svg)",
@@ -41,7 +38,7 @@ const UserResourceBar: React.FC = () => {
           />
           <Typography
             variant="h6"
-            sx={{ minWidth: "50px", textAlign: "lex-end" }}
+            sx={{ minWidth: "50px", textAlign: "right" }}
           >
             75,345
           </Typography>
@@ -55,7 +52,7 @@ const UserResourceBar: React.FC = () => {
           />
           <Typography
             variant="h6"
-            sx={{ minWidth: "50px", textAlign: "lex-end" }}
+            sx={{ minWidth: "50px", textAlign: "right" }}
           >
             235,245
           </Typography>
@@ -69,7 +66,7 @@ const UserResourceBar: React.FC = () => {
           />
           <Typography
             variant="h6"
-            sx={{ minWidth: "50px", textAlign: "lex-end" }}
+            sx={{ minWidth: "50px", textAlign: "right" }}
           >
             75,655
           </Typography>
@@ -83,9 +80,9 @@ const UserResourceBar: React.FC = () => {
           />
           <Typography
             variant="h6"
-            sx={{ minWidth: "50px", textAlign: "lex-end" }}
+            sx={{ minWidth: "50px", textAlign: "right" }}
           >
-            953,547 
+            953,547
           </Typography>
         </Box>
       </Box>

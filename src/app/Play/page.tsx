@@ -9,6 +9,7 @@ import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationM
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
 import UserResourceBar from "@/components/UserResources/UserResources";
+import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -70,7 +71,7 @@ const Play: React.FC = () => {
           }}
         />
       </Box>
-      <MapHeader text="World Map" />
+      <TopBar mapHeaderLabel="World Map"  showWorldMapButton={false} />
       <CombinedLocationMarker
         left="20%"
         top="70%"
@@ -93,7 +94,7 @@ const Play: React.FC = () => {
         navigate={navigate}
       />
       <AudioPanel />  
-      <UserResourceBar />
+       
     </GameLayout>
   );
 };

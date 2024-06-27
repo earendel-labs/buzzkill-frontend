@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
+import { useRouter } from "next/navigation";
 import { useSound } from "@/context/SoundContext";
 
-interface WorldMapButtonProps {
-  top: string;
-  right: string;
-}
+interface WorldMapButtonProps {}
 
-const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, right }) => {
+const WorldMapButton: React.FC<WorldMapButtonProps> = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false); // Add pressed state
+  const [isPressed, setIsPressed] = useState(false);
   const router = useRouter();
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
@@ -27,20 +23,20 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, right }) => {
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (!isMuted && hoverSound) {
-      hoverSound.currentTime = 0; // Reset audio to the start
+      hoverSound.currentTime = 0;
       hoverSound.play();
     }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setIsPressed(false); // Reset pressed state when mouse leaves
+    setIsPressed(false);
   };
 
   const handleMouseDown = () => {
     setIsPressed(true);
     if (!isMuted && pressedSound) {
-      pressedSound.currentTime = 0; // Reset audio to the start
+      pressedSound.currentTime = 0;
       pressedSound.play();
     }
   };
@@ -53,12 +49,20 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = ({ top, right }) => {
   return (
     <Box
       sx={{
-        position: "absolute",
-        top: top,
-        right: right,
-        width: "200px", // Adjust this as needed
-        height: "200px", // Adjust this as needed
-        transform: "translate(-50%, -50%)",
+        width: {
+          xs: "20px", // height for extra-small screens
+          sm: "30px", // height for small screens
+          md: "120px", // height for medium screens
+          lg: "190px", // height for large screens
+          xl: "250px", // height for extra-large screens
+        },
+        height: {
+          xs: "20px", // height for extra-small screens
+          sm: "100px", // height for small screens
+          md: "120px", // height for medium screens
+          lg: "190px", // height for large screens
+          xl: "250px", // height for extra-large screens
+        },
         backgroundImage: isPressed
           ? `url('/MapNavigation/MainMapPressed.svg')`
           : isHovered

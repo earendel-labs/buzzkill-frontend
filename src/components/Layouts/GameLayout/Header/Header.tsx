@@ -28,8 +28,8 @@ const Header: React.FC = () => {
           onClick={toggleMenu}
           sx={{
             position: "fixed",
-            top: "70px",
-            right: "20px",
+            top: "40px",
+            right: "5px",
             transform: "translateY(-50%)",
           }}
         />

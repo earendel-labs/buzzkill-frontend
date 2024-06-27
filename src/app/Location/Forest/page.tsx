@@ -4,11 +4,9 @@ import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
 import Box from "@mui/material/Box";
-import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
-import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
 import { useSound } from "@/context/SoundContext";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
-import UserResourceBar from "@/components/UserResources/UserResources";
+import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -67,9 +65,10 @@ const Forest: React.FC = () => {
           }}
         />
       </Box>
-      <MapHeader text="Whisperwood Valleys" />
+      <TopBar mapHeaderLabel="Whisperwood Valleys" />
+      {/* <MapHeader text="Whisperwood Valleys" />
       <WorldMapButton top="150px" right="30px" />
-      <UserResourceBar />
+      <UserResourceBar /> */}
 
       <AudioPanel />
     </GameLayout>
