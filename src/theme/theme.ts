@@ -124,7 +124,9 @@ const getTheme = (): Theme => {
       },
       h6: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontSize: "18px",
         fontWeight: "bold",
+        WebkitTextStroke: `0px ${palette.DarkBlue.main}`
       },
       body1: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',

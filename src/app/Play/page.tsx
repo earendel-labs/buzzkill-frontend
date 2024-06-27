@@ -8,6 +8,7 @@ import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
+import UserResourceBar from "@/components/UserResources/UserResources";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -92,6 +93,7 @@ const Play: React.FC = () => {
         navigate={navigate}
       />
       <AudioPanel />  
+      <UserResourceBar />
     </GameLayout>
   );
 };

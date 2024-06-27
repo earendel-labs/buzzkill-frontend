@@ -17,7 +17,8 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
         left: "50%",
         transform: "translateX(-50%)",
         width: "auto", // Adjust the width based on the content
-        minWidth: "400px", // Minimum width for better visibility
+        height: "150px",
+        minWidth: "440px", // Minimum width for better visibility
         textAlign: "center",
         backgroundImage: `url('/Frames/header.svg')`,
         backgroundRepeat: "no-repeat",
@@ -30,7 +31,7 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
       }}
     >
       <Typography
-        variant="h2"
+        variant="h6"
         component="div"
         sx={{
           color: "white",
@@ -38,7 +39,7 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          padding: "50px 80px", // Add padding to the typography for left and right spacing
+          padding: "47px 80px", // Add padding to the typography for left and right spacing
           fontSize: {
             xs: "1rem", // font size for small screens
             sm: "1.5rem", // font size for medium screens

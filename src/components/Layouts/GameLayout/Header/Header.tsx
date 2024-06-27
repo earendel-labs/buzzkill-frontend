@@ -49,6 +49,7 @@ const Header: React.FC = () => {
             overflow: "visible",
             alignContent: "center",
             position: "relative",
+            zIndex: 1100,
           }}
         >
           <Toolbar

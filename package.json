@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@remixicon/react": "^4.2.0",
+    "@svgr/webpack": "^8.1.0",
     "@tremor/react": "^3.16.1",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",

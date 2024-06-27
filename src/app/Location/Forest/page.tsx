@@ -8,6 +8,7 @@ import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
 import { useSound } from "@/context/SoundContext";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
+import UserResourceBar from "@/components/UserResources/UserResources";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -67,7 +68,9 @@ const Forest: React.FC = () => {
         />
       </Box>
       <MapHeader text="Whisperwood Valleys" />
-      <WorldMapButton top="180px" right="30px" />
+      <WorldMapButton top="150px" right="30px" />
+      <UserResourceBar />
+
       <AudioPanel />
     </GameLayout>
   );
