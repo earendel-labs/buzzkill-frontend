@@ -92,8 +92,8 @@ const Forest: React.FC = () => {
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
       {/* Hives */}
       <CombinedResourceMarker
-        left="110px"
-        top="330px"
+        left="7%"
+        top="36%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Cedar Hive"
@@ -105,8 +105,8 @@ const Forest: React.FC = () => {
       />
 
       <CombinedResourceMarker
-        left="1450px"
-        top="400px"
+        left="88%"
+        top="42.44%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Woodlands Hive"
@@ -118,8 +118,8 @@ const Forest: React.FC = () => {
       />
 
       <CombinedResourceMarker
-        left="1450px"
-        top="700px"
+        left="85%"
+        top="70%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Sequoia Hive"
@@ -132,22 +132,22 @@ const Forest: React.FC = () => {
 
       {/* Sap */}
       <CombinedResourceMarker
-        left="360px"
-        top="440px"
+        left="25%"
+        top="48.89%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="75%"
       />
       <CombinedResourceMarker
-        left="290px"
-        top="610px"
+        left="18%"
+        top="67.78%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="35%"
       />
       <CombinedResourceMarker
-        left="1360px"
-        top="450px"
+        left="83%"
+        top="50%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="25%"
@@ -155,22 +155,22 @@ const Forest: React.FC = () => {
 
       {/* Pollen */}
       <CombinedResourceMarker
-        left="600px"
-        top="380px"
+        left="35%"
+        top="42.22%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="12%"
       />
       <CombinedResourceMarker
-        left="140px"
-        top="710px"
+        left="8%"
+        top="78.89%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="58%"
       />
       <CombinedResourceMarker
-        left="1300px"
-        top="580px"
+        left="75%"
+        top="64.44%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="37%"
@@ -178,22 +178,22 @@ const Forest: React.FC = () => {
 
       {/* Nectar */}
       <CombinedResourceMarker
-        left="740px"
-        top="380px"
+        left="45.39%"
+        top="42.22%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="12%"
       />
       <CombinedResourceMarker
-        left="730px"
-        top="480px"
+        left="50.69%"
+        top="53.33%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="58%"
       />
       <CombinedResourceMarker
-        left="1100px"
-        top="680px"
+        left="66.39%"
+        top="75.56%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="37%"
