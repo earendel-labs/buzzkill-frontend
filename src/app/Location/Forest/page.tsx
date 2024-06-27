@@ -90,10 +90,10 @@ const Forest: React.FC = () => {
         />
       </Box>
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
-
+      {/* Hives */}
       <CombinedResourceMarker
-        left="290px"
-        top="800px"
+        left="110px"
+        top="330px"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Cedar Hive"
@@ -103,12 +103,100 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
+
       <CombinedResourceMarker
-        left="600px"
-        top="500px"
+        left="1450px"
+        top="400px"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Woodlands Hive"
+        HiveDefenceValue="53"
+        QueenBeesValue="3/3"
+        WorkerBeesValue="47/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+
+      <CombinedResourceMarker
+        left="1450px"
+        top="700px"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Sequoia Hive"
+        HiveDefenceValue="13"
+        QueenBeesValue="1/3"
+        WorkerBeesValue="24/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+
+      {/* Sap */}
+      <CombinedResourceMarker
+        left="360px"
+        top="440px"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="75%"
+      />
+      <CombinedResourceMarker
+        left="290px"
+        top="610px"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="35%"
+      />
+      <CombinedResourceMarker
+        left="1360px"
+        top="450px"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="25%"
+      />
+
+      {/* Pollen */}
+      <CombinedResourceMarker
+        left="600px"
+        top="380px"
+        link="/resource-link"
+        resourceType={ResourceType.Pollen}
+        contentValue="12%"
+      />
+      <CombinedResourceMarker
+        left="140px"
+        top="710px"
+        link="/resource-link"
+        resourceType={ResourceType.Pollen}
+        contentValue="58%"
+      />
+      <CombinedResourceMarker
+        left="1300px"
+        top="580px"
+        link="/resource-link"
+        resourceType={ResourceType.Pollen}
+        contentValue="37%"
+      />
+
+      {/* Nectar */}
+      <CombinedResourceMarker
+        left="740px"
+        top="380px"
+        link="/resource-link"
+        resourceType={ResourceType.Nectar}
+        contentValue="12%"
+      />
+      <CombinedResourceMarker
+        left="730px"
+        top="480px"
+        link="/resource-link"
+        resourceType={ResourceType.Nectar}
+        contentValue="58%"
+      />
+      <CombinedResourceMarker
+        left="1100px"
+        top="680px"
+        link="/resource-link"
+        resourceType={ResourceType.Nectar}
+        contentValue="37%"
       />
       <AudioPanel />
     </GameLayout>

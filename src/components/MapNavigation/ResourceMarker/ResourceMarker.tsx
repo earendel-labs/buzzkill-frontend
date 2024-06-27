@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { keyframes } from "@mui/system";
 import { useSound } from "@/context/SoundContext";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 interface ResourceMarkerProps {
   left: string;
   top: string;
-  link: string;
-  navigate: (link: string) => void;
+  onPress: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
@@ -24,8 +24,7 @@ const bounce = keyframes`
 const ResourceMarker: React.FC<ResourceMarkerProps> = ({
   left,
   top,
-  link,
-  navigate,
+  onPress,
   onMouseEnter,
   onMouseLeave,
 }) => {
@@ -56,21 +55,20 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setIsPressed(false);
     onMouseLeave();
   };
 
   const handleMouseDown = () => {
     setIsPressed(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsPressed(false);
     if (!isMuted && pressedSound) {
       pressedSound.currentTime = 0;
       pressedSound.play();
     }
-    navigate(link);
+    onPress();
+  };
+
+  const handleClickAway = () => {
+    setIsPressed(false);
   };
 
   const getImageSrc = () => {
@@ -80,41 +78,42 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
     return isHovered
       ? "/MapNavigation/ResourceMarker/Marker/ResourceMarkerHover.svg"
       : "/MapNavigation/ResourceMarker/Marker/ResourceMarker.svg";
-  }; 
+  };
 
   return (
-    <Box
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      sx={{
-        position: "absolute",
-        left: left,
-        top: top,
-        width: "70px",
-        height: "70px",
-        cursor: "pointer",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        transform: isHovered ? "scale(1.1)" : "scale(1)",
-        transition: "transform 0.2s ease-in-out",
-        animation: isHovered ? "none" : `${bounce} 4s infinite`,
-        animationDelay: isHovered ? "0s" : animationDelay,
-      }}
-    >
+    <ClickAwayListener onClickAway={handleClickAway}>
       <Box
-        component="img"
-        src={getImageSrc()}
-        alt="Resource Marker"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseDown={handleMouseDown}
         sx={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
+          position: "absolute",
+          left: left,
+          top: top,
+          width: "70px",
+          height: "70px",
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          transform: isHovered ? "scale(1.1)" : "scale(1)",
+          transition: "transform 0.2s ease-in-out",
+          animation: isHovered || isPressed ? "none" : `${bounce} 4s infinite`,
+          animationDelay: isHovered || isPressed ? "0s" : animationDelay,
         }}
-      />
-    </Box>
+      >
+        <Box
+          component="img"
+          src={getImageSrc()}
+          alt="Resource Marker"
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+        />
+      </Box>
+    </ClickAwayListener>
   );
 };
 

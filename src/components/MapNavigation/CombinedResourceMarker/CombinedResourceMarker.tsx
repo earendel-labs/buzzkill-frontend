@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, ClickAwayListener } from "@mui/material";
 import SmallToolTip from "@/components/ToolTips/Small/SmallToolTip";
 import HiveHoverOver from "@/components/ToolTips/HiveHoverOver/HiveHoverOver";
 import ResourceMarker from "@/components/MapNavigation/ResourceMarker/ResourceMarker";
+import ResourcePressed from "@/components/ToolTips/ResourcePressed/ResourcePressed";
+import HivePressed from "@/components/ToolTips/HivePressed/HivePressed";
 import { ResourceType } from "@/types/ResourceType";
 
 interface CombinedResourceMarkerProps {
@@ -29,10 +31,11 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
   HiveDefenceValue = "0", // Default value to 0
   QueenBeesValue = "0", // Default value to 0
   WorkerBeesValue = "0", // Default value to 0
-  primaryButtonClick,
-  secondaryButtonClick,
+  primaryButtonClick = () => {}, // Default function if not provided
+  secondaryButtonClick = () => {}, // Default function if not provided
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -40,6 +43,14 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+  const handleMarkerClick = () => {
+    setIsClicked(true);
+  };
+
+  const handleClickAway = () => {
+    setIsClicked(false);
   };
 
   const getResourceTitle = () => {
@@ -64,47 +75,76 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
   };
 
   return (
-    <Box position="absolute" left={left} top={top}>
-      {isHovered && (
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <Box position="absolute" left={left} top={top}>
+        {isHovered && !isClicked && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: isHive ? "-160px" : "-115px", // Adjust this value as needed to move the tooltip higher
+              left: isHive ? "-105px" : "-85px", // Adjust this value as needed to move the tooltip left
+              zIndex: 1000, // High z-index to ensure tooltip appears on top
+              pointerEvents: "none", // Prevent the tooltip from interfering with hover events
+            }}
+          >
+            {isHive ? (
+              <HiveHoverOver
+                hiveName={hiveName}
+                hiveDefence={parseInt(HiveDefenceValue)}
+                queenBees={QueenBeesValue}
+                workerBees={WorkerBeesValue}
+              />
+            ) : (
+              <SmallToolTip
+                title={getResourceTitle()}
+                contentLabel={getContentLabel()}
+                contentValue={contentValue}
+              />
+            )}
+          </Box>
+        )}
+        {isClicked && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: isHive ? "-200px" : "-190px", // Adjust this value as needed to move the tooltip higher
+              left: isHive ? "-105px" : "-105px", // Adjust this value as needed to move the tooltip left
+              zIndex: 1000,
+            }}
+          >
+            {isHive ? (
+              <HivePressed
+                hiveName={hiveName}
+                hiveDefence={parseInt(HiveDefenceValue)}
+                queenBees={QueenBeesValue}
+                workerBees={WorkerBeesValue}
+                onRaidClick={primaryButtonClick}
+                onEnterClick={secondaryButtonClick}
+              />
+            ) : (
+              <ResourcePressed
+                resourceType={getResourceTitle()}
+                resourceAvailable={contentValue || "0"}
+                onForageClick={primaryButtonClick}
+              />
+            )}
+          </Box>
+        )}
         <Box
           sx={{
-            position: "absolute",
-            top: isHive ? "-160px" : "-115px", // Adjust this value as needed to move the tooltip higher
-            left: isHive ? "-105px" : "-85px", // Adjust this value as needed to move the tooltip left
-            zIndex: 1000, // High z-index to ensure tooltip appears on top
-            pointerEvents: "none", // Prevent the tooltip from interfering with hover events
+            position: "relative",
           }}
         >
-          {isHive ? (
-            <HiveHoverOver
-              hiveName={hiveName}
-              hiveDefence={parseInt(HiveDefenceValue)}
-              queenBees={QueenBeesValue}
-              workerBees={WorkerBeesValue}
-            />
-          ) : (
-            <SmallToolTip
-              title={getResourceTitle()}
-              contentLabel={getContentLabel()}
-              contentValue={contentValue}
-            />
-          )}
+          <ResourceMarker
+            left="0"
+            top="0"
+            onPress={handleMarkerClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
         </Box>
-      )}
-      <Box
-        sx={{
-          position: "relative",
-        }}
-      >
-        <ResourceMarker
-          left="0"
-          top="0"
-          link={link}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
       </Box>
-    </Box>
+    </ClickAwayListener>
   );
 };
 
