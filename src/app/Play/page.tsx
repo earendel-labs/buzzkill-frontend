@@ -5,7 +5,7 @@ import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
-import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/page";
+import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/CombinedLocationMarker";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
 import UserResourceBar from "@/components/UserResources/UserResources";

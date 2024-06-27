@@ -7,8 +7,8 @@ const UserResourceBar: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "460px",
-        height: "60px",
+        width: "480px",
+        height: "65px",
         backgroundImage: "url(/Frames/UserResources/UserResourceBar.svg)",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",

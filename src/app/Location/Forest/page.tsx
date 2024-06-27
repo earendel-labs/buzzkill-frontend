@@ -7,11 +7,20 @@ import Box from "@mui/material/Box";
 import { useSound } from "@/context/SoundContext";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
+import SmallToolTip from "@/components/ToolTips/Small/SmallToolTip";
+import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker";
+import { ResourceType } from "@/types/ResourceType";
+import LargeToolTip from "@/components/ToolTips/Large/LargeToolTip";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick = () => {
+    setIsActive((prev) => !prev);
+  };
 
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
@@ -66,9 +75,20 @@ const Forest: React.FC = () => {
         />
       </Box>
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
-      {/* <MapHeader text="Whisperwood Valleys" />
-      <WorldMapButton top="150px" right="30px" />
-      <UserResourceBar /> */}
+      <CombinedResourceMarker
+        left="50%"
+        top="80%"
+        link="/resource-details"
+        resourceType={ResourceType.Pollen}
+        navigate={navigate}
+        contentLabel="Quantity:"
+        contentValue="500"
+      />
+      {/* <PrimaryButtonComponent  
+        text="Primary Button"
+        isActiveTab={false}
+        onClick={handleClick}
+      /> */}
 
       <AudioPanel />
     </GameLayout>

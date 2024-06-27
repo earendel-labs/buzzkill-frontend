@@ -76,7 +76,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
           position: "absolute",
           width: buttonSize,
           height: buttonSize,
-          backgroundImage: `url('/Frames/Buttons/circle-frame.svg')`,
+          backgroundImage: `url('/Frames/Buttons/CircleButton/circle-frame.svg')`,
           backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
@@ -85,7 +85,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
           "&:hover": {
             width: `calc(${buttonSize} * 1.1)`,
             height: `calc(${buttonSize} * 1.1)`,
-            backgroundImage: `url('/Frames/Buttons/circle-frame-hover.svg')`,
+            backgroundImage: `url('/Frames/Buttons/CircleButton/circle-frame-hover.svg')`,
           },
         }}
       />
