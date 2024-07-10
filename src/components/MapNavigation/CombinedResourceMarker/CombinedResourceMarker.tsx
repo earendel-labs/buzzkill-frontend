@@ -81,8 +81,8 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
           <Box
             sx={{
               position: "absolute",
-              top: isHive ? "-160px" : "-115px", // Adjust this value as needed to move the tooltip higher
-              left: isHive ? "-105px" : "-85px", // Adjust this value as needed to move the tooltip left
+              top: isHive ? "-165px" : "-125px", // Adjust this value as needed to move the tooltip higher
+              left: isHive ? "-115px" : "-100px", // Adjust this value as needed to move the tooltip left
               zIndex: 1000, // High z-index to ensure tooltip appears on top
               pointerEvents: "none", // Prevent the tooltip from interfering with hover events
             }}
@@ -107,8 +107,8 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
           <Box
             sx={{
               position: "absolute",
-              top: isHive ? "-200px" : "-190px", // Adjust this value as needed to move the tooltip higher
-              left: isHive ? "-105px" : "-105px", // Adjust this value as needed to move the tooltip left
+              top: isHive ? "-195px" : "-195px", // Adjust this value as needed to move the tooltip higher
+              left: isHive ? "-115px" : "-115px", // Adjust this value as needed to move the tooltip left
               zIndex: 1000,
             }}
           >

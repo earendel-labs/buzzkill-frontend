@@ -28,8 +28,8 @@ const SmallToolTip: React.FC<SmallToolTipProps> = ({
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        width: "240px",
-        height: "120px",
+        width: "250px",
+        height: "130px",
       }}
     >
       <Typography

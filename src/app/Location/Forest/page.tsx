@@ -238,7 +238,7 @@ const Forest: React.FC = () => {
       />
       <CombinedResourceMarker
         left="66.39%"
-        top="75.56%"
+        top="72%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="37%"
