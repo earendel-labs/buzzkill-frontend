@@ -51,17 +51,17 @@ const WorldMapButton: React.FC<WorldMapButtonProps> = () => {
       sx={{
         width: {
           xs: "20px", // height for extra-small screens
-          sm: "30px", // height for small screens
-          md: "120px", // height for medium screens
-          lg: "190px", // height for large screens
-          xl: "250px", // height for extra-large screens
+          sm: "80px", // height for small screens
+          md: "90px", // height for medium screens
+          lg: "100px", // height for large screens
+          xl: "150px", // height for extra-large screens
         },
         height: {
           xs: "20px", // height for extra-small screens
-          sm: "100px", // height for small screens
-          md: "120px", // height for medium screens
-          lg: "190px", // height for large screens
-          xl: "250px", // height for extra-large screens
+          sm: "80px", // height for small screens
+          md: "90px", // height for medium screens
+          lg: "100px", // height for large screens
+          xl: "150px", // height for extra-large screens
         },
         backgroundImage: isPressed
           ? `url('/MapNavigation/MainMapPressed.svg')`

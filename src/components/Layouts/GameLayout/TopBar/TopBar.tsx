@@ -53,7 +53,7 @@ const TopBar: React.FC<TopBarProps> = ({
         {showWorldMapButton ? (
           <WorldMapButton />
         ) : (
-          <Box sx={{ width: "200px", height: "200px" }} />
+          <Box sx={{ width: "120px", height: "120px" }} />
         )}
       </Box>
     </Box>

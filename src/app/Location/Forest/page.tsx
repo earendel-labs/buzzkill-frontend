@@ -77,7 +77,7 @@ const Forest: React.FC = () => {
       >
         <Box
           component="img"
-          src="/Maps/ForestMap.png"
+          src="/Maps/ForestMap.jpg"
           sx={{
             position: "absolute",
             top: 0,
@@ -92,7 +92,7 @@ const Forest: React.FC = () => {
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
       {/* Hives */}
       <CombinedResourceMarker
-        left="7%"
+        left="12%"
         top="36%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
@@ -105,8 +105,46 @@ const Forest: React.FC = () => {
       />
 
       <CombinedResourceMarker
-        left="88%"
-        top="42.44%"
+        left="18%"
+        top="20%"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Black Forest Hive"
+        HiveDefenceValue="21"
+        QueenBeesValue="1/3"
+        WorkerBeesValue="24/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+
+      <CombinedResourceMarker
+        left="28%"
+        top="20%"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Silveroak Hive"
+        HiveDefenceValue="49"
+        QueenBeesValue="3/3"
+        WorkerBeesValue="44/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+      <CombinedResourceMarker
+        left="82%"
+        top="22%"
+        link="/resource-link"
+        resourceType={ResourceType.Hive}
+        hiveName="Darkroot Hive"
+        HiveDefenceValue="23"
+        QueenBeesValue="1/3"
+        WorkerBeesValue="41/55"
+        primaryButtonClick={() => console.log("Primary button clicked")}
+        secondaryButtonClick={() => console.log("Secondary button clicked")}
+      />
+
+      <CombinedResourceMarker
+        left="82%"
+        top="42%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Woodlands Hive"
@@ -118,7 +156,7 @@ const Forest: React.FC = () => {
       />
 
       <CombinedResourceMarker
-        left="85%"
+        left="82%"
         top="70%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
@@ -132,22 +170,29 @@ const Forest: React.FC = () => {
 
       {/* Sap */}
       <CombinedResourceMarker
-        left="25%"
-        top="48.89%"
+        left="27%"
+        top="50%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="75%"
       />
       <CombinedResourceMarker
-        left="18%"
-        top="67.78%"
+        left="40%"
+        top="28%"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="92%"
+      />
+      <CombinedResourceMarker
+        left="24%"
+        top="62%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="35%"
       />
       <CombinedResourceMarker
-        left="83%"
-        top="50%"
+        left="75%"
+        top="42%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="25%"
@@ -155,22 +200,22 @@ const Forest: React.FC = () => {
 
       {/* Pollen */}
       <CombinedResourceMarker
-        left="35%"
+        left="37%"
         top="42.22%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="12%"
       />
       <CombinedResourceMarker
-        left="8%"
-        top="78.89%"
+        left="15%"
+        top="70%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="58%"
       />
       <CombinedResourceMarker
-        left="75%"
-        top="64.44%"
+        left="72%"
+        top="60%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="37%"
