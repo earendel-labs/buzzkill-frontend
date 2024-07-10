@@ -92,8 +92,8 @@ const Forest: React.FC = () => {
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
       {/* Hives */}
       <CombinedResourceMarker
-        left="12%"
-        top="36%"
+        left="14%"
+        top="40%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Cedar Hive"
@@ -103,10 +103,9 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
-
       <CombinedResourceMarker
-        left="18%"
-        top="20%"
+        left="21%"
+        top="21%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Black Forest Hive"
@@ -116,10 +115,9 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
-
       <CombinedResourceMarker
-        left="28%"
-        top="20%"
+        left="30%"
+        top="22%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Silveroak Hive"
@@ -130,8 +128,8 @@ const Forest: React.FC = () => {
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
       <CombinedResourceMarker
-        left="82%"
-        top="22%"
+        left="81%"
+        top="24%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Darkroot Hive"
@@ -141,10 +139,9 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
-
       <CombinedResourceMarker
-        left="82%"
-        top="42%"
+        left="83%"
+        top="44%"
         link="/resource-link"
         resourceType={ResourceType.Hive}
         hiveName="Woodlands Hive"
@@ -154,7 +151,6 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
-
       <CombinedResourceMarker
         left="82%"
         top="70%"
@@ -167,51 +163,49 @@ const Forest: React.FC = () => {
         primaryButtonClick={() => console.log("Primary button clicked")}
         secondaryButtonClick={() => console.log("Secondary button clicked")}
       />
-
-      {/* Sap */}
+      {/* Sap */}{" "}
       <CombinedResourceMarker
-        left="27%"
-        top="50%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="75%"
-      />
-      <CombinedResourceMarker
-        left="40%"
-        top="28%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="92%"
-      />
-      <CombinedResourceMarker
-        left="24%"
+        left="23%"
         top="62%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="35%"
       />
       <CombinedResourceMarker
+        left="29%"
+        top="49%"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="75%"
+      />
+      <CombinedResourceMarker
+        left="41%"
+        top="29%"
+        link="/resource-link"
+        resourceType={ResourceType.Sap}
+        contentValue="92%"
+      />
+      <CombinedResourceMarker
         left="75%"
-        top="42%"
+        top="49%"
         link="/resource-link"
         resourceType={ResourceType.Sap}
         contentValue="25%"
       />
-
-      {/* Pollen */}
+      {/* Pollen */}{" "}
       <CombinedResourceMarker
-        left="37%"
-        top="42.22%"
-        link="/resource-link"
-        resourceType={ResourceType.Pollen}
-        contentValue="12%"
-      />
-      <CombinedResourceMarker
-        left="15%"
+        left="17%"
         top="70%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="58%"
+      />
+      <CombinedResourceMarker
+        left="39%"
+        top="42.22%"
+        link="/resource-link"
+        resourceType={ResourceType.Pollen}
+        contentValue="12%"
       />
       <CombinedResourceMarker
         left="72%"
@@ -220,25 +214,31 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Pollen}
         contentValue="37%"
       />
-
       {/* Nectar */}
       <CombinedResourceMarker
-        left="45.39%"
-        top="42.22%"
+        left="47%"
+        top="42%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="12%"
       />
       <CombinedResourceMarker
-        left="50.69%"
-        top="53.33%"
+        left="50%"
+        top="53%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="58%"
       />
       <CombinedResourceMarker
-        left="66.39%"
+        left="66%"
         top="72%"
+        link="/resource-link"
+        resourceType={ResourceType.Nectar}
+        contentValue="37%"
+      />
+      <CombinedResourceMarker
+        left="62%"
+        top="64%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
         contentValue="37%"
