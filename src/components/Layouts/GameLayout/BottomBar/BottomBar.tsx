@@ -31,12 +31,14 @@ const BottomBar = () => {
         <BeeStatsPanel
           healthValue={"35/100"}
           productivityValue={"250/300"}
-          energyValue={"300/100"}
-          attackValue={"300"}
-          defenceValue={"200"}
+          energyValue={"80/100"}
+          attackValue={"40"}
+          defenceValue={"20"}
           forageValue={"52"}
-          energyBarLength={20}
-          
+          energyBarLength={80}
+          healthBarLength={50}
+          productivityBarLength={20}
+          activityBarLength={50}
         />
       </Box>
 

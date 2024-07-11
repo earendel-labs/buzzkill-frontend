@@ -23,8 +23,8 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
   defenceValue = "0",
   forageValue = "0",
   energyBarLength = 5,
-  activityBarLength = 5,
-  productivityBarLength = 10,
+  activityBarLength = 70,
+  productivityBarLength = 70,
   healthBarLength = 5,
   beeFrameImage,
 }) => {
@@ -33,17 +33,17 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
     (energyBarLength / 100) * maxLengthEnergyBar
   ); // initial calculation
 
-  const maxLengthHealthBar = 140.56; // the maximum length of the healthBar
+  const maxLengthHealthBar = 124.966; // the maximum length of the healthBar
   const [newHealthBarValue, setNewHealthBarValue] = useState(
     (healthBarLength / 100) * maxLengthHealthBar
   ); // initial calculation
 
-  const maxLengthActivityBar = 140.56; // the maximum length of the ActivityBar
+  const maxLengthActivityBar = 124.56; // the maximum length of the ActivityBar
   const [newActivityBarValue, setNewActivityBarValue] = useState(
     (activityBarLength / 100) * maxLengthActivityBar
   ); // initial calculation
 
-  const maxLengthProductivityBar = 140.56; // the maximum length of the ProductivityBar
+  const maxLengthProductivityBar = 124.56; // the maximum length of the ProductivityBar
   const [newProductivityBarValue, setNewProductivityBarValue] = useState(
     (productivityBarLength / 100) * maxLengthProductivityBar
   ); // initial calculation
@@ -51,6 +51,21 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
   useEffect(() => {
     setNewEnergyBarValue((energyBarLength / 100) * maxLengthEnergyBar);
   }, [energyBarLength]);
+
+  useEffect(() => {
+    setNewHealthBarValue((healthBarLength / 100) * maxLengthHealthBar);
+  }, [healthBarLength]);
+
+  useEffect(() => {
+    setNewActivityBarValue((activityBarLength / 100) * maxLengthActivityBar);
+  }, [activityBarLength]);
+
+  useEffect(() => {
+    setNewProductivityBarValue(
+      (productivityBarLength / 100) * maxLengthProductivityBar
+    );
+  }, [productivityBarLength]);
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -256,13 +271,14 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
         strokeWidth={0.2}
         d="M367.389 85.046c3.215 0 3.472-6.156 4.578-6.156-1.106 0-1.363-6.156-4.578-6.156"
       />
+      {/* health Bar*/}
       <mask id="bee_stats_panel_svg__x" fill="#fff">
         <path d="M237.443 83.12c-2.6 0-2.882-3.454-3.7-4.227.762-.858 1.103-4.226 3.7-4.226h125.766c2.6 0 2.883 3.454 3.701 4.226-.762.858-1.103 4.227-3.701 4.227z" />
       </mask>
       <path
         fill="url(#bee_stats_panel_svg__v)"
         stroke="url(#bee_stats_panel_svg__w)"
-        d="M237.443 83.12c-2.6 0-2.882-3.454-3.7-4.227.762-.858 1.103-4.226 3.7-4.226h124.966c2.6 0 2.883 3.454 3.701 4.226-.762.858-1.103 4.227-3.701 4.227z"
+        d={`M237.443 83.12c-2.6 0-2.882-3.454-3.7-4.227.762-.858 1.103-4.226 3.7-4.226h${newHealthBarValue}c2.6 0 2.883 3.454 3.701 4.226-.762.858-1.103 4.227-3.701 4.227z`}
         mask="url(#bee_stats_panel_svg__x)"
       />
       <path
@@ -284,21 +300,21 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
         d="M367.523 127.31c3.121 0 3.37-6.156 4.444-6.156-1.074 0-1.323-6.156-4.444-6.156"
       />
       <mask id="bee_stats_panel_svg__D" fill="#fff">
-        <path d="M351.812 125.383c3.162 0 3.505-3.454 4.499-4.226-.926-.858-1.341-4.226-4.499-4.226H242.687c-3.162 0-3.505 3.454-4.499 4.226.926.858 1.34 4.226 4.499 4.226z" />
+        <path d="M239.759 125.383 c-1.104 0-1.224-3.454-1.572-4.226.324-.858.469-4.226 1.572-4.226 h125.129 c1.104 0 1.224 3.454 1.571 4.226-.323.858-.468 4.226-1.571 4.226 z" />
       </mask>
       <path
         fill="url(#bee_stats_panel_svg__B)"
         stroke="url(#bee_stats_panel_svg__C)"
-        d="M351.812 125.383c3.162 0 3.505-3.454 4.499-4.226-.926-.858-1.341-4.226-4.499-4.226H242.687c-3.162 0-3.505 3.454-4.499 4.226.926.858 1.34 4.226 4.499 4.226z"
+        d={`M239.759 125.383 c-1.104 0-1.224-3.454-1.572-4.226.324-.858.469-4.226 1.572-4.226 h${newActivityBarValue} c1.104 0 1.224 3.454 1.571 4.226-.323.858-.468 4.226-1.571 4.226 z`}
         mask="url(#bee_stats_panel_svg__D)"
       />
       <mask id="bee_stats_panel_svg__F" fill="#fff">
-        <path d="M277.888 125.383c1.104 0 1.224-3.454 1.572-4.226-.324-.858-.469-4.226-1.572-4.226h-38.129c-1.104 0-1.224 3.454-1.571 4.226.323.858.468 4.226 1.571 4.226z" />
+        <path d="M239.759 125.383 c-1.104 0-1.224-3.454-1.572-4.226.324-.858.469-4.226 1.572-4.226 h126.129 c1.104 0 1.224 3.454 1.571 4.226-.323.858-.468 4.226-1.571 4.226 z" />
       </mask>
       <path
         fill="#9A321A"
         stroke="url(#bee_stats_panel_svg__E)"
-        d="M277.888 125.383c1.104 0 1.224-3.454 1.572-4.226-.324-.858-.469-4.226-1.572-4.226h-38.129c-1.104 0-1.224 3.454-1.571 4.226.323.858.468 4.226 1.571 4.226z"
+        d={`M239.759 125.383 c-1.104 0-1.224-3.454-1.572-4.226.324-.858.469-4.226 1.572-4.226 h${newProductivityBarValue} c1.104 0 1.224 3.454 1.571 4.226-.323.858-.468 4.226-1.571 4.226 z`}
         mask="url(#bee_stats_panel_svg__F)"
       />
       <path
@@ -319,10 +335,10 @@ const BeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
         strokeWidth={0.2}
         d="M366.761 42.782c3.656 0 3.948-6.156 5.206-6.156-1.258 0-1.55-6.156-5.206-6.156"
       />
+      {/*energyBar*/}
       <mask id="bee_stats_panel_svg__L" fill="#fff">
         <path d="M360.535 40.855c4.073 0 4.515-3.454 5.796-4.226-1.194-.858-1.728-4.227-5.796-4.227h-140.56c-4.072 0-4.514 3.455-5.795 4.227 1.193.858 1.727 4.226 5.795 4.226z" />
       </mask>
-      {/*energyBar*/}
       <path
         fill="url(#bee_stats_panel_svg__J)"
         stroke="url(#bee_stats_panel_svg__K)"
