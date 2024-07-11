@@ -15,6 +15,7 @@ import HiveHoverOver from "@/components/ToolTips/HiveHoverOver/HiveHoverOver";
 import LargeTallToolTip from "@/components/ToolTips/LargeTall/LargeTallToolTip";
 import HivePressed from "@/components/ToolTips/HivePressed/HivePressed";
 import ResourcePressed from "@/components/ToolTips/ResourcePressed/ResourcePressed";
+import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -241,9 +242,10 @@ const Forest: React.FC = () => {
         top="64%"
         link="/resource-link"
         resourceType={ResourceType.Nectar}
-        contentValue="37%"
+        contentValue="93%"
       />
-      <AudioPanel />
+      <BottomBar />
+    
     </GameLayout>
   );
 };

@@ -10,6 +10,7 @@ import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
 import UserResourceBar from "@/components/UserResources/UserResources";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
+import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -71,7 +72,7 @@ const Play: React.FC = () => {
           }}
         />
       </Box>
-      <TopBar mapHeaderLabel="World Map"  showWorldMapButton={false} />
+      <TopBar mapHeaderLabel="World Map" showWorldMapButton={false} />
       <CombinedLocationMarker
         left="20%"
         top="70%"
@@ -93,8 +94,7 @@ const Play: React.FC = () => {
         text="Mistcloak Tundra"
         navigate={navigate}
       />
-      <AudioPanel />  
-       
+      <BottomBar />
     </GameLayout>
   );
 };
