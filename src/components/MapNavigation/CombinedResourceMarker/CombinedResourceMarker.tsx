@@ -6,6 +6,7 @@ import ResourceMarker from "@/components/MapNavigation/ResourceMarker/ResourceMa
 import ResourcePressed from "@/components/ToolTips/ResourcePressed/ResourcePressed";
 import HivePressed from "@/components/ToolTips/HivePressed/HivePressed";
 import { ResourceType } from "@/types/ResourceType";
+import { useRouter } from "next/navigation";
 
 interface CombinedResourceMarkerProps {
   left: string;
@@ -18,7 +19,9 @@ interface CombinedResourceMarkerProps {
   QueenBeesValue?: string; // Optional Queen Bees value for the tooltip
   WorkerBeesValue?: string; // Optional Worker Bees value for the tooltip
   primaryButtonClick?: () => void; // Callback for primary button click, optional
+  primaryButtonLink?: string; // URL for primary button click, optional
   secondaryButtonClick?: () => void; // Callback for secondary button click, optional
+  secondaryButtonLink?: string; // URL for secondary button click, optional
 }
 
 const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
@@ -32,10 +35,13 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
   QueenBeesValue = "0", // Default value to 0
   WorkerBeesValue = "0", // Default value to 0
   primaryButtonClick = () => {}, // Default function if not provided
+  primaryButtonLink, // Add primaryButtonLink prop
   secondaryButtonClick = () => {}, // Default function if not provided
+  secondaryButtonLink, // Add secondaryButtonLink prop
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const router = useRouter(); // Use the useRouter hook
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -72,6 +78,24 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
 
   const getContentLabel = () => {
     return isHive ? "Hive Defence" : "Availability";
+  };
+
+  // Primary Button Handler
+  const handlePrimaryButtonClick = () => {
+    if (primaryButtonLink) {
+      router.push(primaryButtonLink); // Navigate to the provided URL
+    } else {
+      primaryButtonClick(); // If no link is provided, fallback to the provided function
+    }
+  };
+
+  // Secondary Button Handler
+  const handleSecondaryButtonClick = () => {
+    if (secondaryButtonLink) {
+      router.push(secondaryButtonLink); // Navigate to the provided URL
+    } else {
+      secondaryButtonClick(); // If no link is provided, fallback to the provided function
+    }
   };
 
   return (
@@ -118,14 +142,14 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
                 hiveDefence={parseInt(HiveDefenceValue)}
                 queenBees={QueenBeesValue}
                 workerBees={WorkerBeesValue}
-                onRaidClick={primaryButtonClick}
-                onEnterClick={secondaryButtonClick}
+                onRaidClick={handlePrimaryButtonClick} // Use the new handler for the primary button
+                onEnterClick={handleSecondaryButtonClick} // Use the new handler for the secondary button
               />
             ) : (
               <ResourcePressed
                 resourceType={getResourceTitle()}
                 resourceAvailable={contentValue || "0"}
-                onForageClick={primaryButtonClick}
+                onForageClick={handlePrimaryButtonClick} // Use the new handler for the primary button
               />
             )}
           </Box>

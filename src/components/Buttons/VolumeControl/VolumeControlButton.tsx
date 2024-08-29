@@ -13,11 +13,14 @@ const VolumeControlButton: React.FC = () => {
   }, []);
 
   const handleToggleMute = () => {
-    if (isMuted && clickSound) {
-      // Play sound only if we are unmuting
-      clickSound.play();
-    }
     toggleMute();
+    if (!isMuted && clickSound) {
+      // Play sound only if we are unmuting
+      clickSound.currentTime = 0;
+      clickSound.play().catch((error) => {
+        console.log("Click sound play error:", error);
+      });
+    }
   };
 
   return (
@@ -31,7 +34,7 @@ const VolumeControlButton: React.FC = () => {
       }
       onClick={handleToggleMute}
       size="small"
-      disableClickSound={true}  
+      disableClickSound={true}
     />
   );
 };

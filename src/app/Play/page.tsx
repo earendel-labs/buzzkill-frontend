@@ -4,11 +4,8 @@ import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
-import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/CombinedLocationMarker";
-import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import { useSound } from "@/context/SoundContext";
-import UserResourceBar from "@/components/UserResources/UserResources";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 
@@ -33,10 +30,34 @@ const Play: React.FC = () => {
       if (isMusicMuted || isMuted) {
         music.pause();
       } else {
-        music.play();
+        music.play().catch((error) => {
+          console.log("Music play error:", error);
+        });
       }
     }
   }, [isMusicMuted, isMuted, music]);
+
+  const handleUserInteraction = () => {
+    if (music && !isMusicMuted && !isMuted) {
+      music.play().catch((error) => {
+        console.log("Music play error:", error);
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Add event listeners for user interaction
+    window.addEventListener("click", handleUserInteraction);
+    window.addEventListener("keydown", handleUserInteraction);
+    window.addEventListener("mousemove", handleUserInteraction);
+
+    return () => {
+      // Cleanup event listeners on unmount
+      window.removeEventListener("click", handleUserInteraction);
+      window.removeEventListener("keydown", handleUserInteraction);
+      window.removeEventListener("mousemove", handleUserInteraction);
+    };
+  }, [music, isMusicMuted, isMuted]);
 
   const navigate = (link: string) => {
     router.push(link);

@@ -1,7 +1,7 @@
 import { createTheme, Theme } from "@mui/material/styles";
 import buttonStyles from "./Button/buttonStyles";
 import linkStyles from "./TextStyles/linkStyles";
-
+import tabStyles from "./TabStyles/tabStyles";
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {
   interface Palette {
@@ -29,13 +29,13 @@ declare module "@mui/material/styles" {
 
   interface TypographyVariants {
     ToolTipLabel: React.CSSProperties;
-    ToolTipValue: React.CSSProperties; 
+    ToolTipValue: React.CSSProperties;
   }
 
   // Allow configuration using `createTheme`
   interface TypographyVariantsOptions {
     ToolTipLabel?: React.CSSProperties;
-    ToolTipValue: React.CSSProperties;
+    ToolTipValue?: React.CSSProperties;
   }
 }
 
@@ -176,6 +176,7 @@ const getTheme = (): Theme => {
     components: {
       ...buttonStyles(baseTheme),
       ...linkStyles(baseTheme),
+      ...tabStyles(baseTheme), // Add your tab styles here
     },
   });
 

@@ -13,8 +13,8 @@ const BottomBar = () => {
         bottom: 0,
         left: 0,
         width: "100%",
-        backgroundColor: "rgba(46, 59, 85, 0.1)",
-        boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
+        // backgroundColor: "rgba(46, 59, 85, 0.1)",
+        // boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
         display: "flex",
         alignItems: "center",
         height: "auto",
@@ -24,21 +24,24 @@ const BottomBar = () => {
       <Box
         sx={{
           position: "absolute",
-          left: 0,
+          height: "220px",
+          width: "300px",
+          left: "10px",
           marginLeft: "10px",
         }}
       >
         <BeeStatsPanel
           healthValue={"35/100"}
           productivityValue={"250/300"}
-          energyValue={"80/100"}
+          energyValue={"15/100"}
           attackValue={"40"}
           defenceValue={"20"}
           forageValue={"52"}
-          energyBarLength={80}
+          energyBarLength={15}
           healthBarLength={50}
-          productivityBarLength={20}
-          activityBarLength={50}
+          productivityBarLength={10}
+          activityBarLength={70}
+          beeFrameImage={"/NFTs/WorkerBee.png"}
         />
       </Box>
 
@@ -55,7 +58,7 @@ const BottomBar = () => {
             height: "220px",
             width: "300px",
             backgroundColor: "transparent",
-            border: "2px solid red",
+            // border: "2px solid red",
             justifyContent: "center",
             alignItems: "center",
           }}

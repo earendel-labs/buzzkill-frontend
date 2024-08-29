@@ -13,12 +13,13 @@ const MusicControlButton: React.FC = () => {
   }, []);
 
   const handleToggleMusic = () => {
-    if (!isMuted) {
-      toggleMusicMute();
-      if (isMusicMuted && clickSound) {
-        // Play sound only if we are unmuting
-        clickSound.play();
-      }
+    toggleMusicMute();
+    if (!isMuted && !isMusicMuted && clickSound) {
+      // Play sound only if we are unmuting music
+      clickSound.currentTime = 0;
+      clickSound.play().catch((error) => {
+        console.log("Click sound play error:", error);
+      });
     }
   };
 
@@ -33,7 +34,7 @@ const MusicControlButton: React.FC = () => {
       }
       onClick={handleToggleMusic}
       size="small"
-      disableClickSound={true}  
+      disableClickSound={true}
     />
   );
 };

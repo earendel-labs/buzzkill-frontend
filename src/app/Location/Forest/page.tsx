@@ -114,7 +114,7 @@ const Forest: React.FC = () => {
         QueenBeesValue="1/3"
         WorkerBeesValue="24/55"
         primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        secondaryButtonLink="/Location/Forest/BlackForestHive"
       />
       <CombinedResourceMarker
         left="30%"
@@ -245,7 +245,6 @@ const Forest: React.FC = () => {
         contentValue="93%"
       />
       <BottomBar />
-    
     </GameLayout>
   );
 };

@@ -7,6 +7,7 @@ import getTheme from "../theme/theme";
 import { useMemo } from "react";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
+import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
 
 export default function RootLayout({
   children,
@@ -46,6 +47,7 @@ export default function RootLayout({
           <SoundProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
+              <GlobalScrollbarStyles />
               {children}
             </ThemeProvider>
           </SoundProvider>
