@@ -34,7 +34,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             xl: "64px",
           },
         }}
-      ></Container>
+      >
+        {children}
+      </Container>
       <Footer />
     </Box>
   );

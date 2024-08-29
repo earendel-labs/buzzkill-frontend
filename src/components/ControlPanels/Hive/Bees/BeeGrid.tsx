@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import { SyntheticEvent } from "react";
 import BeeContainer from "./BeeContainer";
+import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 
 // Dummy data for tabs and image URLs
 const beeCategories = [
@@ -11,45 +12,41 @@ const beeCategories = [
 
 // Dummy data for all bees
 const allBeeImages = [
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
+  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
   { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
+
+  // Additional dummy data...
 ];
 
 // Dummy data for all queen bees
 const queenBeeImages = [
-  { category: "earth", url: "/NFTs/Queens/earth-queen.png", owner: "user" },
+  { category: "earth", url: "/NFTs/Queens/earth-queen.png", owner: "other" },
   { category: "ice", url: "/NFTs/Queens/ice-queen-sword.png", owner: "other" },
-  { category: "fire", url: "/NFTs/Queens/fire-queen.png", owner: "other" },
+  // Additional dummy data...
 ];
 
 function BeeGrid() {
@@ -59,7 +56,13 @@ function BeeGrid() {
     setSelectedTab(newValue);
   };
 
-  const isYourTab = selectedTab === "yours";
+  const handleMintClick = () => {
+    window.open("https://dagora.xyz/launchpad/buzzkill", "_blank");
+  };
+
+  const handleBuyClick = () => {
+    window.open("/mint", "_blank");
+  };
 
   const filteredWorkerImages =
     selectedTab === "all"
@@ -119,7 +122,8 @@ function BeeGrid() {
             value={category.filter}
             sx={{
               color: "#E9B743",
-              "&.Mui-selected": { color: "#915E28" },
+              "&.Mui-selected": { color: "#915E28", fontWeight: "bold" },
+              fontSize: "1.25rem", // Adjust the font size
             }}
           />
         ))}
@@ -187,7 +191,7 @@ function BeeGrid() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gridAutoRows: "minmax(100px, auto)", // Adjust this value to control the height of each row
               gap: "20px 70px",
               padding: "20px",
@@ -204,16 +208,34 @@ function BeeGrid() {
 
       {/* Show message if no bees are available */}
       {!hasQueenBees && !hasWorkerBees && (
-        <Typography
-          variant="h6"
+        <Box
           sx={{
-            color: "#D4AF37",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80%", // Ensures the content takes up the full height of the parent container
             textAlign: "center",
-            mt: 5,
           }}
         >
-          No bees found in this category.
-        </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              color: "#D4AF37",
+              mb: 4,
+              fontSize: 38,
+              maxWidth: "60%", // Constrains the width of the text to 50% of the parent container
+              width: "100%", // Ensures the text takes up the full available width within the constraint
+            }}
+          >
+            You don't own any bees. Please mint or buy a bee from a secondary
+            market.
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
+            <PrimaryButton text="Mint" onClick={handleMintClick} />
+            <PrimaryButton text="Buy" onClick={handleBuyClick} />
+          </Box>
+        </Box>
       )}
     </Box>
   );

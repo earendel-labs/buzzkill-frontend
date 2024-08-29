@@ -6,6 +6,7 @@ const buttonStyles = (theme: Theme) => ({
       root: {
         fontFamily: '"Vera Humana 95", "Poppins"',
         fontSize: "18px",
+        
         fontWeight: "600",
         textTransform: "none",
         padding: "5px 20px",

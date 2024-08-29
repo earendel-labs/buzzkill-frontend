@@ -50,7 +50,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
       }}
     >
       <Typography
-        variant={isHeader ? "h3" : "h5"} // Adjust variant based on isHeader
+        variant={isHeader ? "h4" : "h5"} // Adjust variant based on isHeader
         component="div"
         sx={{
           color: "white",

@@ -70,7 +70,7 @@ const Header: React.FC = () => {
             Gallery
           </Link>
           <Link
-            href="/"
+            href="/Mint"
             color="inherit"
             underline="none"
             className="linkStyle2"
