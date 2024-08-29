@@ -7,7 +7,7 @@ interface LocationHeaderProps {
   position?: "absolute" | "relative";
   left?: string;
   top?: string;
-  isHeader?: boolean;  
+  isHeader?: boolean;
 }
 
 const LocationHeader: React.FC<LocationHeaderProps> = ({
@@ -15,7 +15,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
   position = "absolute",
   left,
   top,
-  isHeader = false,  
+  isHeader = false,
 }) => {
   const styles = {
     absolute: {
@@ -37,26 +37,43 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
       sx={{
         ...styles[position],
         width: "auto",
-        padding: "10px 30px",
+        padding: "1rem 2rem",
         textAlign: "center",
         backgroundImage: `url('/Frames/location-map-header.svg')`,
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",  
+        backgroundSize: "100% 100%",
         backgroundPosition: "center",
         backgroundColor: "transparent",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        "@media (max-width: 1440px)": {
+          padding: isHeader ? "1.25rem 2.5rem" : "0.75rem 1.5rem", // Smaller padding on smaller screens
+          backgroundSize: "90% 100%", // Scale down the background size
+        },
+        "@media (max-width: 1024px)": {
+          padding: isHeader ? "1rem 2rem" : "0.5rem 1rem", // Even smaller padding on smaller screens
+          backgroundSize: "80% 100%", // Further scale down the background size
+        },
       }}
     >
       <Typography
-        variant={isHeader ? "h4" : "h5"} // Adjust variant based on isHeader
+        variant="h5" // Adjust variant based on isHeader
         component="div"
         sx={{
           color: "white",
           fontWeight: "700",
           width: "100%",
-          padding: isHeader ? "40px 60px" : "20px 40px", // Adjust padding based on isHeader
+          padding: isHeader ? "2rem 3rem" : "1rem 2rem", // Adjust padding based on isHeader
+          fontSize: isHeader ? "2rem" : "1.5rem", // Adjust font size dynamically
+          "@media (max-width: 1440px)": {
+            padding: isHeader ? "1.5rem 2.5rem" : "0.75rem 1.5rem",
+            fontSize: isHeader ? "1.75rem" : "1.25rem",
+          },
+          "@media (max-width: 1024px)": {
+            padding: isHeader ? "1rem 2rem" : "0.5rem 1rem",
+            fontSize: isHeader ? "1.5rem" : "1rem",
+          },
         }}
       >
         {text}

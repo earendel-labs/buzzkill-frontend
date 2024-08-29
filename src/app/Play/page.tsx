@@ -95,15 +95,15 @@ const Play: React.FC = () => {
       </Box>
       <TopBar mapHeaderLabel="World Map" showWorldMapButton={false} />
       <CombinedLocationMarker
-        left="20%"
-        top="70%"
+        left="10%"
+        top="50%"
         link="/Location/Beach"
         text="TidalFlame Beaches"
         navigate={navigate}
       />
       <CombinedLocationMarker
-        left="60%"
-        top="70%"
+        left="30%"
+        top="60%"
         link="/Location/Forest"
         text="Whisperwood Valleys"
         navigate={navigate}

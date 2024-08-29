@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Tabs, Tab } from "@mui/material";
+import { Box, Typography, Tabs, Tab, useMediaQuery } from "@mui/material";
 import { SyntheticEvent } from "react";
 import BeeContainer from "./BeeContainer";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
@@ -51,6 +51,8 @@ const queenBeeImages = [
 
 function BeeGrid() {
   const [selectedTab, setSelectedTab] = useState<string>("all");
+
+  const is1440pxOrLower = useMediaQuery("(max-width:1440px)");
 
   const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
@@ -157,7 +159,7 @@ function BeeGrid() {
               sx={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "10px", // Small gap between the Bee Containers
+                gap: "2em", // Small gap between the Bee Containers
                 width: "60%", // Ensure the inner Box takes up the full width of the parent Box
                 maxWidth: "900px", // Control the maximum width to avoid stretching
                 justifyContent: "center", // Ensure the items are centered within the grid
@@ -191,10 +193,10 @@ function BeeGrid() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateColumns: `repeat(${is1440pxOrLower ? 3 : 4}, 1fr)`,
               gridAutoRows: "minmax(100px, auto)", // Adjust this value to control the height of each row
-              gap: "20px 70px",
-              padding: "20px",
+              gap: "2em 3em",
+              padding: "2em",
               borderRadius: "4px",
               boxSizing: "border-box", // Include padding in the width calculation
             }}

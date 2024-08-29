@@ -1,7 +1,7 @@
 import { createTheme, Theme } from "@mui/material/styles";
 import buttonStyles from "./Button/buttonStyles";
 import linkStyles from "./TextStyles/linkStyles";
-import tabStyles from "./TabStyles/tabStyles";
+import tabStyles from "./TabStyles/tabStyles";  
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {
   interface Palette {

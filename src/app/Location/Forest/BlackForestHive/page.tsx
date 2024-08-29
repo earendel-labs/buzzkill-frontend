@@ -97,7 +97,7 @@ const Forest: React.FC = () => {
           <Grid
             container
             spacing={0} // Reduce spacing to make the gap smaller
-            sx={{ marginTop: "5px", marginLeft: "5px", gap: "0px 0px" }}
+            sx={{ marginTop: "0.4rem", marginLeft: "4rem", gap: "0px 0px" }}
           >
             {/* Left Column - Hive Stats */}
             <Grid
@@ -111,7 +111,7 @@ const Forest: React.FC = () => {
             >
               <Box
                 sx={{
-                  padding: "5px", // Reduce padding here to decrease the gap
+                  padding: "0.8rem", // Reduce padding here to decrease the gap
                   backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: to highlight the container
                   borderRadius: "8px",
                   display: "flex",

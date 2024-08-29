@@ -73,9 +73,9 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
       sx={{
         display: "inline-flex",
         backgroundImage: `url(${getImageSrc()})`,
-        wdith: "105px",
-        height: "30px",
-        padding: "5px 30px",
+        width: "6.5625rem", // 105px / 16px
+        height: "2.1875rem", // 35px / 16px
+        padding: "0.3125rem 1.875rem", // 5px / 16px for padding and 30px / 16px for sides
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
@@ -93,7 +93,7 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
         sx={{
           whiteSpace: "nowrap",
           fontWeight: "1000",
-          fontSize: "18px",
+          fontSize: "1rem !important", // 18px / 16px
         }}
       >
         {text}
