@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
-import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
+import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useSound } from "@/context/SoundContext";
@@ -10,6 +10,19 @@ import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import HiveStatsPanel from "@/components/ControlPanels/HiveStatsPanel/HiveStatsPanel";
 import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
+import { HiveInfo } from "@/types/HiveInfo";
+
+const hiveInfo: HiveInfo = {
+  queenBees: 2,
+  workerBees: 42,
+  healthValue: 100,
+  productivityValue: 80,
+  attackValue: 50,
+  defenceValue: 22,
+  status: "Active",
+  location: "Hive 1",
+  environment: "Forest",
+};
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -19,7 +32,7 @@ const Forest: React.FC = () => {
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
     audio.loop = true;
-    audio.volume = 0.8; // Set the volume to 80%
+    audio.volume = 0.8;
     setMusic(audio);
 
     return () => {
@@ -88,16 +101,16 @@ const Forest: React.FC = () => {
             position: "relative",
             zIndex: 1,
             padding: "20px",
-            height: "100vh", // Ensure content height doesn't exceed viewport
-            overflow: "hidden", // Prevent content from overflowing
+            height: "100vh",
+            overflow: "hidden",
           }}
         >
           <HiveTopBar mapHeaderLabel="Black Forest Hive" />
 
           <Grid
             container
-            spacing={0} // Reduce spacing to make the gap smaller
-            sx={{ marginTop: "0.4rem", marginLeft: "4rem", gap: "0px 0px" }}
+            spacing={2}
+            sx={{ marginTop: "0.4rem", marginLeft: "2.5rem", gap: "0px 0px" }}
           >
             {/* Left Column - Hive Stats */}
             <Grid
@@ -106,26 +119,24 @@ const Forest: React.FC = () => {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "flex-start", // Align to the top
+                alignItems: "flex-start",
               }}
             >
               <Box
                 sx={{
-                  padding: "0.8rem", // Reduce padding here to decrease the gap
-                  backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: to highlight the container
-                  borderRadius: "8px",
+                  padding: "0.8rem",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  borderRadius: "2px",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "center", // Center content vertically within the Box
-                  alignItems: "center", // Center content horizontally within the Box
-                  width: "100%", // Ensure the Box takes up the full width of the Grid item
-                  boxSizing: "border-box", // Include padding in the width calculation
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  boxSizing: "border-box",
                 }}
               >
                 <HiveStatsPanel
-                  hiveDefense={22}
-                  queenBees="2/3"
-                  workerBees="42/55"
+                  hiveInfo={hiveInfo}
                   onStake={handleStake}
                   onRaid={handleRaid}
                 />
@@ -135,21 +146,21 @@ const Forest: React.FC = () => {
             {/* Second Column - Bee Grid */}
             <Grid
               item
-              xs={8}
+              xs={9}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "flex-start",
-                paddingLeft: "5px", // Optional: Adjust this for fine-tuning the gap
-                height: "100vh", // Ensure the BeeGrid doesn't overflow vertically
-                overflow: "hidden", // Hide any overflow to maintain structure
+                paddingLeft: "5px",
+                height: "100vh",
+                overflow: "hidden",
               }}
             >
               <BeeGrid />
             </Grid>
           </Grid>
 
-          <BottomBar />
+          <BottomBar isAudioPanelVisible={false} />
         </Box>
       </GameLayout>
     </>

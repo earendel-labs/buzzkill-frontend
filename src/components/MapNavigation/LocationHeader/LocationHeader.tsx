@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Skeleton from "@mui/material/Skeleton";
 
 interface LocationHeaderProps {
   text: string;
@@ -17,6 +18,15 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
   top,
   isHeader = false,
 }) => {
+  const [isLoaded, setIsLoaded] = useState(false); // Track if the background image is loaded
+
+  useEffect(() => {
+    // Preload the background image
+    const img = new Image();
+    img.src = "/Frames/location-map-header.svg";
+    img.onload = () => setIsLoaded(true);
+  }, []);
+
   const styles = {
     absolute: {
       position: "absolute" as "absolute",
@@ -32,52 +42,79 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
     },
   };
 
+  // Calculate padding and sizes dynamically for both skeleton and the actual component
+  const dynamicStyles = {
+    padding: isHeader ? "2rem 3rem" : "1rem 2rem",
+    fontSize: isHeader ? "2rem" : "1.5rem",
+    "@media (max-width: 1440px)": {
+      padding: isHeader ? "1.5rem 2.5rem" : "0.75rem 1.5rem",
+      fontSize: isHeader ? "1.75rem" : "1.25rem",
+    },
+    "@media (max-width: 1024px)": {
+      padding: isHeader ? "1rem 2rem" : "0.5rem 1rem",
+      fontSize: isHeader ? "1.5rem" : "1rem",
+    },
+  };
+
   return (
     <Box
       sx={{
         ...styles[position],
         width: "auto",
-        padding: "1rem 2rem",
         textAlign: "center",
-        backgroundImage: `url('/Frames/location-map-header.svg')`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-        backgroundPosition: "center",
-        backgroundColor: "transparent",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        "@media (max-width: 1440px)": {
-          padding: isHeader ? "1.25rem 2.5rem" : "0.75rem 1.5rem", // Smaller padding on smaller screens
-          backgroundSize: "90% 100%", // Scale down the background size
-        },
-        "@media (max-width: 1024px)": {
-          padding: isHeader ? "1rem 2rem" : "0.5rem 1rem", // Even smaller padding on smaller screens
-          backgroundSize: "80% 100%", // Further scale down the background size
-        },
+        backgroundColor: "transparent",
       }}
     >
-      <Typography
-        variant="h5" // Adjust variant based on isHeader
-        component="div"
-        sx={{
-          color: "white",
-          fontWeight: "700",
-          width: "100%",
-          padding: isHeader ? "2rem 3rem" : "1rem 2rem", // Adjust padding based on isHeader
-          fontSize: isHeader ? "2rem" : "1.5rem", // Adjust font size dynamically
-          "@media (max-width: 1440px)": {
-            padding: isHeader ? "1.5rem 2.5rem" : "0.75rem 1.5rem",
-            fontSize: isHeader ? "1.75rem" : "1.25rem",
-          },
-          "@media (max-width: 1024px)": {
-            padding: isHeader ? "1rem 2rem" : "0.5rem 1rem",
-            fontSize: isHeader ? "1.5rem" : "1rem",
-          },
-        }}
-      >
-        {text}
-      </Typography>
+      {isLoaded ? (
+        <Box
+          sx={{
+            width: "auto",
+            padding: "1rem 2rem",
+            textAlign: "center",
+            backgroundImage: `url('/Frames/location-map-header.svg')`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%",
+            backgroundPosition: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            "@media (max-width: 1440px)": {
+              padding: isHeader ? "1.25rem 2.5rem" : "0.75rem 1.5rem", // Smaller padding on smaller screens
+              backgroundSize: "90% 100%", // Scale down the background size
+            },
+            "@media (max-width: 1024px)": {
+              padding: isHeader ? "1rem 2rem" : "0.5rem 1rem", // Even smaller padding on smaller screens
+              backgroundSize: "80% 100%", // Further scale down the background size
+            },
+          }}
+        >
+          <Typography
+            variant="h5" // Adjust variant based on isHeader
+            component="div"
+            sx={{
+              color: "white",
+              fontWeight: "700",
+              width: "100%",
+              ...dynamicStyles, // Use dynamic padding and font size
+            }}
+          >
+            {text}
+          </Typography>
+        </Box>
+      ) : (
+        <Skeleton
+          variant="rectangular"
+          width={300} // Fixed width for skeleton
+          height={80} // Fixed height for skeleton
+          sx={{
+            borderRadius: "4px", // Optional: if you want rounded corners on the skeleton
+            backgroundColor: "#242E4E", // Skeleton color to match design
+          }}
+        />
+      )}
     </Box>
   );
 };

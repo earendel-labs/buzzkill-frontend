@@ -1,7 +1,7 @@
 import { createTheme, Theme } from "@mui/material/styles";
 import buttonStyles from "./Button/buttonStyles";
 import linkStyles from "./TextStyles/linkStyles";
-import tabStyles from "./TabStyles/tabStyles";  
+import tabStyles from "./TabStyles/tabStyles";
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {
   interface Palette {
@@ -119,52 +119,56 @@ const getTheme = (): Theme => {
       h1: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontWeight: "bold",
-        fontSize: "5rem",
-        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
+        fontSize: "5rem", // Already using rem here
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`, // Strokes often stay in px
       },
       h2: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
+        fontSize: "4rem",
       },
       h3: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
+        fontSize: "3.5rem",
       },
       h4: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
+        fontSize: "2.5rem",
       },
       h5: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
         fontWeight: "bold",
+        fontSize: "2rem",
       },
       h6: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
-        fontSize: "20px",
+        fontSize: "1.25rem",
         fontWeight: "bold",
         WebkitTextStroke: `0px ${palette.DarkBlue.main}`,
       },
       body1: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
-        fontSize: "18px",
+        fontSize: "1.125rem",
       },
       body2: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
-        fontSize: "16px",
+        fontSize: "1rem",
       },
       ToolTipLabel: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
-        fontSize: "18px",
+        fontSize: "1.125rem",
         fontWeight: "700",
         lineHeight: "100%",
         color: palette.Gold.main,
       },
       ToolTipValue: {
         fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
-        fontSize: "18px",
+        fontSize: "1.125rem",
         fontWeight: "800",
         lineHeight: "100%",
         WebkitTextStroke: `0.3px ${palette.DarkBlue.main}`,

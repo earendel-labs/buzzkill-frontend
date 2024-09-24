@@ -1,4 +1,3 @@
-// src/components/Layouts/GameLayout/TopBar/TopBar.tsx
 import React from "react";
 import { Box } from "@mui/material";
 import LocationHeader from "@/components/MapNavigation/LocationHeader/LocationHeader";
@@ -16,26 +15,42 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
       sx={{
         position: "relative",
         display: "flex",
-        flexDirection: "row",
         alignItems: "center",
-        padding: "0px 50px 0px 20px",
+        padding: {
+          xs: "0px 1rem 0px 0.5rem",    
+          sm: "0px 2rem 0px 1rem",      
+          md: "0px 2.5rem 0px 1.5rem", 
+          lg: "0px 3.125rem 0px 1.25rem",  
+          xl: "0px 4rem 0px 2rem",     
+        },
         width: "100%",
+        height: "8.75rem",  
+        "@media (max-width: 1440px)": {
+          height: "6.25rem",  
+        },
+        boxSizing: "border-box",
       }}
     >
+      {/* Left section with User Resources */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "flex-start",
+          alignItems: "center",
           marginRight: "auto",
+          height: "100%",
+          boxSizing: "border-box",
         }}
       >
         <UserResourceBar />
       </Box>
+
+      {/* Centered LocationHeader */}
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexGrow: 1,
+          position: "relative",
+          left: "10%",
+          transform: "translateX(-50%)", // Center the header horizontally
         }}
       >
         <LocationHeader
@@ -44,11 +59,13 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           isHeader={true}
         />
       </Box>
+
+      {/* Right section with Map Buttons */}
       <Box
         sx={{
           display: "flex",
-
           justifyContent: "flex-end",
+          marginLeft: "auto", // Make sure the right buttons stay at the end
         }}
       >
         <HiveMapButton />

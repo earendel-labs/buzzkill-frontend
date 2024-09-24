@@ -1,58 +1,173 @@
 import React, { useState } from "react";
-import { Box, Typography, Tabs, Tab, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { SyntheticEvent } from "react";
-import BeeContainer from "./BeeContainer";
+import BeeCard from "./BeeCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
+import { BeeInfo, BeeType } from "@/types/BeeInfo";
 
-// Dummy data for tabs and image URLs
 const beeCategories = [
   { label: "All Bees", filter: "all" },
   { label: "Your Bees", filter: "yours" },
 ];
 
-// Dummy data for all bees
-const allBeeImages = [
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "user" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
-  { category: "earth", url: "/NFTs/WorkerBee.png", owner: "other" },
+// Example data for bees
 
-  // Additional dummy data...
-];
-
-// Dummy data for all queen bees
-const queenBeeImages = [
-  { category: "earth", url: "/NFTs/Queens/earth-queen.png", owner: "other" },
-  { category: "ice", url: "/NFTs/Queens/ice-queen-sword.png", owner: "other" },
-  // Additional dummy data...
+// Example data for bees
+const allBees: BeeInfo[] = [
+  {
+    ownerAddress: "user",
+    nftAddress: "0x1234562",
+    beeName: "Worker Bee",
+    beeURL: "/NFTs/WorkerBee.png",
+    beeType: BeeType.Worker,
+    level: 1,
+    energyValue: 50,
+    healthValue: 100,
+    productivityValue: 70,
+    attackValue: 30,
+    defenceValue: 40,
+    forageValue: 60,
+    status: "idle",
+    location: "hive",
+    environment: "earth",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0x4563456",
+    beeName: "Queen Bee",
+    beeURL: "/NFTs/Queens/earth-queen.png",
+    beeType: BeeType.Queen,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "earth",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0x789928",
+    beeName: "Queen Bee",
+    beeURL: "/NFTs/Queens/ice-queen.png",
+    beeType: BeeType.Queen,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "ice",
+  },
+  {
+    ownerAddress: "user",
+    nftAddress: "0xabc42",
+    beeName: "Queen Bee",
+    beeURL: "/NFTs/Queens/fire-queen.png",
+    beeType: BeeType.Queen,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "fire",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0xa12ef3",
+    beeName: "Worker Bee",
+    beeURL: "/NFTs/WorkerBee.png",
+    beeType: BeeType.Worker,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "fire",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0xdef135g",
+    beeName: "Worker Bee",
+    beeURL: "/NFTs/WorkerBee.png",
+    beeType: BeeType.Worker,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "fire",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0xdef12345",
+    beeName: "Worker Bee",
+    beeURL: "/NFTs/WorkerBee.png",
+    beeType: BeeType.Worker,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "fire",
+  },
+  {
+    ownerAddress: "other",
+    nftAddress: "0xdefg1",
+    beeName: "Worker Bee",
+    beeURL: "/NFTs/WorkerBee.png",
+    beeType: BeeType.Worker,
+    level: 5,
+    energyValue: 80,
+    healthValue: 150,
+    productivityValue: 200,
+    attackValue: 100,
+    defenceValue: 120,
+    forageValue: 90,
+    status: "active",
+    location: "hive",
+    environment: "fire",
+  },
 ];
 
 function BeeGrid() {
   const [selectedTab, setSelectedTab] = useState<string>("all");
+  const [selectedBeeAddress, setSelectedBeeAddress] = useState<string | null>(
+    null
+  ); // Unified state for selected bee's nftAddress
 
-  const is1440pxOrLower = useMediaQuery("(max-width:1440px)");
+  // Get the theme and use the theme's breakpoints
+  const theme = useTheme();
+  const is1440pxOrLower = useMediaQuery(theme.breakpoints.down("lg")); // Correct usage
 
   const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
@@ -66,30 +181,38 @@ function BeeGrid() {
     window.open("/mint", "_blank");
   };
 
-  const filteredWorkerImages =
-    selectedTab === "all"
-      ? allBeeImages
-      : allBeeImages.filter((image) => image.owner === "user");
+  const filteredWorkerBees = allBees.filter(
+    (bee) =>
+      bee.beeType === BeeType.Worker &&
+      (selectedTab === "all" || bee.ownerAddress === "user")
+  );
 
-  const filteredQueenImages =
-    selectedTab === "all"
-      ? queenBeeImages
-      : queenBeeImages.filter((image) => image.owner === "user");
+  const filteredQueenBees = allBees.filter(
+    (bee) =>
+      bee.beeType === BeeType.Queen &&
+      (selectedTab === "all" || bee.ownerAddress === "user")
+  );
 
-  const hasQueenBees = filteredQueenImages.length > 0;
-  const hasWorkerBees = filteredWorkerImages.length > 0;
+  const hasQueenBees = filteredQueenBees.length > 0;
+  const hasWorkerBees = filteredWorkerBees.length > 0;
 
   return (
     <Box
       sx={{
         backgroundColor: "rgba(0, 0, 0, 0.5)",
-        borderRadius: "4px",
+        borderRadius: "2px",
         padding: "20px",
-        height: "80vh", // Height relative to the viewport
+        height: "83vh", // Height relative to the viewport
         overflowY: "auto", // Enables vertical scrolling for the entire container
         boxSizing: "border-box", // Include padding in the width calculation
         margin: "0 auto", // Center the BeeGrid
-        maxWidth: "1200px", // Add a maximum width to contain the content within a reasonable space
+        maxWidth: "100%",
+        display: "flex", // Centering components on larger screens
+        flexDirection: "column",
+        alignItems: "center", // Centers all components horizontally
+        [theme.breakpoints.up("lg")]: {
+          maxWidth: "90%", // Constrain width on large screens
+        },
         "&::-webkit-scrollbar": {
           width: "10px",
         },
@@ -98,12 +221,8 @@ function BeeGrid() {
           borderRadius: "4px",
         },
         "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "#E9B743", // 915E28
+          backgroundColor: "#E9B743",
           borderRadius: "4px",
-          border: "0.5px solid #E9B743", // Optional: To add space around the thumb
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          backgroundColor: "#915E28", // Color change on hover
         },
       }}
     >
@@ -114,7 +233,13 @@ function BeeGrid() {
         centered
         sx={{
           mb: 3,
-          borderRadius: "8px",
+          borderRadius: "2px",
+          width: "100%", // Make sure the tabs stretch across
+          maxWidth: {
+            xs: "100%", // Full width for small screens
+            md: "60%", // Constrain width for larger screens
+            lg: "60%", // Constrain further for large screens
+          },
         }}
       >
         {beeCategories.map((category) => (
@@ -125,7 +250,7 @@ function BeeGrid() {
             sx={{
               color: "#E9B743",
               "&.Mui-selected": { color: "#915E28", fontWeight: "bold" },
-              fontSize: "1.25rem", // Adjust the font size
+              fontSize: "1.25rem",
             }}
           />
         ))}
@@ -133,7 +258,7 @@ function BeeGrid() {
 
       {/* Queen Bees Section */}
       {hasQueenBees && (
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
           <Typography
             variant="h4"
             sx={{
@@ -141,8 +266,8 @@ function BeeGrid() {
               fontSize: 36,
               color: "#D4AF37",
               mb: 2,
-              ml: 3,
               textAlign: "left",
+              ml: { xs: 1, sm: 3 },
             }}
           >
             Queen Bees
@@ -150,41 +275,48 @@ function BeeGrid() {
 
           <Box
             sx={{
-              display: "flex", // Use flexbox to align items
-              justifyContent: "center", // Center the Bee Containers horizontally
-              mb: 4,
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "repeat(1, 1fr)", // 1 item per row on extra small screens
+                sm: "repeat(1, 1fr)", // 1 item per row on small screens
+                md: "repeat(2, 1fr)", // 2 items per row on medium screens
+                lg: "repeat(3, 1fr)", // 3 items per row on large screens
+                xl: "repeat(3, 1fr)", // 3 items per row on extra large screens
+              },
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "2em 2em",
+              padding: "0em 2em",
+              borderRadius: "4px",
+              boxSizing: "border-box",
             }}
           >
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "2em", // Small gap between the Bee Containers
-                width: "60%", // Ensure the inner Box takes up the full width of the parent Box
-                maxWidth: "900px", // Control the maximum width to avoid stretching
-                justifyContent: "center", // Ensure the items are centered within the grid
-              }}
-            >
-              {filteredQueenImages.map((image, index) => (
-                <BeeContainer key={index} imageUrl={image.url} />
-              ))}
-            </Box>
+            {filteredQueenBees.map((bee) => (
+              <BeeCard
+                key={bee.nftAddress}
+                beeInfo={bee}
+                isSelected={selectedBeeAddress === bee.nftAddress}
+                onSelect={() => setSelectedBeeAddress(bee.nftAddress)}
+                cardSize={is1440pxOrLower ? "large" : "extraLarge"}
+              />
+            ))}
           </Box>
         </Box>
       )}
 
       {/* Worker Bees Section */}
       {hasWorkerBees && (
-        <Box>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
           <Typography
             variant="h4"
             sx={{
               fontWeight: "bold",
               fontSize: 36,
               color: "#D4AF37",
+              mt: 4,
               mb: 2,
-              ml: 3,
               textAlign: "left",
+              ml: { xs: 1, sm: 3 },
             }}
           >
             Worker Bees
@@ -193,16 +325,29 @@ function BeeGrid() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: `repeat(${is1440pxOrLower ? 3 : 4}, 1fr)`,
-              gridAutoRows: "minmax(100px, auto)", // Adjust this value to control the height of each row
+              gridTemplateColumns: {
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(3, 1fr)",
+                xl: "repeat(4, 1fr)",
+              },
+              justifyContent: "center",
+              alignItems: "center",
               gap: "2em 3em",
-              padding: "2em",
+              padding: "0em 2em",
               borderRadius: "4px",
-              boxSizing: "border-box", // Include padding in the width calculation
+              boxSizing: "border-box",
             }}
           >
-            {filteredWorkerImages.map((image, index) => (
-              <BeeContainer key={index} imageUrl={image.url} />
+            {filteredWorkerBees.map((bee) => (
+              <BeeCard
+                key={bee.nftAddress}
+                beeInfo={bee}
+                isSelected={selectedBeeAddress === bee.nftAddress}
+                onSelect={() => setSelectedBeeAddress(bee.nftAddress)}
+                cardSize={is1440pxOrLower ? "large" : "extraLarge"}
+              />
             ))}
           </Box>
         </Box>
@@ -216,7 +361,7 @@ function BeeGrid() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            height: "80%", // Ensures the content takes up the full height of the parent container
+            height: "80%",
             textAlign: "center",
           }}
         >
@@ -226,8 +371,8 @@ function BeeGrid() {
               color: "#D4AF37",
               mb: 4,
               fontSize: 38,
-              maxWidth: "60%", // Constrains the width of the text to 50% of the parent container
-              width: "100%", // Ensures the text takes up the full available width within the constraint
+              maxWidth: "100%",
+              width: "100%",
             }}
           >
             You don't own any bees. Please mint or buy a bee from a secondary

@@ -1,11 +1,34 @@
-import React, { useState } from "react";
-import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 
 const RightButton: React.FC = () => {
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
+
+  // Preload the images
+  useEffect(() => {
+    const images = [
+      "/Frames/Buttons/CarouselNavigation/RightButton.svg",
+      "/Frames/Buttons/CarouselNavigation/RightButtonHover.svg",
+      "/Frames/Buttons/CarouselNavigation/RightButtonPressed.svg",
+    ];
+
+    const preloadImages = images.map((src) => {
+      return new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve();
+        img.onerror = () => reject();
+      });
+    });
+
+    Promise.all(preloadImages)
+      .then(() => setIsLoading(false))
+      .catch((err) => console.log("Error loading images:", err));
+  }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -40,6 +63,31 @@ const RightButton: React.FC = () => {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          width: "100px",
+          height: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {/* Skeleton loader with '>' shape */}
+        <Skeleton
+          variant="rectangular"
+          width="50px"
+          height="100px"
+          sx={{
+            clipPath: "polygon(0 0, 50% 50%, 0 100%)", // Create the '>' shape
+            backgroundColor: "#cccccc", // Optional: Customize skeleton color
+          }}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box

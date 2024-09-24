@@ -2,14 +2,19 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
 import { useSound } from "@/context/SoundContext";
+import { Skeleton } from "@mui/material";
 
 interface HiveMapButtonProps {}
-//TODO: Add an input to set HiveEnvironment [Forest, Desert, Mountain, Swamp etc.]
-// Then based on the environment type, update the code so that we can navigate to the approriate page.
-// for example, if the HiveEnvironment is set to "Desert", then set navigation to /Desert map + update the SVG components to reflect the correct files
+
+// TODO: Add an input to set HiveEnvironment [Forest, Desert, Mountain, Swamp etc.]
+// Then based on the environment type, update the code so that we can navigate to the appropriate page.
+// For example, if the HiveEnvironment is set to "Desert", then set navigation to /Desert map + update the SVG components to reflect the correct files.
 const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [isMainMapLoaded, setIsMainMapLoaded] = useState(false);
+  const [isHoverMapLoaded, setIsHoverMapLoaded] = useState(false);
+  const [isPressedMapLoaded, setIsPressedMapLoaded] = useState(false);
   const router = useRouter();
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
@@ -20,10 +25,25 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
   useEffect(() => {
     setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
     setPressedSound(new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3"));
+
+    // Preload each image and track when each one is fully loaded
+    const mainMapImg = new Image();
+    const hoverMapImg = new Image();
+    const pressedMapImg = new Image();
+
+    mainMapImg.src = "/MapNavigation/Forest/ForestMapMarker.svg";
+    hoverMapImg.src = "/MapNavigation/Forest/ForestMapMarkerHovered.svg";
+    pressedMapImg.src = "/MapNavigation/Forest/ForestMapMarkerPressed.svg";
+
+    mainMapImg.onload = () => setIsMainMapLoaded(true);
+    hoverMapImg.onload = () => setIsHoverMapLoaded(true);
+    pressedMapImg.onload = () => setIsPressedMapLoaded(true);
   }, []);
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    if (!isHovered && isHoverMapLoaded) {
+      setIsHovered(true);
+    }
     if (!isMuted && hoverSound) {
       hoverSound.currentTime = 0;
       hoverSound.play();
@@ -36,7 +56,9 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
   };
 
   const handleMouseDown = () => {
-    setIsPressed(true);
+    if (isPressedMapLoaded) {
+      setIsPressed(true);
+    }
     if (!isMuted && pressedSound) {
       pressedSound.currentTime = 0;
       pressedSound.play();
@@ -65,21 +87,43 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
           lg: "100px", // height for large screens
           xl: "150px", // height for extra-large screens
         },
-        backgroundImage: isPressed
-          ? `url('/MapNavigation/Forest/ForestMapMarkerPressed.svg')`
-          : isHovered
-          ? `url('/MapNavigation/Forest/ForestMapMarkerHovered.svg')`
-          : `url('/MapNavigation/Forest/ForestMapMarker.svg')`,
+        cursor: "pointer",
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        cursor: "pointer",
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-    ></Box>
+    >
+      {isMainMapLoaded ? (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            backgroundImage: isPressed
+              ? `url('/MapNavigation/Forest/ForestMapMarkerPressed.svg')`
+              : isHovered
+              ? `url('/MapNavigation/Forest/ForestMapMarkerHovered.svg')`
+              : `url('/MapNavigation/Forest/ForestMapMarker.svg')`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            cursor: "pointer",
+          }}
+        ></Box>
+      ) : (
+        <Skeleton
+          variant="circular"
+          width="100%"
+          height="100%"
+          sx={{
+            backgroundColor: "#242E4E",
+          }}
+        />
+      )}
+    </Box>
   );
 };
 

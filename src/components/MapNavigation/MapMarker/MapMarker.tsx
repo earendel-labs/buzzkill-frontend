@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { keyframes } from "@mui/system";
 import { useSound } from "@/context/SoundContext";
+import HexagonLoader from "@/components/Loaders/HexagonLoader";
 
 interface MapMarkerProps {
   left: string;
   top: string;
-  link: string; // Added link prop
-  navigate: (link: string) => void; // Function to handle navigation
-  onMouseEnter: () => void; // Function to handle mouse enter
-  onMouseLeave: () => void; // Function to handle mouse leave
+  link: string;
+  navigate: (link: string) => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
 const bounce = keyframes`
@@ -32,6 +33,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false); // State to track if images are loaded
   const [animationDelay, setAnimationDelay] = useState<string>("0s");
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
@@ -39,17 +41,35 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   );
 
   useEffect(() => {
-    // Set a random delay between 0 and 0.2 seconds
     const delay = Math.random() * 0.2;
     setAnimationDelay(`${delay}s`);
     setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
     setPressedSound(new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3"));
+
+    // Preload images
+    const images = [
+      "/MapNavigation/MapMarker/MapMarker.svg",
+      "/MapNavigation/MapMarker/MapMarkerHover.svg",
+      "/MapNavigation/MapMarker/MapMarkerPressed.svg",
+    ];
+
+    let loadedImages = 0;
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedImages++;
+        if (loadedImages === images.length) {
+          setIsLoaded(true); // All images are loaded
+        }
+      };
+    });
   }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
     if (!isMuted && hoverSound) {
-      hoverSound.currentTime = 0; // Reset audio to the start
+      hoverSound.currentTime = 0;
       hoverSound.play();
     }
     onMouseEnter();
@@ -57,7 +77,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setIsPressed(false); // Ensure the pressed state is reset when the mouse leaves
+    setIsPressed(false);
     onMouseLeave();
   };
 
@@ -68,10 +88,10 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   const handleMouseUp = () => {
     setIsPressed(false);
     if (!isMuted && pressedSound) {
-      pressedSound.currentTime = 0; // Reset audio to the start
+      pressedSound.currentTime = 0;
       pressedSound.play();
     }
-    navigate(link); // Navigate to the link when the mouse is released
+    navigate(link);
   };
 
   const getImageSrc = () => {
@@ -102,19 +122,23 @@ const MapMarker: React.FC<MapMarkerProps> = ({
         transform: isHovered ? "scale(1.1)" : "scale(1)",
         transition: "transform 0.2s ease-in-out",
         animation: isHovered ? "none" : `${bounce} 4s infinite`,
-        animationDelay: isHovered ? "0s" : animationDelay, // Apply the random delay
+        animationDelay: isHovered ? "0s" : animationDelay,
       }}
     >
-      <Box
-        component="img"
-        src={getImageSrc()}
-        alt="Map Marker"
-        sx={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-        }}
-      />
+      {isLoaded ? (
+        <Box
+          component="img"
+          src={getImageSrc()}
+          alt="Map Marker"
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+        />
+      ) : (
+        <HexagonLoader size="70px" backgroundColor="#242E4E" rotate="30deg" />
+      )}
     </Box>
   );
 };

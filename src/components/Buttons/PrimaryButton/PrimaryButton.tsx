@@ -1,19 +1,26 @@
+import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { useSound } from "@/context/SoundContext";
+import { Skeleton } from "@mui/material";
 
-interface PrimaryButton {
+// Dynamic import of the PrimaryButton to avoid SSR
+const PrimaryButton = dynamic(() => import("./PrimaryButton"), { ssr: false });
+
+interface PrimaryButtonProps {
   text: string;
   isActiveTab?: boolean;
   onClick: () => void;
+  scale?: number; // New scale prop to adjust size dynamically
 }
 
-const PrimaryButton: React.FC<PrimaryButton> = ({
+const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   text,
   isActiveTab = false,
   onClick,
+  scale = 1, // Default scale is 1 (no scaling)
 }) => {
   const theme = useTheme();
   const { isMuted } = useSound();
@@ -21,8 +28,33 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
   const [isPressed, setIsPressed] = useState(false);
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // New state for loading
 
   useEffect(() => {
+    const preloadImages = () => {
+      const images = [
+        "/Frames/Buttons/PrimaryButton/PrimaryButton.svg",
+        "/Frames/Buttons/PrimaryButton/PrimaryButtonHover.svg",
+        "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg",
+      ];
+
+      const promises = images.map((src) => {
+        return new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => resolve();
+          img.onerror = reject;
+        });
+      });
+
+      Promise.all(promises)
+        .then(() => {
+          setIsLoading(false); // Images are preloaded, loading done
+        })
+        .catch((error) => console.error("Error loading images", error));
+    };
+
+    preloadImages();
     setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
     setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
   }, []);
@@ -45,24 +77,35 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
       clickSound.play();
     }
     setIsPressed(true);
-    onClick();
   };
 
   const handleMouseUp = () => {
     setIsPressed(false);
+    onClick();
   };
 
   const getImageSrc = () => {
-    if (isActiveTab) {
+    if (isPressed) {
       return "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg";
     }
-    if (isPressed) {
-      return "/Frames/Buttons/PrimaryButton/PrimaryButton.svg";
+    if (isActiveTab) {
+      return "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg";
     }
     return isHovered
       ? "/Frames/Buttons/PrimaryButton/PrimaryButtonHover.svg"
       : "/Frames/Buttons/PrimaryButton/PrimaryButton.svg";
   };
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        variant="rectangular"
+        width={scale * 150} // Adjust size according to scale
+        height={scale * 50}
+        sx={{ borderRadius: "8px" }}
+      />
+    );
+  }
 
   return (
     <Box
@@ -73,18 +116,16 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
       sx={{
         display: "inline-flex",
         backgroundImage: `url(${getImageSrc()})`,
-        width: "6.5625rem", // 105px / 16px
-        height: "2.1875rem", // 35px / 16px
-        padding: "0.3125rem 1.875rem", // 5px / 16px for padding and 30px / 16px for sides
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         cursor: "pointer",
         justifyContent: "center",
         alignItems: "center",
-
         color: "white",
         fontWeight: "bold",
+        width: `${scale * 105}px`, // Adjust for your custom scaling
+        height: `${scale * 35}px`,
       }}
     >
       <Typography
@@ -93,7 +134,7 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
         sx={{
           whiteSpace: "nowrap",
           fontWeight: "1000",
-          fontSize: "1rem !important", // 18px / 16px
+          fontSize: `${scale * 1}rem`,
         }}
       >
         {text}
@@ -102,4 +143,4 @@ const PrimaryButton: React.FC<PrimaryButton> = ({
   );
 };
 
-export default PrimaryButton;
+export default PrimaryButtonComponent;

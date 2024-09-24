@@ -40,6 +40,8 @@ const SvgBeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
   // Modal State Management
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [scale, setScale] = useState(1); // Default scale is 1 (no scaling)
+
   const maxLengthEnergyBar = 140.56; // the maximum length of the energyBar
   const [newEnergyBarValue, setNewEnergyBarValue] = useState(
     (energyBarLength / 100) * maxLengthEnergyBar
@@ -120,6 +122,32 @@ const SvgBeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      // Check screen width and height
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // If the screen resolution is below 1440x900, scale to 0.8, otherwise 1
+      if (width < 1440 || height < 900) {
+        setScale(0.85);
+      } else {
+        setScale(1.2);
+      }
+    };
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Initial check when component mounts
+    handleResize();
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <svg
@@ -131,7 +159,7 @@ const SvgBeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleClick}
         onMouseUp={handleMouseUp}
-        style={{ position: "relative" }}
+        style={{ position: "relative", transform: `scale(${scale})` }}
       >
         <defs>
           {/* Current Bee Definition */}

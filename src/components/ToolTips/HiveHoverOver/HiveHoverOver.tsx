@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Skeleton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import LargeToolTip from "../Large/LargeToolTip";
 
@@ -17,65 +17,84 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
   workerBees,
 }) => {
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading for demonstration
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); // Simulates a 1.5s loading time
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <LargeToolTip>
-      <Box
-        sx={{
-          width: "200px",
-          gap: "4px",
-          height: "auto",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h6"
+      {isLoading ? (
+        <Skeleton
+          variant="rectangular"
+          width={200}
+          height={120}
+          sx={{   backgroundColor: "#242E4E", borderRadius: "4px" }} // Matches your design style
+        />
+      ) : (
+        <Box
           sx={{
-            fontWeight: "700",
-            fontSize: "22px",
-            lineHeight: "100%",
+            width: "200px",
+            gap: "4px",
+            height: "auto",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
-            color: "#FFFFFF",
-            marginBottom: "5px",
           }}
         >
-          {hiveName}
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography variant="ToolTipLabel">Hive Defence</Typography>
-          <Typography variant="ToolTipValue">{hiveDefence}</Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "700",
+              fontSize: "22px",
+              lineHeight: "100%",
+              display: "flex",
+              alignItems: "center",
+              textAlign: "center",
+              color: "#FFFFFF",
+              marginBottom: "5px",
+            }}
+          >
+            {hiveName}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography variant="ToolTipLabel">Hive Defence</Typography>
+            <Typography variant="ToolTipValue">{hiveDefence}</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography variant="ToolTipLabel">Queen Bees</Typography>
+            <Typography variant="ToolTipValue">{queenBees}</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography variant="ToolTipLabel">Worker Bees</Typography>
+            <Typography variant="ToolTipValue">{workerBees}</Typography>
+          </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography variant="ToolTipLabel">Queen Bees</Typography>
-          <Typography variant="ToolTipValue">{queenBees}</Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography variant="ToolTipLabel">Worker Bees</Typography>
-          <Typography variant="ToolTipValue">{workerBees}</Typography>
-        </Box>
-      </Box>
+      )}
     </LargeToolTip>
   );
 };

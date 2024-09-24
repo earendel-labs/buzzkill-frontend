@@ -3,39 +3,40 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
+import { HiveInfo } from "@/types/HiveInfo";
 
 interface HiveStatsPanelProps {
-  hiveDefense: number;
-  queenBees: string;
-  workerBees: string;
+  hiveInfo: HiveInfo;
   onStake: () => void;
   onRaid: () => void;
 }
 
 const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
-  hiveDefense,
-  queenBees,
-  workerBees,
+  hiveInfo,
   onStake,
   onRaid,
 }) => {
+  // Constants for maximum values
+  const maxQueenBees = 3;
+  const maxWorkerBees = 55;
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "1.25rem", // Use rem for padding
-        borderRadius: "10px",
-        width: "100%", // Set width to 100% and adjust in media queries
-        maxWidth: "350px", // Add a max-width to constrain the size
-        "@media (max-width: 768px)": {
-          padding: "1rem", // Adjust padding on smaller screens
-          maxWidth: "300px",
+        padding: {
+          xs: "0.5rem", // Extra small devices
+          sm: "1rem", // Small devices
         },
-        "@media (max-width: 480px)": {
-          padding: "0.75rem",
-          maxWidth: "100%", // Allow the panel to take full width on small screens
+        width: "100%",
+        maxWidth: {
+          xs: "100%",
+          sm: "18.75rem",
+          md: "20rem",
+          lg: "25rem",
+          xl: "30rem",
         },
       }}
     >
@@ -44,29 +45,41 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
         variant="h4"
         sx={{
           fontWeight: "bold",
-          fontSize: "2rem", // Use rem for font size
+          fontSize: {
+            xs: "1.25rem", // 1.25rem on small screens
+            sm: "1.5rem", // 1.5rem on small devices
+            md: "1.75rem", // 1.75rem on medium devices
+            lg: "2rem",
+            xl: "3rem",
+          },
           color: "#D4AF37",
-          marginBottom: "1rem",
-          textAlign: "center", // Center the text on smaller screens
-          "@media (max-width: 768px)": {
-            fontSize: "1.75rem", // Adjust font size on smaller screens
-          },
-          "@media (max-width: 480px)": {
-            fontSize: "1.5rem",
-          },
+          marginBottom: "0.75rem",
+          textAlign: "center",
         }}
       >
         Hive Stats
       </Typography>
 
       {/* Top Decorator */}
-      <Box sx={{ marginBottom: "1rem" }}>
+      <Box
+        sx={{
+          width: "100%", // Ensures the container takes full width
+          maxWidth: {
+            xs: "100%", // Full width on extra small screens
+            sm: "18.75rem", // 300px -> 18.75rem on small screens
+            md: "20rem", // 320px -> 20rem on medium screens and above
+            lg: "25rem", // 400px -> 25rem on large screens
+            xl: "30rem", // 560px -> 35rem on extra-large screens
+          },
+          marginBottom: "0.75rem",
+        }}
+      >
         <Image
           src="/Frames/Decorators/HiveStatsTop.svg"
           alt="Hive Stats Top Decorator"
-          width={300}
-          height={46}
-          style={{ maxWidth: "100%", height: "auto" }} // Make the image responsive
+          width={300} // Use a static width for the Next.js Image optimization
+          height={46} // Static height for the image
+          style={{ width: "100%", height: "auto" }} // Scale the image responsively
         />
       </Box>
 
@@ -76,18 +89,43 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          marginTop: "1rem",
-          "@media (max-width: 480px)": {
-            flexDirection: "column", // Stack on small screens
-            alignItems: "center",
+          marginTop: "0.5rem",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
           },
+          alignItems: { xs: "center", sm: "unset" },
         }}
       >
-        <Typography variant="h6" sx={{ color: "#D4AF37" }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "#D4AF37",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
           Hive Defense
         </Typography>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          {hiveDefense}
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
+          {hiveInfo.defenceValue}
         </Typography>
       </Box>
 
@@ -97,18 +135,43 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          marginTop: "1rem",
-          "@media (max-width: 480px)": {
-            flexDirection: "column",
-            alignItems: "center",
+          marginTop: "0.5rem",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
           },
+          alignItems: { xs: "center", sm: "unset" },
         }}
       >
-        <Typography variant="h6" sx={{ color: "#D4AF37" }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "#D4AF37",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
           Queen Bees
         </Typography>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          {queenBees}
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
+          {`${hiveInfo.queenBees}/${maxQueenBees}`}
         </Typography>
       </Box>
 
@@ -118,29 +181,71 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          marginTop: "1rem",
-          "@media (max-width: 480px)": {
-            flexDirection: "column",
-            alignItems: "center",
+          marginTop: "0.5rem",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
           },
+          alignItems: { xs: "center", sm: "unset" },
         }}
       >
-        <Typography variant="h6" sx={{ color: "#D4AF37" }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "#D4AF37",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
           Worker Bees
         </Typography>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          {workerBees}
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
+          {`${hiveInfo.workerBees}/${maxWorkerBees}`}
         </Typography>
       </Box>
 
-      {/* Bottom Decorator */}
-      <Box sx={{ marginTop: "1rem" }}>
+      <Box
+        sx={{
+          width: "100%", // Ensures the container takes full width
+          maxWidth: {
+            xs: "100%", // Full width on extra small screens
+            sm: "18.75rem", // 300px -> 18.75rem on small screens
+            md: "20rem", // 320px -> 20rem on medium screens and above
+            lg: "25rem", // 400px -> 25rem on large screens
+            xl: "30rem", // 560px -> 35rem on extra-large screens
+          },
+          marginTop: {
+            xs: "0.75rem",
+            sm: "0.875rem",
+            md: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
+          },
+        }}
+      >
         <Image
           src="/Frames/Decorators/HiveStatsBottom.svg"
           alt="Hive Stats Bottom Decorator"
-          width={350}
-          height={46}
-          style={{ maxWidth: "100%", height: "auto" }} // Make the image responsive
+          width={300} // Use a static width for the Next.js Image optimization
+          height={30} // Static height for the image
+          style={{ width: "100%", height: "auto" }} // Scale the image responsively
         />
       </Box>
 
@@ -148,13 +253,23 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
       <Box
         sx={{
           display: "flex",
-          gap: "1.25rem", // Adjust gap between buttons
-          marginTop: "1.5rem",
-          "@media (max-width: 480px)": {
-            flexDirection: "column", // Stack buttons on small screens
-            width: "100%", // Make buttons full width
-            gap: "1rem",
+          gap: "1.25rem",
+          marginTop: {
+            xs: "0.75rem",
+            sm: "0.875rem",
+            md: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
           },
+          marginBottom: {
+            xs: "0.5rem",
+            xl: "2rem",
+          },
+          flexDirection: {
+            xs: "column", // Stack buttons vertically on small screens
+            sm: "row", // Row layout on small screens and above
+          },
+          width: { xs: "100%", sm: "auto" }, // Full width on small screens
         }}
       >
         <PrimaryButton text="Stake" onClick={onStake} />

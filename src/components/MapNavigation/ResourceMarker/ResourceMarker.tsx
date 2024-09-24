@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { keyframes } from "@mui/system";
 import { useSound } from "@/context/SoundContext";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import HexagonLoader from "@/components/Loaders/HexagonLoader"; // Import the HexagonLoader
 
 interface ResourceMarkerProps {
   left: string;
@@ -31,6 +32,7 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false); // State to track if images are loaded
   const [animationDelay, setAnimationDelay] = useState<string>("0s");
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
@@ -42,6 +44,25 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
     setAnimationDelay(`${delay}s`);
     setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
     setPressedSound(new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3"));
+
+    // Preload images
+    const images = [
+      "/MapNavigation/ResourceMarker/Marker/ResourceMarker.svg",
+      "/MapNavigation/ResourceMarker/Marker/ResourceMarkerHover.svg",
+      "/MapNavigation/ResourceMarker/Marker/ResourceMarkerPressed.svg",
+    ];
+
+    let loadedImages = 0;
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedImages++;
+        if (loadedImages === images.length) {
+          setIsLoaded(true); // All images are loaded
+        }
+      };
+    });
   }, []);
 
   const handleMouseEnter = () => {
@@ -102,16 +123,20 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
           animationDelay: isHovered || isPressed ? "0s" : animationDelay,
         }}
       >
-        <Box
-          component="img"
-          src={getImageSrc()}
-          alt="Resource Marker"
-          sx={{
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-          }}
-        />
+        {isLoaded ? (
+          <Box
+            component="img"
+            src={getImageSrc()}
+            alt="Resource Marker"
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        ) : (
+          <HexagonLoader size="50px" backgroundColor="#242E4E" rotate="30deg" />
+        )}
       </Box>
     </ClickAwayListener>
   );

@@ -1,11 +1,15 @@
-// components/BottomBar.js
-
 import React from "react";
 import { Box } from "@mui/material";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import BeeStatsPanel from "@/components/ControlPanels/BeeStatsPanel/BeeStatsPanel";
 
-const BottomBar = () => {
+type BottomBarProps = {
+  isAudioPanelVisible?: boolean;
+};
+
+const BottomBar: React.FC<BottomBarProps> = ({
+  isAudioPanelVisible = true,
+}) => {
   return (
     <Box
       sx={{
@@ -13,21 +17,25 @@ const BottomBar = () => {
         bottom: 0,
         left: 0,
         width: "100%",
-        // backgroundColor: "rgba(46, 59, 85, 0.1)",
-        // boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
-        display: "flex",
-        alignItems: "center",
         height: "auto",
-        padding: "10px 0",
+        display: "flex",
+        justifyContent: "space-between",
+        zIndex: 1,
       }}
     >
+      {/* Bee Stats Panel - Make sure this is above all content */}
       <Box
         sx={{
-          position: "absolute",
-          height: "220px",
-          width: "300px",
-          left: "10px",
-          marginLeft: "10px",
+          position: "fixed", // Use fixed to keep it above other content
+          bottom: {
+            xs: "0.4rem",
+            xl: "3rem",
+          }, // 10px -> 0.625rem
+          left: {
+            xs: "0rem",
+            xl: "5rem",
+          }, // 10px -> 0.625rem
+          zIndex: 100, // Very high z-index to keep it on top
         }}
       >
         <BeeStatsPanel
@@ -45,27 +53,19 @@ const BottomBar = () => {
         />
       </Box>
 
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      {/* Audio Panel - Conditionally render based on the isAudioPanelVisible prop */}
+      {isAudioPanelVisible && (
         <Box
           sx={{
-            display: "flex",
-            height: "220px",
-            width: "300px",
-            backgroundColor: "transparent",
-            // border: "2px solid red",
-            justifyContent: "center",
-            alignItems: "center",
+            position: "fixed", // Keep this above everything
+            bottom: "0.625rem", // 10px -> 0.625rem
+            right: "0.625rem", // 10px -> 0.625rem
+            zIndex: 100, // Same z-index to keep it above other components
           }}
         >
           <AudioPanel />
         </Box>
-      </Box>
+      )}
     </Box>
   );
 };
