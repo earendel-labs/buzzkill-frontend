@@ -142,7 +142,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
           sx={{
             position: "absolute",
             bottom:
-              beeInfo.ownerAddress === "user" && isSelected ? "0.5rem" : `calc(${spacingScale} *1rem)`,
+              beeInfo.ownerAddress === "user" && isSelected ? `calc(${spacingScale} *0.6rem)`: `calc(${spacingScale} *1rem)`,
             left: `calc(${spacingScale} *0.25rem)`,
             padding: "4px 10px",
             textAlign: "left",
@@ -168,7 +168,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
                   lineHeight: 1.2,
                   marginBottom:
                     beeInfo.ownerAddress === "user" && isSelected
-                      ? "0.3rem" // Use the default font size when it's the user's bee and selected
+                      ? "0.25rem" // Use the default font size when it's the user's bee and selected
                       : "0.6rem",
                 }}
               >

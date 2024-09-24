@@ -273,8 +273,8 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           width: { xs: "100%", sm: "auto" }, // Full width on small screens
         }}
       >
-        <PrimaryButton text="Stake" onClick={onStake} />
-        <PrimaryButton text="Raid" onClick={onRaid} />
+        <PrimaryButton text="Stake" onClick={onStake} scale={1.2} />
+        <PrimaryButton text="Raid" onClick={onRaid} scale={1.2} />
       </Box>
     </Box>
   );
