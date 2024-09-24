@@ -78,7 +78,7 @@ const UserResourceBar: React.FC = () => {
             src="/Icons/Resources/Pollen.svg"
             alt="Pollen"
             width={32}
-            height={32}
+            height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {userInfo ? (
@@ -110,7 +110,7 @@ const UserResourceBar: React.FC = () => {
             src="/Icons/Resources/Nectar.svg"
             alt="Nectar"
             width={32}
-            height={32}
+            height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {userInfo ? (
@@ -142,7 +142,7 @@ const UserResourceBar: React.FC = () => {
             src="/Icons/Resources/Sap.svg"
             alt="Sap"
             width={32}
-            height={32}
+            height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {userInfo ? (
@@ -174,7 +174,7 @@ const UserResourceBar: React.FC = () => {
             src="/Icons/Resources/HoneyToken.svg"
             alt="HoneyToken"
             width={32}
-            height={32}
+            height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {userInfo ? (

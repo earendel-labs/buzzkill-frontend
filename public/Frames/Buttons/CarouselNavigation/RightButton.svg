@@ -4,8 +4,8 @@
 <path d="M6 126.429L6 4.99998L37.8395 33.4284L74 65.7145L6 126.429Z" stroke="#E9B743" stroke-width="4" stroke-miterlimit="10" shape-rendering="crispEdges"/>
 </g>
 <defs>
-<filter id="filter0_d_822091_1672" x="0" y="0.533203" width="81.0029" height="138.362" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<filter id="filter0_d_822091_1672" x="0" y="0.533203" width="81.0029" height="138.362" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<feFlood floodOpacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="4"/>
 <feGaussianBlur stdDeviation="2"/>

@@ -167,7 +167,7 @@ function BeeGrid() {
 
   // Get the theme and use the theme's breakpoints
   const theme = useTheme();
-  const is1440pxOrLower = useMediaQuery(theme.breakpoints.down("lg")); // Correct usage
+  const is1440pxOrLower = useMediaQuery("(max-width: 1440px)"); // Explicit check for 1440px
 
   const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
@@ -276,19 +276,11 @@ function BeeGrid() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: {
-                xs: "repeat(1, 1fr)", // 1 item per row on extra small screens
-                sm: "repeat(1, 1fr)", // 1 item per row on small screens
-                md: "repeat(2, 1fr)", // 2 items per row on medium screens
-                lg: "repeat(3, 1fr)", // 3 items per row on large screens
-                xl: "repeat(3, 1fr)", // 3 items per row on extra large screens
-              },
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "2em 2em",
-              padding: "0em 2em",
-              borderRadius: "4px",
-              boxSizing: "border-box",
+              gridTemplateColumns: "repeat(3, 1fr)", // Force 3 columns across all screen sizes
+              justifyItems: "center", // Center the items within the columns
+              gap: "2em", // Space between items
+              padding: "0 2em", // Padding on the sides
+              width: "100%", // Full width to occupy the parent
             }}
           >
             {filteredQueenBees.map((bee) => (

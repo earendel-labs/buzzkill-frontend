@@ -6,20 +6,52 @@ import BeeCardBackground from "./BeeCardBackground";
 
 type CardSize = "small" | "medium" | "large" | "extraLarge";
 
-const cardSizeDimensions: Record<CardSize, { width: string; height: string }> =
+const cardSizeDimensions: Record<
+  CardSize,
   {
-    small: { width: "120px", height: "auto" },
-    medium: { width: "150px", height: "auto" },
-    large: { width: "200px", height: "auto" },
-    extraLarge: { width: "250px", height: "auto" },
-  };
+    width: string;
+    height: string;
+    fontSize: string;
+    buttonScale: number;
+    spacingScale: number;
+  }
+> = {
+  small: {
+    width: "120px",
+    height: "auto",
+    fontSize: "12px",
+    buttonScale: 0.6,
+    spacingScale: 1,
+  },
+  medium: {
+    width: "150px",
+    height: "auto",
+    fontSize: "14px",
+    buttonScale: 0.75,
+    spacingScale: 0.75,
+  },
+  large: {
+    width: "200px",
+    height: "auto",
+    fontSize: "16px",
+    buttonScale: 0.7,
+    spacingScale: 1,
+  },
+  extraLarge: {
+    width: "290px",
+    height: "auto",
+    fontSize: "26px",
+    buttonScale: 1,
+    spacingScale: 1.4,
+  },
+};
 
 interface BeeCardProps {
   beeInfo: BeeInfo;
   isSelected: boolean;
   onSelect: () => void;
   cardSize?: CardSize;
-  isLoading?: boolean; // Add loading prop
+  isLoading?: boolean;
 }
 
 const BeeCard: React.FC<BeeCardProps> = ({
@@ -27,7 +59,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
   isSelected,
   onSelect,
   cardSize = "medium",
-  isLoading = false, // Default loading to false
+  isLoading = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
@@ -43,7 +75,8 @@ const BeeCard: React.FC<BeeCardProps> = ({
   };
   const handleMouseUp = () => setIsPressed(false);
 
-  const { width, height } = cardSizeDimensions[cardSize];
+  const { width, height, fontSize, buttonScale, spacingScale } =
+    cardSizeDimensions[cardSize];
 
   return (
     <Box
@@ -53,55 +86,49 @@ const BeeCard: React.FC<BeeCardProps> = ({
       onMouseUp={handleMouseUp}
       sx={{
         position: "relative",
-        width, // Apply dynamic width
-        height, // Apply dynamic height
+        width,
+        height,
         cursor: "pointer",
         transition:
           "transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease",
         transform: isPressed
           ? "scale(0.99)"
-          : isHovered || isSelected // Increase size to 1.1 when hovered or selected
-          ? "scale(1.02)"
+          : isHovered || isSelected
+          ? "scale(1.05)"
           : "scale(1)",
         overflow: "hidden",
-
         display: "flex",
         flexDirection: "column",
         ...(isSelected
           ? {
-              // White glow when selected
-              boxShadow: "0 0 6px 5px rgba(255, 255, 255, 0.5)", // White glow with a large blur radius
-              backdropFilter: "blur(6px)", // Add a blur effect to the background
+              boxShadow: "0 0 6px 5px rgba(255, 255, 255, 0.5)", // White glow
+              backdropFilter: "blur(6px)",
             }
           : {
-              // Yellow glow when hovered and not selected
               boxShadow: isHovered ? "0px 2px 7px rgba(0,0,0,0.4)" : "none",
             }),
         "&:hover": {
           ...(isSelected
-            ? {
-                // No animation on hover when selected, keeping the white glow
-              }
+            ? {}
             : {
-                // Apply the yellow glow animation when hovering and not selected
                 animation: "glow 3s ease-in-out infinite", // Yellow glow animation
               }),
         },
         "@keyframes glow": {
           "0%": {
-            boxShadow: "0 0 1px 1px #FFD700", // Tighten the glow by reducing blur and spread
+            boxShadow: "0 0 1px 1px #FFD700",
           },
           "25%": {
-            boxShadow: "0 0 3px 2px #FFD700", // Slightly more glow, but keep it tight
+            boxShadow: "0 0 3px 2px #FFD700",
           },
           "50%": {
-            boxShadow: "0 0 2px 1.5px #FFD700", // Reduce both spread and blur for a subtle glow
+            boxShadow: "0 0 2px 1.5px #FFD700",
           },
           "75%": {
-            boxShadow: "0 0 4px 2.5px #FFD700", // Gradually increase but keep it tight
+            boxShadow: "0 0 4px 2.5px #FFD700",
           },
           "100%": {
-            boxShadow: "0 0 2px 1.5px #FFD700", // Return to a tighter glow
+            boxShadow: "0 0 2px 1.5px #FFD700",
           },
         },
       }}
@@ -110,105 +137,77 @@ const BeeCard: React.FC<BeeCardProps> = ({
         {/* Bee Image */}
         <BeeCardBackground bee={beeInfo} isLoading={isLoading} />
 
-        {/* Unstake Button */}
-        {beeInfo.ownerAddress === "user" && isSelected ? (
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: "0.5rem",
-              left: "0.25rem",
-              padding: "4px 10px",
-              textAlign: "left",
-              width: "100%",
-            }}
-          >
-            {isLoading ? (
-              <>
-                <Skeleton variant="text" width="60%" />
-                <Skeleton variant="text" width="40%" />
-              </>
-            ) : (
-              <>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "bold",
-                    lineHeight: 1.2,
-                    marginBottom: "0.3rem",
-                  }}
-                >
-                  {beeInfo.beeName}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#FFFFFF",
-                    lineHeight: 1.2,
-                  }}
-                >
-                  Owned by {beeInfo.ownerAddress === "user" ? "You" : "Other"}
-                </Typography>
-              </>
-            )}
+        {/* Text and Button Section    */}
+        <Box
+          sx={{
+            position: "absolute",
+            bottom:
+              beeInfo.ownerAddress === "user" && isSelected ? "0.5rem" : `calc(${spacingScale} *1rem)`,
+            left: `calc(${spacingScale} *0.25rem)`,
+            padding: "4px 10px",
+            textAlign: "left",
+            width: "100%",
+          }}
+        >
+          {isLoading ? (
+            <>
+              <Skeleton variant="text" width="60%" />
+              <Skeleton variant="text" width="40%" />
+            </>
+          ) : (
+            <>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  fontSize:
+                    beeInfo.ownerAddress === "user" && isSelected
+                      ? fontSize // Use the default font size when it's the user's bee and selected
+                      : `calc(${fontSize} + 4px)`,
+                  lineHeight: 1.2,
+                  marginBottom:
+                    beeInfo.ownerAddress === "user" && isSelected
+                      ? "0.3rem" // Use the default font size when it's the user's bee and selected
+                      : "0.6rem",
+                }}
+              >
+                {beeInfo.beeName}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "#FFFFFF",
+                  fontSize:
+                    beeInfo.ownerAddress === "user" && isSelected
+                      ? `calc(${fontSize} - 2px)` // Use the default font size when it's the user's bee and selected
+                      : fontSize,
+                  lineHeight: 1.2,
+                }}
+              >
+                Owned by {beeInfo.ownerAddress === "user" ? "You" : "Other"}
+              </Typography>
+            </>
+          )}
 
+          {/* Unstake Button */}
+          {beeInfo.ownerAddress === "user" && isSelected && !isLoading && (
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: "0.5rem",
+                marginTop: "0.3rem",
               }}
             >
               <PrimaryButton
                 text="Unstake"
                 onClick={() => alert("Unstaked")}
-                scale={0.8}
+                scale={buttonScale} // Dynamic scale for button based on card size
               />
             </Box>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: "1rem",
-              left: "0.25rem",
-              padding: "4px 10px",
-              textAlign: "left",
-              width: "100%",
-            }}
-          >
-            {isLoading ? (
-              <>
-                <Skeleton variant="text" width="60%" />
-                <Skeleton variant="text" width="40%" />
-              </>
-            ) : (
-              <>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "bold",
-                    lineHeight: 1.2,
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {beeInfo.beeName}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#FFFFFF",
-                    lineHeight: 1.2,
-                  }}
-                >
-                  Owned by {beeInfo.ownerAddress === "user" ? "You" : "Other"}
-                </Typography>
-              </>
-            )}
-          </Box>
-        )}
+          )}
+        </Box>
       </Box>
     </Box>
   );

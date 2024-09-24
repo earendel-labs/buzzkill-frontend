@@ -105,9 +105,9 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           width="288"
           height="465"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -158,9 +158,9 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           width="288"
           height="336"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -212,9 +212,9 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="468.479"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.142606" stop-color="#242E4E" />
-          <stop offset="0.499178" stop-color="#121727" />
-          <stop offset="0.926392" stop-color="#202946" />
+          <stop offset="0.142606" stopColor="#242E4E" />
+          <stop offset="0.499178" stopColor="#121727" />
+          <stop offset="0.926392" stopColor="#202946" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_822401_1657"
@@ -224,9 +224,9 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="2"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.272426" stop-color="#E9B743" />
-          <stop offset="0.694476" stop-color="#68341B" />
-          <stop offset="0.98" stop-color="#E9B743" />
+          <stop offset="0.272426" stopColor="#E9B743" />
+          <stop offset="0.694476" stopColor="#68341B" />
+          <stop offset="0.98" stopColor="#E9B743" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_822401_1657"
@@ -236,9 +236,9 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="2"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E9B743" />
-          <stop offset="0.485" stop-color="#68341B" />
-          <stop offset="0.98" stop-color="#E9B743" />
+          <stop stopColor="#E9B743" />
+          <stop offset="0.485" stopColor="#68341B" />
+          <stop offset="0.98" stopColor="#E9B743" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_822401_1657"
@@ -248,10 +248,10 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="325.961"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#936029" />
-          <stop offset="0.33" stop-color="#E9B743" />
-          <stop offset="0.7" stop-color="#68341B" />
-          <stop offset="1" stop-color="#E9B743" />
+          <stop stopColor="#936029" />
+          <stop offset="0.33" stopColor="#E9B743" />
+          <stop offset="0.7" stopColor="#68341B" />
+          <stop offset="1" stopColor="#E9B743" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_822401_1657"
@@ -261,10 +261,10 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="327.409"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#936029" />
-          <stop offset="0.33" stop-color="#E9B743" />
-          <stop offset="0.7" stop-color="#68341B" />
-          <stop offset="1" stop-color="#E9B743" />
+          <stop stopColor="#936029" />
+          <stop offset="0.33" stopColor="#E9B743" />
+          <stop offset="0.7" stopColor="#68341B" />
+          <stop offset="1" stopColor="#E9B743" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_822401_1657"
@@ -274,10 +274,10 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="3.00293"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#936029" />
-          <stop offset="0.33" stop-color="#E9B743" />
-          <stop offset="0.7" stop-color="#68341B" />
-          <stop offset="1" stop-color="#E9B743" />
+          <stop stopColor="#936029" />
+          <stop offset="0.33" stopColor="#E9B743" />
+          <stop offset="0.7" stopColor="#68341B" />
+          <stop offset="1" stopColor="#E9B743" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_822401_1657"
@@ -287,10 +287,10 @@ const BeeCardBackground: React.FC<BeeCardBackgroundProps> = ({
           y2="3.00293"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#936029" />
-          <stop offset="0.33" stop-color="#E9B743" />
-          <stop offset="0.7" stop-color="#68341B" />
-          <stop offset="1" stop-color="#E9B743" />
+          <stop stopColor="#936029" />
+          <stop offset="0.33" stopColor="#E9B743" />
+          <stop offset="0.7" stopColor="#68341B" />
+          <stop offset="1" stopColor="#E9B743" />
         </linearGradient>
       </defs>
     </svg>
