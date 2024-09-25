@@ -1,9 +1,9 @@
 import React from "react";
-import { Skeleton } from "@mui/material";
+import { Skeleton, Box } from "@mui/material";
 import { keyframes } from "@mui/system"; // Import keyframes
 
 interface HexagonLoaderProps {
-  size?: string; // Define size prop for flexibility (e.g., "70px")
+  size?: { [key: string]: string }; // Accept size for different breakpoints
   backgroundColor?: string; // Background color of the hexagon
   rotate?: string; // Rotation of the hexagon
 }
@@ -22,23 +22,33 @@ const pulse = keyframes`
 `;
 
 const HexagonLoader: React.FC<HexagonLoaderProps> = ({
-  size = "70px",
+  size = { xs: "40px", sm: "50px", md: "50px", lg: "60px", xl: "70px" },
   backgroundColor = "#242E4E", // Default dark color
   rotate = "45deg", // Rotation to match the orientation
 }) => {
   return (
-    <Skeleton
-      variant="rectangular"
-      width={size}
-      height={size}
+    <Box
       sx={{
-        clipPath:
-          "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)", // Hexagon shape
-        backgroundColor: backgroundColor,
-        transform: `rotate(${rotate})`, // Rotate the hexagon as needed
-        animation: `${pulse} 2s ease-in-out infinite`, // Apply keyframe animation
+        width: size,
+        height: size,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
-    />
+    >
+      <Skeleton
+        variant="rectangular"
+        sx={{
+          width: "100%",
+          height: "100%",
+          clipPath:
+            "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)", // Hexagon shape
+          backgroundColor: backgroundColor,
+          transform: `rotate(${rotate})`, // Rotate the hexagon as needed
+          animation: `${pulse} 2s ease-in-out infinite`, // Apply keyframe animation
+        }}
+      />
+    </Box>
   );
 };
 

@@ -105,10 +105,22 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
           <Box
             sx={{
               position: "absolute",
-              top: isHive ? "-165px" : "-125px", // Adjust this value as needed to move the tooltip higher
-              left: isHive ? "-115px" : "-100px", // Adjust this value as needed to move the tooltip left
-              zIndex: 1000, // High z-index to ensure tooltip appears on top
-              pointerEvents: "none", // Prevent the tooltip from interfering with hover events
+              top: {
+                xs: isHive ? "-168px" : "-128px",
+                sm: isHive ? "-168px" : "-128px",
+                md: isHive ? "-168px" : "-128px",
+                lg: isHive ? "-168px" : "-128px",
+                xl: isHive ? "-165px" : "-125px",
+              },
+              left: {
+                xs: isHive ? "-125px" : "-108px",
+                sm: isHive ? "-125px" : "-108px",
+                md: isHive ? "-120px" : "-105px",
+                lg: isHive ? "-120px" : "-105px",
+                xl: isHive ? "-115px" : "-100px",
+              },
+              zIndex: 1000,
+              pointerEvents: "none",
             }}
           >
             {isHive ? (
@@ -131,8 +143,20 @@ const CombinedResourceMarker: React.FC<CombinedResourceMarkerProps> = ({
           <Box
             sx={{
               position: "absolute",
-              top: isHive ? "-195px" : "-195px", // Adjust this value as needed to move the tooltip higher
-              left: isHive ? "-115px" : "-115px", // Adjust this value as needed to move the tooltip left
+              top: {
+                xs: isHive ? "-200px" : "-120px",
+                sm: isHive ? "-200px" : "-130px",
+                md: isHive ? "-195px" : "-198px",
+                lg: isHive ? "-195px" : "-198px",
+                xl: isHive ? "-195px" : "-195px",
+              },
+              left: {
+                xs: isHive ? "-125px" : "-125px",
+                sm: isHive ? "-125px" : "-125px",
+                md: isHive ? "-120px" : "-120px",
+                lg: isHive ? "-120px" : "-120px",
+                xl: isHive ? "-115px" : "-115px",
+              },
               zIndex: 1000,
             }}
           >

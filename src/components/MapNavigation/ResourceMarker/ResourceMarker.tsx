@@ -13,6 +13,7 @@ interface ResourceMarkerProps {
   onMouseLeave: () => void;
 }
 
+// Define bounce animation
 const bounce = keyframes`
   0%, 100% {
     transform: translateY(0);
@@ -38,6 +39,15 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
   const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
     null
   );
+
+  // Define common sizes for different breakpoints
+  const sizeByBreakpoint = {
+    xs: "30px",
+    sm: "30px",
+    md: "40px",
+    lg: "40px",
+    xl: "50px",
+  };
 
   useEffect(() => {
     const delay = Math.random() * 0.2;
@@ -111,8 +121,6 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
           position: "absolute",
           left: left,
           top: top,
-          width: "50px",
-          height: "50px",
           cursor: "pointer",
           display: "flex",
           justifyContent: "center",
@@ -121,6 +129,8 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
           transition: "transform 0.2s ease-in-out",
           animation: isHovered || isPressed ? "none" : `${bounce} 4s infinite`,
           animationDelay: isHovered || isPressed ? "0s" : animationDelay,
+          width: sizeByBreakpoint,
+          height: sizeByBreakpoint,
         }}
       >
         {isLoaded ? (
@@ -135,7 +145,11 @@ const ResourceMarker: React.FC<ResourceMarkerProps> = ({
             }}
           />
         ) : (
-          <HexagonLoader size="50px" backgroundColor="#242E4E" rotate="30deg" />
+          <HexagonLoader
+            size={sizeByBreakpoint} // Passing dynamic sizes to HexagonLoader
+            backgroundColor="#242E4E"
+            rotate="30deg"
+          />
         )}
       </Box>
     </ClickAwayListener>

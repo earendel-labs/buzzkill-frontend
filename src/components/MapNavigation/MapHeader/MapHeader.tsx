@@ -39,10 +39,11 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
           fontSize: {
             xs: "1rem",
             sm: "1.5rem",
-            md: "2rem",
-            lg: "3rem",
+            md: "1rem",
+            lg: "1.75rem",
+            xl: "3rem",
+            xxl: "3rem",
           },
-          WebkitTextStroke: `1px ${theme.palette.DarkOrange.main}`,
         }}
       >
         {text}

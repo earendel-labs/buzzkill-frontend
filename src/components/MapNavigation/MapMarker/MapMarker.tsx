@@ -13,6 +13,7 @@ interface MapMarkerProps {
   onMouseLeave: () => void;
 }
 
+// Define bounce animation
 const bounce = keyframes`
   0%, 100% {
     transform: translateY(0);
@@ -39,6 +40,15 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   const [pressedSound, setPressedSound] = useState<HTMLAudioElement | null>(
     null
   );
+
+  // Define common sizes for different breakpoints
+  const sizeByBreakpoint = {
+    xs: "40px",
+    sm: "50px",
+    md: "50px",
+    lg: "60px",
+    xl: "70px",
+  };
 
   useEffect(() => {
     const delay = Math.random() * 0.2;
@@ -113,8 +123,6 @@ const MapMarker: React.FC<MapMarkerProps> = ({
         position: "absolute",
         left: left,
         top: top,
-        width: "70px",
-        height: "70px",
         cursor: "pointer",
         display: "flex",
         justifyContent: "center",
@@ -123,6 +131,9 @@ const MapMarker: React.FC<MapMarkerProps> = ({
         transition: "transform 0.2s ease-in-out",
         animation: isHovered ? "none" : `${bounce} 4s infinite`,
         animationDelay: isHovered ? "0s" : animationDelay,
+        // Reuse sizes from the common sizeByBreakpoint object
+        width: sizeByBreakpoint,
+        height: sizeByBreakpoint,
       }}
     >
       {isLoaded ? (
@@ -137,7 +148,11 @@ const MapMarker: React.FC<MapMarkerProps> = ({
           }}
         />
       ) : (
-        <HexagonLoader size="70px" backgroundColor="#242E4E" rotate="30deg" />
+        <HexagonLoader
+          size={sizeByBreakpoint}
+          backgroundColor="#242E4E"
+          rotate="30deg"
+        />
       )}
     </Box>
   );
