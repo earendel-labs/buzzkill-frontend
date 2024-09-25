@@ -206,7 +206,6 @@ function BeeGrid() {
         overflowY: "auto", // Enables vertical scrolling for the entire container
         boxSizing: "border-box", // Include padding in the width calculation
         margin: "0 auto", // Center the BeeGrid
-        maxWidth: "100%",
         display: "flex", // Centering components on larger screens
         flexDirection: "column",
         alignItems: "center", // Centers all components horizontally
@@ -234,12 +233,7 @@ function BeeGrid() {
         sx={{
           mb: 3,
           borderRadius: "2px",
-          width: "100%", // Make sure the tabs stretch across
-          maxWidth: {
-            xs: "100%", // Full width for small screens
-            md: "60%", // Constrain width for larger screens
-            lg: "60%", // Constrain further for large screens
-          },
+          width: "100%",  
         }}
       >
         {beeCategories.map((category) => (
@@ -318,18 +312,18 @@ function BeeGrid() {
             sx={{
               display: "grid",
               gridTemplateColumns: {
-                xs: "repeat(1, 1fr)",
-                sm: "repeat(2, 1fr)",
-                md: "repeat(3, 1fr)",
-                lg: "repeat(3, 1fr)",
-                xl: "repeat(4, 1fr)",
+                xs: "repeat(auto-fit, minmax(80px, 1fr))", // 1 column minimum
+                sm: "repeat(auto-fit, minmax(80px, 1fr))", // 2 columns
+                md: "repeat(auto-fit, minmax(80px, 1fr))", // 3 columns
+                lg: "repeat(auto-fit, minmax(150px, 1fr))", // 3-4 columns depending on space
+                xl: "repeat(auto-fit, minmax(250px, 1fr))", // 4 columns
+                xxl: "repeat(4, 1fr)",
               },
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "2em 3em",
-              padding: "0em 2em",
-              borderRadius: "4px",
-              boxSizing: "border-box",
+              justifyItems: "center", // Center the items
+              gap: "2em 3em", // Space between items
+              padding: "0em 2em", // Padding around the grid
+              width: "100%", // Full width of the container
+              boxSizing: "border-box", // Ensure padding is included in width calculations
             }}
           >
             {filteredWorkerBees.map((bee) => (

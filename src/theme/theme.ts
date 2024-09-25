@@ -37,6 +37,15 @@ declare module "@mui/material/styles" {
     ToolTipLabel?: React.CSSProperties;
     ToolTipValue?: React.CSSProperties;
   }
+
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    xxl: true;
+  }
 }
 
 // Update the Typography's variant prop options
@@ -49,6 +58,16 @@ declare module "@mui/material/Typography" {
 
 const getTheme = (): Theme => {
   const baseTheme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1536,
+        xxl: 1800,
+      },
+    },
     palette: {
       primary: {
         main: "#1976d2",

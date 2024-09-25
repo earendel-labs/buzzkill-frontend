@@ -109,13 +109,14 @@ const Forest: React.FC = () => {
 
           <Grid
             container
-            spacing={2}
+            spacing={1}
             sx={{ marginTop: "0.4rem", marginLeft: "2.5rem", gap: "0px 0px" }}
           >
             {/* Left Column - Hive Stats */}
             <Grid
               item
               xs={3}
+              xxl={3}
               sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -146,7 +147,9 @@ const Forest: React.FC = () => {
             {/* Second Column - Bee Grid */}
             <Grid
               item
-              xs={9}
+              xs={12} // Set to full width by default for small screens
+              sm={9} // Reduce width for larger screens
+              xxl={9}
               sx={{
                 display: "flex",
                 justifyContent: "center",

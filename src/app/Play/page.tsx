@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Add this line at the very top
 
 import React, { useEffect, useState } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
@@ -12,18 +12,25 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false); // New state variable
   const router = useRouter();
 
   useEffect(() => {
-    const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
-    audio.loop = true;
-    audio.volume = 0.6;
-    setMusic(audio);
-
-    return () => {
-      audio.pause();
-    };
+    setIsMounted(true); // Set to true after component mounts
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
+      audio.loop = true;
+      audio.volume = 0.6;
+      setMusic(audio);
+
+      return () => {
+        audio.pause();
+      };
+    }
+  }, [isMounted]);
 
   useEffect(() => {
     if (music) {
@@ -46,22 +53,28 @@ const Play: React.FC = () => {
   };
 
   useEffect(() => {
-    // Add event listeners for user interaction
-    window.addEventListener("click", handleUserInteraction);
-    window.addEventListener("keydown", handleUserInteraction);
-    window.addEventListener("mousemove", handleUserInteraction);
+    if (isMounted) {
+      // Add event listeners for user interaction
+      window.addEventListener("click", handleUserInteraction);
+      window.addEventListener("keydown", handleUserInteraction);
+      window.addEventListener("mousemove", handleUserInteraction);
 
-    return () => {
-      // Cleanup event listeners on unmount
-      window.removeEventListener("click", handleUserInteraction);
-      window.removeEventListener("keydown", handleUserInteraction);
-      window.removeEventListener("mousemove", handleUserInteraction);
-    };
-  }, [music, isMusicMuted, isMuted]);
+      return () => {
+        // Cleanup event listeners on unmount
+        window.removeEventListener("click", handleUserInteraction);
+        window.removeEventListener("keydown", handleUserInteraction);
+        window.removeEventListener("mousemove", handleUserInteraction);
+      };
+    }
+  }, [music, isMusicMuted, isMuted, isMounted]);
 
   const navigate = (link: string) => {
     router.push(link);
   };
+
+  if (!isMounted) {
+    return null; // Render nothing until the component is mounted
+  }
 
   return (
     <GameLayout>
@@ -120,8 +133,4 @@ const Play: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  return <Play />;
-};
-
-export default App;
+export default Play; // Simplify the export
