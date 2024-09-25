@@ -13,8 +13,6 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
     <Box
       sx={{
         width: "auto",
-        height: "150px",
-        minWidth: "440px",
         textAlign: "center",
         backgroundImage: `url('/Frames/header.svg')`,
         backgroundRepeat: "no-repeat",
@@ -35,14 +33,14 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          padding: "47px 80px",
+          padding: "20px 50px",
           fontSize: {
             xs: "1rem",
             sm: "1.5rem",
-            md: "1rem",
-            lg: "1.75rem",
+            md: "2rem",
+            lg: "2.5rem",
             xl: "3rem",
-            xxl: "3rem",
+            xxl: "3.5rem",
           },
         }}
       >
