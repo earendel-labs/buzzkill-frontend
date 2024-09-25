@@ -4,21 +4,52 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { HiveInfo } from "@/types/HiveInfo";
-
+import { useTheme, useMediaQuery } from "@mui/material";
 interface HiveStatsPanelProps {
   hiveInfo: HiveInfo;
   onStake: () => void;
   onRaid: () => void;
 }
 
+// Define common sizes for different breakpoints
+const scaleByBreakpoint = {
+  xs: 0.8,
+  sm: 0.8,
+  md: 1,
+  lg: 0.8,
+  xl: 1.2,
+  xxl: 1.2,
+};
+
 const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
   hiveInfo,
   onStake,
   onRaid,
 }) => {
-  // Constants for maximum values
+  const theme = useTheme();
   const maxQueenBees = 3;
   const maxWorkerBees = 55;
+
+  // Use media queries outside of conditional logic to follow the hooks rules
+  const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+  const isSm = useMediaQuery(theme.breakpoints.only("sm"));
+  const isMd = useMediaQuery(theme.breakpoints.only("md"));
+  const isLg = useMediaQuery(theme.breakpoints.only("lg"));
+  const isXl = useMediaQuery(theme.breakpoints.only("xl"));
+  const isXxl = useMediaQuery(theme.breakpoints.only("xxl"));
+
+  // Set the button scale dynamically based on breakpoints
+  const currentScale = () => {
+    if (isXs) return scaleByBreakpoint.xs;
+    if (isSm) return scaleByBreakpoint.sm;
+    if (isMd) return scaleByBreakpoint.md;
+    if (isLg) return scaleByBreakpoint.lg;
+    if (isXl) return scaleByBreakpoint.xl;
+    if (isXxl) return scaleByBreakpoint.xxl;
+    return scaleByBreakpoint.md; // Fallback scale
+  };
+
+  const scale = currentScale(); // Get the current scale based on screen size
 
   return (
     <Box
@@ -273,8 +304,8 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           width: { xs: "100%", sm: "auto" }, // Full width on small screens
         }}
       >
-        <PrimaryButton text="Stake" onClick={onStake} scale={1.2} />
-        <PrimaryButton text="Raid" onClick={onRaid} scale={1.2} />
+        <PrimaryButton text="Stake" onClick={onStake} scale={scale} />
+        <PrimaryButton text="Raid" onClick={onRaid} scale={scale} />
       </Box>
     </Box>
   );

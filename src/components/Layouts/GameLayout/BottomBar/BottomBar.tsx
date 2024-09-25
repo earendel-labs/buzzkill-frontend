@@ -28,12 +28,18 @@ const BottomBar: React.FC<BottomBarProps> = ({
         sx={{
           position: "fixed", // Use fixed to keep it above other content
           bottom: {
-            xs: "0.4rem",
+            xs: "0rem",
+            md: "0rem",
+            lg: "0rem",
             xl: "3rem",
+            xxl: "3rem",
           }, // 10px -> 0.625rem
           left: {
             xs: "0rem",
-            xl: "5rem",
+            md: "0rem",
+            lg: "0rem",
+            xl: "4rem",
+            xxl: "5rem",
           }, // 10px -> 0.625rem
           zIndex: 100, // Very high z-index to keep it on top
         }}
