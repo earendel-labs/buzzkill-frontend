@@ -233,7 +233,7 @@ function BeeGrid() {
         sx={{
           mb: 3,
           borderRadius: "2px",
-          width: "100%",  
+          width: "100%",
         }}
       >
         {beeCategories.map((category) => (

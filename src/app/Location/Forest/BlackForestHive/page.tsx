@@ -8,9 +8,10 @@ import Grid from "@mui/material/Grid";
 import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
-import HiveStatsPanel from "@/components/ControlPanels/HiveStatsPanel/HiveStatsPanel";
+import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
 import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
 import { HiveInfo } from "@/types/HiveInfo";
+import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
 
 const hiveInfo: HiveInfo = {
   queenBees: 2,
@@ -123,11 +124,12 @@ const Forest: React.FC = () => {
                 alignItems: "flex-start",
               }}
             >
+              {" "}
               <Box
                 sx={{
                   padding: "0.8rem",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   borderRadius: "2px",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -145,6 +147,7 @@ const Forest: React.FC = () => {
             </Grid>
 
             {/* Second Column - Bee Grid */}
+
             <Grid
               item
               xs={12} // Set to full width by default for small screens
@@ -159,7 +162,8 @@ const Forest: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              <BeeGrid />
+              {" "}
+              <BeeGrid />{" "}
             </Grid>
           </Grid>
 

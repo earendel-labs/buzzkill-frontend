@@ -1,7 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
@@ -17,7 +16,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     >
       <CssBaseline />
       <Header />
-      <Container
+      <Box
         component="main"
         sx={{
           flexGrow: 1,
@@ -26,6 +25,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
+          minHeight: "calc(100vh - 65px -95px)", // Adjusting footer height to ~110px
           paddingX: {
             xs: "16px",
             sm: "24px",
@@ -36,7 +36,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }}
       >
         {children}
-      </Container>
+      </Box>
       <Footer />
     </Box>
   );
