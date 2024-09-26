@@ -8,6 +8,54 @@ import { useMemo } from "react";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
+import "@rainbow-me/rainbowkit/styles.css";
+
+import {
+  getDefaultConfig,
+  RainbowKitProvider,
+  Theme as RainbowKitTheme,
+} from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { vicMainnet, vicTestNet } from "./libs/chains";
+import {
+  injectedWallet,
+  rainbowWallet,
+  walletConnectWallet,
+  metaMaskWallet,
+  ledgerWallet,
+  coin98Wallet,
+  trustWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+
+import { createWalletTheme } from "@/theme/walletTheme"; // Custom wallet theme
+
+const walletConnectProjectId: string | undefined =
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+
+const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+
+const config = getDefaultConfig({
+  appName: "Buzzkill - Honeycomb Hustle",
+  projectId: `${walletConnectProjectId}`,
+  chains: [vicTestNet, vicMainnet],
+  wallets: [
+    {
+      groupName: "Recommended",
+      wallets: [coin98Wallet, metaMaskWallet, ledgerWallet],
+    },
+    {
+      groupName: "Popular Wallets",
+      wallets: [
+        trustWallet,
+        rainbowWallet,
+        injectedWallet,
+        walletConnectWallet,
+      ],
+    },
+  ],
+  ssr: true, // If your dApp uses server side rendering (SSR)
+});
 
 export default function RootLayout({
   children,
@@ -15,6 +63,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const theme = useMemo(() => getTheme(), []);
+  const queryClient = new QueryClient();
+
+  // Create the wallet theme based on your Material UI theme
+  const walletTheme = useMemo(() => createWalletTheme(theme), [theme]);
 
   return (
     <html lang="en">
@@ -43,15 +95,21 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body>
-        <LoadingProvider>
-          <SoundProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <GlobalScrollbarStyles />
-              {children}
-            </ThemeProvider>
-          </SoundProvider>
-        </LoadingProvider>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider theme={walletTheme}>
+              <LoadingProvider>
+                <SoundProvider>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <GlobalScrollbarStyles />
+                    {children}
+                  </ThemeProvider>
+                </SoundProvider>
+              </LoadingProvider>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,9 +102,7 @@ const Header: React.FC = () => {
               </Link>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button className="goldButton" href="/" target="_blank">
-                Connect Wallet
-              </Button>
+              <ConnectButton />
             </Box>
             <IconButton
               edge="end"

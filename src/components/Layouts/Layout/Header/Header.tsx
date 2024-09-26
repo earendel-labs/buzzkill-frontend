@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header: React.FC = () => {
   const theme = useTheme();
@@ -79,9 +80,7 @@ const Header: React.FC = () => {
           </Link>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Button className="goldButton" href="/" target="_blank">
-            Connect Wallet
-          </Button>
+          <ConnectButton />
         </Box>
       </Toolbar>
     </AppBar>
