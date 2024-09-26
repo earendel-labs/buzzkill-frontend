@@ -1,21 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, CircularProgress, Grid, Button } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
-import { ethers } from "ethers";
-
-// ERC20 ABI for reading the token balance
-const ERC20_ABI = [
-  "function balanceOf(address owner) view returns (uint256)",
-  "function decimals() view returns (uint8)",
-];
-
-// VIC token contract address (replace with actual token address)
-const VIC_TOKEN_ADDRESS = "0xYourVicTokenAddressHere"; // Replace with actual VIC token contract address
+import { formatEther } from "ethers"; // Use formatEther for native token balances
 
 // Placeholder data for total collection and minted count
 const totalSupply = 10000;
@@ -25,26 +16,16 @@ const MintPage: React.FC = () => {
   const { address, isConnected } = useAccount(); // Get account info from RainbowKit and wagmi
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNFT, setMintedNFT] = useState<string | null>(null);
-
-  // Fetch the user's VIC balance
-  const { data: balance, isLoading: isBalanceLoading } = useContractRead({
-    address: VIC_TOKEN_ADDRESS,
-    abi: ERC20_ABI,
-    functionName: "balanceOf",
-    args: [address],
-    enabled: isConnected, // Fetch balance only when connected
-  });
-
-  // Fetch the decimals of the token
-  const { data: decimals } = useContractRead({
-    address: VIC_TOKEN_ADDRESS,
-    abi: ERC20_ABI,
-    functionName: "decimals",
-    enabled: isConnected, // Fetch decimals only when connected
-  });
-
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
+
+  // Fetch native token balance (VIC as native gas token)
+  const { data: balanceData, isLoading: isBalanceLoading } = useBalance({
+    address: address,
+  });
+
+  // Format balance using ethers utility
+  const formattedBalance = balanceData ? formatEther(balanceData.value) : "0";
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) setQuantity(quantity + 1);
@@ -64,10 +45,6 @@ const MintPage: React.FC = () => {
       setIsMinting(false);
     }, 3000); // Simulate minting delay
   };
-
-  // Convert balance from wei to VIC token units using the decimals
-  const formattedBalance =
-    balance && decimals ? ethers.utils.formatUnits(balance, decimals) : "0"; // Default to "0" if balance is not available
 
   return (
     <Layout>
@@ -138,10 +115,6 @@ const MintPage: React.FC = () => {
             sx={{
               maxWidth: "600px", // Set maxWidth to 600px
               width: "100%", // Ensure it takes full width until maxWidth
-              marginBottom: {
-                xs: 0, // Remove any bottom margin for smaller screens
-                sm: 0,
-              },
             }}
           >
             <SemiTransaprentCard>
@@ -152,9 +125,9 @@ const MintPage: React.FC = () => {
                   mb: 2,
                   textAlign: "center",
                   fontSize: {
-                    xs: "1.5rem", // Small screen size
+                    xs: "1rem", // Small screen size
                     md: "2rem", // Medium screen size
-                    lg: "2.5rem", // Larger screens
+                    lg: "2rem", // Larger screens
                     xxl: "3.5rem",
                   },
                 }}
