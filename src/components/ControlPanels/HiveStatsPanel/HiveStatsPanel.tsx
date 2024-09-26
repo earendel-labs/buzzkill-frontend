@@ -60,7 +60,7 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
         padding: {
           xs: "0.5rem", // Extra small devices
           sm: "1rem", // Small devices
-          lg: "1rem 2rem",
+          lg: "2rrrem 2rem",
         },
         width: "100%",
         maxWidth: {
@@ -69,6 +69,7 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           md: "20rem",
           lg: "28rem",
           xl: "30rem",
+          xxl: "30rem",
         },
       }}
     >
