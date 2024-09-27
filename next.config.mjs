@@ -20,15 +20,15 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value: `
-              default-src 'self';
-              script-src 'self' 'nonce-${nonce}' https://trusted-scripts.com;
-              connect-src 'self' https://rpc-testnet.viction.xyz https://explorer-api.walletconnect.com;
-              object-src 'none';
-              style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com;
-              font-src 'self' https://fonts.gstatic.com;
-              img-src 'self' https://explorer-api.walletconnect.com data:;
-              frame-ancestors 'none';
-            `
+  default-src 'self'; 
+  script-src 'self' 'unsafe-eval' https://trusted-scripts.com 'unsafe-inline'; 
+  connect-src 'self' https://rpc-testnet.viction.xyz https://explorer-api.walletconnect.com; 
+  object-src 'none'; 
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+  font-src 'self' https://fonts.gstatic.com; 
+  img-src 'self' data:;
+  frame-ancestors 'none';
+`
               .replace(/\s{2,}/g, " ")
               .trim(),
           },
