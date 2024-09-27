@@ -22,6 +22,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.56.2",
     "@tremor/react": "^3.16.1",
+    "@vercel/speed-insights": "^1.0.12",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
     "echarts": "^5.5.0",

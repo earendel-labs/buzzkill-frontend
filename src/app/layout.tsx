@@ -8,6 +8,8 @@ import { useMemo } from "react";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import "@rainbow-me/rainbowkit/styles.css";
 
 import {
@@ -104,6 +106,7 @@ export default function RootLayout({
                     <CssBaseline />
                     <GlobalScrollbarStyles />
                     {children}
+                    <SpeedInsights />
                   </ThemeProvider>
                 </SoundProvider>
               </LoadingProvider>
