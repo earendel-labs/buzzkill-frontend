@@ -1,3 +1,6 @@
+// next.config.mjs
+const crypto = require("crypto");
+
 const nextConfig = {
   reactStrictMode: true,
   webpack(config) {
@@ -5,10 +8,11 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
   async headers() {
+    const nonce = crypto.randomBytes(16).toString("base64");
+
     return [
       {
         source: "/(.*)",
@@ -17,12 +21,12 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-inline' https://trusted-scripts.com;
+              script-src 'self' 'nonce-${nonce}' https://trusted-scripts.com;
               connect-src 'self' https://rpc-testnet.viction.xyz https://explorer-api.walletconnect.com;
               object-src 'none';
-              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+              style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
-              img-src 'self' data:;
+              img-src 'self' https://explorer-api.walletconnect.com data:;
               frame-ancestors 'none';
             `
               .replace(/\s{2,}/g, " ")
