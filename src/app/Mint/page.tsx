@@ -36,14 +36,10 @@ const MintPage: React.FC = () => {
   };
 
   const handleMint = async () => {
-    setIsMinting(true);
-
     // Placeholder logic for minting
     console.log("Minting...");
-    setTimeout(() => {
-      setMintedNFT("/NFTs/WorkerBee.png"); // Replace with actual NFT image URL
-      setIsMinting(false);
-    }, 3000); // Simulate minting delay
+    setMintedNFT("/NFTs/WorkerBee.png"); // Replace with actual NFT image URL
+    setIsMinting(false);
   };
 
   return (
