@@ -4,27 +4,18 @@ import Image from "next/image";
 import { UserInfo } from "@/types/UserInfo";
 import { formatNumber } from "@/app/utils/formatNumber";
 
-// Default user info (dummy data) as fallback before fetching from API
-const defaultUserInfo: UserInfo = {
-  pollen: 75000,
-  nectar: 235000,
-  sap: 75000,
-  honey: 953000,
-  queenBees: 5,
-  workerBees: 50,
-};
-
-// Function that simulates fetching user info from an API
+// Function to fetch user info from the Next.js API
 const fetchUserInfo = async (): Promise<UserInfo> => {
-  // Simulate an API call (replace with real API)
-  const response = await fetch("/api/user-info");
+  const response = await fetch("/api/user-info"); // Fetch from the API route
+  if (!response.ok) {
+    throw new Error("Failed to fetch user info");
+  }
   const data = await response.json();
   return data;
 };
 
 const UserResourceBar: React.FC = () => {
-  // Set defaultUserInfo as initial state to avoid NaN/undefined issues
-  const [userInfo, setUserInfo] = useState<UserInfo>(defaultUserInfo);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true); // Track loading state
 
   // Fetch userInfo data from API
@@ -82,12 +73,15 @@ const UserResourceBar: React.FC = () => {
             gap: "4px",
           }}
         >
-          <Image
-            src="/Icons/Resources/Pollen.svg"
-            alt="Pollen"
-            width={32}
-            height={32} // Explicitly set both width and height
-          />
+          <Box sx={{ width: 32, height: 32 }}>
+            <Image
+              src="/Icons/Resources/Pollen.svg"
+              alt="Pollen"
+              width={32}
+              height={32}
+              style={{ width: "auto", height: "auto" }} // Ensure aspect ratio is maintained
+            />
+          </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {loading ? (
               <Skeleton variant="text" width={50} />
@@ -100,7 +94,7 @@ const UserResourceBar: React.FC = () => {
                   lineHeight: 1,
                 }}
               >
-                {formatNumber(userInfo.pollen)}
+                {formatNumber(userInfo?.pollen || 0)}
               </Typography>
             )}
           </Box>
@@ -132,7 +126,7 @@ const UserResourceBar: React.FC = () => {
                   lineHeight: 1,
                 }}
               >
-                {formatNumber(userInfo.nectar)}
+                {formatNumber(userInfo?.nectar || 0)}
               </Typography>
             )}
           </Box>
@@ -164,7 +158,7 @@ const UserResourceBar: React.FC = () => {
                   lineHeight: 1,
                 }}
               >
-                {formatNumber(userInfo.sap)}
+                {formatNumber(userInfo?.sap || 0)}
               </Typography>
             )}
           </Box>
@@ -178,12 +172,15 @@ const UserResourceBar: React.FC = () => {
             gap: "4px",
           }}
         >
-          <Image
-            src="/Icons/Resources/HoneyToken.svg"
-            alt="HoneyToken"
-            width={32}
-            height={32} // Explicitly set both width and height
-          />
+          <Box sx={{ width: 32, height: 32 }}>
+            <Image
+              src="/Icons/Resources/HoneyToken.svg"
+              alt="HoneyToken"
+              width={32}
+              height={32} // Explicitly set both width and height
+              style={{ width: "auto", height: "auto" }} // Ensure aspect ratio is maintained
+            />
+          </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             {loading ? (
               <Skeleton variant="text" width={50} />
@@ -196,7 +193,7 @@ const UserResourceBar: React.FC = () => {
                   lineHeight: 1,
                 }}
               >
-                {formatNumber(userInfo.honey)}
+                {formatNumber(userInfo?.honey || 0)}
               </Typography>
             )}
           </Box>
