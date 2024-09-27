@@ -1,5 +1,4 @@
-// next.config.mjs
-const crypto = require("crypto");
+import crypto from "crypto"; // ES module import for crypto
 
 const nextConfig = {
   reactStrictMode: true,
@@ -8,6 +7,7 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+
     return config;
   },
   async headers() {
