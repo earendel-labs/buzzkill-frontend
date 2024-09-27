@@ -4,17 +4,8 @@ import Image from "next/image";
 import { UserInfo } from "@/types/UserInfo";
 import { formatNumber } from "@/app/utils/formatNumber";
 
-// Hardcoded userInfo data
-const initialUserInfo: UserInfo = {
-  pollen: 0,
-  nectar: 0,
-  sap: 0,
-  honey: 0,
-  queenBees: 0,
-  workerBees: 0,
-};
-
-const delayedUserInfo: UserInfo = {
+// Default user info (dummy data) as fallback before fetching from API
+const defaultUserInfo: UserInfo = {
   pollen: 75000,
   nectar: 235000,
   sap: 75000,
@@ -23,17 +14,34 @@ const delayedUserInfo: UserInfo = {
   workerBees: 50,
 };
 
+// Function that simulates fetching user info from an API
+const fetchUserInfo = async (): Promise<UserInfo> => {
+  // Simulate an API call (replace with real API)
+  const response = await fetch("/api/user-info");
+  const data = await response.json();
+  return data;
+};
+
 const UserResourceBar: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  // Set defaultUserInfo as initial state to avoid NaN/undefined issues
+  const [userInfo, setUserInfo] = useState<UserInfo>(defaultUserInfo);
+  const [loading, setLoading] = useState(true); // Track loading state
 
-  // Simulate a delay of 0.5 seconds in loading the userInfo data
+  // Fetch userInfo data from API
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setUserInfo(delayedUserInfo);
-    }, 500); // 500ms delay
+    const getUserInfo = async () => {
+      try {
+        const data = await fetchUserInfo();
+        setUserInfo(data);
+      } catch (error) {
+        console.error("Failed to fetch user info", error);
+      } finally {
+        setLoading(false); // Data is either loaded or failed, stop loading
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, []);
+    getUserInfo();
+  }, []); // Empty dependency array means this only runs once
 
   return (
     <Box
@@ -81,7 +89,9 @@ const UserResourceBar: React.FC = () => {
             height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            {userInfo ? (
+            {loading ? (
+              <Skeleton variant="text" width={50} />
+            ) : (
               <Typography
                 variant="h6"
                 sx={{
@@ -92,8 +102,6 @@ const UserResourceBar: React.FC = () => {
               >
                 {formatNumber(userInfo.pollen)}
               </Typography>
-            ) : (
-              <Skeleton variant="text" width={50} />
             )}
           </Box>
         </Box>
@@ -113,7 +121,9 @@ const UserResourceBar: React.FC = () => {
             height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            {userInfo ? (
+            {loading ? (
+              <Skeleton variant="text" width={50} />
+            ) : (
               <Typography
                 variant="h6"
                 sx={{
@@ -124,8 +134,6 @@ const UserResourceBar: React.FC = () => {
               >
                 {formatNumber(userInfo.nectar)}
               </Typography>
-            ) : (
-              <Skeleton variant="text" width={50} />
             )}
           </Box>
         </Box>
@@ -145,7 +153,9 @@ const UserResourceBar: React.FC = () => {
             height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            {userInfo ? (
+            {loading ? (
+              <Skeleton variant="text" width={50} />
+            ) : (
               <Typography
                 variant="h6"
                 sx={{
@@ -156,8 +166,6 @@ const UserResourceBar: React.FC = () => {
               >
                 {formatNumber(userInfo.sap)}
               </Typography>
-            ) : (
-              <Skeleton variant="text" width={50} />
             )}
           </Box>
         </Box>
@@ -177,7 +185,9 @@ const UserResourceBar: React.FC = () => {
             height={32} // Explicitly set both width and height
           />
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            {userInfo ? (
+            {loading ? (
+              <Skeleton variant="text" width={50} />
+            ) : (
               <Typography
                 variant="h6"
                 sx={{
@@ -188,8 +198,6 @@ const UserResourceBar: React.FC = () => {
               >
                 {formatNumber(userInfo.honey)}
               </Typography>
-            ) : (
-              <Skeleton variant="text" width={50} />
             )}
           </Box>
         </Box>

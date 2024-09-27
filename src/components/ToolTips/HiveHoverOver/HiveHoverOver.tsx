@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import LargeToolTip from "../Large/LargeToolTip";
 
 interface HiveHoverOverProps {
-  hiveName: string;
-  hiveDefence: number;
-  queenBees: string;
-  workerBees: string;
+  hiveName?: string;
+  hiveDefence?: number;
+  queenBees?: string;
+  workerBees?: string;
 }
 
 const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
@@ -17,16 +17,13 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
   workerBees,
 }) => {
   const theme = useTheme();
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading for demonstration
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500); // Simulates a 1.5s loading time
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Check if all data is available
+  const isLoading =
+    hiveName === undefined ||
+    hiveDefence === undefined ||
+    queenBees === undefined ||
+    workerBees === undefined;
 
   return (
     <LargeToolTip>
@@ -35,7 +32,7 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
           variant="rectangular"
           width={200}
           height={120}
-          sx={{   backgroundColor: "#242E4E", borderRadius: "4px" }} // Matches your design style
+          sx={{ backgroundColor: "#242E4E", borderRadius: "4px" }}
         />
       ) : (
         <Box

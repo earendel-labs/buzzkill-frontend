@@ -37,6 +37,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
   const [disableHoverSound, setDisableHoverSound] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
+  const [isClicking, setIsClicking] = useState(false); // Track button press
 
   // Preload the images and sounds
   useEffect(() => {
@@ -68,16 +69,23 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
       hoverSound.play();
     }
   };
-
+ 
   const handleMouseDown = () => {
     if (!isMuted && clickSound && !disableClickSound) {
       clickSound.play();
     }
+    setIsClicking(true);
     setDisableHoverSound(true);
-    setTimeout(() => {
-      setDisableHoverSound(false);
-    }, 300);
   };
+
+  // Re-enable hover sound when clicking state changes back
+  useEffect(() => {
+    if (isClicking) {
+      // Simulate the effect of a completed button press by resetting the state
+      setIsClicking(false);
+      setDisableHoverSound(false);
+    }
+  }, [isClicking]);
 
   if (isLoading) {
     return (
@@ -94,7 +102,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
           width={buttonSize}
           height={buttonSize}
           sx={{
-            backgroundColor: "#242E4E", 
+            backgroundColor: "#242E4E",
             width: "100%",
             height: "100%",
           }}

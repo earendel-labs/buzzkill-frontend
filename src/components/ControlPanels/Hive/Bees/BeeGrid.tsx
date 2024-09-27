@@ -159,7 +159,7 @@ const allBees: BeeInfo[] = [
   },
 ];
 
-function BeeGrid() {
+const BeeGrid: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>("all");
   const [selectedBeeAddress, setSelectedBeeAddress] = useState<string | null>(
     null
@@ -372,6 +372,6 @@ function BeeGrid() {
       )}
     </Box>
   );
-}
+};
 
 export default BeeGrid;
