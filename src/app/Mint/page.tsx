@@ -83,7 +83,7 @@ const MintPage: React.FC = () => {
           md={6}
           sx={{
             display: "flex",
-            maxWidth: "600px",
+            maxWidth: "550px",
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
@@ -113,7 +113,13 @@ const MintPage: React.FC = () => {
         >
           <Box
             sx={{
-              maxWidth: "600px", // Set maxWidth to 600px
+              maxWidth: "800px", // Set maxWidth to 600px
+              padding: {
+                xs: "1rem", // Small screen size
+                md: "2rem", // Medium screen size
+                lg: "1rem", // Larger screens
+                xxl: "1.7rem",
+              },
               width: "100%", // Ensure it takes full width until maxWidth
             }}
           >
@@ -122,17 +128,22 @@ const MintPage: React.FC = () => {
               <Typography
                 variant="h1"
                 sx={{
+                  mt: 2,
                   mb: 2,
                   textAlign: "center",
                   fontSize: {
                     xs: "1rem", // Small screen size
                     md: "2rem", // Medium screen size
-                    lg: "2rem", // Larger screens
+                    lg: "2.5rem", // Larger screens
                     xxl: "3.5rem",
+                  },
+                  maxWidth: {
+                    xs: "90%", // Full width on smaller screens
+                    xxl: "500px", // Limit width on xxl screens
                   },
                 }}
               >
-                Mint Buzzkill <br /> Hatchlings
+                Mint Buzzkill Hatchlings
               </Typography>
 
               {/* Responsive, Justified Paragraph */}
@@ -144,6 +155,7 @@ const MintPage: React.FC = () => {
                   fontSize: {
                     xs: "0.9rem", // Smaller font for smaller screens
                     sm: "1rem", // Default font size for small-medium screens
+                    xxl: "1.2rem", // Default font size for small-medium screens
                   },
                 }}
               >
@@ -161,7 +173,7 @@ const MintPage: React.FC = () => {
                   width: "100%",
                   marginTop: "0.5rem",
                   flexDirection: {
-                    xs: "column",
+                    xs: "row",
                     sm: "row",
                   },
                   alignItems: { xs: "center", sm: "unset" },
@@ -175,8 +187,9 @@ const MintPage: React.FC = () => {
                       xs: "0.75rem",
                       sm: "0.875rem",
                       md: "0.95rem",
-                      lg: "1rem",
-                      xl: "1.5rem",
+                      lg: "0.95rem",
+                      xl: "1.2rem",
+                      xxl: "1.5rem",
                     },
                   }}
                 >
@@ -187,10 +200,12 @@ const MintPage: React.FC = () => {
                   sx={{
                     color: "#FFD700",
                     fontSize: {
-                      xs: "0.875rem",
-                      sm: "0.975rem",
-                      md: "1rem",
-                      lg: "1.5rem",
+                      xs: "0.75rem",
+                      sm: "0.875rem",
+                      md: "0.95rem",
+                      lg: "0.95rem",
+                      xl: "1.4rem",
+                      xxl: "1.7rem",
                     },
                   }}
                 >
@@ -205,7 +220,6 @@ const MintPage: React.FC = () => {
                   justifyContent: "space-between",
                   maxWidth: "480px",
                   width: "100%",
-                  marginTop: "0.5rem",
                   flexDirection: {
                     xs: "column",
                     sm: "row",
@@ -221,8 +235,9 @@ const MintPage: React.FC = () => {
                       xs: "0.75rem",
                       sm: "0.875rem",
                       md: "0.95rem",
-                      lg: "1rem",
-                      xl: "1.5rem",
+                      lg: "0.95rem",
+                      xl: "1.2rem",
+                      xxl: "1.5rem",
                     },
                   }}
                 >
@@ -233,10 +248,12 @@ const MintPage: React.FC = () => {
                   sx={{
                     color: "#FFD700",
                     fontSize: {
-                      xs: "0.875rem",
-                      sm: "0.975rem",
-                      md: "1rem",
-                      lg: "1.5rem",
+                      xs: "0.75rem",
+                      sm: "0.875rem",
+                      md: "0.95rem",
+                      lg: "0.95rem",
+                      xl: "1.4rem",
+                      xxl: "1.7rem",
                     },
                   }}
                 >
@@ -253,7 +270,6 @@ const MintPage: React.FC = () => {
                       justifyContent: "space-between",
                       maxWidth: "480px",
                       width: "100%",
-                      marginTop: "1rem",
                       flexDirection: {
                         xs: "column",
                         sm: "row",
@@ -270,8 +286,9 @@ const MintPage: React.FC = () => {
                           xs: "0.75rem",
                           sm: "0.875rem",
                           md: "0.95rem",
-                          lg: "1rem",
-                          xl: "1.5rem",
+                          lg: "0.95rem",
+                          xl: "1.2rem",
+                          xxl: "1.5rem",
                         },
                       }}
                     >
@@ -282,10 +299,12 @@ const MintPage: React.FC = () => {
                       sx={{
                         color: "#FFD700",
                         fontSize: {
-                          xs: "0.875rem",
-                          sm: "0.975rem",
-                          md: "1rem",
-                          lg: "1.5rem",
+                          xs: "0.75rem",
+                          sm: "0.875rem",
+                          md: "0.95rem",
+                          lg: "0.95rem",
+                          xl: "1.4rem",
+                          xxl: "1.7rem",
                         },
                       }}
                     >
@@ -302,7 +321,6 @@ const MintPage: React.FC = () => {
                       justifyContent: "space-between",
                       maxWidth: "480px",
                       width: "100%",
-                      marginTop: "1rem",
                       alignItems: "center", // Ensures vertical alignment
                     }}
                   >
@@ -314,8 +332,9 @@ const MintPage: React.FC = () => {
                           xs: "0.75rem",
                           sm: "0.875rem",
                           md: "0.95rem",
-                          lg: "1rem",
-                          xl: "1.5rem",
+                          lg: "0.95rem",
+                          xl: "1.2rem",
+                          xxl: "1.5rem",
                         },
                         lineHeight: "1.5rem", // Ensures consistent vertical height
                       }}
@@ -323,6 +342,7 @@ const MintPage: React.FC = () => {
                       Select Quantity. Max {maxQuantity}
                     </Typography>
 
+                    {/* Quantity Control Buttons */}
                     {/* Quantity Control Buttons */}
                     <Box
                       sx={{
@@ -334,21 +354,26 @@ const MintPage: React.FC = () => {
                     >
                       {/* Decrement Button */}
                       <Button
-                        onClick={decrementQuantity}
-                        disabled={quantity === 1} // Disable at minimum quantity
+                        onClick={decrementQuantity} // Adjust to use decrement function
+                        disabled={quantity === 1} // Disable when quantity is 1
                         disableRipple
                         disableElevation
                         variant="text"
                         sx={{
                           fontSize: "1.5rem",
-                          color: quantity === 1 ? "#A9A9A9" : "#FFD700", // Gray out the color when disabled
-                          opacity: quantity === 1 ? 0.5 : 1, // Slightly reduce opacity when disabled
-                          cursor: quantity === 1 ? "not-allowed" : "pointer",
-                          minWidth: "40px", // Consistent button size
+                          color: quantity === 1 ? "#b8ab67" : "#FFD700", // Gray out the color when disabled
+                          opacity: 1, // Keep the opacity constant
+                          cursor: quantity === 1 ? "not-allowed" : "pointer", // Disable cursor when at min
+                          minWidth: "20px", // Consistent button size
                           height: "30px", // Consistent button size
                           padding: 0,
                           backgroundColor: "transparent", // No background color
-                          border: "none", // No border or outline
+                          border: "none", // No border
+                          marginRight: 0,
+                          "&:disabled": {
+                            color: "#b8ab67", // Gray out when disabled
+                            opacity: 0.6, // Slightly reduce opacity when disabled
+                          },
                         }}
                       >
                         -
@@ -369,26 +394,30 @@ const MintPage: React.FC = () => {
 
                       {/* Increment Button */}
                       <Button
-                        onClick={incrementQuantity}
-                        disabled={quantity === maxQuantity} // Disable at maximum quantity
+                        onClick={incrementQuantity} // Adjust to use increment function
+                        disabled={quantity === maxQuantity} // Disable when at max quantity
                         disableRipple
                         disableElevation
                         variant="text"
                         sx={{
                           fontSize: "1.5rem",
                           color:
-                            quantity === maxQuantity ? "#A9A9A9" : "#FFD700", // Gray out the color when disabled
-                          opacity: quantity === maxQuantity ? 0.8 : 1, // Slightly reduce opacity when disabled
+                            quantity === maxQuantity ? "#b8ab67" : "#FFD700", // Gray out the color when disabled
+                          opacity: 1, // Keep the opacity constant
                           cursor:
                             quantity === maxQuantity
                               ? "not-allowed"
-                              : "pointer",
+                              : "pointer", // Disable cursor when at max
                           minWidth: "20px", // Consistent button size
                           height: "30px", // Consistent button size
                           padding: 0,
                           backgroundColor: "transparent", // No background color
-                          border: "none", // No border or outline
-                          marginRight: 0, // Ensure button is right-aligned without padding
+                          border: "none", // No border
+                          marginRight: 0,
+                          "&:disabled": {
+                            color: "#b8ab67", // Gray out when disabled
+                            opacity: 0.6, // Slightly reduce opacity when disabled
+                          },
                         }}
                       >
                         +

@@ -25,7 +25,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          minHeight: "calc(100vh - 65px -95px)", // Adjusting footer height to ~110px
           paddingX: {
             xs: "16px",
             sm: "24px",
