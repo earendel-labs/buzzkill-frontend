@@ -1,4 +1,3 @@
-// next.config.mjs
 const nextConfig = {
   reactStrictMode: true,
   webpack(config) {
@@ -16,8 +15,18 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' https://trusted-scripts.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;",
+            value: `
+              default-src 'self';
+              script-src 'self' 'unsafe-inline' https://trusted-scripts.com;
+              connect-src 'self' https://rpc-testnet.viction.xyz https://explorer-api.walletconnect.com;
+              object-src 'none';
+              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+              font-src 'self' https://fonts.gstatic.com;
+              img-src 'self' data:;
+              frame-ancestors 'none';
+            `
+              .replace(/\s{2,}/g, " ")
+              .trim(),
           },
           {
             key: "X-Frame-Options",
