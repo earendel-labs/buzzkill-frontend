@@ -17,22 +17,7 @@ const nextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value: `
-        default-src 'self'; 
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://trusted-scripts.com https://cdn.walletconnect.com https://*.rainbow.me https://*.walletconnect.com https://va.vercel-scripts.com; 
-      connect-src 'self' https://rpc-testnet.viction.xyz https://explorer-api.walletconnect.com https://*.walletconnect.com https://*.rainbow.me https://*.infura.io https://*.alchemyapi.io; 
-      object-src 'none'; 
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.rainbow.me https://*.walletconnect.com; 
-      font-src 'self' https://fonts.gstatic.com https://*.walletconnect.com https://*.rainbow.me; 
-      img-src 'self' https://explorer-api.walletconnect.com https://*.walletconnect.com https://*.rainbow.me data:; 
-      frame-ancestors 'self';
-    `
-              .replace(/\s{2,}/g, " ")
-              .trim(),
-          },
+        headers: [ 
           {
             key: "X-Frame-Options",
             value: "DENY",
