@@ -16,8 +16,13 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src 'self'; script-src 'self' https://trusted-scripts.com; object-src 'none';",
+            value: `
+              default-src 'self'; 
+              script-src 'self' https://trusted-scripts.com; 
+              object-src 'none'; 
+              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+              font-src 'self' https://fonts.gstatic.com; 
+            `.trim(),
           },
           {
             key: "X-Frame-Options",
