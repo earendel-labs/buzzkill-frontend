@@ -6,7 +6,7 @@ import { formatNumber } from "@/app/utils/formatNumber";
 
 // Function to fetch user info from the Next.js API
 const fetchUserInfo = async (): Promise<UserInfo> => {
-  const response = await fetch("/api/user-info"); // Fetch from the API route
+  const response = await fetch("/api/user-info");
   if (!response.ok) {
     throw new Error("Failed to fetch user info");
   }

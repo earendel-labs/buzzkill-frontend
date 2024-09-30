@@ -11,13 +11,19 @@ import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "@rainbow-me/rainbowkit/styles.css";
+import {
+  RainbowKitSiweNextAuthProvider,
+  GetSiweMessageOptions,
+} from "@rainbow-me/rainbowkit-siwe-next-auth";
+import { SessionProvider } from "next-auth/react";
+import type { Session } from "next-auth";
 
 import {
   getDefaultConfig,
   RainbowKitProvider,
-  Theme as RainbowKitTheme,
+  Theme,
 } from "@rainbow-me/rainbowkit";
-import { WagmiProvider } from "wagmi";
+import { WagmiProvider } from "wagmi"; // Updated to WagmiConfig in wagmi v1
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { vicMainnet, vicTestNet } from "./libs/chains";
 import {
@@ -32,14 +38,17 @@ import {
 
 import { createWalletTheme } from "@/theme/walletTheme"; // Custom wallet theme
 
-const walletConnectProjectId: string | undefined =
-  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+const walletConnectProjectId: string =
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
+  (() => {
+    throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not defined");
+  })();
 
 const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
 
 const config = getDefaultConfig({
   appName: "Buzzkill - Honeycomb Hustle",
-  projectId: `${walletConnectProjectId}`,
+  projectId: walletConnectProjectId,
   chains: [vicTestNet, vicMainnet],
   wallets: [
     {
@@ -59,11 +68,14 @@ const config = getDefaultConfig({
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
+const getSiweMessageOptions: GetSiweMessageOptions = () => ({
+  statement: "Sign in to the Buzzkill World",
+});
+
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  session,
+}: Readonly<{ session: Session; children: React.ReactNode }>) {
   const theme = useMemo(() => getTheme(), []);
   const queryClient = new QueryClient();
 
@@ -98,20 +110,26 @@ export default function RootLayout({
       </head>
       <body>
         <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider theme={walletTheme}>
-              <LoadingProvider>
-                <SoundProvider>
-                  <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <GlobalScrollbarStyles />
-                    {children}
-                    <SpeedInsights />
-                  </ThemeProvider>
-                </SoundProvider>
-              </LoadingProvider>
-            </RainbowKitProvider>
-          </QueryClientProvider>
+          <SessionProvider refetchInterval={0} session={session}>
+            <RainbowKitSiweNextAuthProvider
+              getSiweMessageOptions={getSiweMessageOptions}
+            >
+              <QueryClientProvider client={queryClient}>
+                <RainbowKitProvider theme={walletTheme}>
+                  <LoadingProvider>
+                    <SoundProvider>
+                      <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <GlobalScrollbarStyles />
+                        {children}
+                        <SpeedInsights />
+                      </ThemeProvider>
+                    </SoundProvider>
+                  </LoadingProvider>
+                </RainbowKitProvider>
+              </QueryClientProvider>
+            </RainbowKitSiweNextAuthProvider>
+          </SessionProvider>
         </WagmiProvider>
       </body>
     </html>
