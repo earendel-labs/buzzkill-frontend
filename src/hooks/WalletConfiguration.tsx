@@ -68,13 +68,6 @@ function WalletConfiguration({ session, children }: WalletConfigurationProps) {
 
   return (
     <>
-      {/* Display mini-loader only where the wallet interaction might happen */}
-      {!isProviderReady && (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Skeleton variant="rectangular" width={180} height={50} />
-        </Box>
-      )}
-
       {/* Render the wallet provider setup once ready */}
       <WagmiProvider config={config}>
         <SessionProvider session={session}>

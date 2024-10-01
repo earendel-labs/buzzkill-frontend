@@ -7,6 +7,7 @@ import { useAccount, useBalance } from "wagmi";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
 import { formatEther } from "ethers"; // Use formatEther for native token balances
+import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 
 // Placeholder data for total collection and minted count
 const totalSupply = 10000;
@@ -427,7 +428,7 @@ const MintPage: React.FC = () => {
               {!isConnected ? (
                 <Box sx={{ mt: 2, mb: 4 }}>
                   {/* Display RainbowKit Connect Button when wallet isn't connected */}
-                  <ConnectButton showBalance={false} />
+                  <LoginButton loginButtonText="Connect Your Wallet" />
                 </Box>
               ) : isMinting ? (
                 <CircularProgress color="inherit" sx={{ mb: 4 }} />

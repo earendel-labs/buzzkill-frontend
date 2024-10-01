@@ -6,17 +6,16 @@ const buttonStyles = (theme: Theme) => ({
       root: {
         fontFamily: '"Vera Humana 95", "Poppins"',
         fontSize: "18px",
-        
+
         fontWeight: "600",
         textTransform: "none",
         padding: "5px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
         boxSizing: "border-box",
-        color: "#ffffff",
         "&.goldButton": {
           backgroundColor: theme.palette.Orange.main,
           color: theme.palette.Gold.contrastText,

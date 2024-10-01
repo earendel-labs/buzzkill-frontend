@@ -13,6 +13,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getAuthOptions } from "@/pages/api/auth/[...nextauth]";
+import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
@@ -57,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
           position="static"
           sx={{
             boxSizing: "border-box",
-            height: "65px",
+            height: "70px",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
@@ -124,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
 
             {/* Connect Button */}
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <ConnectButton />
+              <LoginButton />
             </Box>
 
             {/* Close Button in GameLayout */}

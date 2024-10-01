@@ -23,7 +23,13 @@ import {
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { createWalletTheme } from "@/theme/walletTheme";
-import { ThemeProvider, CircularProgress, Backdrop } from "@mui/material"; // Import CircularProgress for loader
+import {
+  ThemeProvider,
+  CircularProgress,
+  Backdrop,
+  Box,
+  Skeleton,
+} from "@mui/material"; // Import CircularProgress for loader
 
 const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
@@ -127,15 +133,9 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           <ThemeProvider theme={theme}>
             {/* Show loader if loading is true */}
             {loading ? (
-              <Backdrop
-                open={loading}
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                  color: "#222E50",
-                }}
-              >
-                <CircularProgress />
-              </Backdrop>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Skeleton variant="rectangular" width={180} height={50} />
+              </Box>
             ) : (
               children
             )}
