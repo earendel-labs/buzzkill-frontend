@@ -1,3 +1,5 @@
+"use client";
+
 // src/context/LoadingContext.tsx
 import React, {
   createContext,

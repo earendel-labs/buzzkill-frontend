@@ -1,87 +1,20 @@
-"use client";
-
+// RootLayout.tsx
 import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../theme/theme";
 import { useMemo } from "react";
+
+import type { Session } from "next-auth";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
-import "@rainbow-me/rainbowkit/styles.css";
-import {
-  RainbowKitSiweNextAuthProvider,
-  GetSiweMessageOptions,
-} from "@rainbow-me/rainbowkit-siwe-next-auth";
-import { SessionProvider } from "next-auth/react";
-import type { Session } from "next-auth";
-
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-  Theme,
-} from "@rainbow-me/rainbowkit";
-import { WagmiProvider } from "wagmi"; // Updated to WagmiConfig in wagmi v1
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { vicMainnet, vicTestNet } from "./libs/chains";
-import {
-  injectedWallet,
-  rainbowWallet,
-  walletConnectWallet,
-  metaMaskWallet,
-  ledgerWallet,
-  coin98Wallet,
-  trustWallet,
-} from "@rainbow-me/rainbowkit/wallets";
-
-import { createWalletTheme } from "@/theme/walletTheme"; // Custom wallet theme
-
-const walletConnectProjectId: string =
-  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
-  (() => {
-    throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not defined");
-  })();
-
-const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
-
-const config = getDefaultConfig({
-  appName: "Buzzkill - Honeycomb Hustle",
-  projectId: walletConnectProjectId,
-  chains: [vicTestNet, vicMainnet],
-  wallets: [
-    {
-      groupName: "Recommended",
-      wallets: [coin98Wallet, metaMaskWallet, ledgerWallet],
-    },
-    {
-      groupName: "Popular Wallets",
-      wallets: [
-        trustWallet,
-        rainbowWallet,
-        injectedWallet,
-        walletConnectWallet,
-      ],
-    },
-  ],
-  ssr: true, // If your dApp uses server side rendering (SSR)
-});
-
-const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to the Buzzkill World",
-});
-
+import WalletConfiguration from "@/hooks/WalletConfiguration";
 export default function RootLayout({
   children,
   session,
 }: Readonly<{ session: Session; children: React.ReactNode }>) {
-  const theme = useMemo(() => getTheme(), []);
-  const queryClient = new QueryClient();
-
-  // Create the wallet theme based on your Material UI theme
-  const walletTheme = useMemo(() => createWalletTheme(theme), [theme]);
-
   return (
     <html lang="en">
       <head>
@@ -109,28 +42,16 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body>
-        <WagmiProvider config={config}>
-          <SessionProvider refetchInterval={0} session={session}>
-            <RainbowKitSiweNextAuthProvider
-              getSiweMessageOptions={getSiweMessageOptions}
-            >
-              <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider theme={walletTheme}>
-                  <LoadingProvider>
-                    <SoundProvider>
-                      <ThemeProvider theme={theme}>
-                        <CssBaseline />
-                        <GlobalScrollbarStyles />
-                        {children}
-                        <SpeedInsights />
-                      </ThemeProvider>
-                    </SoundProvider>
-                  </LoadingProvider>
-                </RainbowKitProvider>
-              </QueryClientProvider>
-            </RainbowKitSiweNextAuthProvider>
-          </SessionProvider>
-        </WagmiProvider>
+        <WalletConfiguration session={session}>
+          <LoadingProvider>
+            <SoundProvider>
+              <CssBaseline />
+              <GlobalScrollbarStyles />
+              {children}
+              <SpeedInsights />
+            </SoundProvider>
+          </LoadingProvider>
+        </WalletConfiguration>
       </body>
     </html>
   );
