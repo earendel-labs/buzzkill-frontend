@@ -1,13 +1,14 @@
-// Code in this file is based on https://docs.login.xyz/integrations/nextauth.js
-// with added process.env.VERCEL_URL detection to support preview deployments
-// and with auth option logic extracted into a 'getAuthOptions' function so it
-// can be used to get the session server-side with 'getServerSession'
+// src/pages/api/auth/[...nextauth].ts
+
 import { IncomingMessage } from "http";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
+
+// Import the Supabase client
+import { supabase } from "@/app/libs/supabaseClient";
 
 export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   const providers = [
@@ -50,8 +51,43 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           await siwe.verify({ signature: credentials?.signature || "" });
           console.log("Signature verified");
 
+          const address = siwe.address; // The user's Ethereum address
+
+          // Check if the user exists in Supabase
+          let { data: userData, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("address", address)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Error fetching user from Supabase:", error);
+            return null;
+          }
+
+          if (!userData) {
+            // User does not exist, create a new record
+            const { data: newUser, error: insertError } = await supabase
+              .from("users")
+              .insert({
+                address: address,
+                nonce: siwe.nonce,
+                signature: credentials?.signature || "",
+                created_at: new Date().toISOString(),
+              })
+              .single();
+
+            if (insertError) {
+              console.error("Error inserting new user into Supabase:", insertError);
+              return null;
+            }
+
+            userData = newUser;
+          }
+
+          // Return minimal user object
           return {
-            id: siwe.address,
+            id: address,
           };
         } catch (e) {
           console.error("Error in authorize:", e);
@@ -76,11 +112,33 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
   return {
     callbacks: {
+      async jwt({ token, user }) {
+        // Persist the Ethereum address in the token
+        if (user) {
+          token.sub = user.id;
+        }
+        return token;
+      },
       async session({ session, token }) {
         session.address = token.sub;
         session.user = {
           name: token.sub,
         };
+
+        // Fetch user data from Supabase
+        let { data: userData, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("address", token.sub)
+          .maybeSingle();
+
+        if (!error && userData) {
+          session.user = {
+            ...session.user,
+            ...userData,
+          };
+        }
+
         return session;
       },
     },
@@ -94,8 +152,6 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   };
 }
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const authOptions = getAuthOptions(req);
 
