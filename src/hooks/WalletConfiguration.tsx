@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
-import { Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import { WagmiProvider } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { vicMainnet, vicTestNet } from "@/app/libs/chains";
@@ -66,21 +66,22 @@ function WalletConfiguration({ session, children }: WalletConfigurationProps) {
     setIsProviderReady(true);
   }, []);
 
-  // Temporary skeleton loader while WagmiProvider initializes
-  if (!isProviderReady) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <Skeleton variant="rectangular" width={"100%"} height={60} />
-      </div>
-    );
-  }
-
   return (
-    <WagmiProvider config={config}>
-      <SessionProvider session={session}>
-        <WalletConnection>{children}</WalletConnection>
-      </SessionProvider>
-    </WagmiProvider>
+    <>
+      {/* Display mini-loader only where the wallet interaction might happen */}
+      {!isProviderReady && (
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Skeleton variant="rectangular" width={180} height={50} />
+        </Box>
+      )}
+
+      {/* Render the wallet provider setup once ready */}
+      <WagmiProvider config={config}>
+        <SessionProvider session={session}>
+          <WalletConnection>{children}</WalletConnection>
+        </SessionProvider>
+      </WagmiProvider>
+    </>
   );
 }
 
