@@ -80,17 +80,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
             })}
           >
             {!connected ? (
-              <Button
-                variant="contained"
-                onClick={openConnectModal}
-                sx={{
-                  backgroundColor: theme.palette.Blue.main, // Blue background for the connect button
-                  color: theme.palette.text.primary, // Primary text color for button
-                  "&:hover": {
-                    backgroundColor: theme.palette.Blue.dark, // Hover state
-                  },
-                }}
-              >
+              <Button className="blueButton" onClick={openConnectModal}>
                 {/* Use the prop for custom text, fallback to default */}
                 {loginButtonText || "Sign Up / Login"}
               </Button>

@@ -12,7 +12,7 @@ const SemiTransaprentCard: React.FC<SemiTransaprentCardProps> = ({
     <Box
       sx={{
         width: "100%",
-        padding: "24px 32px",
+        padding: "40px 32px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

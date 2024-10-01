@@ -1,4 +1,5 @@
 import { Theme } from "@mui/material/styles";
+import { white } from "tailwindcss/colors";
 
 const buttonStyles = (theme: Theme) => ({
   MuiButton: {
@@ -31,7 +32,7 @@ const buttonStyles = (theme: Theme) => ({
         },
         "&.blueButton": {
           backgroundColor: theme.palette.Blue.main,
-          color: theme.palette.Blue.contrastText,
+          color: "#fff",
           borderColor: theme.palette.Blue.main,
           "&:hover": {
             backgroundColor: theme.palette.Blue.dark,
