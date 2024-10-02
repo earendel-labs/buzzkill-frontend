@@ -33,14 +33,14 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueButton": {
           backgroundColor: theme.palette.Blue.main,
           color: "#fff",
-          borderColor: theme.palette.Blue.main,
+          borderColor: theme.palette.DarkBlue.main,
           "&:hover": {
-            backgroundColor: theme.palette.Blue.dark,
-            borderColor: theme.palette.Blue.dark,
+            backgroundColor: theme.palette.DarkBlue.dark,
+            borderColor: theme.palette.Blue.main,
           },
           "&:active": {
-            backgroundColor: theme.palette.Blue.light,
-            borderColor: theme.palette.Blue.light,
+            backgroundColor: theme.palette.DarkBlue.light,
+            borderColor: theme.palette.DarkBlue.light,
           },
         },
         "&.primaryButton": {

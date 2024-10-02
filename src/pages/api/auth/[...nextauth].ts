@@ -12,26 +12,75 @@ import { supabase } from "@/app/libs/supabaseClient";
 export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   const providers = [
     CredentialsProvider({
-      // Updated credentials parameter type to allow undefined
-      async authorize(credentials: Record<"message" | "signature", string> | undefined) {
+      async authorize(credentials) {
         console.log("Starting the authorize function...");
 
-        // If credentials or required fields are missing, log the issue and return null
-        if (!credentials || !credentials.message || !credentials.signature) {
-          console.log("Credentials are missing or incomplete:", credentials);
+        if (!credentials) {
+          console.log("Credentials are missing");
           return null;
         }
 
+        let address;
+
+        if (credentials.address) {
+          // Case 1: User exists and provides an address
+          address = credentials.address;
+        } else if (credentials.message && credentials.signature) {
+          // Case 2: SIWE flow is initiated
+          try {
+            console.log("Received credentials:", credentials);
+
+            // Parse the SIWE message
+            const siwe = new SiweMessage(JSON.parse(credentials.message));
+            address = siwe.address;
+            console.log("Extracted address:", address);
+
+            // Verify the SIWE message
+            const nextAuthUrl =
+              process.env.NEXTAUTH_URL ||
+              (process.env.VERCEL_URL
+                ? `https://${process.env.VERCEL_URL}`
+                : null);
+
+            if (!nextAuthUrl) {
+              console.log("Missing nextAuthUrl");
+              return null;
+            }
+
+            const nextAuthHost = new URL(nextAuthUrl).host;
+            if (siwe.domain !== nextAuthHost) {
+              console.log("Domain mismatch");
+              return null;
+            }
+
+            // Verify the CSRF token
+            const csrfToken = await getCsrfToken({
+              req: { headers: req.headers },
+            });
+            console.log("CSRF token:", csrfToken);
+
+            if (siwe.nonce !== csrfToken) {
+              console.log("Nonce mismatch");
+              return null;
+            }
+
+            // Verify the signature
+            await siwe.verify({ signature: credentials.signature });
+            console.log("Signature verified successfully");
+          } catch (e) {
+            console.error("Error in authorize:", e);
+            return null;
+          }
+        } else {
+          console.log(
+            "Credentials do not include address or SIWE message/signature"
+          );
+          return null;
+        }
+
+        // At this point, we have an address
         try {
-          console.log("Received credentials:", credentials);
-
-          // Parse the SIWE message
-          const siwe = new SiweMessage(JSON.parse(credentials.message));
-          const address = siwe.address; // Extract the user's Ethereum address
-          console.log("Extracted address:", address);
-
-          // Check if the user already exists in Supabase
-          let { data: userData, error } = await supabase
+          const { data: userData, error } = await supabase
             .from("users")
             .select("*")
             .eq("address", address)
@@ -43,106 +92,72 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           }
 
           if (userData) {
-            // User already exists, no need to verify the signature again
-            console.log("User exists in Supabase, skipping signature verification:", userData);
+            // User already exists
+            console.log("User exists in Supabase", userData);
             return {
-              id: address, // Return the address as user ID
+              id: address,
+              address,
+            };
+          } else {
+            // User does not exist, create user in Supabase
+            console.log("User does not exist, creating new user");
+            const { data: newUser, error: insertError } = await supabase
+              .from("users")
+              .insert({
+                address: address,
+                created_at: new Date().toISOString(),
+              })
+              .single();
+
+            if (insertError) {
+              console.error(
+                "Error inserting new user into Supabase:",
+                insertError
+              );
+              return null;
+            }
+
+            // Return the new user's address
+            return {
+              id: address,
+              address,
             };
           }
-
-          // If the user does not exist, verify the SIWE signature
-          console.log("User does not exist, verifying signature");
-
-          const nextAuthUrl =
-            process.env.NEXTAUTH_URL ||
-            (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
-
-          if (!nextAuthUrl) {
-            console.log("Missing nextAuthUrl");
-            return null;
-          }
-
-          const nextAuthHost = new URL(nextAuthUrl).host;
-          if (siwe.domain !== nextAuthHost) {
-            console.log("Domain mismatch");
-            return null;
-          }
-
-          // Verify the CSRF token
-          const csrfToken = await getCsrfToken({ req: { headers: req.headers } });
-          console.log("CSRF token:", csrfToken);
-
-          if (siwe.nonce !== csrfToken) {
-            console.log("Nonce mismatch");
-            return null;
-          }
-
-          // Verify the signature
-          await siwe.verify({ signature: credentials.signature });
-          console.log("Signature verified successfully");
-
-          // Now that the signature is verified, create a new user in Supabase
-          const { data: newUser, error: insertError } = await supabase
-            .from("users")
-            .insert({
-              address: address,
-              nonce: siwe.nonce,
-              signature: credentials.signature,
-              created_at: new Date().toISOString(),
-            })
-            .single();
-
-          if (insertError) {
-            console.error("Error inserting new user into Supabase:", insertError);
-            return null;
-          }
-
-          // Return the new user's address
-          return {
-            id: address,
-          };
         } catch (e) {
-          console.error("Error in authorize:", e);
+          console.error("Error during authorization:", e);
           return null;
         }
       },
       credentials: {
-        message: { label: "Message", placeholder: "0x0", type: "text" },
-        signature: { label: "Signature", placeholder: "0x0", type: "text" },
+        address: { label: "Address", type: "text", placeholder: "0x0" },
+        message: {
+          label: "Message",
+          type: "text",
+          placeholder: "SIWE message",
+        },
+        signature: {
+          label: "Signature",
+          type: "text",
+          placeholder: "Signature",
+        },
       },
-      name: "Ethereum",
     }),
   ];
 
   return {
     callbacks: {
-      async jwt({ token, user }: { token: any; user?: any }) {
-        // Persist the Ethereum address in the token
+      async jwt({ token, user }) {
         if (user) {
           token.sub = user.id;
+          token.address = user.address;
         }
         return token;
       },
-      async session({ session, token }: { session: any; token: any }) {
-        session.address = token.sub;
+      async session({ session, token }) {
+        session.address = token.address as string;
         session.user = {
-          name: token.sub,
+          name: token.address as string,
         };
-
-        // Fetch user data from Supabase
-        let { data: userData, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("address", token.sub)
-          .maybeSingle();
-
-        if (!error && userData) {
-          session.user = {
-            ...session.user,
-            ...userData,
-          };
-        }
-
         return session;
       },
     },

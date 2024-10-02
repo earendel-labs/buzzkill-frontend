@@ -7,6 +7,7 @@ import {
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { useAccount } from "wagmi";
 import { supabase } from "@/app/libs/supabaseClient";
+import { signIn } from "next-auth/react"; // Import signIn from next-auth/react
 import getTheme from "../theme/theme";
 import { useMemo } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -23,13 +24,7 @@ import {
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { createWalletTheme } from "@/theme/walletTheme";
-import {
-  ThemeProvider,
-  CircularProgress,
-  Backdrop,
-  Box,
-  Skeleton,
-} from "@mui/material"; // Import CircularProgress for loader
+import { ThemeProvider, Box, Skeleton } from "@mui/material";
 
 const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
@@ -58,7 +53,7 @@ const config = getDefaultConfig({
       ],
     },
   ],
-  ssr: false, // If your dApp uses server side rendering (SSR)
+  ssr: false,
 });
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
@@ -101,6 +96,24 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         } else if (userData) {
           console.log("User exists in Supabase. SIWE disabled.", userData);
           setIsSiweEnabled(false); // User exists, disable SIWE
+
+          // Sign in to NextAuth manually using credentials provider
+          const result = await signIn("credentials", {
+            address: address,
+            redirect: false, // Prevent full-page reload
+          });
+
+          if (result?.error) {
+            console.error(
+              "Failed to sign in via NextAuth credentials:",
+              result.error
+            );
+          } else {
+            console.log(
+              "Successfully signed in via NextAuth credentials",
+              result
+            );
+          }
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");
           setIsSiweEnabled(true); // User does not exist, enable SIWE

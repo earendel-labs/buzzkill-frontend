@@ -111,7 +111,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       height: 24,
                     }}
                   />
-                  <Typography sx={{ color: theme.palette.text.primary }}>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column", // Stack items vertically
+                      justifyContent: "flex-end", // Push items to the bottom
+                      color: theme.palette.text.primary,
+                    }}
+                  >
                     {account.displayName}
                   </Typography>
                   <ArrowDropDownIcon
@@ -152,19 +159,25 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   }}
                 >
                   {/* Account Balance */}
+                  {/* Account Balance */}
                   <MenuItem
                     sx={{
                       display: "flex",
                       alignItems: "center", // Ensure vertical alignment
                       justifyContent: "left", // Left justify all content
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Updated hover effect for balance
+                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for balance
                       },
                       padding: "10px 16px", // Consistent padding
-                      fontSize: "1.2rem", // Increase font size
+                      fontSize: "1.2rem", // Font size
                     }}
                   >
-                    <Typography sx={{ textAlign: "left" }}>
+                    <Typography
+                      sx={{
+                        textAlign: "left",
+                        lineHeight: "1.7rem", // Set line height to match other items
+                      }}
+                    >
                       Balance: {account.displayBalance}
                     </Typography>
                   </MenuItem>
@@ -173,24 +186,38 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   <MenuItem
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify all content
+                      alignItems: "center", // Vertical alignment
+                      justifyContent: "left", // Left justify content
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Updated hover effect for menu items
+                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for profile
                       },
-                      fontSize: "1.2rem", // Increase font size for profile
                       padding: "10px 16px", // Uniform padding for all items
+                      fontSize: "1.2rem", // Font size
                     }}
                   >
-                    <ListItemIcon sx={{ minWidth: "36px" }}>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "36px",
+                        display: "flex",
+                        alignItems: "center", // Center icon vertically
+                      }}
+                    >
                       <AccountCircleIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Updated icon color
-                          fontSize: "1.7rem", // Make icon larger
+                          color: theme.palette.Orange.main, // Icon color
+                          fontSize: "1.7rem", // Icon size
                         }}
                       />
                     </ListItemIcon>
-                    <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex", // Treat as flex item
+                        alignItems: "center", // Vertically center the text
+                        lineHeight: "1.7rem", // Match icon size
+                        fontSize: "1.2rem",
+                      }}
+                    >
                       My Profile
                     </Typography>
                   </MenuItem>
@@ -200,23 +227,37 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     sx={{
                       display: "flex",
                       alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify all content
+                      justifyContent: "left", // Left justify content
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Updated hover effect for settings
+                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for settings
                       },
-                      padding: "10px 16px", // Consistent padding
-                      fontSize: "1.2rem", // Increase font size
+                      padding: "10px 16px", // Uniform padding
+                      fontSize: "1.2rem", // Font size
                     }}
                   >
-                    <ListItemIcon sx={{ minWidth: "36px" }}>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "36px",
+                        display: "flex",
+                        alignItems: "center", // Center icon vertically
+                      }}
+                    >
                       <SettingsIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Updated icon color
-                          fontSize: "1.7rem", // Make icon larger
+                          color: theme.palette.Orange.main, // Icon color
+                          fontSize: "1.7rem", // Icon size
                         }}
                       />
                     </ListItemIcon>
-                    <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center", // Vertically center text
+                        lineHeight: "1.7rem", // Match icon size
+                        fontSize: "1.2rem",
+                      }}
+                    >
                       Settings
                     </Typography>
                   </MenuItem>
@@ -227,12 +268,12 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     sx={{
                       display: "flex",
                       alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify all content
+                      justifyContent: "left", // Left justify content
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Updated hover effect for chain selection
+                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for chain selection
                       },
-                      padding: "10px 0px 10px 22px", // Consistent padding
-                      fontSize: "1.2rem", // Increase font size
+                      padding: "10px 0px 10px 22px", // Padding
+                      fontSize: "1.2rem", // Font size
                     }}
                   >
                     {chain.hasIcon && (
@@ -240,7 +281,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                         src={chain.iconUrl}
                         alt={chain.name ?? "Chain icon"}
                         sx={{
-                          width: 12, // Consistent smaller avatar size
+                          width: 12, // Smaller avatar size
                           height: 12,
                           backgroundColor: chain.iconBackground,
                         }}
@@ -248,7 +289,13 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     )}
                     <Typography
                       variant="body1"
-                      sx={{ padding: "0px 3px", fontSize: "1.2rem" }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center", // Vertically center text
+                        padding: "0px 3px",
+                        lineHeight: "1.7rem", // Match icon size
+                        fontSize: "1.2rem",
+                      }}
                     >
                       {chain.name}
                     </Typography>
@@ -260,23 +307,37 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     sx={{
                       display: "flex",
                       alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify all content
+                      justifyContent: "left", // Left justify content
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main, // Updated selection color for Logout
+                        backgroundColor: theme.palette.DarkOrange.main, // Hover effect for Logout
                       },
                       padding: "10px 16px", // Consistent padding
-                      fontSize: "1.2rem", // Increase font size
+                      fontSize: "1.2rem", // Font size
                     }}
                   >
-                    <ListItemIcon sx={{ minWidth: "36px" }}>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "36px",
+                        display: "flex",
+                        alignItems: "center", // Center icon vertically
+                      }}
+                    >
                       <LogoutIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Use Orange color for Logout icon
-                          fontSize: "1.7rem", // Make icon larger
+                          color: theme.palette.Orange.main, // Icon color
+                          fontSize: "1.7rem", // Icon size
                         }}
                       />
                     </ListItemIcon>
-                    <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center", // Vertically center text
+                        lineHeight: "1.7rem", // Match icon size
+                        fontSize: "1.2rem",
+                      }}
+                    >
                       Logout
                     </Typography>
                   </MenuItem>

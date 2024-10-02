@@ -1,8 +1,9 @@
-"use client"; // Add this line at the very top
+"use client";
 
 import React, { useEffect, useState } from "react";
-import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
+import { useSession } from "next-auth/react"; // Import useSession to handle session status
 import { useRouter } from "next/navigation";
+import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import Box from "@mui/material/Box";
 import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationMarker/CombinedLocationMarker";
 import { useSound } from "@/context/SoundContext";
@@ -12,13 +13,15 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
-  const [isMounted, setIsMounted] = useState(false); // New state variable
+  const [isMounted, setIsMounted] = useState(false); // Track component mount
+  const { data: session, status } = useSession(); // Use session hook
   const router = useRouter();
 
   useEffect(() => {
-    setIsMounted(true); // Set to true after component mounts
+    setIsMounted(true);
   }, []);
 
+  // Handle music loading and playback
   useEffect(() => {
     if (isMounted) {
       const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
@@ -54,13 +57,11 @@ const Play: React.FC = () => {
 
   useEffect(() => {
     if (isMounted) {
-      // Add event listeners for user interaction
       window.addEventListener("click", handleUserInteraction);
       window.addEventListener("keydown", handleUserInteraction);
       window.addEventListener("mousemove", handleUserInteraction);
 
       return () => {
-        // Cleanup event listeners on unmount
         window.removeEventListener("click", handleUserInteraction);
         window.removeEventListener("keydown", handleUserInteraction);
         window.removeEventListener("mousemove", handleUserInteraction);
@@ -72,12 +73,22 @@ const Play: React.FC = () => {
     router.push(link);
   };
 
-  if (!isMounted) {
-    return null; // Render nothing until the component is mounted
+  // Redirect to home if not authenticated
+  useEffect(() => {
+    console.log("Session status:", status, "Session data:", session);
+  
+    if (status === "unauthenticated") {
+      router.push("/");  // Only redirect if status is explicitly unauthenticated
+    }
+  }, [status, router]);
+  // Render nothing until component is mounted
+  if (!isMounted || status === "loading") {
+    return null; // Optionally, you can show a loading spinner here
   }
 
   return (
     <GameLayout>
+      {/* Background Video */}
       <Box
         sx={{
           position: "absolute",
@@ -106,6 +117,8 @@ const Play: React.FC = () => {
           }}
         />
       </Box>
+
+      {/* Main Game Content */}
       <TopBar mapHeaderLabel="World Map" showWorldMapButton={false} />
       <CombinedLocationMarker
         left="10%"
@@ -133,4 +146,4 @@ const Play: React.FC = () => {
   );
 };
 
-export default Play; // Simplify the export
+export default Play;

@@ -64,8 +64,8 @@ const HomePage: React.FC = () => {
               component="img"
               src="/Maps/backgroundText.svg"
               sx={{
-                width: "70%",
-                height: "70%",
+                width: "85%",
+                height: "85%",
               }}
             />
 
@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
-                gap: 4,
+                gap: 8,
                 mt: 6, // Increased margin-top for more spacing below the buttons
               }}
             >
