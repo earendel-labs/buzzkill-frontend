@@ -15,6 +15,7 @@ import {
   ledgerWallet,
   coin98Wallet,
   trustWallet,
+  ramperWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import type { Session } from "next-auth";
 
@@ -35,7 +36,7 @@ const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [coin98Wallet, metaMaskWallet, ledgerWallet],
+      wallets: [coin98Wallet, metaMaskWallet, ramperWallet, ledgerWallet],
     },
     {
       groupName: "Popular Wallets",
