@@ -5,22 +5,26 @@ import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-import { useRouter, useSearchParams } from "next/navigation"; // Use the useSearchParams hook and router
+import { useRouter } from "next/navigation"; // Use the useSearchParams hook and router
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard"; // Import the semi-transparent card
 import { useSession } from "next-auth/react"; // Import useSession to check authentication status
 
 const HomePage: React.FC = () => {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Get query parameters
-  const error = searchParams?.get("error"); // Get the 'error' query parameter with optional chaining
-  const { data: session } = useSession(); // Get the session data to check if authenticated
+  const [error, setError] = React.useState<string | null>(null);
+  const { data: session } = useSession();
 
-  // Effect to clear the query params if authenticated
+  // Fetch query params on client side
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const errorParam = params.get("error");
+    setError(errorParam);
+  }, []);
+
   useEffect(() => {
     if (session && error === "auth") {
-      // Clear the query params by replacing the URL using window.location
-      const cleanUrl = window.location.pathname; // Remove the query string from the current URL
-      router.replace(cleanUrl); // Replace the current URL with the clean one
+      const cleanUrl = window.location.pathname;
+      router.replace(cleanUrl);
     }
   }, [session, error, router]);
 

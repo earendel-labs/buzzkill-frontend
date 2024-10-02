@@ -161,6 +161,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         return session;
       },
     },
+    
     providers,
     secret: process.env.NEXTAUTH_SECRET,
     session: {
