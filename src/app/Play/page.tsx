@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react"; // Import useSession to handle session status
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import Box from "@mui/material/Box";
@@ -9,32 +9,34 @@ import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationM
 import { useSound } from "@/context/SoundContext";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
+import { CircularProgress, Typography } from "@mui/material";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
-  const [isMounted, setIsMounted] = useState(false); // Track component mount
-  const { data: session, status } = useSession(); // Use session hook
+  const { data: session, status } = useSession();
   const router = useRouter();
 
+  // Redirect to home if not authenticated
   useEffect(() => {
-    setIsMounted(true);
+    if (status === "unauthenticated") {
+      router.push("/"); // Redirect unauthenticated users
+    }
+  }, [status, router]);
+
+  // Initialize music
+  useEffect(() => {
+    const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
+    audio.loop = true;
+    audio.volume = 0.6;
+    setMusic(audio);
+
+    return () => {
+      audio.pause();
+    };
   }, []);
 
-  // Handle music loading and playback
-  useEffect(() => {
-    if (isMounted) {
-      const audio = new Audio("/Audio/Soundtrack/WorldMap/MapMusic.mp3");
-      audio.loop = true;
-      audio.volume = 0.6;
-      setMusic(audio);
-
-      return () => {
-        audio.pause();
-      };
-    }
-  }, [isMounted]);
-
+  // Handle music playback based on mute states
   useEffect(() => {
     if (music) {
       if (isMusicMuted || isMuted) {
@@ -47,6 +49,7 @@ const Play: React.FC = () => {
     }
   }, [isMusicMuted, isMuted, music]);
 
+  // Handle user interaction for music playback
   const handleUserInteraction = () => {
     if (music && !isMusicMuted && !isMuted) {
       music.play().catch((error) => {
@@ -55,8 +58,9 @@ const Play: React.FC = () => {
     }
   };
 
+  // Add event listeners for user interaction
   useEffect(() => {
-    if (isMounted) {
+    if (music) {
       window.addEventListener("click", handleUserInteraction);
       window.addEventListener("keydown", handleUserInteraction);
       window.addEventListener("mousemove", handleUserInteraction);
@@ -67,25 +71,35 @@ const Play: React.FC = () => {
         window.removeEventListener("mousemove", handleUserInteraction);
       };
     }
-  }, [music, isMusicMuted, isMuted, isMounted]);
+  }, [music, isMusicMuted, isMuted]);
 
   const navigate = (link: string) => {
     router.push(link);
   };
 
-  // Redirect to home if not authenticated
-  useEffect(() => {
-    console.log("Session status:", status, "Session data:", session);
-  
-    if (status === "unauthenticated") {
-      router.push("/");  // Only redirect if status is explicitly unauthenticated
-    }
-  }, [status, router]);
-  // Render nothing until component is mounted
-  if (!isMounted || status === "loading") {
-    return null; // Optionally, you can show a loading spinner here
+  // Conditional rendering after all hooks
+  if (status === "loading") {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        flexDirection="column"
+      >
+        <CircularProgress />
+        <Typography className="body1" padding="16px 0px">
+          Loading World...
+        </Typography>
+      </Box>
+    );
   }
 
+  if (status === "unauthenticated") {
+    return null; // Redirecting, so render nothing
+  }
+
+  // Main content when authenticated
   return (
     <GameLayout>
       {/* Background Video */}
