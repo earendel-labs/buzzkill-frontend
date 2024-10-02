@@ -10,7 +10,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Dropdown caret icon
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
+
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
@@ -91,15 +93,15 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   onClick={handleMenuOpen}
                   variant="contained"
                   sx={{
-                    backgroundColor: theme.palette.DarkBlue.main,  
+                    backgroundColor: theme.palette.DarkBlue.main,
                     color: theme.palette.text.primary,
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
-                    padding: "8px 16px",  
-                    minWidth: 200,  
+                    padding: "8px 16px",
+                    minWidth: 200,
                     "&:hover": {
-                      backgroundColor: theme.palette.DarkBlue.dark,  
+                      backgroundColor: theme.palette.DarkBlue.dark,
                     },
                   }}
                 >
@@ -176,6 +178,45 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       }}
                     >
                       Balance: {account.displayBalance}
+                    </Typography>
+                  </MenuItem>
+
+                  {/* Chain Selector */}
+                  <MenuItem
+                    onClick={openChainModal}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center", // Ensure vertical alignment
+                      justifyContent: "left", // Left justify content
+                      "&:hover": {
+                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for chain selection
+                      },
+                      padding: "10px 0px 10px 22px", // Padding
+                      fontSize: "1.2rem", // Font size
+                    }}
+                  >
+                    {chain.hasIcon && (
+                      <Avatar
+                        src={chain.iconUrl}
+                        alt={chain.name ?? "Chain icon"}
+                        sx={{
+                          width: "22px !important",
+                          height: "22px !important",
+                          backgroundColor: chain.iconBackground,
+                        }}
+                      />
+                    )}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center", // Vertically center text
+                        padding: "0px 4px",
+                        lineHeight: "1.7rem", // Match icon size
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      {chain.name}
                     </Typography>
                   </MenuItem>
 
@@ -259,45 +300,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     </Typography>
                   </MenuItem>
 
-                  {/* Chain Selector */}
-                  <MenuItem
-                    onClick={openChainModal}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify content
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for chain selection
-                      },
-                      padding: "10px 0px 10px 22px", // Padding
-                      fontSize: "1.2rem", // Font size
-                    }}
-                  >
-                    {chain.hasIcon && (
-                      <Avatar
-                        src={chain.iconUrl}
-                        alt={chain.name ?? "Chain icon"}
-                        sx={{
-                          width: 12, // Smaller avatar size
-                          height: 12,
-                          backgroundColor: chain.iconBackground,
-                        }}
-                      />
-                    )}
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center", // Vertically center text
-                        padding: "0px 3px",
-                        lineHeight: "1.7rem", // Match icon size
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      {chain.name}
-                    </Typography>
-                  </MenuItem>
-
                   {/* Logout Button */}
                   <MenuItem
                     onClick={openAccountModal}
@@ -319,7 +321,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                         alignItems: "center", // Center icon vertically
                       }}
                     >
-                      <LogoutIcon
+                      <PowerSettingsNewRoundedIcon
                         sx={{
                           color: theme.palette.Orange.main, // Icon color
                           fontSize: "1.7rem", // Icon size

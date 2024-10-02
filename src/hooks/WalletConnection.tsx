@@ -26,6 +26,8 @@ import {
 import { createWalletTheme } from "@/theme/walletTheme";
 import { ThemeProvider, Box, Skeleton } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
+import { useRouter } from "next/navigation"; // Import the router
+
 const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
   (() => {
@@ -68,6 +70,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
   const [isSiweEnabled, setIsSiweEnabled] = useState(true); // Control SIWE flow
   const { address, isConnected } = useAccount(); // Get connected wallet address
   const [loading, setLoading] = useState(false); // State to control loading indicator
+  const router = useRouter(); // Initialize router
 
   useEffect(() => {
     console.log("WalletConnection mounted");
@@ -113,6 +116,14 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
               "Successfully signed in via NextAuth credentials",
               result
             );
+            if (result?.ok && result.url) {
+              // Redirect to the URL if it exists
+              router.push(result.url);
+            } else {
+              console.error(
+                "Sign-in failed or no URL returned for redirection."
+              );
+            }
           }
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");

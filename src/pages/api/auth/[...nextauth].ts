@@ -153,6 +153,34 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         }
         return token;
       },
+      async redirect({ url, baseUrl }) {
+        // Add logging to check if the redirect callback is being called
+        console.log("Redirect callback triggered");
+        console.log("URL:", url);
+        console.log("Base URL:", baseUrl);
+
+        // Ignore API calls to avoid unnecessary redirects
+        if (url.includes("/api/")) {
+          console.log("Ignoring redirect for API calls");
+          return url;
+        }
+
+        // Prevent redirect loops by checking if the URL is already "/Play"
+        if (url === `${baseUrl}/Play`) {
+          console.log("User is already on /Play, returning original URL");
+          return url;
+        }
+
+        // Check if the URL is the base URL or home page ("/")
+        if (url === baseUrl || url === `${baseUrl}/`) {
+          console.log("Redirecting to /Play");
+          return `${baseUrl}/Play`; // Redirect to /Play if the user is on the home page
+        }
+
+        // If not the home page, return the original URL
+        console.log("Returning original URL:", url);
+        return url;
+      },
       async session({ session, token }) {
         session.address = token.address as string;
         session.user = {
@@ -161,7 +189,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         return session;
       },
     },
-    
+
     providers,
     secret: process.env.NEXTAUTH_SECRET,
     session: {
