@@ -137,21 +137,21 @@ const Play: React.FC = () => {
       <CombinedLocationMarker
         left="10%"
         top="50%"
-        link="/Location/Beach"
+        link="Play/Location/Beach"
         text="TidalFlame Beaches"
         navigate={navigate}
       />
       <CombinedLocationMarker
         left="30%"
         top="60%"
-        link="/Location/Forest"
+        link="Play/Location/Forest"
         text="Whisperwood Valleys"
         navigate={navigate}
       />
       <CombinedLocationMarker
         left="63%"
         top="35%"
-        link="/Location/Snow"
+        link="Play/Location/Snow"
         text="Mistcloak Tundra"
         navigate={navigate}
       />

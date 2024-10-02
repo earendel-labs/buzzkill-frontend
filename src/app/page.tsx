@@ -1,15 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; // Use the useSearchParams hook and router
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard"; // Import the semi-transparent card
+import { useSession } from "next-auth/react"; // Import useSession to check authentication status
 
 const HomePage: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams(); // Get query parameters
+  const error = searchParams?.get("error"); // Get the 'error' query parameter with optional chaining
+  const { data: session } = useSession(); // Get the session data to check if authenticated
+
+  // Effect to clear the query params if authenticated
+  useEffect(() => {
+    if (session && error === "auth") {
+      // Clear the query params by replacing the URL using window.location
+      const cleanUrl = window.location.pathname; // Remove the query string from the current URL
+      router.replace(cleanUrl); // Replace the current URL with the clean one
+    }
+  }, [session, error, router]);
 
   const handleClick = () => {
     router.push("/Mint");
@@ -68,6 +81,19 @@ const HomePage: React.FC = () => {
                 height: "85%",
               }}
             />
+
+            {/* Conditionally render login message if not authenticated and redirected */}
+            {!session && error === "auth" && (
+              <Typography
+                variant="h6"
+                color="error"
+                sx={{
+                  marginTop: 4,
+                }}
+              >
+                Please login or Sign Up to Play
+              </Typography>
+            )}
 
             {/* Buttons Row */}
             <Box

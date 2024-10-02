@@ -25,7 +25,7 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { createWalletTheme } from "@/theme/walletTheme";
 import { ThemeProvider, Box, Skeleton } from "@mui/material";
-
+import CustomAvatar from "@/components/User/CustomAvatar";
 const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
   (() => {
@@ -142,7 +142,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
       getSiweMessageOptions={getSiweMessageOptions}
     >
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={walletTheme}>
+        <RainbowKitProvider theme={walletTheme} avatar={CustomAvatar}>
           <ThemeProvider theme={theme}>
             {/* Show loader if loading is true */}
             {loading ? (

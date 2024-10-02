@@ -13,7 +13,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"; // Dropdown caret icon
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
-
+import CustomAvatar from "@/components/User/CustomAvatar";
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
@@ -91,25 +91,23 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   onClick={handleMenuOpen}
                   variant="contained"
                   sx={{
-                    backgroundColor: theme.palette.DarkBlue.main, // Button background
+                    backgroundColor: theme.palette.DarkBlue.main,  
                     color: theme.palette.text.primary,
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
-                    padding: "8px 16px", // Make it feel more like a button with padding
-                    minWidth: 200, // Ensure a consistent width
+                    padding: "8px 16px",  
+                    minWidth: 200,  
                     "&:hover": {
-                      backgroundColor: theme.palette.DarkBlue.dark, // Darken on hover
+                      backgroundColor: theme.palette.DarkBlue.dark,  
                     },
                   }}
                 >
-                  <Avatar
-                    alt={account.displayName}
-                    src={account.ensAvatar}
-                    sx={{
-                      width: 24, // Smaller avatar size
-                      height: 24,
-                    }}
+                  {/* Reuse the custom avatar logic */}
+                  <CustomAvatar
+                    address={account.address}
+                    ensImage={account.ensAvatar}
+                    size={24}
                   />
                   <Typography
                     sx={{
@@ -158,7 +156,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     vertical: "bottom",
                   }}
                 >
-                  {/* Account Balance */}
                   {/* Account Balance */}
                   <MenuItem
                     sx={{

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
-import UserResourceBar from "@/components/UserResources/UserResources";
+import UserResourceBar from "@/components/User/UserResources/UserResources";
 
 interface TopBarProps {
   showWorldMapButton?: boolean;
