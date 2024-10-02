@@ -86,12 +86,12 @@ const HomePage: React.FC = () => {
             {!session && error === "auth" && (
               <Typography
                 variant="h6"
-                color="error"
+                color="red"
                 sx={{
                   marginTop: 4,
                 }}
               >
-                Please login or Sign Up to Play
+                Please login or create an Account to Play
               </Typography>
             )}
 
