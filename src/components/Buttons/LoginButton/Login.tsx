@@ -7,15 +7,14 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
-
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
+
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
@@ -37,21 +36,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     setAnchorEl(null);
   };
 
-  if (loading) {
-    // Show skeleton loader while loading
-    return (
-      <Skeleton
-        variant="rectangular"
-        width={180}
-        height={50}
-        sx={{
-          borderRadius: 4,
-          backgroundColor: theme.palette.background.paper,
-        }}
-      />
-    );
-  }
-
   return (
     <ConnectButton.Custom>
       {({
@@ -63,32 +47,37 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
         authenticationStatus,
         mounted,
       }) => {
+        // Check if component is mounted and authentication status is either authenticated or undefined
         const ready = mounted && authenticationStatus !== "loading";
         const connected =
           ready &&
           account &&
           chain &&
-          (!authenticationStatus || authenticationStatus === "authenticated");
+          (authenticationStatus === "authenticated" || !authenticationStatus);
+
+        // Show skeleton loader if the component is not ready or custom loading state is true
+        if (!mounted || !ready || loading) {
+          return (
+            <Skeleton
+              variant="rectangular"
+              width={180}
+              height={50}
+              sx={{
+                borderRadius: 2,
+                backgroundColor: theme.palette.DarkBlue.main,
+              }}
+            />
+          );
+        }
 
         return (
-          <Box
-            {...(!ready && {
-              "aria-hidden": true,
-              sx: {
-                opacity: 0,
-                pointerEvents: "none",
-                userSelect: "none",
-              },
-            })}
-          >
+          <Box>
             {!connected ? (
               <Button className="blueButton" onClick={openConnectModal}>
-                {/* Use the prop for custom text, fallback to default */}
                 {loginButtonText || "Sign Up / Login"}
               </Button>
             ) : (
               <Box>
-                {/* Button to open the profile dropdown */}
                 <Button
                   onClick={handleMenuOpen}
                   variant="contained"
@@ -105,7 +94,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     },
                   }}
                 >
-                  {/* Reuse the custom avatar logic */}
                   <CustomAvatar
                     address={account.address}
                     ensImage={account.ensAvatar}
@@ -114,8 +102,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   <Typography
                     sx={{
                       display: "flex",
-                      flexDirection: "column", // Stack items vertically
-                      justifyContent: "flex-end", // Push items to the bottom
+                      flexDirection: "column",
+                      justifyContent: "flex-end",
                       color: theme.palette.text.primary,
                     }}
                   >
@@ -124,12 +112,12 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   <ArrowDropDownIcon
                     sx={{
                       color: theme.palette.text.primary,
-                      ml: "auto", // Align caret to the right
+                      ml: "auto",
                     }}
                   />
                 </Button>
 
-                {/* Menu for profile dropdown */}
+                {/* Profile dropdown menu */}
                 <Menu
                   anchorEl={anchorEl}
                   open={open}
@@ -137,12 +125,12 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   PaperProps={{
                     elevation: 4,
                     sx: {
-                      backgroundColor: theme.palette.DarkBlue.main, // Updated background to DarkBlue.main
-                      color: theme.palette.text.primary, // Text color from MUI theme
-                      mt: 0.5, // Tighten space between button and menu
-                      minWidth: 200, // Ensure same width as button
+                      backgroundColor: theme.palette.DarkBlue.main,
+                      color: theme.palette.text.primary,
+                      mt: 0.5,
+                      minWidth: 200,
                       "& .MuiAvatar-root": {
-                        width: 24, // Smaller avatar size in the menu
+                        width: 24,
                         height: 24,
                         ml: -0.5,
                         mr: 1,
@@ -158,41 +146,38 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     vertical: "bottom",
                   }}
                 >
-                  {/* Account Balance */}
+                  {/* Account balance */}
                   <MenuItem
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify all content
+                      alignItems: "center",
+                      justifyContent: "left",
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for balance
+                        backgroundColor: theme.palette.DarkOrange.dark,
                       },
-                      padding: "10px 16px", // Consistent padding
-                      fontSize: "1.2rem", // Font size
                     }}
                   >
                     <Typography
-                      sx={{
-                        textAlign: "left",
-                        lineHeight: "1.7rem", // Set line height to match other items
-                      }}
+                      sx={{ textAlign: "left", lineHeight: "1.7rem" }}
                     >
                       Balance: {account.displayBalance}
                     </Typography>
                   </MenuItem>
 
-                  {/* Chain Selector */}
+                  {/* Chain selector */}
                   <MenuItem
                     onClick={openChainModal}
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify content
+                      alignItems: "center",
+                      justifyContent: "left",
+                      padding: "10px 0px 10px 22px",
+                      fontSize: "1.2rem",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for chain selection
+                        backgroundColor: theme.palette.DarkOrange.dark,
                       },
-                      padding: "10px 0px 10px 22px", // Padding
-                      fontSize: "1.2rem", // Font size
                     }}
                   >
                     {chain.hasIcon && (
@@ -210,9 +195,9 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       variant="body1"
                       sx={{
                         display: "flex",
-                        alignItems: "center", // Vertically center text
+                        alignItems: "center",
                         padding: "0px 4px",
-                        lineHeight: "1.7rem", // Match icon size
+                        lineHeight: "1.7rem",
                         fontSize: "1.2rem",
                       }}
                     >
@@ -224,35 +209,35 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   <MenuItem
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Vertical alignment
-                      justifyContent: "left", // Left justify content
+                      alignItems: "center",
+                      justifyContent: "left",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for profile
+                        backgroundColor: theme.palette.DarkOrange.dark,
                       },
-                      padding: "10px 16px", // Uniform padding for all items
-                      fontSize: "1.2rem", // Font size
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
                     }}
                   >
                     <ListItemIcon
                       sx={{
                         minWidth: "36px",
                         display: "flex",
-                        alignItems: "center", // Center icon vertically
+                        alignItems: "center",
                       }}
                     >
                       <AccountCircleIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Icon color
-                          fontSize: "1.7rem", // Icon size
+                          color: theme.palette.Orange.main,
+                          fontSize: "1.7rem",
                         }}
                       />
                     </ListItemIcon>
                     <Typography
                       variant="body1"
                       sx={{
-                        display: "flex", // Treat as flex item
-                        alignItems: "center", // Vertically center the text
-                        lineHeight: "1.7rem", // Match icon size
+                        display: "flex",
+                        alignItems: "center",
+                        lineHeight: "1.7rem",
                         fontSize: "1.2rem",
                       }}
                     >
@@ -264,26 +249,26 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   <MenuItem
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify content
+                      alignItems: "center",
+                      justifyContent: "left",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark, // Hover effect for settings
+                        backgroundColor: theme.palette.DarkOrange.dark,
                       },
-                      padding: "10px 16px", // Uniform padding
-                      fontSize: "1.2rem", // Font size
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
                     }}
                   >
                     <ListItemIcon
                       sx={{
                         minWidth: "36px",
                         display: "flex",
-                        alignItems: "center", // Center icon vertically
+                        alignItems: "center",
                       }}
                     >
                       <SettingsIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Icon color
-                          fontSize: "1.7rem", // Icon size
+                          color: theme.palette.Orange.main,
+                          fontSize: "1.7rem",
                         }}
                       />
                     </ListItemIcon>
@@ -291,8 +276,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       variant="body1"
                       sx={{
                         display: "flex",
-                        alignItems: "center", // Vertically center text
-                        lineHeight: "1.7rem", // Match icon size
+                        alignItems: "center",
+                        lineHeight: "1.7rem",
                         fontSize: "1.2rem",
                       }}
                     >
@@ -300,31 +285,31 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     </Typography>
                   </MenuItem>
 
-                  {/* Logout Button */}
+                  {/* Logout button */}
                   <MenuItem
                     onClick={openAccountModal}
                     sx={{
                       display: "flex",
-                      alignItems: "center", // Ensure vertical alignment
-                      justifyContent: "left", // Left justify content
+                      alignItems: "center",
+                      justifyContent: "left",
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main, // Hover effect for Logout
+                        backgroundColor: theme.palette.DarkOrange.main,
                       },
-                      padding: "10px 16px", // Consistent padding
-                      fontSize: "1.2rem", // Font size
                     }}
                   >
                     <ListItemIcon
                       sx={{
                         minWidth: "36px",
                         display: "flex",
-                        alignItems: "center", // Center icon vertically
+                        alignItems: "center",
                       }}
                     >
                       <PowerSettingsNewRoundedIcon
                         sx={{
-                          color: theme.palette.Orange.main, // Icon color
-                          fontSize: "1.7rem", // Icon size
+                          color: theme.palette.Orange.main,
+                          fontSize: "1.7rem",
                         }}
                       />
                     </ListItemIcon>
@@ -332,8 +317,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       variant="body1"
                       sx={{
                         display: "flex",
-                        alignItems: "center", // Vertically center text
-                        lineHeight: "1.7rem", // Match icon size
+                        alignItems: "center",
+                        lineHeight: "1.7rem",
                         fontSize: "1.2rem",
                       }}
                     >

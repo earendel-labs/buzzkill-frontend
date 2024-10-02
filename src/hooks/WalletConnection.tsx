@@ -155,14 +155,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={walletTheme} avatar={CustomAvatar}>
           <ThemeProvider theme={theme}>
-            {/* Show loader if loading is true */}
-            {loading ? (
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <Skeleton variant="rectangular" width={180} height={50} />
-              </Box>
-            ) : (
-              children
-            )}
+             {children}
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
