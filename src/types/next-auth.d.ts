@@ -17,5 +17,7 @@ declare module "next-auth" {
 
   interface JWT {
     address?: string; // Include address in JWT
+    iat?: number; // Issued At (iat) timestamp
+    exp?: number; // Expiration (exp) timestamp
   }
 }

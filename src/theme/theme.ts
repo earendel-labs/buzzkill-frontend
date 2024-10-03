@@ -2,6 +2,7 @@ import { createTheme, Theme } from "@mui/material/styles";
 import buttonStyles from "./Button/buttonStyles";
 import linkStyles from "./TextStyles/linkStyles";
 import tabStyles from "./TabStyles/tabStyles";
+import textBoxStyles from "./TextBoxStyles/textBoxStyles";
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {
   interface Palette {
@@ -97,12 +98,12 @@ const getTheme = (): Theme => {
       Blue: {
         main: "#007991",
         light: "#0091AC",
-        dark: "##055e74",
+        dark: "#055e74",
       },
       DarkBlue: {
         main: "#222E50",
-        light: "##385fbd",
-        dark: "##2e447a",
+        light: "#385fbd",
+        dark: "#2e447a",
       },
       Orange: {
         main: "#CC5803",
@@ -199,7 +200,8 @@ const getTheme = (): Theme => {
     components: {
       ...buttonStyles(baseTheme),
       ...linkStyles(baseTheme),
-      ...tabStyles(baseTheme), // Add your tab styles here
+      ...tabStyles(baseTheme),
+      ...textBoxStyles(baseTheme),
     },
   });
 

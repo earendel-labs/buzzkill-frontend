@@ -14,11 +14,21 @@ import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRou
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
+import { useRouter } from "next/navigation";
+
+import { signOut } from "next-auth/react";
 
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
 }
+
+const handleLogout = () => {
+  // Sign out from NextAuth and redirect to the homepage
+  signOut({
+    callbackUrl: "/", // Redirect to homepage upon logout
+  });
+};
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
   loginButtonText,
@@ -27,13 +37,17 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
   const theme = useTheme(); // Access MUI theme
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
+  const router = useRouter();
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleProfileNavigation = () => {
+    router.push("/Play/User/MyProfile");
   };
 
   return (
@@ -54,6 +68,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
           account &&
           chain &&
           (authenticationStatus === "authenticated" || !authenticationStatus);
+        const router = useRouter();
 
         // Show skeleton loader if the component is not ready or custom loading state is true
         if (!mounted || !ready || loading) {
@@ -207,6 +222,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
                   {/* Profile Section */}
                   <MenuItem
+                    onClick={handleProfileNavigation}
                     sx={{
                       display: "flex",
                       alignItems: "center",

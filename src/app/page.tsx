@@ -5,26 +5,33 @@ import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-import { useRouter } from "next/navigation"; // Use the useSearchParams hook and router
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard"; // Import the semi-transparent card
+import { useRouter } from "next/navigation";
+import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useSession } from "next-auth/react"; // Import useSession to check authentication status
 
 const HomePage: React.FC = () => {
   const router = useRouter();
   const [error, setError] = React.useState<string | null>(null);
-  const { data: session } = useSession();
+  const { data: session } = useSession(); // Get session state from NextAuth
 
-  // Fetch query params on client side
+  // Check for query parameters (e.g., error) on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
-    setError(errorParam);
+    setError(errorParam); // Store any error in state
   }, []);
 
+  // Handle redirection logic after a successful session
   useEffect(() => {
     if (session && error === "auth") {
-      const cleanUrl = window.location.pathname;
-      router.replace(cleanUrl);
+      const cleanUrl = window.location.pathname; // Remove the error from URL
+      router.replace(cleanUrl); // Replace the URL without reloading the page
+
+      // Here, we redirect to /Play if the session exists
+      const referrer = document.referrer;
+      if (referrer === window.location.origin + "/") {
+        router.push("/Play"); // Redirect to /Play only if coming from the homepage
+      }
     }
   }, [session, error, router]);
 

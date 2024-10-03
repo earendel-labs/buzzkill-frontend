@@ -147,53 +147,72 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   return {
     callbacks: {
       async jwt({ token, user }) {
+        const currentTime = Math.floor(Date.now() / 1000);
+
         if (user) {
+          // When the user signs in for the first time
           token.sub = user.id;
           token.address = user.address;
+          token.iat = currentTime;
+          token.exp = currentTime + 60 * 60; // 1-hour expiration
         }
+
+        // Ensure that `exp` is defined before performing arithmetic
+        if (
+          typeof token.exp === "number" &&
+          currentTime > token.exp - 60 * 10
+        ) {
+          token.iat = currentTime;
+          token.exp = currentTime + 60 * 60; // Refresh expiration by another hour
+        }
+
         return token;
       },
-      async redirect({ url, baseUrl }) {
-        // Add logging to check if the redirect callback is being called
-        console.log("Redirect callback triggered");
-        console.log("URL:", url);
-        console.log("Base URL:", baseUrl);
 
-        // Ignore API calls to avoid unnecessary redirects
-        if (url.includes("/api/")) {
-          console.log("Ignoring redirect for API calls");
-          return url;
-        }
-
-        // Prevent redirect loops by checking if the URL is already "/Play"
-        if (url === `${baseUrl}/Play`) {
-          console.log("User is already on /Play, returning original URL");
-          return url;
-        }
-
-        // Check if the URL is the base URL or home page ("/")
-        if (url === baseUrl || url === `${baseUrl}/`) {
-          console.log("Redirecting to /Play");
-          return `${baseUrl}/Play`; // Redirect to /Play if the user is on the home page
-        }
-
-        // If not the home page, return the original URL
-        console.log("Returning original URL:", url);
-        return url;
-      },
       async session({ session, token }) {
         session.address = token.address as string;
         session.user = {
           name: token.address as string,
         };
+        if (typeof token.exp === "number") {
+          session.expires = new Date(token.exp * 1000).toISOString(); // Convert expiration to ISO string
+        }
         return session;
+      },
+
+      async redirect({ url, baseUrl }) {
+        console.log("Redirect callback triggered");
+        console.log("URL:", url);
+        console.log("Base URL:", baseUrl);
+
+        if (url.includes("/api/")) {
+          console.log("Ignoring redirect for API calls");
+          return url;
+        }
+
+        if (url === `${baseUrl}/Play`) {
+          console.log("User is already on /Play, returning original URL");
+          return url;
+        }
+
+        if (url === baseUrl || url === `${baseUrl}/`) {
+          console.log("Redirecting to /Play");
+          return `${baseUrl}/Play`; // Redirect to /Play if the user is on the home page
+        }
+
+        console.log("Returning original URL:", url);
+        return url;
       },
     },
 
     providers,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET, // Use the Supabase JWT secret
     session: {
       strategy: "jwt",
+    },
+    jwt: {
+      secret: process.env.NEXTAUTH_SECRET, // Use the same secret for JWT signing
+      maxAge: 60 * 60, // 1-hour expiration
     },
     debug: true,
   };

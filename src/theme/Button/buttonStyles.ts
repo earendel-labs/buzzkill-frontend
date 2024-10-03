@@ -1,5 +1,4 @@
 import { Theme } from "@mui/material/styles";
-import { white } from "tailwindcss/colors";
 
 const buttonStyles = (theme: Theme) => ({
   MuiButton: {
@@ -7,14 +6,13 @@ const buttonStyles = (theme: Theme) => ({
       root: {
         fontFamily: '"Vera Humana 95", "Poppins"',
         fontSize: "18px",
-
         fontWeight: "600",
         textTransform: "none",
-        padding: "5px 20px",
+        padding: "10px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderWidth: "1px",
+        borderWidth: "2px",
         borderStyle: "solid",
         boxSizing: "border-box",
         "&.goldButton": {
@@ -31,16 +29,23 @@ const buttonStyles = (theme: Theme) => ({
           },
         },
         "&.blueButton": {
-          backgroundColor: theme.palette.Blue.main,
-          color: "#fff",
+          backgroundColor: "#568ddb", // Normal background color
+          color: "#fff", // Normal font color (white)
           borderColor: theme.palette.DarkBlue.main,
           "&:hover": {
-            backgroundColor: theme.palette.DarkBlue.dark,
+            backgroundColor: "#4272ce", // Hover background color
+            color: "#fff", // Hover font color
             borderColor: theme.palette.Blue.main,
           },
           "&:active": {
-            backgroundColor: theme.palette.DarkBlue.light,
+            backgroundColor: "#385fbd", // Active background color
+            color: "#fff", // Active font color
             borderColor: theme.palette.DarkBlue.light,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#222e50", // Disabled background color
+            color: "#385fbd", // Disabled text color
+            borderColor: "#222e50", // Disabled border color to match background
           },
         },
         "&.primaryButton": {
@@ -53,7 +58,6 @@ const buttonStyles = (theme: Theme) => ({
           boxSizing: "border-box",
           background:
             "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
-
           "&:hover": {
             background:
               "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",

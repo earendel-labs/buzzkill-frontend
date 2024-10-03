@@ -154,9 +154,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     >
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={walletTheme} avatar={CustomAvatar}>
-          <ThemeProvider theme={theme}>
-             {children}
-          </ThemeProvider>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </RainbowKitSiweNextAuthProvider>

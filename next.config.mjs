@@ -17,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: [ 
+        headers: [
           {
             key: "X-Frame-Options",
             value: "DENY",
@@ -33,10 +33,6 @@ const nextConfig = {
           {
             key: "Referrer-Policy",
             value: "no-referrer",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
           },
         ],
       },
