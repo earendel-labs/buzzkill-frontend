@@ -12,51 +12,11 @@ import getTheme from "../theme/theme";
 import { useMemo } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { vicMainnet, vicTestNet } from "@/app/libs/chains";
-import {
-  injectedWallet,
-  rainbowWallet,
-  walletConnectWallet,
-  metaMaskWallet,
-  ledgerWallet,
-  coin98Wallet,
-  trustWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { createWalletTheme } from "@/theme/walletTheme";
 import { ThemeProvider, Box, Skeleton } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation"; // Import the router
-
-const walletConnectProjectId: string =
-  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
-  (() => {
-    throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not defined");
-  })();
-
-const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
-
-const config = getDefaultConfig({
-  appName: "Buzzkill - Honeycomb Hustle",
-  projectId: walletConnectProjectId,
-  chains: [vicTestNet, vicMainnet],
-  wallets: [
-    {
-      groupName: "Recommended",
-      wallets: [coin98Wallet, metaMaskWallet, ledgerWallet],
-    },
-    {
-      groupName: "Popular Wallets",
-      wallets: [
-        trustWallet,
-        rainbowWallet,
-        injectedWallet,
-        walletConnectWallet,
-      ],
-    },
-  ],
-  ssr: false,
-});
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",
@@ -87,10 +47,11 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         console.log("Checking Supabase for wallet address:", address);
         setLoading(true); // Start loading before making the request
 
+        const normalizedAddress = address.toLowerCase();
         const { data: userData, error } = await supabase
           .from("users")
           .select("*")
-          .ilike("address", address) // Case-insensitive
+          .eq("address", normalizedAddress)
           .maybeSingle();
 
         if (error) {
@@ -127,6 +88,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           }
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");
+          console.log("userData", userData);
           setIsSiweEnabled(true); // User does not exist, enable SIWE
         }
       } catch (err) {

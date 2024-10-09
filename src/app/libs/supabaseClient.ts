@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { Session } from "next-auth";
-
+import { JWT } from "next-auth/jwt";
 // Supabase environment variables
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_API_DOMAIN!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY!;
@@ -16,7 +16,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Function to set JWT token for authenticated requests
-export const getSupabaseClientWithAuth = (token: string | null) => {
+export const getSupabaseClientWithAuth = (token: JWT | null) => {
   if (token) {
     return createClient(supabaseUrl, supabaseAnonKey, {
       global: {

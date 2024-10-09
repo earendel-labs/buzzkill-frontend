@@ -3,18 +3,25 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req });
-  const url = req.nextUrl.clone();
+  // Force parameters for getToken based on your setup
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    cookieName: "next-auth.session-token", // Ensure this matches the cookie name
+    secureCookie: process.env.NEXTAUTH_URL?.startsWith("https://") ?? false, // Adjust based on environment
+    raw: true, // If you want the decoded payload
+  });
 
-  // Redirect to / if the user is logged out and trying to access a protected route
-  if (!token && req.nextUrl.pathname.startsWith("/Play")) {
-    console.log("No token found. Redirecting to /.");
+  if (!token) {
+    console.log("No valid token found. Redirecting to / with auth error.");
+    const url = req.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("error", "auth");
     return NextResponse.redirect(url);
   }
 
-  // Allow access to other routes if token is valid or if it’s not a protected route
+  // If a token exists, allow the request to proceed
+  console.log("Token is valid:", token);
   return NextResponse.next();
 }
 

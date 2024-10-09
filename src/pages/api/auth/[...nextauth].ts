@@ -5,9 +5,12 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { getToken } from "next-auth/jwt";
+import { JWT } from "next-auth/jwt";
 
 // Import the Supabase client
-import { supabase } from "@/app/libs/supabaseClient";
+import { supabase, getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 
 export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   const providers = [
@@ -80,12 +83,12 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
         // At this point, we have an address
         try {
+          const normalizedAddress = address.toLowerCase();
           const { data: userData, error } = await supabase
             .from("users")
             .select("*")
-            .eq("address", address)
+            .eq("address", normalizedAddress)
             .maybeSingle();
-
           if (error) {
             console.error("Error fetching user from Supabase:", error);
             return null;
@@ -104,7 +107,8 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
             const { data: newUser, error: insertError } = await supabase
               .from("users")
               .insert({
-                address: address,
+                address: normalizedAddress,
+                role: "authenticated",
                 created_at: new Date().toISOString(),
               })
               .single();
@@ -151,9 +155,8 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
         if (user) {
           // When the user signs in for the first time
-          token.sub = user.id;
-          token.address = user.address;
-          token.iat = currentTime;
+          token.sub = user.address;
+          token.role = "authenticated"; // Ensure role is included
           token.exp = currentTime + 60 * 60; // 1-hour expiration
         }
 
@@ -182,24 +185,20 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
       async redirect({ url, baseUrl }) {
         console.log("Redirect callback triggered");
-        console.log("URL:", url);
-        console.log("Base URL:", baseUrl);
 
-        if (url.includes("/api/")) {
-          console.log("Ignoring redirect for API calls");
-          return url;
-        }
-
-        if (url === `${baseUrl}/Play`) {
-          console.log("User is already on /Play, returning original URL");
-          return url;
-        }
-
+        // If user is logging in and on the home page or root, redirect to /Play
         if (url === baseUrl || url === `${baseUrl}/`) {
-          console.log("Redirecting to /Play");
-          return `${baseUrl}/Play`; // Redirect to /Play if the user is on the home page
+          console.log("Redirecting to /Play after login");
+          return `${baseUrl}/Play`;
         }
 
+        // For any API routes or if already on Play, return the original URL
+        if (url.includes("/api/") || url === `${baseUrl}/Play`) {
+          console.log("Returning original URL:", url);
+          return url;
+        }
+
+        // Default to returning original URL, handling other cases gracefully
         console.log("Returning original URL:", url);
         return url;
       },
@@ -213,6 +212,38 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
     jwt: {
       secret: process.env.NEXTAUTH_SECRET, // Use the same secret for JWT signing
       maxAge: 60 * 60, // 1-hour expiration
+      encode: async ({ token }) => {
+        if (!token || !token.sub) {
+          throw new Error("Token or address is missing");
+        }
+        if (!process.env.NEXTAUTH_SECRET) {
+          throw new Error("Next Auth Secret is missing");
+        }
+        const jwtToken = jwt.sign(
+          {
+            sub: token.sub,
+            role: token.role,
+            exp: token.exp,
+          },
+          process.env.NEXTAUTH_SECRET
+        );
+
+        console.log("Generated JWT:", jwtToken); // Log JWT for debugging
+
+        return jwtToken;
+      },
+
+      decode: async ({ token }) => {
+        if (!token) {
+          throw new Error("Token is missing");
+        }
+        const decoded = jwt.verify(
+          token,
+          process.env.NEXTAUTH_SECRET!
+        ) as JwtPayload & JWT;
+        console.log("Decoded JWT:", decoded); // Log decoded JWT for debugging
+        return decoded;
+      },
     },
     debug: true,
   };
