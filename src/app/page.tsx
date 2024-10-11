@@ -1,48 +1,40 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
-import { useSession } from "next-auth/react"; // Import useSession to check authentication status
+import { useSession } from "next-auth/react";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
-  const [error, setError] = React.useState<string | null>(null);
-  const { data: session } = useSession(); // Get session state from NextAuth
+  const [error, setError] = useState<string | null>(null);
+  const { data: session } = useSession(); // Access session from NextAuth
 
-  useEffect(() => {
-    // Check for the loggedOut parameter and remove it if present
-    const params = new URLSearchParams(window.location.search);
-    if (params.has("loggedOut")) {
-      params.delete("loggedOut");
-      const newUrl =
-        window.location.pathname +
-        (params.toString() ? `?${params.toString()}` : "");
-      router.replace(newUrl); // Use replace to update URL without reloading
-    }
-  }, [router]);
-  // Check for query parameters (e.g., error) on mount
+  // Clean up query parameters on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
-    setError(errorParam); // Store any error in state
-  }, []);
 
-  // Handle redirection logic after a successful session
+    // Check for error and clear params
+    if (errorParam) {
+      setError(errorParam);
+      params.delete("error");
+
+      const cleanUrl =
+        window.location.pathname +
+        (params.toString() ? `?${params.toString()}` : "");
+      router.replace(cleanUrl, { shallow: true });
+    }
+  }, [router]);
+
+  // Redirect user after successful login, only if the auth error was present initially
   useEffect(() => {
     if (session && error === "auth") {
-      const cleanUrl = window.location.pathname; // Remove the error from URL
-      router.replace(cleanUrl); // Replace the URL without reloading the page
-
-      // Here, we redirect to /Play if the session exists
-      const referrer = document.referrer;
-      if (referrer === window.location.origin + "/") {
-        router.push("/Play"); // Redirect to /Play only if coming from the homepage
-      }
+      router.replace("/Play"); // Redirect to /Play after successful login
     }
   }, [session, error, router]);
 
@@ -75,8 +67,8 @@ const HomePage: React.FC = () => {
             height: "100%",
             objectFit: "cover",
             objectPosition: "center",
-            minWidth: "100vw", // Ensure the image stretches to the full viewport width
-            minHeight: "100vh", // Ensure the image stretches to the full viewport height
+            minWidth: "100vw",
+            minHeight: "100vh",
           }}
         />
       </Box>
@@ -89,7 +81,7 @@ const HomePage: React.FC = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center", // Center everything horizontally
+              alignItems: "center",
               justifyContent: "center",
               textAlign: "center",
             }}
@@ -104,35 +96,20 @@ const HomePage: React.FC = () => {
               }}
             />
 
-            {/* Conditionally render login message if not authenticated and redirected */}
+            {/* Render login message if not authenticated */}
             {!session && error === "auth" && (
-              <Typography
-                variant="h6"
-                color="red"
-                sx={{
-                  marginTop: 4,
-                }}
-              >
+              <Typography variant="h6" color="red" sx={{ marginTop: 4 }}>
                 Please login or create an Account to Play
               </Typography>
             )}
 
             {/* Buttons Row */}
-            <Box
-              sx={{
-                display: "flex",
-                gap: 8,
-                mt: 6, // Increased margin-top for more spacing below the buttons
-              }}
-            >
+            <Box sx={{ display: "flex", gap: 8, mt: 6 }}>
               <LoginButton />
               <Button
                 className="blueButton"
                 onClick={handleClick}
-                sx={{
-                  width: "155px",
-                  fontSize: "18px",
-                }}
+                sx={{ width: "155px", fontSize: "18px" }}
               >
                 Mint
               </Button>
