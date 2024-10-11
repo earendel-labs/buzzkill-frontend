@@ -17,17 +17,15 @@ import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation";
 
 import { signOut } from "next-auth/react";
+import { useDisconnect } from "wagmi";
 
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
 }
 
-const handleLogout = () => {
-  // Sign out from NextAuth and redirect to the homepage
-  signOut({
-    callbackUrl: "/", // Redirect to homepage upon logout
-  });
+const handleNextAuthSignOut = () => {
+  signOut({ callbackUrl: "/" });
 };
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
@@ -41,6 +39,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const { disconnect } = useDisconnect();
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -50,12 +49,22 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     router.push("/Play/User/MyProfile");
   };
 
+  const handleLogout = async () => {
+    disconnect(); // Disconnect the RainbowKit wallet
+
+    try {
+      signOut({
+        callbackUrl: `${window.location.origin}/?loggedOut=true`
+      });
+    } catch (error) {
+      console.error("Error during sign out:", error);
+    }
+  };
   return (
     <ConnectButton.Custom>
       {({
         account,
         chain,
-        openAccountModal,
         openChainModal,
         openConnectModal,
         authenticationStatus,
@@ -303,7 +312,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
                   {/* Logout button */}
                   <MenuItem
-                    onClick={openAccountModal}
+                    onClick={handleLogout}
                     sx={{
                       display: "flex",
                       alignItems: "center",

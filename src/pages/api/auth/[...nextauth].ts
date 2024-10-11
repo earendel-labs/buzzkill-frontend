@@ -31,12 +31,9 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         } else if (credentials.message && credentials.signature) {
           // Case 2: SIWE flow is initiated
           try {
-            console.log("Received credentials:", credentials);
-
             // Parse the SIWE message
             const siwe = new SiweMessage(JSON.parse(credentials.message));
             address = siwe.address;
-            console.log("Extracted address:", address);
 
             // Verify the SIWE message
             const nextAuthUrl =
@@ -83,11 +80,10 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
         // At this point, we have an address
         try {
-          const normalizedAddress = address.toLowerCase();
           const { data: userData, error } = await supabase
             .from("users")
             .select("*")
-            .eq("address", normalizedAddress)
+            .eq("address", address)
             .maybeSingle();
           if (error) {
             console.error("Error fetching user from Supabase:", error);
@@ -107,7 +103,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
             const { data: newUser, error: insertError } = await supabase
               .from("users")
               .insert({
-                address: normalizedAddress,
+                address: address,
                 role: "authenticated",
                 created_at: new Date().toISOString(),
               })
@@ -186,20 +182,26 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
       async redirect({ url, baseUrl }) {
         console.log("Redirect callback triggered");
 
+        // Check if logging in and there's an auth error in the query
+        const urlObj = new URL(url);
+        const isAuthError = urlObj.searchParams.has("error");
+
+        if (isAuthError) {
+          urlObj.searchParams.delete("error"); // Remove the error parameter
+          return urlObj.toString();
+        }
+
         // If user is logging in and on the home page or root, redirect to /Play
         if (url === baseUrl || url === `${baseUrl}/`) {
-          console.log("Redirecting to /Play after login");
           return `${baseUrl}/Play`;
         }
 
-        // For any API routes or if already on Play, return the original URL
-        if (url.includes("/api/") || url === `${baseUrl}/Play`) {
-          console.log("Returning original URL:", url);
-          return url;
+        // Redirect to / (root) after logout
+        if (url === "/api/auth/signout") {
+          return baseUrl; // Redirect to home
         }
 
-        // Default to returning original URL, handling other cases gracefully
-        console.log("Returning original URL:", url);
+        // Allow all other URLs to remain as they are
         return url;
       },
     },
@@ -228,8 +230,6 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           process.env.NEXTAUTH_SECRET
         );
 
-        console.log("Generated JWT:", jwtToken); // Log JWT for debugging
-
         return jwtToken;
       },
 
@@ -241,7 +241,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           token,
           process.env.NEXTAUTH_SECRET!
         ) as JwtPayload & JWT;
-        console.log("Decoded JWT:", decoded); // Log decoded JWT for debugging
+
         return decoded;
       },
     },

@@ -46,12 +46,11 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
         console.log("Checking Supabase for wallet address:", address);
         setLoading(true); // Start loading before making the request
-
-        const normalizedAddress = address.toLowerCase();
+ 
         const { data: userData, error } = await supabase
           .from("users")
           .select("*")
-          .eq("address", normalizedAddress)
+          .eq("address", address)
           .maybeSingle();
 
         if (error) {

@@ -14,6 +14,17 @@ const HomePage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const { data: session } = useSession(); // Get session state from NextAuth
 
+  useEffect(() => {
+    // Check for the loggedOut parameter and remove it if present
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("loggedOut")) {
+      params.delete("loggedOut");
+      const newUrl =
+        window.location.pathname +
+        (params.toString() ? `?${params.toString()}` : "");
+      router.replace(newUrl); // Use replace to update URL without reloading
+    }
+  }, [router]);
   // Check for query parameters (e.g., error) on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

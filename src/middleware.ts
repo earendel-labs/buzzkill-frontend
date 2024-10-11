@@ -3,28 +3,44 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  // Force parameters for getToken based on your setup
+  const url = req.nextUrl.clone();
+  const { pathname, searchParams } = req.nextUrl;
+
+  // Skip middleware for /api/auth routes
+  if (pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
+  }
+
+  // Check for the token to determine if the user is authenticated
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
-    cookieName: "next-auth.session-token", // Ensure this matches the cookie name
-    secureCookie: process.env.NEXTAUTH_URL?.startsWith("https://") ?? false, // Adjust based on environment
-    raw: true, // If you want the decoded payload
+    cookieName: "next-auth.session-token",
+    secureCookie: process.env.NEXTAUTH_URL?.startsWith("https://") ?? false,
+    raw: true,
   });
 
-  if (!token) {
-    console.log("No valid token found. Redirecting to / with auth error.");
-    const url = req.nextUrl.clone();
+  // If loggedOut is present, bypass error redirect
+  const isLoggedOut = searchParams.get("loggedOut") === "true";
+
+  // Redirect to root with error=auth if unauthenticated and not logging out
+  if (!token && !isLoggedOut) {
     url.pathname = "/";
-    url.searchParams.set("error", "auth");
+    if (!url.searchParams.has("error")) {
+      url.searchParams.set("error", "auth");
+    }
     return NextResponse.redirect(url);
   }
 
-  // If a token exists, allow the request to proceed
-  console.log("Token is valid:", token);
+  // Remove the loggedOut parameter to clean up URL
+  if (isLoggedOut) {
+    url.searchParams.delete("loggedOut");
+    return NextResponse.redirect(url);
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/Play/:path*"], // Protect all /Play subpaths
+  matcher: ["/Play/:path*"],
 };

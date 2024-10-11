@@ -41,22 +41,13 @@ const ProfilePage = () => {
 
   // Fetch user data from Supabase based on the session address
   useEffect(() => {
-    if (session?.address) {
-      const fetchUserData = async () => {
-        // Get Supabase client with JWT token
-        const supabaseWithAuth = getSupabaseClientWithAuth(
-          session?.address ?? null
-        );
+    if (status === "authenticated") {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch("/api/user/getProfile");
+          if (!response.ok) throw new Error("Failed to fetch profile data");
 
-        const { data, error } = await supabaseWithAuth
-          .from("users")
-          .select("*")
-          .eq("address", session.address)
-          .maybeSingle();
-
-        if (error) {
-          console.error("Error fetching user data from Supabase:", error);
-        } else if (data) {
+          const data = await response.json();
           setProfileData({
             account_name: data.account_name || "",
             email_address: data.email_address || "",
@@ -67,13 +58,16 @@ const ProfilePage = () => {
             email_address: data.email_address || "",
             address: data.address || "",
           });
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
       };
 
-      fetchUserData();
+      fetchProfile();
     }
-  }, [session]);
+  }, [status]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -84,65 +78,34 @@ const ProfilePage = () => {
     e.preventDefault();
     setSaving(true);
 
-    // Check if session has the address and log it
-    if (!session?.address) {
-      console.error("No session or address found");
-      setSnackbarMessage("No session or wallet address found");
-      setSnackbarSeverity("error");
-      setSaving(false);
-      setSnackbarOpen(true);
-      return;
-    }
-
-    // Debugging: Log profileData and session before sending the update
-    console.log("Session Address: ", session.address);
-    console.log("Updating profile with data: ", profileData);
-
-    if (profileData.address !== session.address) {
-      console.error("Wallet address mismatch");
-      setSnackbarMessage("Wallet address mismatch. Update not allowed.");
-      setSnackbarSeverity("error");
-      setSaving(false);
-      setSnackbarOpen(true);
-      return;
-    }
-
     try {
-      // Get Supabase client with JWT token
-      const supabaseWithAuth = getSupabaseClientWithAuth(
-        session?.address ?? null
-      );
-
-      // Update user data in Supabase
-      const { data, error } = await supabaseWithAuth
-        .from("users")
-        .update({
+      const response = await fetch("/api/user/updateProfile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           account_name: profileData.account_name,
           email_address: profileData.email_address,
-        })
-        .eq("address", session.address);
+        }),
+      });
 
-      // Check if there's any error
-      if (error) {
-        console.error("Error updating user data in Supabase:", error);
-        setSnackbarMessage("Error updating account details. Please try again.");
-        setSnackbarSeverity("error");
-      } else {
-        console.log("Successfully updated user data: ", data);
-        setSnackbarMessage("Account details updated successfully.");
-        setSnackbarSeverity("success");
-        setIsEditable(false);
-        setOriginalData({ ...profileData });
+      if (!response.ok) {
+        throw new Error("Error updating profile data");
       }
-    } catch (err) {
-      // Catch any unexpected errors
-      console.error("Unexpected error during update operation:", err);
-      setSnackbarMessage("An unexpected error occurred. Please try again.");
-      setSnackbarSeverity("error");
-    }
 
-    setSaving(false);
-    setSnackbarOpen(true);
+      setSnackbarMessage("Account details updated successfully.");
+      setSnackbarSeverity("success");
+      setIsEditable(false);
+      setOriginalData({ ...profileData });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setSnackbarMessage("Error updating profile data.");
+      setSnackbarSeverity("error");
+    } finally {
+      setSaving(false);
+      setSnackbarOpen(true);
+    }
   };
 
   const handleCancelEdit = () => {
