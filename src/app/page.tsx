@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
       const cleanUrl =
         window.location.pathname +
         (params.toString() ? `?${params.toString()}` : "");
-      router.replace(cleanUrl, { shallow: true });
+      router.replace(cleanUrl);
     }
   }, [router]);
 
