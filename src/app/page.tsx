@@ -12,21 +12,25 @@ import { useSession } from "next-auth/react";
 const HomePage: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const { data: session } = useSession(); // Access session from NextAuth
+  const { data: session } = useSession();
 
-  // Clean up query parameters on mount
+  // Clean up only the loggingOut query parameter on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
+    const loggingOutParam = params.get("loggingOut");
 
-    // Check for error and clear params
+    // Set error state if error param exists
     if (errorParam) {
       setError(errorParam);
-      params.delete("error");
+    }
 
-      const cleanUrl =
-        window.location.pathname +
-        (params.toString() ? `?${params.toString()}` : "");
+    // If loggingOut param exists, remove it and update the URL
+    if (loggingOutParam) {
+      params.delete("loggingOut");
+      const cleanUrl = `${window.location.pathname}${
+        params.toString() ? `?${params.toString()}` : ""
+      }`;
       router.replace(cleanUrl);
     }
   }, [router]);
@@ -99,7 +103,7 @@ const HomePage: React.FC = () => {
             {/* Render login message if not authenticated */}
             {!session && error === "auth" && (
               <Typography variant="h6" color="red" sx={{ marginTop: 4 }}>
-                Please login or create an Account to Play
+                Please login or create an account to play
               </Typography>
             )}
 
