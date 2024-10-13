@@ -67,7 +67,7 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
 
   const handleMouseUp = () => {
     setIsPressed(false);
-    router.push("/Location/Forest");
+    router.push("/Play/Location/Forest");
   };
 
   return (
