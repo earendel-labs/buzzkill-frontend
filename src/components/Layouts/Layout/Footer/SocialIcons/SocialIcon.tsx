@@ -1,6 +1,7 @@
 import React from "react";
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import { styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 const CustomSvgIcon = styled(SvgIcon)({
   width: "35px",
@@ -8,7 +9,7 @@ const CustomSvgIcon = styled(SvgIcon)({
   transition: "fill 0.3s, transform 0.1s",
 
   "&:hover path": {
-    fill: "#9E9282", // Hover color
+    fill: "#0091AC", // Hover color
   },
   "&:active path": {
     transform: "scale(0.95)",
@@ -30,6 +31,8 @@ const SocialIcon: React.FC<SocialIconProps> = ({
   rel = "noopener noreferrer", // Security feature
   ...props
 }) => {
+  const theme = useTheme();
+
   return (
     <a
       href={href}

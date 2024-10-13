@@ -1,16 +1,18 @@
+// src/context/LoadingContext.tsx
 "use client";
 
-// src/context/LoadingContext.tsx
 import React, {
   createContext,
   useContext,
   useState,
   ReactNode,
   useCallback,
+  useEffect,
 } from "react";
+import { usePathname } from "next/navigation";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 
 type LoadingContextType = {
-  isLoading: boolean;
   registerLoading: () => void;
   unregisterLoading: () => void;
 };
@@ -21,21 +23,30 @@ export const LoadingProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [loadingCount, setLoadingCount] = useState(0);
+  const pathname = usePathname();
 
   const registerLoading = useCallback(() => {
     setLoadingCount((count) => count + 1);
   }, []);
 
   const unregisterLoading = useCallback(() => {
-    setLoadingCount((count) => count - 1);
+    setLoadingCount((count) => Math.max(0, count - 1));
   }, []);
+
+  // Use `pathname` from `next/navigation` to detect route changes
+  useEffect(() => {
+    registerLoading();
+    unregisterLoading();
+
+    // Clean up loading state on unmount or route change
+    return () => unregisterLoading();
+  }, [pathname, registerLoading, unregisterLoading]);
 
   const isLoading = loadingCount > 0;
 
   return (
-    <LoadingContext.Provider
-      value={{ isLoading, registerLoading, unregisterLoading }}
-    >
+    <LoadingContext.Provider value={{ registerLoading, unregisterLoading }}>
+      {isLoading && <HexagonSpinner />}
       {children}
     </LoadingContext.Provider>
   );

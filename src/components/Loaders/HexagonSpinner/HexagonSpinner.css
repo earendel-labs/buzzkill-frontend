@@ -1,0 +1,45 @@
+/* HexagonSpinner.css */
+.hexagon {
+  opacity: 0;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hexagon-0 {
+  transform: rotate(0deg) translate(40px);
+  animation-delay: 0s;
+}
+
+.hexagon-1 {
+  transform: rotate(60deg) translate(40px);
+  animation-delay: 0.25s;
+}
+
+.hexagon-2 {
+  transform: rotate(120deg) translate(40px);
+  animation-delay: 0.5s;
+}
+
+.hexagon-3 {
+  transform: rotate(180deg) translate(40px);
+  animation-delay: 0.75s;
+}
+
+.hexagon-4 {
+  transform: rotate(240deg) translate(40px);
+  animation-delay: 1s;
+}
+
+.hexagon-5 {
+  transform: rotate(300deg) translate(40px);
+  animation-delay: 1.25s;
+}

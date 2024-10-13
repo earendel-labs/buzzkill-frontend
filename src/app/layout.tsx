@@ -1,11 +1,9 @@
 import "../styles/globals.css";
-import { ThemeProvider } from "@mui/material/styles";
+
 import CssBaseline from "@mui/material/CssBaseline";
-import getTheme from "../theme/theme";
-import { useMemo } from "react";
 import type { Session } from "next-auth";
 import { SoundProvider } from "@/context/SoundContext";
-import { LoadingProvider } from "@/context/LoadingContext";
+import { LoadingProvider, useLoading } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import WalletConfiguration from "@/hooks/WalletConfiguration";
