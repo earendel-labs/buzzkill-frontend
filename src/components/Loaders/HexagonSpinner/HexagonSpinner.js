@@ -17,6 +17,7 @@ const HexagonSpinner = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: theme.palette.background.default, // Spinner background color
+        transform: "translate(-20px, -10px)", // Adjust this for perfect centering
       }}
     >
       {[...Array(6)].map((_, i) => (

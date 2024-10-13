@@ -10,6 +10,7 @@ import { useSound } from "@/context/SoundContext";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import { CircularProgress, Typography } from "@mui/material";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -87,8 +88,8 @@ const Play: React.FC = () => {
         height="100vh"
         flexDirection="column"
       >
-        <CircularProgress />
-        <Typography className="body1" padding="16px 0px">
+        <HexagonSpinner />
+        <Typography className="body1" padding="24px 0px">
           Loading World...
         </Typography>
       </Box>

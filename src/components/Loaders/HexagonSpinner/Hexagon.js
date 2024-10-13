@@ -8,31 +8,20 @@ const Hexagon = ({ className }) => {
 
   return (
     <Box
-      sx={{
-        width: 50,
-        height: "28.87px",
-        backgroundColor: "transparent",
-        borderLeft: `2.5px solid ${theme.palette.Blue.main}`,
-        borderRight: `2.5px solid ${theme.palette.Blue.main}`,
-        position: "absolute",
-        "&:before": {
-          content: '""',
-          position: "absolute",
-          bottom: "100%",
-          borderLeft: "27.5px solid transparent",
-          borderRight: "27.5px solid transparent",
-          borderBottom: `15px solid ${theme.palette.Blue.main}`,
-        },
-        "&:after": {
-          content: '""',
-          position: "absolute",
-          top: "100%",
-          borderLeft: "27.5px solid transparent",
-          borderRight: "27.5px solid transparent",
-          borderTop: `15px solid ${theme.palette.Blue.main}`,
-        },
-      }}
       className={className}
+      sx={{
+        width: 40, // Adjust the size as needed
+        height: 40,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: theme.palette.Blue.main,
+        clipPath:
+          "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)", // Hexagon shape
+        border: `4px solid ${theme.palette.Blue.main}`, // Outline border
+        transform: "rotate(0deg)", // Start with no rotation
+        position: "absolute",
+      }}
     />
   );
 };

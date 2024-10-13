@@ -1,3 +1,4 @@
+// HomePage.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -8,24 +9,22 @@ import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useSession } from "next-auth/react";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import Image from "next/image";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Clean up only the loggingOut query parameter on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
     const loggingOutParam = params.get("loggingOut");
 
-    // Set error state if error param exists
-    if (errorParam) {
-      setError(errorParam);
-    }
+    if (errorParam) setError(errorParam);
 
-    // If loggingOut param exists, remove it and update the URL
     if (loggingOutParam) {
       params.delete("loggingOut");
       const cleanUrl = `${window.location.pathname}${
@@ -38,7 +37,7 @@ const HomePage: React.FC = () => {
   // Redirect user after successful login, only if the auth error was present initially
   useEffect(() => {
     if (session && error === "auth") {
-      router.replace("/Play"); // Redirect to /Play after successful login
+      router.replace("/Play");
     }
   }, [session, error, router]);
 
@@ -48,6 +47,26 @@ const HomePage: React.FC = () => {
 
   return (
     <Layout>
+      {/* Conditionally render loading spinner */}
+      {!isImageLoaded && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          flexDirection="column"
+          position="fixed"
+          width="100vw"
+          bgcolor="background.default"
+          zIndex={1300} // Ensures the spinner is above other components
+        >
+          <HexagonSpinner />
+          <Typography className="body1" padding="24px 0px">
+            Loading World...
+          </Typography>
+        </Box>
+      )}
+
       {/* Background Image */}
       <Box
         sx={{
@@ -60,20 +79,14 @@ const HomePage: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <Box
-          component="img"
+        <Image
           src="/Maps/BuzzkillMap.jpg"
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            minWidth: "100vw",
-            minHeight: "100vh",
-          }}
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+          alt="Background map image"
+          onLoadingComplete={() => setIsImageLoaded(true)} // This will hide the spinner
+          priority
         />
       </Box>
 
@@ -125,8 +138,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  return <HomePage />;
-};
-
-export default App;
+export default HomePage;
