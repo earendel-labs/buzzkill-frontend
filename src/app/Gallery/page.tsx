@@ -2,16 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, CircularProgress, Grid, Button } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useBalance } from "wagmi";
-import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
-import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
-import { formatEther } from "ethers"; // Use formatEther for native token balances
-import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-
-// Placeholder data for total collection and minted count
-const totalSupply = 10000;
-const mintedCount = 3521;
 
 const GalleryPage: React.FC = () => {
   return (

@@ -5,7 +5,7 @@ import { darkTheme, Theme as RainbowKitTheme } from "@rainbow-me/rainbowkit";
 export const createWalletTheme = (muiTheme: MUITheme): RainbowKitTheme => {
   return merge(darkTheme(), {
     colors: {
-      accentColor: muiTheme.palette.Orange.main, // Gold accent color
+      accentColor: muiTheme.palette.Gold.main, // Gold accent color
       accentColorForeground: muiTheme.palette.text.primary, // Foreground color for accent
       actionButtonBorder: muiTheme.palette.DarkOrange.main, // Border for action buttons
       actionButtonBorderMobile: muiTheme.palette.secondary.main, // Border for mobile buttons

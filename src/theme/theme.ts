@@ -107,7 +107,7 @@ const getTheme = (): Theme => {
       },
       Orange: {
         main: "#CC5803",
-        light: "#f88408",
+        light: "#ff842e",
         dark: "#b63f07",
       },
       DarkOrange: {
@@ -127,7 +127,7 @@ const getTheme = (): Theme => {
       },
       background: {
         default: "#2e447a",
-        paper: "#E8E7E1",
+        paper: "#a3c8ed",
       },
       text: {
         primary: "#ffffff",
@@ -202,6 +202,14 @@ const getTheme = (): Theme => {
       ...linkStyles(baseTheme),
       ...tabStyles(baseTheme),
       ...textBoxStyles(baseTheme),
+      MuiFormHelperText: {
+        styleOverrides: {
+          root: {
+            color: "#c8ddf5", // Change to your desired color
+            fontSize: "0.875rem", // Optional: adjust the font size if needed
+          },
+        },
+      },
     },
   });
 

@@ -35,7 +35,29 @@ const buttonStyles = (theme: Theme) => ({
           "&:hover": {
             backgroundColor: "#4272ce", // Hover background color
             color: "#fff", // Hover font color
-            borderColor: theme.palette.Blue.main,
+            borderColor: theme.palette.Gold.main,
+          },
+          "&:active": {
+            backgroundColor: "#385fbd", // Active background color
+            color: "#fff", // Active font color
+            borderColor: theme.palette.DarkBlue.light,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#222e50", // Disabled background color
+            color: "#385fbd", // Disabled text color
+            borderColor: "#222e50", // Disabled border color to match background
+          },
+        },
+        "&.blueConnectWallet": {
+          backgroundColor: theme.palette.DarkBlue.main, // Normal background color
+          color: "#fff", // Normal font color (white)
+          borderColor: theme.palette.DarkBlue.dark,
+          padding: "12px 20px",
+          borderWidth: "1.25px",
+          "&:hover": {
+            backgroundColor: "#4272ce", // Hover background color
+            color: "#fff", // Hover font color
+            borderColor: theme.palette.DarkBlue.light,
           },
           "&:active": {
             backgroundColor: "#385fbd", // Active background color
@@ -50,10 +72,10 @@ const buttonStyles = (theme: Theme) => ({
         },
         "&.primaryButton": {
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          padding: "5px 30px",
+          padding: "10px 30px",
           position: "relative",
           boxSizing: "border-box",
           background:

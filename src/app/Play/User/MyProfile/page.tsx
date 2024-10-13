@@ -11,15 +11,12 @@ import {
   Alert,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import Layout from "@/components/Layouts/Layout/Layout";
-
-// Import theme for styling
 import { useTheme } from "@mui/material/styles";
 
 const ProfilePage = () => {
-  const { data: session, status } = useSession(); // Access session to get user's wallet address
-  const theme = useTheme(); // Use theme to access colors
+  const { data: session, status } = useSession();
+  const theme = useTheme();
   const [profileData, setProfileData] = useState({
     account_name: "",
     email_address: "",
@@ -38,8 +35,9 @@ const ProfilePage = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const [error, setError] = useState(false);
+  const [helperText, setHelperText] = useState("");
 
-  // Fetch user data from Supabase based on the session address
   useEffect(() => {
     if (status === "authenticated") {
       const fetchProfile = async () => {
@@ -90,9 +88,7 @@ const ProfilePage = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Error updating profile data");
-      }
+      if (!response.ok) throw new Error("Error updating profile data");
 
       setSnackbarMessage("Account details updated successfully.");
       setSnackbarSeverity("success");
@@ -115,6 +111,24 @@ const ProfilePage = () => {
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
+  };
+
+  const validateAccountName = (value: string) => {
+    const sanitizedValue = value.replace(/[^A-Za-z0-9_-]/g, "");
+    setProfileData((prevState) => ({
+      ...prevState,
+      account_name: sanitizedValue,
+    }));
+    if (
+      !/^[A-Za-z0-9_-]*$/.test(sanitizedValue) ||
+      sanitizedValue.length > 20
+    ) {
+      setError(true);
+      setHelperText("Username must be 20 characters or less, no spaces.");
+    } else {
+      setError(false);
+      setHelperText("");
+    }
   };
 
   return (
@@ -150,40 +164,125 @@ const ProfilePage = () => {
 
           <Grid container spacing={3} sx={{ maxWidth: 500 }}>
             <Grid item xs={12}>
-              <Typography sx={{ mb: 1 }}>Wallet Address</Typography>
-              <Typography variant="h6"> {profileData.address} </Typography>
+              <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
+                Wallet Address
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", color: "white" }}
+              >
+                {profileData.address}
+              </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ mb: 1 }}>Account Name</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
+                Account Name
+              </Typography>
               <TextField
                 fullWidth
                 name="account_name"
                 value={profileData.account_name}
-                onChange={handleInputChange}
+                onChange={(e) => validateAccountName(e.target.value)}
                 placeholder="Enter your account name"
-                InputProps={{
-                  readOnly: !isEditable,
-                  style: {
-                    backgroundColor: theme.palette.DarkBlue.main,
-                    color: theme.palette.DarkBlue.main,
+                variant="filled"
+                disabled={!isEditable}
+                error={error}
+                helperText={error ? helperText : ""}
+                sx={{
+                  input: {
+                    color: "white",
+                    fontWeight: "bold",
+                    background: isEditable
+                      ? "#4272ce"
+                      : theme.palette.background.default,
+                    "&:-webkit-autofill": {
+                      WebkitBoxShadow: `0 0 0 100px ${
+                        isEditable
+                          ? "#4272ce"
+                          : theme.palette.background.default
+                      } inset`,
+                      WebkitTextFillColor: "white",
+                    },
+                    "&.Mui-disabled": {
+                      WebkitTextFillColor: "white",
+                      fontSize: "1.25rem",
+                      color: "white",
+                      paddingLeft: 0,
+                    },
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: isEditable
+                      ? "#4272ce"
+                      : theme.palette.background.default,
+                    "&:hover": {
+                      backgroundColor: isEditable
+                        ? "#609de6"
+                        : theme.palette.background.default,
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: isEditable
+                        ? "#609de6"
+                        : theme.palette.background.default,
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: theme.palette.background.default,
+                    },
                   },
                 }}
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography sx={{ mb: 1 }}>Email Address</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
+                Email Address
+              </Typography>
               <TextField
                 fullWidth
                 name="email_address"
                 value={profileData.email_address}
                 onChange={handleInputChange}
+                variant="filled"
                 type="email"
                 placeholder="Enter your email address"
-                InputProps={{
-                  readOnly: !isEditable,
-                  style: {
-                    backgroundColor: theme.palette.DarkBlue.main,
-                    color: theme.palette.DarkBlue.main,
+                disabled={!isEditable}
+                sx={{
+                  input: {
+                    color: "white",
+                    fontWeight: "bold",
+                    background: isEditable
+                      ? "#4272ce"
+                      : theme.palette.background.default,
+                    "&:-webkit-autofill": {
+                      WebkitBoxShadow: `0 0 0 100px ${
+                        isEditable
+                          ? "#4272ce"
+                          : theme.palette.background.default
+                      } inset`,
+                      WebkitTextFillColor: "white",
+                    },
+                    "&.Mui-disabled": {
+                      WebkitTextFillColor: "white",
+                      color: "white",
+                      fontSize: "1.25rem",
+                      paddingLeft: 0,
+                    },
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: isEditable
+                      ? "#4272ce"
+                      : theme.palette.background.default,
+                    "&:hover": {
+                      backgroundColor: isEditable
+                        ? "#609de6"
+                        : theme.palette.background.default,
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: isEditable
+                        ? "#609de6"
+                        : theme.palette.background.default,
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: theme.palette.background.default,
+                    },
                   },
                 }}
               />
@@ -203,7 +302,6 @@ const ProfilePage = () => {
               >
                 {isEditable ? "Cancel Edit" : "Edit Profile"}
               </Button>
-
               <Button
                 className="blueButton"
                 fullWidth

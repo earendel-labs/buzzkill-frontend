@@ -105,9 +105,16 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                 <Button
                   onClick={handleMenuOpen}
                   variant="contained"
+                  className="blueConnectWallet"
                   sx={{
+                    elevation: 0,
                     backgroundColor: theme.palette.DarkBlue.main,
+                    boxShadow: "none",
+                    borderColor: open ? "#2e447a  !important" : "white",
                     color: theme.palette.text.primary,
+                    borderRadius: open ? "2px 2px 0 0" : "2px",
+                    borderBottomWidth: open ? "0px" : "1.25px",
+                    borderBottomStyle: open ? "none" : "solid",
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
@@ -147,18 +154,25 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                   open={open}
                   onClose={handleMenuClose}
                   PaperProps={{
-                    elevation: 4,
+                    elevation: 2,
                     sx: {
                       backgroundColor: theme.palette.DarkBlue.main,
+                      borderRadius: "0px 0px 2px 2px",
+                      borderColor: "#2e447a",
+                      borderWidth: "1.25px",
+                      borderTopStyle: "none",
+                      minWidth: "202px",
                       color: theme.palette.text.primary,
-                      mt: 0.5,
-                      minWidth: 200,
+                      mt: 0,
+                      padding: "0px 1px",
                       "& .MuiAvatar-root": {
                         width: 24,
                         height: 24,
-                        ml: -0.5,
+                        ml: 0,
+                        mb: 1,
                         mr: 1,
                       },
+                      
                     },
                   }}
                   transformOrigin={{
@@ -179,7 +193,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       padding: "10px 16px",
                       fontSize: "1.2rem",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark,
+                        backgroundColor: theme.palette.DarkOrange.main,
                       },
                     }}
                   >
@@ -197,10 +211,10 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "left",
-                      padding: "10px 0px 10px 22px",
+                      padding: "10px 0px 10px 18px",
                       fontSize: "1.2rem",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark,
+                        backgroundColor: theme.palette.DarkOrange.main,
                       },
                     }}
                   >
@@ -237,7 +251,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       alignItems: "center",
                       justifyContent: "left",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark,
+                        backgroundColor: theme.palette.DarkOrange.main,
                       },
                       padding: "10px 16px",
                       fontSize: "1.2rem",
@@ -277,7 +291,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       alignItems: "center",
                       justifyContent: "left",
                       "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.dark,
+                        backgroundColor: theme.palette.DarkOrange.main,
                       },
                       padding: "10px 16px",
                       fontSize: "1.2rem",
@@ -318,6 +332,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       alignItems: "center",
                       justifyContent: "left",
                       padding: "10px 16px",
+
                       fontSize: "1.2rem",
                       "&:hover": {
                         backgroundColor: theme.palette.DarkOrange.main,
