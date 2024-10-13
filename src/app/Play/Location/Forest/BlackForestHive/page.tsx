@@ -12,6 +12,7 @@ import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveS
 import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
 import { HiveInfo } from "@/types/HiveInfo";
 import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
+import Image from "next/image";
 
 const hiveInfo: HiveInfo = {
   queenBees: 2,
@@ -29,6 +30,7 @@ const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
@@ -82,17 +84,16 @@ const Forest: React.FC = () => {
             border: "1px solid #000000",
           }}
         >
-          <Box
-            component="img"
+          <Image
             src="/Maps/ForestMap.jpg"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
+            alt="Forest map background"
+            fill
+            style={{
               objectFit: "cover",
+              objectPosition: "center",
             }}
+            onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
+            priority
           />
         </Box>
 

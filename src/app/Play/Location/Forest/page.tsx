@@ -86,11 +86,13 @@ const Forest: React.FC = () => {
       >
         <Image
           src="/Maps/ForestMap.jpg"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
           alt="Forest map background"
-          onLoadingComplete={() => setIsImageLoaded(true)}
+          fill
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+          onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
           priority
         />
       </Box>

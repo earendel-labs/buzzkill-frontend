@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
         </Box>
       )}
 
-      {/* Background Image */}
+      {/* Background Image with Updated Next.js 13 Image Props */}
       <Box
         sx={{
           position: "fixed",
@@ -81,11 +81,13 @@ const HomePage: React.FC = () => {
       >
         <Image
           src="/Maps/BuzzkillMap.jpg"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
           alt="Background map image"
-          onLoadingComplete={() => setIsImageLoaded(true)} // This will hide the spinner
+          fill
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+          onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
           priority
         />
       </Box>
