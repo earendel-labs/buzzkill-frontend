@@ -1,3 +1,4 @@
+// Forest.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -7,41 +8,27 @@ import Box from "@mui/material/Box";
 import { useSound } from "@/context/SoundContext";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
-import SmallToolTip from "@/components/ToolTips/Small/SmallToolTip";
 import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker";
 import { ResourceType } from "@/types/ResourceType";
-import LargeToolTip from "@/components/ToolTips/Large/LargeToolTip";
-import HiveHoverOver from "@/components/ToolTips/HiveHoverOver/HiveHoverOver";
-import LargeTallToolTip from "@/components/ToolTips/LargeTall/LargeTallToolTip";
-import HivePressed from "@/components/ToolTips/HivePressed/HivePressed";
-import ResourcePressed from "@/components/ToolTips/ResourcePressed/ResourcePressed";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import Image from "next/image";
+import { Typography } from "@mui/material";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
-  const [isActive, setIsActive] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const handleClick = () => {
-    setIsActive((prev) => !prev);
-  };
-  const handleRaidClick = () => {
-    console.log("Raid button clicked");
-  };
-
-  const handleEnterClick = () => {
-    console.log("Enter button clicked");
-  };
-
-  const handleForageClick = () => {
-    console.log("Forage button clicked");
+    console.log("Button clicked");
   };
 
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
     audio.loop = true;
-    audio.volume = 0.8; // Set the volume to 80%
+    audio.volume = 0.8;
     setMusic(audio);
 
     return () => {
@@ -65,6 +52,27 @@ const Forest: React.FC = () => {
 
   return (
     <GameLayout>
+      {/* Conditionally render loading spinner */}
+      {!isImageLoaded && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          flexDirection="column"
+          position="fixed"
+          width="100vw"
+          bgcolor="background.default"
+          zIndex={1300}
+        >
+          <HexagonSpinner />
+          <Typography className="body1" padding="24px 0px">
+            Loading World...
+          </Typography>
+        </Box>
+      )}
+
+      {/* Background Image with Image Loading */}
       <Box
         sx={{
           position: "absolute",
@@ -76,22 +84,20 @@ const Forest: React.FC = () => {
           zIndex: -1,
         }}
       >
-        <Box
-          component="img"
+        <Image
           src="/Maps/ForestMap.jpg"
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: -1,
-          }}
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+          alt="Forest map background"
+          onLoadingComplete={() => setIsImageLoaded(true)}
+          priority
         />
       </Box>
+
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
-      {/* Hives */}
+
+      {/* CombinedResourceMarker Components */}
       <CombinedResourceMarker
         left="14%"
         top="40%"
@@ -101,8 +107,8 @@ const Forest: React.FC = () => {
         HiveDefenceValue="24"
         QueenBeesValue="2/3"
         WorkerBeesValue="40/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        primaryButtonClick={handleClick}
+        secondaryButtonClick={handleClick}
       />
       <CombinedResourceMarker
         left="21%"
@@ -113,7 +119,7 @@ const Forest: React.FC = () => {
         HiveDefenceValue="21"
         QueenBeesValue="1/3"
         WorkerBeesValue="24/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
+        primaryButtonClick={handleClick}
         secondaryButtonLink="/Play/Location/Forest/BlackForestHive"
       />
       <CombinedResourceMarker
@@ -125,8 +131,8 @@ const Forest: React.FC = () => {
         HiveDefenceValue="49"
         QueenBeesValue="3/3"
         WorkerBeesValue="44/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        primaryButtonClick={handleClick}
+        secondaryButtonClick={handleClick}
       />
       <CombinedResourceMarker
         left="81%"
@@ -137,8 +143,8 @@ const Forest: React.FC = () => {
         HiveDefenceValue="23"
         QueenBeesValue="1/3"
         WorkerBeesValue="41/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        primaryButtonClick={handleClick}
+        secondaryButtonClick={handleClick}
       />
       <CombinedResourceMarker
         left="83%"
@@ -149,8 +155,8 @@ const Forest: React.FC = () => {
         HiveDefenceValue="53"
         QueenBeesValue="3/3"
         WorkerBeesValue="47/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        primaryButtonClick={handleClick}
+        secondaryButtonClick={handleClick}
       />
       <CombinedResourceMarker
         left="82%"
@@ -161,10 +167,10 @@ const Forest: React.FC = () => {
         HiveDefenceValue="13"
         QueenBeesValue="1/3"
         WorkerBeesValue="24/55"
-        primaryButtonClick={() => console.log("Primary button clicked")}
-        secondaryButtonClick={() => console.log("Secondary button clicked")}
+        primaryButtonClick={handleClick}
+        secondaryButtonClick={handleClick}
       />
-      {/* Sap */}{" "}
+      {/* Sap Markers */}
       <CombinedResourceMarker
         left="23%"
         top="62%"
@@ -193,7 +199,7 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Sap}
         contentValue="25%"
       />
-      {/* Pollen */}{" "}
+      {/* Pollen Markers */}
       <CombinedResourceMarker
         left="17%"
         top="70%"
@@ -215,7 +221,7 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Pollen}
         contentValue="37%"
       />
-      {/* Nectar */}
+      {/* Nectar Markers */}
       <CombinedResourceMarker
         left="47%"
         top="42%"

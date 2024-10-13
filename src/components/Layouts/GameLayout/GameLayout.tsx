@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Header from "../Layout/Header/Header";
-import CircularProgress from "@mui/material/CircularProgress";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 
 interface GameLayoutProps {
   children: ReactNode;
@@ -24,7 +24,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({ children }) => {
           height: "100vh",
         }}
       >
-        <CircularProgress />
+        <HexagonSpinner />
       </Box>
     );
   }
