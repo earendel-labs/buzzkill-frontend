@@ -11,11 +11,16 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Determine the cookie name based on the environment
+  const cookieName = process.env.NEXTAUTH_URL?.startsWith("https://")
+    ? "__Secure-next-auth.session-token"
+    : "next-auth.session-token";
+
   // Check for the token to determine if the user is authenticated
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
-    cookieName: "next-auth.session-token",
+    cookieName,
     secureCookie: process.env.NEXTAUTH_URL?.startsWith("https://") ?? false,
     raw: true,
   });

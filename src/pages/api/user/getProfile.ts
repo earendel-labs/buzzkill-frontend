@@ -5,7 +5,11 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = req.headers.cookie?.split("; ") || [];
   const sessionToken = cookies
-    .find((cookie) => cookie.startsWith("next-auth.session-token="))
+    .find(
+      (cookie) =>
+        cookie.startsWith("next-auth.session-token=") ||
+        cookie.startsWith("__Secure-next-auth.session-token=")
+    )
     ?.split("=")[1];
 
   if (!sessionToken) {

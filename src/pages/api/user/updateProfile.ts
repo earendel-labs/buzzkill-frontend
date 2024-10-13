@@ -10,9 +10,12 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   // Retrieve the session token from cookies
   const cookies = req.headers.cookie?.split("; ") || [];
   const sessionToken = cookies
-    .find((cookie) => cookie.startsWith("next-auth.session-token="))
+    .find(
+      (cookie) =>
+        cookie.startsWith("next-auth.session-token=") ||
+        cookie.startsWith("__Secure-next-auth.session-token=")
+    )
     ?.split("=")[1];
-  console.log("Session token:", sessionToken);
 
   if (!sessionToken) {
     return res.status(401).json({ error: "Session token not found" });
