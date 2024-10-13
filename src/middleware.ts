@@ -20,21 +20,18 @@ export async function middleware(req: NextRequest) {
     raw: true,
   });
 
-  // If loggedOut is present, bypass error redirect
-  const isLoggedOut = searchParams.get("loggedOut") === "true";
+  // If loggedOut is present, redirect to the home page without the query parameter
+  if (searchParams.has("loggedOut")) {
+    url.searchParams.delete("loggedOut");
+    return NextResponse.redirect(url);
+  }
 
   // Redirect to root with error=auth if unauthenticated and not logging out
-  if (!token && !isLoggedOut) {
+  if (!token) {
     url.pathname = "/";
     if (!url.searchParams.has("error")) {
       url.searchParams.set("error", "auth");
     }
-    return NextResponse.redirect(url);
-  }
-
-  // Remove the loggedOut parameter to clean up URL
-  if (isLoggedOut) {
-    url.searchParams.delete("loggedOut");
     return NextResponse.redirect(url);
   }
 

@@ -80,7 +80,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch("/api/user/updateProfile", {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },

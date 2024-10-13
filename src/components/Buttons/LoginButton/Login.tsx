@@ -54,7 +54,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
     try {
       signOut({
-        callbackUrl: `${window.location.origin}/?loggedOut=true`
+        callbackUrl: `${window.location.origin}/`,
       });
     } catch (error) {
       console.error("Error during sign out:", error);
