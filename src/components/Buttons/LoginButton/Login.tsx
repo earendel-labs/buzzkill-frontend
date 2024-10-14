@@ -85,9 +85,9 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
             <Skeleton
               variant="rectangular"
               width={180}
-              height={50}
+              height={55}
               sx={{
-                borderRadius: 2,
+                borderRadius: 1,
                 backgroundColor: theme.palette.DarkBlue.main,
               }}
             />
@@ -172,7 +172,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                         mb: 1,
                         mr: 1,
                       },
-                      
                     },
                   }}
                   transformOrigin={{

@@ -6,7 +6,6 @@ import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
 import Box from "@mui/material/Box";
 import { useSound } from "@/context/SoundContext";
-import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker";
 import { ResourceType } from "@/types/ResourceType";

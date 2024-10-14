@@ -9,15 +9,15 @@ import CombinedLocationMarker from "@/components/MapNavigation/CombinedLocationM
 import { useSound } from "@/context/SoundContext";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
-
+import Image from "next/image";
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   // Redirect to home if not authenticated
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -79,7 +79,7 @@ const Play: React.FC = () => {
   };
 
   // Conditional rendering after all hooks
-  if (status === "loading") {
+  if (status === "loading" && !isImageLoaded) {
     return (
       <Box
         display="flex"
@@ -106,45 +106,40 @@ const Play: React.FC = () => {
       {/* Background Video */}
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
-          overflow: "hidden",
+          width: "100vw",
+          height: "100vh",
           zIndex: -1,
+          overflow: "hidden",
         }}
       >
-        <Box
-          component="video"
-          src="/Animations/map-video.mp4"
-          autoPlay
-          loop
-          muted
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
+        <Image
+          src="/Maps/BuzzkillMap.jpg"
+          alt="Background map image"
+          fill
+          style={{
             objectFit: "cover",
-            zIndex: -1,
+            objectPosition: "center",
           }}
+          onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
+          priority
         />
       </Box>
 
       {/* Main Game Content */}
       <TopBar mapHeaderLabel="World Map" showWorldMapButton={false} />
       <CombinedLocationMarker
-        left="10%"
-        top="50%"
+        left="25%"
+        top="55%"
         link="Play/Location/Beach"
         text="TidalFlame Beaches"
         navigate={navigate}
       />
       <CombinedLocationMarker
-        left="30%"
-        top="60%"
+        left="55%"
+        top="50%"
         link="Play/Location/Forest"
         text="Whisperwood Valleys"
         navigate={navigate}
