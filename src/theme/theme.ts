@@ -11,10 +11,12 @@ declare module "@mui/material/styles" {
     FooterBackground: Palette["primary"];
     Blue: Palette["primary"];
     DarkBlue: Palette["primary"];
+    LightBlue: Palette["primary"];
     Orange: Palette["primary"];
     DarkOrange: Palette["primary"];
     Gold: Palette["primary"];
     GoldFaded: Palette["primary"];
+    BlueFaded: Palette["primary"];
   }
   interface PaletteOptions {
     NavBarBackground?: PaletteOptions["primary"];
@@ -22,10 +24,12 @@ declare module "@mui/material/styles" {
     FooterBackground?: PaletteOptions["primary"];
     Blue?: PaletteOptions["primary"];
     DarkBlue?: PaletteOptions["primary"];
+    LightBlue?: PaletteOptions["primary"];
     Orange?: PaletteOptions["primary"];
     DarkOrange?: PaletteOptions["primary"];
     Gold?: PaletteOptions["primary"];
     GoldFaded?: PaletteOptions["primary"];
+    BlueFaded?: PaletteOptions["primary"];
   }
 
   interface TypographyVariants {
@@ -119,6 +123,16 @@ const getTheme = (): Theme => {
         main: "#F2B417",
         light: "#c3790b",
         dark: "#C3790B",
+      },
+      LightBlue: {
+        main: "#a2c8ee",
+        light: "#4172cf",
+        dark: "#76aae4",
+      },
+      BlueFaded: {
+        main: "rgba(0, 121, 145, 0.4)",
+        light: "rgba(0, 145, 172, 0.4)",
+        dark: "rgba(5, 94, 116, 0.4)",
       },
       GoldFaded: {
         main: "rgba(242, 180, 23, 0.4)",

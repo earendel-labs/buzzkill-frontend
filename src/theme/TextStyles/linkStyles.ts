@@ -10,22 +10,22 @@ const linkStyles = (theme: Theme) => ({
           fontSize: "16px",
           fontWeight: "500",
           "&:hover": {
-            color: theme.palette.GoldFaded.main,
+            color: theme.palette.LightBlue.main,
           },
           "&:active": {
-            color: theme.palette.Gold.light,
+            color: theme.palette.LightBlue.dark,
           },
         },
         "&.linkStyle2": {
           color: "#ffffff",
-          fontSize: "20px",
-          fontWeight: "500",
+          fontSize: "22px",
+          fontWeight: "800",
           textDecoration: "none",
           "&:hover": {
-            color: theme.palette.GoldFaded.main,
+            color: theme.palette.LightBlue.main,
           },
           "&:active": {
-            color: theme.palette.Gold.light,
+            color: theme.palette.LightBlue.dark,
           },
         },
       },
