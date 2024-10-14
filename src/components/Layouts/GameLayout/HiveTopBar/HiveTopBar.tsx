@@ -50,7 +50,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         sx={{
           position: "relative",
           left: "10%",
-          transform: "translateX(-50%)", // Center the header horizontally
+          transform: "translateX(-50%)",
         }}
       >
         <LocationHeader
@@ -65,7 +65,8 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          marginLeft: "auto", // Make sure the right buttons stay at the end
+          gap: 1,
+          marginLeft: "auto",
         }}
       >
         <HiveMapButton />
