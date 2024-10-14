@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Supabase environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_API_DOMAIN!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY!;
+const supabaseUrl = process.env.SUPABASE_API_DOMAIN!;
+const supabaseAnonKey = process.env.SUPABASE_API_KEY!;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
     `Supabase environment variables are missing. 
-    Ensure NEXT_PUBLIC_SUPABASE_API_DOMAIN and NEXT_PUBLIC_SUPABASE_API_KEY are set.`
+    Ensure NEXT_PUBLIC_SUPABASE_API_DOMAIN and  SUPABASE_API_KEY are set.`
   );
 }
 
@@ -44,15 +44,9 @@ export const getSupabaseClientWithAuth = (token: string) => {
     global: {
       headers: {
         Authorization: `Bearer ${token}`,
-        apikey: supabaseAnonKey
+        apikey: supabaseAnonKey,
       },
       fetch: customFetch, // Use the custom fetch function
     },
-    
   });
 };
-
-
-
-
-

@@ -13,6 +13,7 @@ import {
 import { useSession } from "next-auth/react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import { useTheme } from "@mui/material/styles";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
@@ -140,8 +141,8 @@ const ProfilePage = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <CircularProgress />
-          <Typography marginTop="16px">Fetching data...</Typography>
+          <HexagonSpinner />
+          <Typography marginTop="24px">Fetching data...</Typography>
         </Box>
       ) : (
         <Box
