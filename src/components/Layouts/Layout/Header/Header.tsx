@@ -45,8 +45,8 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
           onClick={toggleMenu}
           sx={{
             position: "fixed",
-            top: "50px",
-            right: "20px",
+            top: "2.6rem",
+            right: "0.5rem",
             transform: "translateY(-50%)",
           }}
         />
