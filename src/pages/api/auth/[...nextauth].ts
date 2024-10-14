@@ -6,11 +6,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { getToken } from "next-auth/jwt";
 import { JWT } from "next-auth/jwt";
 
 // Import the Supabase client
-import { supabase, getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
+import { supabase } from "@/app/libs/supabaseClient";
 
 export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   const providers = [
@@ -24,6 +23,10 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         }
 
         let address;
+        // Verify the SIWE message
+        const nextAuthUrl =
+          process.env.NEXTAUTH_URL ||
+          (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
 
         if (credentials.address) {
           // Case 1: User exists and provides an address
@@ -34,13 +37,6 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
             // Parse the SIWE message
             const siwe = new SiweMessage(JSON.parse(credentials.message));
             address = siwe.address;
-
-            // Verify the SIWE message
-            const nextAuthUrl =
-              process.env.NEXTAUTH_URL ||
-              (process.env.VERCEL_URL
-                ? `https://${process.env.VERCEL_URL}`
-                : null);
 
             if (!nextAuthUrl) {
               console.log("Missing nextAuthUrl");
@@ -80,51 +76,37 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
         // At this point, we have an address
         try {
-          const { data: userData, error } = await supabase
-            .from("users")
-            .select("*")
-            .eq("address", address)
-            .maybeSingle();
-          if (error) {
-            console.error("Error fetching user from Supabase:", error);
-            return null;
-          }
+          const checkUserResponse = await fetch(
+            `${nextAuthUrl}/api/user/checkUser`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ address }),
+            }
+          );
 
-          if (userData) {
-            // User already exists
-            console.log("User exists in Supabase", userData);
-            return {
-              id: address,
-              address,
-            };
+          const { exists } = await checkUserResponse.json();
+
+          if (exists) {
+            return { id: address, address };
           } else {
-            // User does not exist, create user in Supabase
-            console.log("User does not exist, creating new user");
-            const { data: newUser, error: insertError } = await supabase
-              .from("users")
-              .insert({
-                address: address,
-                role: "authenticated",
-                created_at: new Date().toISOString(),
-              })
-              .single();
+            const createUserResponse = await fetch(
+              `${nextAuthUrl}/api/user/createUser`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ address }),
+              }
+            );
 
-            if (insertError) {
-              console.error(
-                "Error inserting new user into Supabase:",
-                insertError
-              );
-              return null;
+            if (!createUserResponse.ok) {
+              throw new Error("User creation failed");
             }
 
-            // Return the new user's address
-            return {
-              id: address,
-              address,
-            };
+            return { id: address, address };
           }
-        } catch (e) {
-          console.error("Error during authorization:", e);
+        } catch (error) {
+          console.error("Authorization error:", error);
           return null;
         }
       },
@@ -178,30 +160,29 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         }
         return session;
       },
-
       async redirect({ url, baseUrl }) {
-        console.log("Redirect callback triggered");
+        console.log("Redirect callback triggered", { url, baseUrl });
 
-        // Check if logging in and there's an auth error in the query
         const urlObj = new URL(url);
         const isAuthError = urlObj.searchParams.has("error");
 
         if (isAuthError) {
-          urlObj.searchParams.delete("error"); // Remove the error parameter
+          urlObj.searchParams.delete("error");
+          console.log("Redirecting due to error", urlObj.toString());
           return urlObj.toString();
         }
-
-        // If user is logging in and on the home page or root, redirect to /Play
         if (url === baseUrl || url === `${baseUrl}/`) {
-          return `${baseUrl}/Play`;
+          const playUrl = `${baseUrl}/Play`;
+          console.log("Redirecting to Play:", playUrl);
+          return playUrl;
         }
 
-        // Redirect to / (root) after logout
         if (url === "/api/auth/signout") {
-          return baseUrl; // Redirect to home
+          console.log("Redirecting to home after logout");
+          return baseUrl;
         }
 
-        // Allow all other URLs to remain as they are
+        console.log("Allowing normal redirect", url);
         return url;
       },
     },

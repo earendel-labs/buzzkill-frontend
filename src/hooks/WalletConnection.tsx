@@ -46,18 +46,16 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
         console.log("Checking Supabase for wallet address:", address);
         setLoading(true); // Start loading before making the request
- 
-        const { data: userData, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("address", address)
-          .maybeSingle();
 
-        if (error) {
-          console.error("Supabase query error:", error);
-          setIsSiweEnabled(true); // Fail-safe: enable SIWE if there's an error
-        } else if (userData) {
-          console.log("User exists in Supabase. SIWE disabled.", userData);
+        const checkUserResponse = await fetch("/api/user/checkUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address }),
+        });
+
+        const { exists, user } = await checkUserResponse.json();
+        if (exists) {
+          console.log("User exists in Supabase. SIWE disabled.", user);
           setIsSiweEnabled(false); // User exists, disable SIWE
 
           // Sign in to NextAuth manually using credentials provider
@@ -87,7 +85,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           }
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");
-          console.log("userData", userData);
+          console.log("userData", user);
           setIsSiweEnabled(true); // User does not exist, enable SIWE
         }
       } catch (err) {

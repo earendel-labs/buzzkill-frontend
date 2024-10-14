@@ -8,7 +8,7 @@ import { Box, Button } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
 
@@ -36,15 +36,23 @@ const HomePage: React.FC = () => {
 
   // Redirect user after successful login, only if the auth error was present initially
   useEffect(() => {
-    if (session && error === "auth") {
-      router.replace("/Play");
+    if (session && (error === "auth" || !error)) {
+      router.push("/Play"); // Redirect to Play once the session is established
     }
   }, [session, error, router]);
 
   const handleClick = () => {
     router.push("/Mint");
   };
-
+  // Sign in handler for SIWE login
+  const handleLogin = async () => {
+    try {
+      // Use SIWE provider for authentication
+      await signIn("credentials", { redirect: false });
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
   return (
     <Layout>
       {/* Conditionally render loading spinner */}
