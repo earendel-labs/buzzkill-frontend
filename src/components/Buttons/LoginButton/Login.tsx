@@ -14,7 +14,7 @@ import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRou
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { signOut, signIn } from "next-auth/react";
 import { useDisconnect } from "wagmi";
@@ -57,6 +57,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
       console.error("Error during sign out:", error);
     }
   };
+
   return (
     <ConnectButton.Custom>
       {({

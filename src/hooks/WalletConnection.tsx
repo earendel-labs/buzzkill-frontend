@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   RainbowKitSiweNextAuthProvider,
   GetSiweMessageOptions,
@@ -14,9 +14,10 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { createWalletTheme } from "@/theme/walletTheme";
-import { ThemeProvider, Box, Skeleton } from "@mui/material";
+import { ThemeProvider, Box, Skeleton, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation"; // Import the router
+import HCaptchaComponent from "@/components/Verification/HCaptchaComponent";
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",
@@ -31,6 +32,9 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
   const { address, isConnected } = useAccount(); // Get connected wallet address
   const [loading, setLoading] = useState(false); // State to control loading indicator
   const router = useRouter(); // Initialize router
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const hCaptchaRef = useRef<{ handleExecute: () => void }>(null); // Using the correct type
 
   useEffect(() => {
     console.log("WalletConnection mounted");
@@ -86,6 +90,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");
           console.log("userData", user);
+          hCaptchaRef.current?.handleExecute();
           setIsSiweEnabled(true); // User does not exist, enable SIWE
         }
       } catch (err) {
@@ -106,6 +111,21 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     }
   }, [isConnected, address]);
 
+  const handleCaptchaVerify = async (token: string) => {
+    setCaptchaToken(token);
+
+    if (token && address) {
+      await fetch("/api/auth/verify-captcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ captchaToken: token }),
+      });
+
+      await signIn("credentials", { address });
+      setCaptchaToken(null);
+    }
+  };
+
   return (
     <RainbowKitSiweNextAuthProvider
       enabled={isSiweEnabled} // Conditionally enable SIWE based on user existence
@@ -113,7 +133,27 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     >
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={walletTheme} avatar={CustomAvatar}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            {children}
+            {/* hCaptcha Modal */}
+            <Modal open={isSiweEnabled && captchaToken === null && isConnected}>
+              <Box
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "100vh",
+                }}
+              >
+                <HCaptchaComponent
+                  onVerify={handleCaptchaVerify}
+                  siteKey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
+                  ref={hCaptchaRef}
+                />
+              </Box>
+            </Modal>
+          </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </RainbowKitSiweNextAuthProvider>
