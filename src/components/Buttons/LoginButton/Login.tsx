@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -14,19 +14,15 @@ import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRou
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { signOut } from "next-auth/react";
+import { signOut, signIn } from "next-auth/react";
 import { useDisconnect } from "wagmi";
 
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
 }
-
-const handleNextAuthSignOut = () => {
-  signOut({ callbackUrl: "/" });
-};
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
   loginButtonText,
@@ -39,6 +35,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const { disconnect } = useDisconnect();
 
   const handleMenuClose = () => {
@@ -94,10 +91,20 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
           );
         }
 
+        const handleConnect = async () => {
+          if (account) {
+            // After wallet is connected, initiate NextAuth sign in
+            await signIn("credentials", {
+              address: account.address,
+            });
+          }
+          openConnectModal();
+        };
+
         return (
           <Box>
             {!connected ? (
-              <Button className="blueButton" onClick={openConnectModal}>
+              <Button className="blueButton" onClick={handleConnect}>
                 {loginButtonText || "Sign Up / Login"}
               </Button>
             ) : (

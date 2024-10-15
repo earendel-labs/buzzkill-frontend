@@ -9,6 +9,7 @@ declare module "next-auth" {
 
   interface Session {
     address?: string;
+    inviteCode?: string;
     user: {
       name?: string;
       address?: string; // Attach address to the user session

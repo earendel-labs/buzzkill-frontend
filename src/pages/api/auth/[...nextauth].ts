@@ -7,11 +7,10 @@ import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
+import { serialize } from "cookie";
 
-// Import the Supabase client
-import { supabase } from "@/app/libs/supabaseClient";
 
-export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
+export function getAuthOptions(req: IncomingMessage , res: NextApiResponse): NextAuthOptions {
   const providers = [
     CredentialsProvider({
       async authorize(credentials) {
@@ -23,6 +22,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
         }
 
         let address;
+        console.log("credentials are :", credentials);
         // Verify the SIWE message
         const nextAuthUrl =
           process.env.NEXTAUTH_URL ||
@@ -90,8 +90,33 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           if (exists) {
             return { id: address, address };
           } else {
+            let inviteCode: string | null = null;
+
+            const cookies = req.headers.cookie || "";
+            const cookieObj = Object.fromEntries(
+              cookies.split("; ").map((cookie) => cookie.split("="))
+            );
+            // Retrieve inviteCode from cookies
+            inviteCode = cookieObj["inviteCode"];
+
+            console.log("invitecode inside auth", inviteCode);
+            // Verify the invite code using the server-side API
+            if (inviteCode) {
+              const validationResponse = await fetch(
+                `${nextAuthUrl}/api/user/validateInviteCode?invite=${inviteCode}`
+              );
+              const { valid } = await validationResponse.json();
+              if (!valid) {
+                console.log(
+                  "Invalid invite code provided, proceeding without it"
+                );
+                inviteCode = null; // Set inviteCode to null if invalid
+              }
+            }
+
+            // Include the invite code if available
             const createUserResponse = await fetch(
-              `${nextAuthUrl}/api/user/createUser`,
+              `${nextAuthUrl}/api/user/createUser?invite=${inviteCode}`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -102,7 +127,15 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
             if (!createUserResponse.ok) {
               throw new Error("User creation failed");
             }
-
+            // Clear the inviteCode cookie
+            const clearInviteCookie = serialize("inviteCode", "", {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+              path: "/",
+              expires: new Date(0),
+            });
+            res.setHeader("Set-Cookie", clearInviteCookie);
             return { id: address, address };
           }
         } catch (error) {
@@ -165,6 +198,14 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 
         const urlObj = new URL(url);
         const isAuthError = urlObj.searchParams.has("error");
+
+        // Check for the invite code in the URL
+        const inviteCode = urlObj.searchParams.get("invite");
+
+        if (inviteCode) {
+          // Redirect to the baseUrl and include the invite code
+          return `${baseUrl}/?invite=${inviteCode}`;
+        }
 
         if (isAuthError) {
           urlObj.searchParams.delete("error");
@@ -231,7 +272,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  const authOptions = getAuthOptions(req);
+  const authOptions = getAuthOptions(req, res);
 
   if (!Array.isArray(req.query.nextauth)) {
     res.status(400).send("Bad request");

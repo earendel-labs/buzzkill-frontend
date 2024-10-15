@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Snackbar, Alert } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
@@ -17,11 +17,16 @@ const HomePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
+  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
     const loggingOutParam = params.get("loggingOut");
+    const inviteCode = params.get("invite");
 
     if (errorParam) setError(errorParam);
 
@@ -32,7 +37,37 @@ const HomePage: React.FC = () => {
       }`;
       router.replace(cleanUrl);
     }
+
+    // Check invite code validity if present
+    if (inviteCode) {
+      fetch(`/api/user/validateInviteCode?invite=${inviteCode}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.valid) {
+            setSnackbarSeverity("success");
+            setSnackbarMessage("Valid invite code used!");
+          } else {
+            setSnackbarSeverity("error");
+
+            setSnackbarMessage(
+              "Invalid invite code. Continuing signup without invite."
+            );
+          }
+          setSnackbarOpen(true); // Open the snackbar with the result message
+        })
+        .catch((error) => {
+          setSnackbarSeverity("error");
+
+          console.error("Error validating invite code:", error);
+          setSnackbarMessage("Error checking invite code. Please try again.");
+          setSnackbarOpen(true);
+        });
+    }
   }, [router]);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   // Redirect user after successful login, only if the auth error was present initially
   useEffect(() => {
@@ -43,16 +78,7 @@ const HomePage: React.FC = () => {
 
   const handleClick = () => {
     router.push("/Mint");
-  };
-  // Sign in handler for SIWE login
-  const handleLogin = async () => {
-    try {
-      // Use SIWE provider for authentication
-      await signIn("credentials", { redirect: false });
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
+  }; 
   return (
     <Layout>
       {/* Conditionally render loading spinner */}
@@ -144,6 +170,21 @@ const HomePage: React.FC = () => {
           </Box>
         </SemiTransparentCard>
       </Box>
+      {/* Snackbar for invite code validation */}
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Layout>
   );
 };
