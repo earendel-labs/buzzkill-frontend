@@ -9,8 +9,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
 import { serialize } from "cookie";
 
-
-export function getAuthOptions(req: IncomingMessage , res: NextApiResponse): NextAuthOptions {
+export function getAuthOptions(
+  req: IncomingMessage,
+  res: NextApiResponse
+): NextAuthOptions {
   const providers = [
     CredentialsProvider({
       async authorize(credentials) {

@@ -18,7 +18,11 @@ import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
     props: {
-      session: await getServerSession(req, res, getAuthOptions(req)),
+      session: await getServerSession(
+        req,
+        res,
+        getAuthOptions(req, res as any)
+      ),
     },
   };
 };
