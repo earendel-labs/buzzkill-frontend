@@ -9,6 +9,7 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  ButtonBase,
 } from "@mui/material";
 import { ContentCopy as CopyIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -208,6 +209,7 @@ const ProfilePage = () => {
                 Invite Code
               </Typography>
               <Box
+                onClick={handleCopyInvite}
                 sx={{
                   display: "flex",
                   alignItems: "stretch",
@@ -215,6 +217,7 @@ const ProfilePage = () => {
                   borderRadius: "4px",
                   overflow: "hidden",
                   width: "100%",
+                  cursor: "pointer", // Indicate the whole area is clickable
                 }}
               >
                 <TextField
@@ -232,6 +235,7 @@ const ProfilePage = () => {
                       backgroundColor: theme.palette.DarkBlue.light,
                       padding: "0.5rem",
                       borderRadius: "2px 0 0 2px", // Rounded left side
+                      pointerEvents: "none", // Disable TextField hover effect
                       "&.Mui-disabled": {
                         WebkitTextFillColor: "white",
                         fontSize: "1.25rem",
@@ -246,9 +250,11 @@ const ProfilePage = () => {
                   }}
                 />
                 <IconButton
-                  onClick={handleCopyInvite}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent Box's onClick from triggering
+                    handleCopyInvite();
+                  }}
                   sx={{
-                    borderWidth: "4px",
                     backgroundColor: theme.palette.DarkBlue.dark,
                     borderRadius: "0 2px 2px 0", // Rounded right side
                     "&:hover": {
