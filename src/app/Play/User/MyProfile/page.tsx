@@ -5,11 +5,12 @@ import {
   Button,
   Box,
   Typography,
-  CircularProgress,
   Grid,
   Snackbar,
   Alert,
+  IconButton,
 } from "@mui/material";
+import { ContentCopy as CopyIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import { useTheme } from "@mui/material/styles";
@@ -22,11 +23,16 @@ const ProfilePage = () => {
     account_name: "",
     email_address: "",
     address: "",
+    invite_code: "", // Initialize with an empty string
+    invite_count: 0, // Initialize with zero
   });
+
   const [originalData, setOriginalData] = useState({
     account_name: "",
     email_address: "",
     address: "",
+    invite_code: "", // Initialize with an empty string
+    invite_count: 0, // Initialize with zero
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,11 +57,15 @@ const ProfilePage = () => {
             account_name: data.account_name || "",
             email_address: data.email_address || "",
             address: data.address || "",
+            invite_code: data.invite_code || "", // Include invite_code
+            invite_count: data.invite_count || 0, // Include invite_count
           });
           setOriginalData({
             account_name: data.account_name || "",
             email_address: data.email_address || "",
             address: data.address || "",
+            invite_code: data.invite_code || "", // Include invite_code
+            invite_count: data.invite_count || 0, // Include invite_count
           });
         } catch (error) {
           console.error("Error fetching profile:", error);
@@ -67,6 +77,28 @@ const ProfilePage = () => {
       fetchProfile();
     }
   }, [status]);
+
+  const handleCopyInvite = () => {
+    const inviteLink = `${window.location.origin}/?invite=${profileData.invite_code}`;
+    navigator.clipboard
+      .writeText(inviteLink)
+      .then(() => {
+        setSnackbarMessage("Invite link copied to clipboard.");
+        setSnackbarSeverity("success");
+      })
+      .catch((error) => {
+        console.error("Error copying invite link:", error);
+        setSnackbarMessage("Failed to copy invite link.");
+        setSnackbarSeverity("error");
+      })
+      .finally(() => {
+        setSnackbarOpen(true);
+      });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -108,10 +140,6 @@ const ProfilePage = () => {
   const handleCancelEdit = () => {
     setProfileData({ ...originalData });
     setIsEditable(false);
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
   };
 
   const validateAccountName = (value: string) => {
@@ -174,6 +202,100 @@ const ProfilePage = () => {
               >
                 {profileData.address}
               </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
+                Invite Code
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "stretch",
+                  border: `1px solid ${theme.palette.DarkBlue.light}`,
+                  borderRadius: "4px",
+                  overflow: "hidden",
+                  width: "100%",
+                }}
+              >
+                <TextField
+                  fullWidth
+                  value={profileData.invite_code}
+                  variant="filled"
+                  disabled
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  sx={{
+                    input: {
+                      color: "white",
+                      fontWeight: "bold",
+                      backgroundColor: theme.palette.DarkBlue.light,
+                      padding: "0.5rem",
+                      borderRadius: "2px 0 0 2px", // Rounded left side
+                      "&.Mui-disabled": {
+                        WebkitTextFillColor: "white",
+                        fontSize: "1.25rem",
+                        color: "white",
+                        paddingLeft: 1,
+                      },
+                    },
+                    "& .MuiFilledInput-root": {
+                      backgroundColor: theme.palette.DarkBlue.light,
+                      borderRadius: "4px 0 0 4px", // Rounded left side
+                    },
+                  }}
+                />
+                <IconButton
+                  onClick={handleCopyInvite}
+                  sx={{
+                    borderWidth: "4px",
+                    backgroundColor: theme.palette.DarkBlue.dark,
+                    borderRadius: "0 2px 2px 0", // Rounded right side
+                    "&:hover": {
+                      backgroundColor: "#568cdb",
+                    },
+                  }}
+                >
+                  <CopyIcon sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
+                Users Invited
+              </Typography>
+              <TextField
+                fullWidth
+                value={profileData.invite_count}
+                variant="filled"
+                disabled
+                sx={{
+                  input: {
+                    color: "white",
+                    fontWeight: "bold",
+                    background: theme.palette.background.default,
+                    "&.Mui-disabled": {
+                      WebkitTextFillColor: "white",
+                      fontSize: "1.25rem",
+                      color: "white",
+                      paddingLeft: 1,
+                    },
+                  },
+                  "& .MuiFilledInput-root": {
+                    backgroundColor: theme.palette.Gold.light,
+                    "&:hover": {
+                      backgroundColor: theme.palette.Gold.light,
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: theme.palette.Gold.light,
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: theme.palette.Gold.light,
+                    },
+                  },
+                }}
+              />
             </Grid>
             <Grid item xs={12}>
               <Typography sx={{ mb: 1, fontWeight: "normal", color: "white" }}>
@@ -288,6 +410,7 @@ const ProfilePage = () => {
                 }}
               />
             </Grid>
+
             <Grid
               item
               xs={12}
