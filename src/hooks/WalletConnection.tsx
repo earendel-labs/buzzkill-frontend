@@ -136,7 +136,13 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           <ThemeProvider theme={theme}>
             {children}
             {/* hCaptcha Modal */}
-            <Modal open={isSiweEnabled && captchaToken === null && isConnected}>
+            <Modal
+              open={
+                isSiweEnabled &&
+                captchaToken === null &&
+                isConnected 
+              }
+            >
               <Box
                 sx={{
                   p: 2,
