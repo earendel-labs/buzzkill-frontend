@@ -24,8 +24,8 @@ import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import {
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftMaxSupply,
-  useWriteBuzzkillHatchlingsNftMintBatch,
-} from "@/hooks/BuzzkillHatchlingsNft";
+  useWriteBuzzkillHatchlingsNftPublicMint,
+} from "@/hooks/BuzzkillHatchlingsNfT";
 
 // Placeholder data for total collection and minted count
 const MintPage: React.FC = () => {
@@ -81,11 +81,8 @@ const MintPage: React.FC = () => {
   }, [mintedData, totalSupplyData]);
 
   // Utilize the generated properties from the hook
-  const {
-    writeContractAsync: mintBatch,
-    isPending,
-    isSuccess,
-  } = useWriteBuzzkillHatchlingsNftMintBatch();
+  const { writeContractAsync: mintBatch, isPending } =
+    useWriteBuzzkillHatchlingsNftPublicMint();
 
   // Update formatted balance in useEffect when balanceData changes
   useEffect(() => {
@@ -102,6 +99,7 @@ const MintPage: React.FC = () => {
   console.log("formattedBalance conencted: ", formattedBalance);
   console.log("account address conencted: ", address);
   console.log("balanceData.value conencted: ", balanceData);
+
   const incrementQuantity = () => {
     if (quantity < maxQuantity) setQuantity(quantity + 1);
   };
@@ -115,13 +113,10 @@ const MintPage: React.FC = () => {
     if (mintBatch && address) {
       try {
         const tx = await mintBatch({
-          args: [
-            address as `0x${string}`,
-            Array(quantity).fill(1),
-            Array(quantity).fill(1),
-            "0x",
-          ],
+          args: [address as `0x${string}`, Array(quantity).fill(1), "0x"],
         });
+        console.log("message output");
+        refetchMintedCount();
         setTxHash(tx);
         setErrorMessage(null);
       } catch (error) {
@@ -155,12 +150,6 @@ const MintPage: React.FC = () => {
       console.error("No address found or minting function not available");
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      refetchMintedCount();
-    }
-  }, [isSuccess, refetchMintedCount]);
 
   // Close Snackbar function
   const handleSnackbarClose = () => {

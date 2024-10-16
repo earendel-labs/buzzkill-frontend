@@ -14,7 +14,7 @@ export default defineConfig({
       name: "BuzzkillHatchlingsNFT",
       abi: BuzzkillHatchlingsNFTABI, // Directly use the imported ABI
       address: {
-        89: "0x4837AbB3E0A9Ec8957448f80E2332F82676D4C80",
+        89: "0x5DFfDB02A2fFB6046E386D5517B648b850FC5051",
       },
     },
   ],
