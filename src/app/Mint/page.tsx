@@ -25,7 +25,7 @@ import {
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftMaxSupply,
   useWriteBuzzkillHatchlingsNftPublicMint,
-} from "@/hooks/BuzzkillHatchlingsNFT";
+} from "@/hooks/BuzzkillHatchlingsNFTTEMP";
 
 // Placeholder data for total collection and minted count
 const MintPage: React.FC = () => {
