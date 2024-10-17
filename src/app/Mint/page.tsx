@@ -25,7 +25,7 @@ import {
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftMaxSupply,
   useWriteBuzzkillHatchlingsNftPublicMint,
-} from "@/hooks/BuzzkillHatchlingsNfT";
+} from "@/hooks/BuzzkillHatchlingsNFT";
 
 // Placeholder data for total collection and minted count
 const MintPage: React.FC = () => {
@@ -113,8 +113,9 @@ const MintPage: React.FC = () => {
     if (mintBatch && address) {
       try {
         const tx = await mintBatch({
-          args: [address as `0x${string}`, Array(quantity).fill(1), "0x"],
+          args: [BigInt(quantity)],
         });
+
         console.log("message output");
         refetchMintedCount();
         setTxHash(tx);

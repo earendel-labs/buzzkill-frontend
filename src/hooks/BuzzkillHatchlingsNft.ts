@@ -3,7 +3,7 @@ import {
   createUseWriteContract,
   createUseSimulateContract,
   createUseWatchContractEvent,
-} from "wagmi/codegen";
+} from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BuzzkillHatchlingsNFT
@@ -14,397 +14,393 @@ import {
  */
 export const buzzkillHatchlingsNftAbi = [
   {
-    type: "constructor",
+    type: 'constructor',
     inputs: [
-      { name: "initialOwner", internalType: "address", type: "address" },
-      { name: "initialCooldownTime", internalType: "uint256", type: "uint256" },
+      { name: 'initialOwner', internalType: 'address', type: 'address' },
+      { name: 'initialCooldownTime', internalType: 'uint256', type: 'uint256' },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "MAX_PER_TX",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'MAX_PER_TX',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "MAX_SUPPLY",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'MAX_SUPPLY',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "account", internalType: "address", type: "address" },
-      { name: "id", internalType: "uint256", type: "uint256" },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "balanceOf",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "accounts", internalType: "address[]", type: "address[]" },
-      { name: "ids", internalType: "uint256[]", type: "uint256[]" },
+      { name: 'accounts', internalType: 'address[]', type: 'address[]' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
     ],
-    name: "balanceOfBatch",
-    outputs: [{ name: "", internalType: "uint256[]", type: "uint256[]" }],
-    stateMutability: "view",
+    name: 'balanceOfBatch',
+    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "account", internalType: "address", type: "address" },
-      { name: "id", internalType: "uint256", type: "uint256" },
-      { name: "value", internalType: "uint256", type: "uint256" },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "burn",
+    name: 'burn',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "account", internalType: "address", type: "address" },
-      { name: "ids", internalType: "uint256[]", type: "uint256[]" },
-      { name: "values", internalType: "uint256[]", type: "uint256[]" },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
     ],
-    name: "burnBatch",
+    name: 'burnBatch',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "cooldownTime",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'cooldownTime',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "id", internalType: "uint256", type: "uint256" }],
-    name: "exists",
-    outputs: [{ name: "", internalType: "bool", type: "bool" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
+    name: 'exists',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "account", internalType: "address", type: "address" },
-      { name: "operator", internalType: "address", type: "address" },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'operator', internalType: 'address', type: 'address' },
     ],
-    name: "isApprovedForAll",
-    outputs: [{ name: "", internalType: "bool", type: "bool" }],
-    stateMutability: "view",
+    name: 'isApprovedForAll',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "account", internalType: "address", type: "address" },
-      { name: "id", internalType: "uint256", type: "uint256" },
-      { name: "amount", internalType: "uint256", type: "uint256" },
-      { name: "data", internalType: "bytes", type: "bytes" },
+      { name: 'account', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
     ],
-    name: "mint",
+    name: 'mint',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "to", internalType: "address", type: "address" },
-      { name: "ids", internalType: "uint256[]", type: "uint256[]" },
-      { name: "amounts", internalType: "uint256[]", type: "uint256[]" },
-      { name: "data", internalType: "bytes", type: "bytes" },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
     ],
-    name: "mintBatch",
+    name: 'mintBatch',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "owner",
-    outputs: [{ name: "", internalType: "address", type: "address" }],
-    stateMutability: "view",
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [
-      { name: "id", internalType: "uint256", type: "uint256" },
-      { name: "amount", internalType: "uint256", type: "uint256" },
-      { name: "data", internalType: "bytes", type: "bytes" },
-    ],
-    name: "publicMint",
+    type: 'function',
+    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
+    name: 'publicMint',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "renounceOwnership",
+    name: 'renounceOwnership',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "from", internalType: "address", type: "address" },
-      { name: "to", internalType: "address", type: "address" },
-      { name: "ids", internalType: "uint256[]", type: "uint256[]" },
-      { name: "values", internalType: "uint256[]", type: "uint256[]" },
-      { name: "data", internalType: "bytes", type: "bytes" },
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
     ],
-    name: "safeBatchTransferFrom",
+    name: 'safeBatchTransferFrom',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "from", internalType: "address", type: "address" },
-      { name: "to", internalType: "address", type: "address" },
-      { name: "id", internalType: "uint256", type: "uint256" },
-      { name: "value", internalType: "uint256", type: "uint256" },
-      { name: "data", internalType: "bytes", type: "bytes" },
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'id', internalType: 'uint256', type: 'uint256' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
     ],
-    name: "safeTransferFrom",
+    name: 'safeTransferFrom',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "operator", internalType: "address", type: "address" },
-      { name: "approved", internalType: "bool", type: "bool" },
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'approved', internalType: 'bool', type: 'bool' },
     ],
-    name: "setApprovalForAll",
+    name: 'setApprovalForAll',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "newCooldownTime", internalType: "uint256", type: "uint256" },
+      { name: 'newCooldownTime', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "setCooldownTime",
+    name: 'setCooldownTime',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
-    inputs: [{ name: "newuri", internalType: "string", type: "string" }],
-    name: "setURI",
+    type: 'function',
+    inputs: [{ name: 'newuri', internalType: 'string', type: 'string' }],
+    name: 'setURI',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
-    inputs: [{ name: "interfaceId", internalType: "bytes4", type: "bytes4" }],
-    name: "supportsInterface",
-    outputs: [{ name: "", internalType: "bool", type: "bool" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "totalMinted",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'totalMinted',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "totalSupply",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "id", internalType: "uint256", type: "uint256" }],
-    name: "totalSupply",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "newOwner", internalType: "address", type: "address" }],
-    name: "transferOwnership",
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
-    inputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    name: "uri",
-    outputs: [{ name: "", internalType: "string", type: "string" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'uri',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
   },
   {
-    type: "event",
+    type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: "account",
-        internalType: "address",
-        type: "address",
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
       {
-        name: "operator",
-        internalType: "address",
-        type: "address",
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
-      { name: "approved", internalType: "bool", type: "bool", indexed: false },
+      { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
     ],
-    name: "ApprovalForAll",
+    name: 'ApprovalForAll',
   },
   {
-    type: "event",
+    type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: "previousOwner",
-        internalType: "address",
-        type: "address",
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
       {
-        name: "newOwner",
-        internalType: "address",
-        type: "address",
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
     ],
-    name: "OwnershipTransferred",
+    name: 'OwnershipTransferred',
   },
   {
-    type: "event",
+    type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: "operator",
-        internalType: "address",
-        type: "address",
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
-      { name: "from", internalType: "address", type: "address", indexed: true },
-      { name: "to", internalType: "address", type: "address", indexed: true },
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
       {
-        name: "ids",
-        internalType: "uint256[]",
-        type: "uint256[]",
+        name: 'ids',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
         indexed: false,
       },
       {
-        name: "values",
-        internalType: "uint256[]",
-        type: "uint256[]",
+        name: 'values',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
         indexed: false,
       },
     ],
-    name: "TransferBatch",
+    name: 'TransferBatch',
   },
   {
-    type: "event",
+    type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: "operator",
-        internalType: "address",
-        type: "address",
+        name: 'operator',
+        internalType: 'address',
+        type: 'address',
         indexed: true,
       },
-      { name: "from", internalType: "address", type: "address", indexed: true },
-      { name: "to", internalType: "address", type: "address", indexed: true },
-      { name: "id", internalType: "uint256", type: "uint256", indexed: false },
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
       {
-        name: "value",
-        internalType: "uint256",
-        type: "uint256",
+        name: 'value',
+        internalType: 'uint256',
+        type: 'uint256',
         indexed: false,
       },
     ],
-    name: "TransferSingle",
+    name: 'TransferSingle',
   },
   {
-    type: "event",
+    type: 'event',
     anonymous: false,
     inputs: [
-      { name: "value", internalType: "string", type: "string", indexed: false },
-      { name: "id", internalType: "uint256", type: "uint256", indexed: true },
+      { name: 'value', internalType: 'string', type: 'string', indexed: false },
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
     ],
-    name: "URI",
+    name: 'URI',
   },
   {
-    type: "error",
+    type: 'error',
     inputs: [
-      { name: "sender", internalType: "address", type: "address" },
-      { name: "balance", internalType: "uint256", type: "uint256" },
-      { name: "needed", internalType: "uint256", type: "uint256" },
-      { name: "tokenId", internalType: "uint256", type: "uint256" },
+      { name: 'sender', internalType: 'address', type: 'address' },
+      { name: 'balance', internalType: 'uint256', type: 'uint256' },
+      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "ERC1155InsufficientBalance",
+    name: 'ERC1155InsufficientBalance',
   },
   {
-    type: "error",
-    inputs: [{ name: "approver", internalType: "address", type: "address" }],
-    name: "ERC1155InvalidApprover",
+    type: 'error',
+    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidApprover',
   },
   {
-    type: "error",
+    type: 'error',
     inputs: [
-      { name: "idsLength", internalType: "uint256", type: "uint256" },
-      { name: "valuesLength", internalType: "uint256", type: "uint256" },
+      { name: 'idsLength', internalType: 'uint256', type: 'uint256' },
+      { name: 'valuesLength', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "ERC1155InvalidArrayLength",
+    name: 'ERC1155InvalidArrayLength',
   },
   {
-    type: "error",
-    inputs: [{ name: "operator", internalType: "address", type: "address" }],
-    name: "ERC1155InvalidOperator",
+    type: 'error',
+    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidOperator',
   },
   {
-    type: "error",
-    inputs: [{ name: "receiver", internalType: "address", type: "address" }],
-    name: "ERC1155InvalidReceiver",
+    type: 'error',
+    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidReceiver',
   },
   {
-    type: "error",
-    inputs: [{ name: "sender", internalType: "address", type: "address" }],
-    name: "ERC1155InvalidSender",
+    type: 'error',
+    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
+    name: 'ERC1155InvalidSender',
   },
   {
-    type: "error",
+    type: 'error',
     inputs: [
-      { name: "operator", internalType: "address", type: "address" },
-      { name: "owner", internalType: "address", type: "address" },
+      { name: 'operator', internalType: 'address', type: 'address' },
+      { name: 'owner', internalType: 'address', type: 'address' },
     ],
-    name: "ERC1155MissingApprovalForAll",
+    name: 'ERC1155MissingApprovalForAll',
   },
   {
-    type: "error",
-    inputs: [{ name: "owner", internalType: "address", type: "address" }],
-    name: "OwnableInvalidOwner",
+    type: 'error',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'OwnableInvalidOwner',
   },
   {
-    type: "error",
-    inputs: [{ name: "account", internalType: "address", type: "address" }],
-    name: "OwnableUnauthorizedAccount",
+    type: 'error',
+    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
+    name: 'OwnableUnauthorizedAccount',
   },
-] as const;
+] as const
 
 /**
  *
  */
 export const buzzkillHatchlingsNftAddress = {
-  89: "0x5DFfDB02A2fFB6046E386D5517B648b850FC5051",
-} as const;
+  89: '0xA916b8758fAD4BFb2d91f37d2c77A90B84b10BC9',
+} as const
 
 /**
  *
@@ -412,7 +408,7 @@ export const buzzkillHatchlingsNftAddress = {
 export const buzzkillHatchlingsNftConfig = {
   address: buzzkillHatchlingsNftAddress,
   abi: buzzkillHatchlingsNftAbi,
-} as const;
+} as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
@@ -424,8 +420,8 @@ export const buzzkillHatchlingsNftConfig = {
  *
  */
 export const useReadBuzzkillHatchlingsNft = /*#__PURE__*/ createUseReadContract(
-  { abi: buzzkillHatchlingsNftAbi, address: buzzkillHatchlingsNftAddress }
-);
+  { abi: buzzkillHatchlingsNftAbi, address: buzzkillHatchlingsNftAddress },
+)
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_PER_TX"`
@@ -436,8 +432,8 @@ export const useReadBuzzkillHatchlingsNftMaxPerTx =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "MAX_PER_TX",
-  });
+    functionName: 'MAX_PER_TX',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_SUPPLY"`
@@ -448,8 +444,8 @@ export const useReadBuzzkillHatchlingsNftMaxSupply =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "MAX_SUPPLY",
-  });
+    functionName: 'MAX_SUPPLY',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOf"`
@@ -460,8 +456,8 @@ export const useReadBuzzkillHatchlingsNftBalanceOf =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "balanceOf",
-  });
+    functionName: 'balanceOf',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOfBatch"`
@@ -472,8 +468,8 @@ export const useReadBuzzkillHatchlingsNftBalanceOfBatch =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "balanceOfBatch",
-  });
+    functionName: 'balanceOfBatch',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"cooldownTime"`
@@ -484,8 +480,8 @@ export const useReadBuzzkillHatchlingsNftCooldownTime =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "cooldownTime",
-  });
+    functionName: 'cooldownTime',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"exists"`
@@ -496,8 +492,8 @@ export const useReadBuzzkillHatchlingsNftExists =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "exists",
-  });
+    functionName: 'exists',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"isApprovedForAll"`
@@ -508,8 +504,8 @@ export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "isApprovedForAll",
-  });
+    functionName: 'isApprovedForAll',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"owner"`
@@ -520,8 +516,8 @@ export const useReadBuzzkillHatchlingsNftOwner =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "owner",
-  });
+    functionName: 'owner',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"supportsInterface"`
@@ -532,8 +528,8 @@ export const useReadBuzzkillHatchlingsNftSupportsInterface =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "supportsInterface",
-  });
+    functionName: 'supportsInterface',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalMinted"`
@@ -544,8 +540,8 @@ export const useReadBuzzkillHatchlingsNftTotalMinted =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "totalMinted",
-  });
+    functionName: 'totalMinted',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalSupply"`
@@ -556,8 +552,8 @@ export const useReadBuzzkillHatchlingsNftTotalSupply =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "totalSupply",
-  });
+    functionName: 'totalSupply',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"uri"`
@@ -568,8 +564,8 @@ export const useReadBuzzkillHatchlingsNftUri =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "uri",
-  });
+    functionName: 'uri',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
@@ -580,7 +576,7 @@ export const useWriteBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-  });
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
@@ -591,8 +587,8 @@ export const useWriteBuzzkillHatchlingsNftBurn =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "burn",
-  });
+    functionName: 'burn',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
@@ -603,8 +599,8 @@ export const useWriteBuzzkillHatchlingsNftBurnBatch =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "burnBatch",
-  });
+    functionName: 'burnBatch',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
@@ -615,8 +611,8 @@ export const useWriteBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "mint",
-  });
+    functionName: 'mint',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
@@ -627,8 +623,8 @@ export const useWriteBuzzkillHatchlingsNftMintBatch =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "mintBatch",
-  });
+    functionName: 'mintBatch',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
@@ -639,8 +635,8 @@ export const useWriteBuzzkillHatchlingsNftPublicMint =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "publicMint",
-  });
+    functionName: 'publicMint',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
@@ -651,8 +647,8 @@ export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "renounceOwnership",
-  });
+    functionName: 'renounceOwnership',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
@@ -663,8 +659,8 @@ export const useWriteBuzzkillHatchlingsNftSafeBatchTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "safeBatchTransferFrom",
-  });
+    functionName: 'safeBatchTransferFrom',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
@@ -675,8 +671,8 @@ export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "safeTransferFrom",
-  });
+    functionName: 'safeTransferFrom',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
@@ -687,8 +683,8 @@ export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setApprovalForAll",
-  });
+    functionName: 'setApprovalForAll',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
@@ -699,8 +695,8 @@ export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setCooldownTime",
-  });
+    functionName: 'setCooldownTime',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
@@ -711,8 +707,8 @@ export const useWriteBuzzkillHatchlingsNftSetUri =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setURI",
-  });
+    functionName: 'setURI',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
@@ -723,8 +719,8 @@ export const useWriteBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "transferOwnership",
-  });
+    functionName: 'transferOwnership',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
@@ -735,7 +731,7 @@ export const useSimulateBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-  });
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
@@ -746,8 +742,8 @@ export const useSimulateBuzzkillHatchlingsNftBurn =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "burn",
-  });
+    functionName: 'burn',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
@@ -758,8 +754,8 @@ export const useSimulateBuzzkillHatchlingsNftBurnBatch =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "burnBatch",
-  });
+    functionName: 'burnBatch',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
@@ -770,8 +766,8 @@ export const useSimulateBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "mint",
-  });
+    functionName: 'mint',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
@@ -782,8 +778,8 @@ export const useSimulateBuzzkillHatchlingsNftMintBatch =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "mintBatch",
-  });
+    functionName: 'mintBatch',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
@@ -794,8 +790,8 @@ export const useSimulateBuzzkillHatchlingsNftPublicMint =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "publicMint",
-  });
+    functionName: 'publicMint',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
@@ -806,8 +802,8 @@ export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "renounceOwnership",
-  });
+    functionName: 'renounceOwnership',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
@@ -818,8 +814,8 @@ export const useSimulateBuzzkillHatchlingsNftSafeBatchTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "safeBatchTransferFrom",
-  });
+    functionName: 'safeBatchTransferFrom',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
@@ -830,8 +826,8 @@ export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "safeTransferFrom",
-  });
+    functionName: 'safeTransferFrom',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
@@ -842,8 +838,8 @@ export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setApprovalForAll",
-  });
+    functionName: 'setApprovalForAll',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
@@ -854,8 +850,8 @@ export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setCooldownTime",
-  });
+    functionName: 'setCooldownTime',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
@@ -866,8 +862,8 @@ export const useSimulateBuzzkillHatchlingsNftSetUri =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "setURI",
-  });
+    functionName: 'setURI',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
@@ -878,8 +874,8 @@ export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: "transferOwnership",
-  });
+    functionName: 'transferOwnership',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
@@ -890,7 +886,7 @@ export const useWatchBuzzkillHatchlingsNftEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-  });
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"ApprovalForAll"`
@@ -901,8 +897,8 @@ export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: "ApprovalForAll",
-  });
+    eventName: 'ApprovalForAll',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
@@ -913,8 +909,8 @@ export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: "OwnershipTransferred",
-  });
+    eventName: 'OwnershipTransferred',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferBatch"`
@@ -925,8 +921,8 @@ export const useWatchBuzzkillHatchlingsNftTransferBatchEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: "TransferBatch",
-  });
+    eventName: 'TransferBatch',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferSingle"`
@@ -937,8 +933,8 @@ export const useWatchBuzzkillHatchlingsNftTransferSingleEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: "TransferSingle",
-  });
+    eventName: 'TransferSingle',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"URI"`
@@ -949,5 +945,5 @@ export const useWatchBuzzkillHatchlingsNftUriEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: "URI",
-  });
+    eventName: 'URI',
+  })

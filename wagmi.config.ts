@@ -8,13 +8,13 @@ import BuzzkillHatchlingsNFTABIJson from "./src/app/libs/abi/BuzzkillHatchlingsN
 const BuzzkillHatchlingsNFTABI = BuzzkillHatchlingsNFTABIJson as Abi;
 
 export default defineConfig({
-  out: "./lib/hooks",
+  out: "./src/hooks/BuzzkillHatchlingsNFT.ts",
   contracts: [
     {
       name: "BuzzkillHatchlingsNFT",
       abi: BuzzkillHatchlingsNFTABI, // Directly use the imported ABI
       address: {
-        89: "0x5DFfDB02A2fFB6046E386D5517B648b850FC5051",
+        89: "0xA916b8758fAD4BFb2d91f37d2c77A90B84b10BC9",
       },
     },
   ],
