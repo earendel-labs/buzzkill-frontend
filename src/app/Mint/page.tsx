@@ -15,7 +15,7 @@ import { useTheme } from "@mui/material/styles";
 
 import Layout from "@/components/Layouts/Layout/Layout";
 
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useWaitForTransactionReceipt } from "wagmi";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
 import { formatEther } from "ethers"; // Use formatEther for native token balances
@@ -30,14 +30,21 @@ import {
 // Placeholder data for total collection and minted count
 const MintPage: React.FC = () => {
   const { address, isConnected } = useAccount(); // Get account info from RainbowKit and wagmi
-  const [mintedNFT, setMintedNFT] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const maxQuantity = 3;
-  const [txHash, setTxHash] = useState<string | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [quantity, setQuantity] = useState(1);
+  const maxQuantity = 3;
+
+  const [transactionHash, setTransactionHash] = useState<
+    `0x${string}` | undefined
+  >(undefined);
+  const [isMintLoading, setIsMintLoading] = useState(false);
+  const [isMinted, setIsMinted] = useState(false);
+
   const [mintedCount, setMintedCount] = useState<string>("0");
   const [totalSupply, setTotalSupply] = useState<string>("0");
+
   const [formattedBalance, setFormattedBalance] = useState<string>("0");
 
   const theme = useTheme(); // Access MUI theme
@@ -51,8 +58,8 @@ const MintPage: React.FC = () => {
     data: mintedData,
     isLoading: isMintedCountLoading,
     isError: isMintedCountError,
-    error: mintedCountError,
     refetch: refetchMintedCount,
+    error: mintedCountError,
   } = useReadBuzzkillHatchlingsNftTotalMinted();
 
   const {
@@ -61,16 +68,24 @@ const MintPage: React.FC = () => {
     isError: isTotalSupplyError,
     error: totalSupplyError,
   } = useReadBuzzkillHatchlingsNftMaxSupply();
+  // Utilize the generated properties from the hook
+  const {
+    writeContractAsync: mintBatch,
+    isPending,
+    isSuccess,
+    isError,
+  } = useWriteBuzzkillHatchlingsNftPublicMint();
+
+  // Update mintedCount when mintedData changes
+  useEffect(() => {
+    if (mintedData !== undefined) {
+      setMintedCount(Intl.NumberFormat().format(Number(mintedData)));
+      console.log("Updating mintedCount:", mintedData);
+    }
+  }, [mintedData]);
 
   // Update mintedCount and totalSupply when data is fetched
   useEffect(() => {
-    if (mintedData) {
-      const formattedMintedCount = new Intl.NumberFormat().format(
-        Number(mintedData)
-      );
-      console.log("Updating mintedCount:", formattedMintedCount);
-      setMintedCount(formattedMintedCount);
-    }
     if (totalSupplyData) {
       const formattedTotalSupply = new Intl.NumberFormat().format(
         Number(totalSupplyData)
@@ -78,11 +93,7 @@ const MintPage: React.FC = () => {
       console.log("Updating totalSupply:", formattedTotalSupply);
       setTotalSupply(formattedTotalSupply);
     }
-  }, [mintedData, totalSupplyData]);
-
-  // Utilize the generated properties from the hook
-  const { writeContractAsync: mintBatch, isPending } =
-    useWriteBuzzkillHatchlingsNftPublicMint();
+  }, [totalSupplyData]);
 
   // Update formatted balance in useEffect when balanceData changes
   useEffect(() => {
@@ -92,13 +103,6 @@ const MintPage: React.FC = () => {
       console.log("Balance updated:", balance);
     }
   }, [balanceData]);
-
-  console.log("Minted Count:", mintedCount);
-  console.log("Total Supply:", totalSupply);
-  console.log("account address conencted: ", address);
-  console.log("formattedBalance conencted: ", formattedBalance);
-  console.log("account address conencted: ", address);
-  console.log("balanceData.value conencted: ", balanceData);
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) setQuantity(quantity + 1);
@@ -110,15 +114,33 @@ const MintPage: React.FC = () => {
 
   // Mint function with error handling
   const handleMint = async () => {
+    setErrorMessage(null); // Reset error message
+    setIsMintLoading(true); // Set loading state
+    setIsMinted(false); // Reset mint success state
     if (mintBatch && address) {
       try {
-        const tx = await mintBatch({
+        const { data: latestMintedData } = await refetchMintedCount();
+        console.log("mintedData check before mint:", mintedData);
+        // Perform the check with the freshly fetched data
+        if (latestMintedData !== undefined && totalSupplyData !== undefined) {
+          if (latestMintedData + BigInt(quantity) > totalSupplyData) {
+            setErrorMessage("Requested quantity exceeds available supply.");
+            setSnackbarOpen(true);
+            return;
+          }
+        } else {
+          setErrorMessage("Unable to fetch supply data. Please try again.");
+          setSnackbarOpen(true);
+          return;
+        }
+        const txResponse = await mintBatch({
           args: [BigInt(quantity)],
         });
-
+        const { data: updatedMintedData } = await refetchMintedCount();
+        console.log("mintedData", mintedData);
+        console.log("updatedMintedData", updatedMintedData);
         console.log("message output");
-        refetchMintedCount();
-        setTxHash(tx);
+        setTransactionHash(txResponse);
         setErrorMessage(null);
       } catch (error) {
         let userFriendlyMessage = "An unknown error occurred during minting";
@@ -143,8 +165,7 @@ const MintPage: React.FC = () => {
         }
 
         setErrorMessage(userFriendlyMessage);
-        setTxHash(null);
-      } finally {
+        setTransactionHash(undefined);
         setSnackbarOpen(true);
       }
     } else {
@@ -152,10 +173,33 @@ const MintPage: React.FC = () => {
     }
   };
 
+  // Use `useWaitForTransactionReceipt` to track the transaction
+  const {
+    isLoading: isTransactionLoading,
+    isSuccess: isTransactionSuccess,
+    error: transactionError,
+  } = useWaitForTransactionReceipt({
+    hash: transactionHash,
+  });
+
+  // Effect to handle transaction state change
+  useEffect(() => {
+    if (isTransactionSuccess) {
+      setIsMinted(true); // Minting success
+      setSnackbarOpen(true);
+      refetchMintedCount(); // Refetch minted data after success
+      setIsMintLoading(false); // Reset loading state
+    }
+    if (transactionError) {
+      setErrorMessage("Transaction error: " + transactionError.message); // Set transaction error message
+      setIsMintLoading(false); // Reset loading state
+    }
+  }, [isTransactionSuccess, transactionError, refetchMintedCount]);
+
   // Close Snackbar function
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
-    setTxHash(null); // Reset txHash when snackbar closes
+    setTransactionHash(undefined); // Reset txHash when snackbar closes
     setErrorMessage(null); // Reset error message when snackbar closes
   };
   return (
@@ -558,36 +602,55 @@ const MintPage: React.FC = () => {
                   </Box>
                 </>
               )}
+              {/* Minting State Messages and Actions */}
+              <Box
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                {/* Display success message if minted successfully */}
+                {isMinted && (
+                  <Typography
+                    variant="body1"
+                    sx={{ mb: 4, color: theme.palette.LightBlue.main }}
+                  >
+                    Minting successful!
+                  </Typography>
+                )}
 
-              {/* Connect Wallet Button or Mint Button */}
-              {!isConnected ? (
-                <Box sx={{ mt: 2, mb: 4 }}>
-                  {/* Display RainbowKit Connect Button when wallet isn't connected */}
-                  <LoginButton loginButtonText="Connect Your Wallet" />
-                </Box>
-              ) : isPending && !errorMessage ? (
-                <CircularProgress color="inherit" sx={{ mb: 4 }} />
-              ) : (
-                <Box
-                  sx={{
-                    mt: 2,
-                    mb: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  {" "}
-                  {errorMessage && (
-                    <Typography
-                      sx={{ mt: 2, mb: 4, color: theme.palette.Orange.light }}
-                    >
-                      {errorMessage}
-                    </Typography>
-                  )}
+                {/* Display error message if there is an error */}
+                {errorMessage && !isMinted && (
+                  <Typography sx={{ mb: 4, color: theme.palette.Orange.light }}>
+                    {errorMessage}
+                  </Typography>
+                )}
+
+                {/* Display loading message during mint or transaction processing */}
+                {isMintLoading || isTransactionLoading ? (
+                  <Typography
+                    variant="body1"
+                    sx={{ mb: 4, color: theme.palette.LightBlue.main }}
+                  >
+                    {isMintLoading
+                      ? "Minting..."
+                      : isTransactionLoading
+                      ? "Minting..."
+                      : "Mint Tokens"}
+                  </Typography>
+                ) : !isConnected ? (
+                  /* Display Connect Wallet Button if not connected */
+                  <Box sx={{ mt: 2, mb: 4 }}>
+                    <LoginButton loginButtonText="Connect Your Wallet" />
+                  </Box>
+                ) : (
+                  /* Display Mint Button if connected and ready to mint */
                   <PrimaryButton text="Mint" onClick={handleMint} scale={1.4} />
-                </Box>
-              )}
+                )}
+              </Box>
             </SemiTransaprentCard>
           </Box>
         </Grid>
@@ -611,7 +674,7 @@ const MintPage: React.FC = () => {
             <>
               Successfully Minted! Check Transaction Here:{" "}
               <Link
-                href={`https://testnet.vicscan.xyz/tx/${txHash}`}
+                href={`https://testnet.vicscan.xyz/tx/${transactionHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"
