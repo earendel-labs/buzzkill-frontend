@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
 
+// Keyframe for animation
 const breathe = keyframes`
   0% {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
@@ -14,7 +15,10 @@ const breathe = keyframes`
   }
 `;
 
-const StyledCard = styled(Box)<{ isMinted: boolean }>(({ isMinted }) => ({
+// Styled components with shouldForwardProp
+const StyledCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isMinted",
+})<{ isMinted: boolean }>(({ isMinted }) => ({
   width: "100%",
   height: "100%",
   perspective: "1000px",
@@ -27,7 +31,9 @@ const StyledCard = styled(Box)<{ isMinted: boolean }>(({ isMinted }) => ({
   },
 }));
 
-const CardInner = styled(Box)<{ flipped: boolean }>(({ flipped }) => ({
+const CardInner = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "flipped",
+})<{ flipped: boolean }>(({ flipped }) => ({
   position: "relative",
   width: "100%",
   height: "100%",
@@ -55,7 +61,9 @@ const glassEffect = {
   boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
 };
 
-const CardFront = styled(CardFace)<{ isMinted: boolean }>(({ isMinted }) => ({
+const CardFront = styled(CardFace, {
+  shouldForwardProp: (prop) => prop !== "isMinted",
+})<{ isMinted: boolean }>(({ isMinted }) => ({
   ...(isMinted ? glassEffect : {}),
   transition: "all 0.5s ease-in-out",
 }));
@@ -75,6 +83,7 @@ const NFTImage = styled("img")({
   objectFit: "contain",
 });
 
+// NFTCard component props interface
 interface NFTCardProps {
   flipped: boolean;
   isMinted: boolean;
@@ -92,6 +101,7 @@ interface NFTCardProps {
   mintedNFTs: number[];
 }
 
+// NFTCard component implementation
 export default function NFTCard({
   flipped,
   isMinted,
@@ -113,7 +123,7 @@ export default function NFTCard({
       <StyledCard isMinted={isMinted}>
         <CardInner flipped={flipped}>
           <CardFront isMinted={isMinted}>
-            <NFTImage src="/Mint/NFT-Cards.png" alt="Queen Bee" />
+            <NFTImage src="/Mint/NFT-Cards.png" alt="NFT Front Image" />
           </CardFront>
           <CardBack>
             <NFTImage src={backImage} alt="Minted NFT" />
