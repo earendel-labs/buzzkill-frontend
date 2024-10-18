@@ -1,6 +1,8 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Grid } from "@mui/material";
 import { styled, keyframes } from "@mui/system";
+import { useRouter } from "next/navigation"; // For navigation with Next.js
+import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 
 // Keyframe for animation
 const breathe = keyframes`
@@ -17,7 +19,7 @@ const breathe = keyframes`
 
 // Styled components with shouldForwardProp
 const StyledCard = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "isMinted",
+  shouldForwardProp: (prop) => prop !== "isMinted" && prop !== "flipped",
 })<{ isMinted: boolean }>(({ isMinted }) => ({
   width: "100%",
   height: "100%",
@@ -26,8 +28,9 @@ const StyledCard = styled(Box, {
   transition: "all 0.5s ease-in-out",
   borderRadius: "16px",
   position: "relative",
+  // Apply hover effect only if the card is minted and not flipped
   "&:hover": {
-    animation: `${breathe} 2s infinite ease-in-out`,
+    animation: isMinted ? `${breathe} 2s infinite ease-in-out` : "none",
   },
 }));
 
@@ -73,17 +76,19 @@ const CardBack = styled(CardFace)({
   height: "100%",
   transform: "rotateY(180deg)",
   ...glassEffect,
-  backgroundColor: "rgba(0,0, 0, 0.5)",
+  backgroundColor: "rgba(0,0, 0, 0.5)", //
+  boxShadow: ` 0px 4px 15px rgba(255, 255, 255, 0.4),  /* White glow */
+  `,
+
   color: "white",
 });
 
 const NFTImage = styled("img")({
-  maxWidth: "90%",
-  maxHeight: "90%",
+  maxWidth: "100%",
+  maxHeight: "100%",
   objectFit: "contain",
 });
 
-// NFTCard component props interface
 interface NFTCardProps {
   flipped: boolean;
   isMinted: boolean;
@@ -98,48 +103,160 @@ interface NFTCardProps {
     defense: number;
     forage: number;
   };
+  quantityMinted: number;
+  transactionHash: `0x${string}` | undefined;
   mintedNFTs: number[];
 }
 
-// NFTCard component implementation
+// Updated NFTCard component to preserve state
 export default function NFTCard({
   flipped,
-  isMinted,
+  isMinted: parentIsMinted,
   frontImage,
   backImage,
   nftData,
   mintedNFTs,
+  quantityMinted,
+  transactionHash: parentTransactionHash,
 }: NFTCardProps) {
+  const router = useRouter(); // For navigation
+
+  // Internal state to manage isMinted and transactionHash
+  const [localIsMinted, setLocalIsMinted] = useState(parentIsMinted);
+  const [localTransactionHash, setLocalTransactionHash] = useState<
+    `0x${string}` | undefined
+  >(parentTransactionHash);
+
+  // Whenever the parent state changes, update the local state unless reset manually
+  useEffect(() => {
+    if (parentIsMinted && parentTransactionHash) {
+      setLocalIsMinted(true); // Preserve the minted state
+      setLocalTransactionHash(parentTransactionHash);
+    }
+  }, [parentIsMinted, parentTransactionHash]);
+
+  const handleButtonClick = () => {
+    router.push("/Play"); // Navigate to /Play on button click
+  };
+
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        width: {
+          sm: "100%",
+          xxl: "80%",
+        },
+        height: {
+          sm: "65%",
+          xl: "70%",
+          xxl: "80%",
+        },
         position: "relative",
         transformStyle: "preserve-3d",
-        perspective: "1000px",
+        perspective: "200px",
       }}
     >
-      <StyledCard isMinted={isMinted}>
+      <StyledCard isMinted={localIsMinted}>
         <CardInner flipped={flipped}>
-          <CardFront isMinted={isMinted}>
-            <NFTImage src="/Mint/NFT-Cards.png" alt="NFT Front Image" />
+          <CardFront isMinted={localIsMinted}>
+            <NFTImage src={frontImage} alt="NFT Front Image" />
           </CardFront>
           <CardBack>
-            <NFTImage src={backImage} alt="Minted NFT" />
-            <Box sx={{ padding: 2, textAlign: "center" }}>
-              <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-                Minted NFT{mintedNFTs.length > 1 ? "s" : ""}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Congratulations! You've minted {mintedNFTs.length} new Buzzkill
-                Hatchling{mintedNFTs.length > 1 ? "s" : ""}!
-              </Typography>
-              <Typography variant="body2">
-                NFT ID{mintedNFTs.length > 1 ? "s" : ""}:{" "}
-                {mintedNFTs.join(", ")}
-              </Typography>
-            </Box>
+            <Grid container spacing={0}>
+              {/* Left Column - Image */}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                <NFTImage
+                  src={backImage}
+                  alt="Minted NFT"
+                  sx={{
+                    maxWidth: "80%",
+                    maxHeight: "90%",
+                    objectFit: "contain",
+                    borderRadius: "8px",
+                  }}
+                />
+              </Grid>
+
+              {/* Right Column - Text and Button */}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Box sx={{ padding: "2px, 0px" }}>
+                  <Typography variant="h4" component="div" sx={{ mb: 2 }}>
+                    Minted NFT{quantityMinted > 1 ? "s" : ""}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      mb: 1,
+                      textAlign: "justify",
+                      maxWidth: "300px",
+                      fontSize: {
+                        xs: "0.9rem",
+                        sm: "1rem",
+                        xxl: "1.2rem",
+                      },
+                    }}
+                  >
+                    You minted {quantityMinted} new Buzzkill Hatchling
+                    {quantityMinted > 1 ? "s" : ""}!<br />
+                    <br />
+                    It's time to begin their incubation and <br />
+                    unleash your hive's full potential.
+                  </Typography>
+
+                  {/* Transaction Hash Link */}
+                  {localTransactionHash && (
+                    <Typography
+                      variant="body2"
+                      sx={{ mt: 2, fontWeight: "bold" }}
+                    >
+                      View your transaction{" "}
+                      <a
+                        href={`https://testnet.vicscan.xyz/tx/${localTransactionHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#FFD700",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        here
+                      </a>
+                    </Typography>
+                  )}
+
+                  {/* Primary Button */}
+                  <Box sx={{ mt: 3 }}>
+                    <PrimaryButton
+                      text="Awaken"
+                      onClick={handleButtonClick}
+                      scale={1.4}
+                    />
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
           </CardBack>
         </CardInner>
       </StyledCard>

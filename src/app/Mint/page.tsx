@@ -236,7 +236,7 @@ const MintPage: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        {" "}
+        {/* Background Image */}
         <Box
           component="img"
           src="/Mint/Background.png"
@@ -249,9 +249,26 @@ const MintPage: React.FC = () => {
             objectFit: "cover",
           }}
         />
+
+        {/* Overlay */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Adjust the opacity and color here
+          }}
+        />
       </Box>
       {/* Grid Layout with two columns */}
-      <Grid container spacing={4} sx={{ margin: "0 auto" }}>
+      <Grid
+        container
+        columnSpacing={2}
+        rowSpacing={0}
+        sx={{ margin: "0 auto" }}
+      >
         {/* First column - Centered NFT Cards Image */}
         <Grid
           item
@@ -268,10 +285,12 @@ const MintPage: React.FC = () => {
           <NFTCard
             isMinted={isTransactionSuccess}
             flipped={flipped}
-            frontImage="/placeholder.svg?height=240&width=300"
-            backImage="/placeholder.svg?height=240&width=300"
+            frontImage="/Mint/NFT-Cards.png"
+            backImage="/NFTs/Buzzkill-Hatchlings.png"
             nftData={nftData}
             mintedNFTs={mintedNFTs}
+            quantityMinted={quantity}
+            transactionHash={transactionHash}
           />
           {/* <Box
             component="img"
@@ -307,7 +326,21 @@ const MintPage: React.FC = () => {
               width: "100%", // Ensure it takes full width until maxWidth
             }}
           >
-            <SemiTransaprentCard>
+            <Box
+              sx={{
+                width: "100%",
+                padding: "40px 32px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "20px",
+
+                backdropFilter: "blur(2px)",
+                borderRadius: "3px",
+                boxSizing: "border-box",
+              }}
+            >
               {/* Responsive Heading */}
               <Typography
                 variant="h1"
@@ -588,7 +621,14 @@ const MintPage: React.FC = () => {
                       <Typography
                         sx={{
                           color: "#FFD700",
-                          fontSize: "1.5rem",
+                          fontSize: {
+                            xs: "0.75rem",
+                            sm: "0.875rem",
+                            md: "0.95rem",
+                            lg: "0.95rem",
+                            xl: "1.4rem",
+                            xxl: "1.7rem",
+                          },
                           width: "30px",
                           textAlign: "center",
                           lineHeight: "30px", // Ensure text is vertically centered
@@ -634,7 +674,7 @@ const MintPage: React.FC = () => {
               {/* Minting State Messages and Actions */}
               <Box
                 sx={{
-                  mt: 2,
+                  mt: 0,
                   mb: 2,
                   display: "flex",
                   flexDirection: "column",
@@ -645,7 +685,8 @@ const MintPage: React.FC = () => {
                 {isMinted && (
                   <Typography
                     variant="body1"
-                    sx={{ mb: 4, color: theme.palette.LightBlue.main }}
+                    fontWeight="bold"
+                    sx={{ mb: 2, color: theme.palette.LightBlue.main }}
                   >
                     Minting successful!
                   </Typography>
@@ -662,6 +703,7 @@ const MintPage: React.FC = () => {
                 {isMintLoading || isTransactionLoading ? (
                   <Typography
                     variant="body1"
+                    fontWeight="bold"
                     sx={{ mb: 4, color: theme.palette.LightBlue.main }}
                   >
                     {isMintLoading
@@ -680,7 +722,7 @@ const MintPage: React.FC = () => {
                   <PrimaryButton text="Mint" onClick={handleMint} scale={1.4} />
                 )}
               </Box>
-            </SemiTransaprentCard>
+            </Box>
           </Box>
         </Grid>
       </Grid>
