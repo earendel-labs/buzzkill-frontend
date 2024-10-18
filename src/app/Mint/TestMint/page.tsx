@@ -4,7 +4,7 @@ import { useAccount, useWaitForTransactionReceipt } from "wagmi";
 import {
   useReadBuzzkillHatchlingsNftTotalMinted,
   useWriteBuzzkillHatchlingsNftPublicMint,
-} from "@/hooks/BuzzkillHatchlingsNFTTEMP";
+} from "@/hooks/BuzzkillHatchlingsNFT";
 import { Button, Typography } from "@mui/material";
 
 const MintPage: React.FC = () => {

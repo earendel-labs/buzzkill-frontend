@@ -33,6 +33,11 @@ export function getAuthOptions(
         if (credentials.address) {
           // Case 1: User exists and provides an address
           address = credentials.address;
+          console.log("credentials.message are here", credentials.message);
+          console.log(
+            "credentials.signature are here",
+            credentials.signature
+          );
         } else if (credentials.message && credentials.signature) {
           // Case 2: SIWE flow is initiated
           try {

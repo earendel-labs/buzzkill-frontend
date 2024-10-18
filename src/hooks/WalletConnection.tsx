@@ -7,7 +7,7 @@ import {
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { useAccount } from "wagmi";
 import { supabase } from "@/app/libs/supabaseClient";
-import { signIn } from "next-auth/react"; // Import signIn from next-auth/react
+import { signIn, signOut } from "next-auth/react"; // Import signIn from next-auth/react
 import getTheme from "../theme/theme";
 import { useMemo } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -32,6 +32,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
   const { address, isConnected } = useAccount(); // Get connected wallet address
   const [loading, setLoading] = useState(false); // State to control loading indicator
   const router = useRouter(); // Initialize router
+  const [previousAddress, setPreviousAddress] = useState<string | null>(null); // Track previous address
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const hCaptchaRef = useRef<{ handleExecute: () => void }>(null); // Using the correct type
@@ -101,15 +102,29 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
       }
     };
 
-    if (isConnected) {
-      console.log("Wallet is connected with address:", address);
+    // Detect wallet change
+    const handleWalletChange = async () => {
+      if (isConnected && address && previousAddress !== address) {
+        console.log("Wallet changed from:", previousAddress, "to:", address);
+        setPreviousAddress(address); // Update the previous address to the current one
+        setLoading(false);
+        setCaptchaToken(null);
+        // Step 1: Sign out the current session to ensure no old session remains
+        await signOut({ redirect: false }); // Clear the current session without full-page reload
 
-      // Check if the wallet address exists in Supabase
-      checkAccountInSupabase();
-    } else {
-      console.log("Wallet is not connected");
-    }
-  }, [isConnected, address]);
+        // Step 2: Enable SIWE by default for the new wallet
+        setIsSiweEnabled(true);
+
+        // Step 3: Check if the new wallet address exists in Supabase
+        await checkAccountInSupabase(); // This should trigger the SIWE or account creation flow
+      } else if (!isConnected && previousAddress) {
+        console.log("Wallet disconnected");
+        setPreviousAddress(null); // Clear the previous address when disconnected
+      }
+    };
+
+    handleWalletChange();
+  }, [isConnected, address, previousAddress]);
 
   const handleCaptchaVerify = async (token: string) => {
     setCaptchaToken(token);
@@ -140,7 +155,8 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
               open={
                 isSiweEnabled &&
                 captchaToken === null &&
-                isConnected 
+                isConnected &&
+                !loading
               }
             >
               <Box

@@ -20,12 +20,12 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
 import { formatEther } from "ethers"; // Use formatEther for native token balances
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-
+import NFTCard from "@/components/Card/MintCard/MintCard";
 import {
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftMaxSupply,
   useWriteBuzzkillHatchlingsNftPublicMint,
-} from "@/hooks/BuzzkillHatchlingsNFTTEMP";
+} from "@/hooks/BuzzkillHatchlingsNFT";
 
 // Placeholder data for total collection and minted count
 const MintPage: React.FC = () => {
@@ -48,10 +48,14 @@ const MintPage: React.FC = () => {
   const [formattedBalance, setFormattedBalance] = useState<string>("0");
 
   const theme = useTheme(); // Access MUI theme
+
+  const [flipped, setFlipped] = useState(false);
+
   // Fetch native token balance (VIC as native gas token)
   const { data: balanceData, isLoading: isBalanceLoading } = useBalance({
     address: address,
   });
+  const [mintedNFTs, setMintedNFTs] = useState<number[]>([]);
 
   // Fetch the total minted and max supply values from contract
   const {
@@ -114,8 +118,13 @@ const MintPage: React.FC = () => {
 
   // Mint function with error handling
   const handleMint = async () => {
+    setIsMinted(false); // Minting success
+
+    setFlipped(false);
+
     setErrorMessage(null); // Reset error message
     setIsMintLoading(true); // Set loading state
+
     setIsMinted(false); // Reset mint success state
     if (mintBatch && address) {
       try {
@@ -163,6 +172,7 @@ const MintPage: React.FC = () => {
             userFriendlyMessage = error.message; // Fall back to the original error message
           }
         }
+        setIsMintLoading(false); // Set loading state
 
         setErrorMessage(userFriendlyMessage);
         setTransactionHash(undefined);
@@ -187,6 +197,7 @@ const MintPage: React.FC = () => {
     if (isTransactionSuccess) {
       setIsMinted(true); // Minting success
       setSnackbarOpen(true);
+      setFlipped(true);
       refetchMintedCount(); // Refetch minted data after success
       setIsMintLoading(false); // Reset loading state
     }
@@ -202,6 +213,16 @@ const MintPage: React.FC = () => {
     setTransactionHash(undefined); // Reset txHash when snackbar closes
     setErrorMessage(null); // Reset error message when snackbar closes
   };
+
+  const nftData = {
+    id: "17",
+    energy: "75/95",
+    health: "55/60",
+    productivity: "35/85",
+    attack: 35,
+    defense: 95,
+    forage: 25,
+  };
   return (
     <Layout>
       {/* Background */}
@@ -216,6 +237,7 @@ const MintPage: React.FC = () => {
           overflow: "hidden",
         }}
       >
+        {" "}
         <Box
           component="img"
           src="/Mint/Background.png"
@@ -244,7 +266,15 @@ const MintPage: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <Box
+          <NFTCard
+            isMinted={isTransactionSuccess}
+            flipped={flipped}
+            frontImage="/placeholder.svg?height=240&width=300"
+            backImage="/placeholder.svg?height=240&width=300"
+            nftData={nftData}
+            mintedNFTs={mintedNFTs}
+          />
+          {/* <Box
             component="img"
             src="/Mint/NFT-Cards.png"
             sx={{
@@ -252,7 +282,7 @@ const MintPage: React.FC = () => {
               height: "auto",
             }}
             alt="NFT Cards"
-          />
+          /> */}
         </Grid>
 
         {/* Second column - SemiTransparentCard with maxWidth set to 600px */}
