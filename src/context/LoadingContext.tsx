@@ -1,6 +1,5 @@
 "use client";
 
-// src/context/LoadingContext.tsx
 import React, {
   createContext,
   useContext,
@@ -27,7 +26,7 @@ export const LoadingProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   const unregisterLoading = useCallback(() => {
-    setLoadingCount((count) => count - 1);
+    setLoadingCount((count) => Math.max(count - 1, 0)); // Prevent negative counts
   }, []);
 
   const isLoading = loadingCount > 0;

@@ -7,7 +7,7 @@ import { LoadingProvider, useLoading } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import WalletConfiguration from "@/hooks/WalletConfiguration";
-
+import { UserProvider } from "@/context/UserContext";
 export default function RootLayout({
   children,
   session,
@@ -42,10 +42,12 @@ export default function RootLayout({
         <WalletConfiguration session={session}>
           <LoadingProvider>
             <SoundProvider>
-              <CssBaseline />
-              <GlobalScrollbarStyles />
-              {children}
-              <SpeedInsights />
+              <UserProvider>
+                <CssBaseline />
+                <GlobalScrollbarStyles />
+                {children}
+                <SpeedInsights />
+              </UserProvider>
             </SoundProvider>
           </LoadingProvider>
         </WalletConfiguration>

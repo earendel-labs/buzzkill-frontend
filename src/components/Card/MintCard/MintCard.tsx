@@ -221,10 +221,32 @@ export default function NFTCard({
                     You minted {quantityMinted} new Buzzkill Hatchling
                     {quantityMinted > 1 ? "s" : ""}!<br />
                     <br />
-                    It's time to begin their incubation and <br />
-                    unleash your hive's full potential.
+                    It's time to begin their incubation and unleash your hive's
+                    full potential.
                   </Typography>
+                  {/* Buttons Row */}
+                  <Box
+                    sx={{
+                      mt: 3,
+                      gap: 2,
+                      display: "flex",
+                      justifyContent: "space-between", // Ensures buttons are spaced evenly
+                    }}
+                  >
+                    <PrimaryButton
+                      text="Awaken"
+                      onClick={() => router.push("/Play")}
+                      scale={1.4}
+                    />
 
+                    <PrimaryButton
+                      text="My Bees"
+                      onClick={() =>
+                        router.push("/Play/User/MyProfile/#MyBees")
+                      }
+                      scale={1.4}
+                    />
+                  </Box>
                   {/* Transaction Hash Link */}
                   {localTransactionHash && (
                     <Typography
@@ -245,15 +267,6 @@ export default function NFTCard({
                       </a>
                     </Typography>
                   )}
-
-                  {/* Primary Button */}
-                  <Box sx={{ mt: 3 }}>
-                    <PrimaryButton
-                      text="Awaken"
-                      onClick={handleButtonClick}
-                      scale={1.4}
-                    />
-                  </Box>
                 </Box>
               </Grid>
             </Grid>
