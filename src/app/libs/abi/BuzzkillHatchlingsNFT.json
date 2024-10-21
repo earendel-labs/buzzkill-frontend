@@ -379,6 +379,24 @@
   },
   {
     "type": "function",
+    "name": "setTokenURI",
+    "inputs": [
+      {
+        "name": "tokenId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "newURI",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "setURI",
     "inputs": [
       {
@@ -472,7 +490,7 @@
     "name": "uri",
     "inputs": [
       {
-        "name": "",
+        "name": "tokenId",
         "type": "uint256",
         "internalType": "uint256"
       }

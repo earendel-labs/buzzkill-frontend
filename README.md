@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Buzzkill Hatchlings DApp
 
-## Getting Started
+This is a Next.js project bootstrapped with create-next-app.
 
-First, run the development server:
+Getting Started
 
-```bash
+1. Install Dependencies
+
+First, install all project dependencies by running:
+
+npm install
+
+# or
+
+yarn install
+
+# or
+
+pnpm install
+
+# or
+
+bun install
+
+2. Environment Variables
+
+Create a .env file in the root of the project with the following environment variables (if not already present):
+
+NEXT_PUBLIC_HATCHLINGS_ADDRESS=0x603a23682ae999c5A33BaC9a15216521c9f32Cd8
+
+3. Run the Development Server
+
+To run the development server, use:
+
 npm run dev
+
 # or
+
 yarn dev
+
 # or
+
 pnpm dev
+
 # or
+
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Once the server is running, open http://localhost:3000 in your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Generate WAGMI Hooks
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+If you've made changes to your smart contract's ABI or need to update the generated hooks, follow these steps:
 
-## Learn More
+1. Ensure that your ABI files are up-to-date. Get the latest ABIs from your smart contract repo and paste them into src/app/libs/abi.
+
+2. Run the WAGMI CLI tool to regenerate the hooks:
+
+npx wagmi generate
+
+This will use the configuration in wagmi.config.ts to generate the hooks for your smart contract(s) and place them in src/hooks/BuzzkillHatchlingsNFT.ts.
+
+5. Update ABI Files
+
+To update the ABI files used in the project:
+
+1. Navigate to your smart contract repository.
+2. Copy the ABI JSON file from the build folder (usually after compiling with Hardhat, Foundry, or Truffle).
+3. Paste the ABI JSON into src/app/libs/abi/.
+4. Re-run the wagmi-cli tool as described above to regenerate the hooks.
+
+Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Next.js Documentation - Learn about Next.js features and API.
+Learn Next.js - An interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can check out the Next.js GitHub repository - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check out the Next.js deployment documentation for more details.

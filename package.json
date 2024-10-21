@@ -30,6 +30,7 @@
     "abitype": "^1.0.6",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "echarts": "^5.5.0",
     "echarts-for-react": "^3.0.2",
     "encoding": "^0.1.13",

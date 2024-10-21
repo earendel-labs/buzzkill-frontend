@@ -193,6 +193,16 @@ export const buzzkillHatchlingsNftAbi = [
   },
   {
     type: 'function',
+    inputs: [
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'newURI', internalType: 'string', type: 'string' },
+    ],
+    name: 'setTokenURI',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     inputs: [{ name: 'newuri', internalType: 'string', type: 'string' }],
     name: 'setURI',
     outputs: [],
@@ -235,7 +245,7 @@ export const buzzkillHatchlingsNftAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
     name: 'uri',
     outputs: [{ name: '', internalType: 'string', type: 'string' }],
     stateMutability: 'view',
@@ -399,7 +409,7 @@ export const buzzkillHatchlingsNftAbi = [
  *
  */
 export const buzzkillHatchlingsNftAddress = {
-  89: '0xA916b8758fAD4BFb2d91f37d2c77A90B84b10BC9',
+  89: '0x603a23682ae999c5A33BaC9a15216521c9f32Cd8',
 } as const
 
 /**
@@ -699,6 +709,18 @@ export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
+ *
+ *
+ */
+export const useWriteBuzzkillHatchlingsNftSetTokenUri =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'setTokenURI',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
  *
  *
@@ -851,6 +873,18 @@ export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
     functionName: 'setCooldownTime',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
+ *
+ *
+ */
+export const useSimulateBuzzkillHatchlingsNftSetTokenUri =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'setTokenURI',
   })
 
 /**

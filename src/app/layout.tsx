@@ -8,6 +8,31 @@ import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import WalletConfiguration from "@/hooks/WalletConfiguration";
 import { UserProvider } from "@/context/UserContext";
+import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
+
+// Load Google Poppins font using next/font
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+// Load custom "Vera Humana 95" font from src/fonts/
+const veraHumana = localFont({
+  src: [
+    {
+      path: "../fonts/VeraHumana95-Regular.ttf", // Path relative to layout.tsx file
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/VeraHumana95-Bold.ttf", // Path relative to layout.tsx file
+      weight: "700",
+      style: "normal",
+    },
+  ],
+});
+
 export default function RootLayout({
   children,
   session,

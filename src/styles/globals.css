@@ -1,25 +1,8 @@
 /* styles/globals.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-
-@font-face {
-  font-family: "Vera Humana 95";
-  src: url("/Fonts/VeraHumana95-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Vera Humana 95";
-  src: url("/Fonts/VeraHumana95-Bold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -38,7 +21,6 @@
 /* Let Material-UI handle body color and background */
 body {
   margin: 0;
-  font-family: "Vera Humana 95", "Poppins", sans-serif;
 }
 
 @layer utilities {
