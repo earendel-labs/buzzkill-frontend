@@ -241,9 +241,7 @@ export default function NFTCard({
 
                     <PrimaryButton
                       text="My Bees"
-                      onClick={() =>
-                        router.push("/Play/User/MyProfile/#MyBees")
-                      }
+                      onClick={() => router.push("/Play/User/Profile/MyBees")}
                       scale={1.4}
                     />
                   </Box>

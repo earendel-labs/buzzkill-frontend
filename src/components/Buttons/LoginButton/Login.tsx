@@ -43,7 +43,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
   };
 
   const handleProfileNavigation = () => {
-    router.push("/Play/User/Profile");
+    router.push("/Play/User/Profile/MyProfile");
   };
 
   const handleLogout = async () => {
