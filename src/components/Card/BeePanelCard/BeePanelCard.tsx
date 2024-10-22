@@ -52,7 +52,7 @@ const BeePanelCard: React.FC = () => {
         position: "relative", // Needed for the pseudo-element to work
         display: "flex",
         flexDirection: "column",
-        backgroundColor: `rgba(34, 46, 80, 0.7)`, // Dynamic transparency
+        backgroundColor: `rgba(34, 46, 80, 0.8)`, // Dynamic transparency
         borderRadius: "8px", // Rounded corners
         overflow: "hidden", // Ensure the pseudo-element stays within the box
         zIndex: 1, // Ensure content is above the pseudo-element
