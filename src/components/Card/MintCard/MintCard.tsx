@@ -221,28 +221,31 @@ export default function NFTCard({
                     You minted {quantityMinted} new Buzzkill Hatchling
                     {quantityMinted > 1 ? "s" : ""}!<br />
                     <br />
-                    It's time to begin their incubation and unleash your hive's
-                    full potential.
+                    It's time to begin their incubation and <br />
+                    unleash your hive's full potential.
                   </Typography>
                   {/* Buttons Row */}
                   <Box
                     sx={{
                       mt: 3,
                       gap: 2,
+                      padding: "0px, 4px",
                       display: "flex",
-                      justifyContent: "space-between", // Ensures buttons are spaced evenly
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textAlign: "center",
                     }}
                   >
                     <PrimaryButton
                       text="Awaken"
                       onClick={() => router.push("/Play")}
-                      scale={1.4}
+                      scale={1.2}
                     />
 
                     <PrimaryButton
                       text="My Bees"
                       onClick={() => router.push("/Play/User/Profile/MyBees")}
-                      scale={1.4}
+                      scale={1.2}
                     />
                   </Box>
                   {/* Transaction Hash Link */}
