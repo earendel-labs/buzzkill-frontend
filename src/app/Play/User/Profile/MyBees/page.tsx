@@ -11,7 +11,7 @@ import {
   useReadBuzzkillHatchlingsNftUri,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
-import ProfileLayout from "../page";
+import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useUserContext } from "@/context/UserContext";
 

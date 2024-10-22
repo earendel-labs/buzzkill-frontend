@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Typography, Button } from "@mui/material";
-import ProfileLayout from "../page";
+import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 

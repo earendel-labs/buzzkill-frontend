@@ -14,7 +14,7 @@ import {
 import { ContentCopy as CopyIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useTheme } from "@mui/material/styles";
-import ProfileLayout from "../page";
+import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 const ProfileTab = () => {
   const { data: session, status } = useSession();
