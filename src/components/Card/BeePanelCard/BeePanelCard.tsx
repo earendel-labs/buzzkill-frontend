@@ -48,7 +48,7 @@ const BeePanelCard: React.FC = () => {
       sx={{
         width: "420px",
         height: "200px",
-        padding: "32px",
+        padding: "28px",
         position: "relative", // Needed for the pseudo-element to work
         display: "flex",
         flexDirection: "column",
