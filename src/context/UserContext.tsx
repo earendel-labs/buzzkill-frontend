@@ -6,16 +6,29 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useAccount, useBalance } from "wagmi"; // Import from Wagmi to manage account and balance
+import { useAccount, useBalance } from "wagmi";
+import {
+  useReadBuzzkillHatchlingsNftBalanceOfBatch,
+  useReadBuzzkillHatchlingsNftTotalMinted,
+  useReadBuzzkillHatchlingsNftUri,
+} from "@/hooks/BuzzkillHatchlingsNFT";
+
+interface Hatchling {
+  id: number;
+  imageAddress: string;
+  status: string;
+  environment: string | null;
+}
 
 interface UserContextType {
   activeBee: number | null;
   setActiveBee: (beeId: number) => void;
-  resourceCount: number;
-  updateResourceCount: (count: number) => void;
-  address: string | null; // Wallet address
-  isConnected: boolean; // Connection status
-  balance: string | null; // User's balance
+  bees: Hatchling[];
+  loadingBees: boolean;
+  fetchError: boolean;
+  address: string | null;
+  isConnected: boolean;
+  balance: string | null;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -23,40 +36,111 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [activeBee, setActiveBeeState] = useState<number | null>(null);
-  const [resourceCount, setResourceCount] = useState(0);
-  const { address, isConnected } = useAccount(); // Get account info from RainbowKit and wagmi
+  const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
-    address: address, // Get the balance for the current address
+    address: address,
+  });
+
+  const [activeBee, setActiveBeeState] = useState<number | null>(null);
+  const [bees, setBees] = useState<Hatchling[]>([]);
+  const [loadingBees, setLoadingBees] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const { data: totalMinted } = useReadBuzzkillHatchlingsNftTotalMinted();
+  const { data: uri } = useReadBuzzkillHatchlingsNftUri({ args: [BigInt(1)] });
+  const { data: batchBalances } = useReadBuzzkillHatchlingsNftBalanceOfBatch({
+    args: [
+      Array.from(
+        { length: Number(totalMinted) },
+        () => address || "0x0000000000000000000000000000000000000000"
+      ),
+      Array.from({ length: Number(totalMinted) }, (_, i) => BigInt(i + 1)),
+    ],
   });
 
   const setActiveBee = (beeId: number) => {
     setActiveBeeState(beeId);
   };
 
-  const updateResourceCount = (count: number) => {
-    setResourceCount(count);
+  const fetchMetadata = async (metadataUri: string) => {
+    try {
+      const response = await fetch(ipfsToHttp(metadataUri));
+      const metadata = await response.json();
+      return ipfsToHttp(metadata.image);
+    } catch (err) {
+      console.error("Failed to fetch metadata:", err);
+      setFetchError(true);
+      return "/default-image.png";
+    }
   };
 
-  // Handle Wallet Disconnect or Account Change
+  const ipfsToHttp = (ipfsUri: string) => {
+    if (ipfsUri.startsWith("ipfs://")) {
+      return ipfsUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
+    }
+    return ipfsUri;
+  };
+
+  const fetchBeesData = async () => {
+    if (!batchBalances || !address || !imageUrl || !totalMinted) {
+      setLoadingBees(false);
+      return;
+    }
+
+    const hatchlings: Hatchling[] = [];
+    for (let i = 0; i < totalMinted; i++) {
+      const balance = batchBalances[i];
+      if (balance && Number(balance) > 0) {
+        hatchlings.push({
+          id: i + 1,
+          imageAddress: imageUrl || "/default-image.png",
+          status: "Free",
+          environment: null,
+        });
+      }
+    }
+    setBees(hatchlings);
+    setLoadingBees(false);
+
+    // If the user owns bees but hasn't selected one, we don't set `activeBee`
+    if (hatchlings.length > 0 && !activeBee) {
+      setActiveBeeState(null); // Ensure activeBee is null for 'Select Your Bee'
+    }
+  };
+
+  useEffect(() => {
+    if (uri && !imageUrl && totalMinted) {
+      fetchMetadata(uri).then((image) => setImageUrl(image));
+    }
+  }, [uri, totalMinted]);
+
+  useEffect(() => {
+    if (batchBalances && address && imageUrl) {
+      setLoadingBees(true);
+      fetchBeesData();
+    }
+  }, [batchBalances, address, imageUrl]);
+
+  // Reset the state on disconnect
   useEffect(() => {
     if (!isConnected) {
-      // Reset context values if the user disconnects
+      setBees([]);
       setActiveBeeState(null);
-      setResourceCount(0);
     }
-  }, [isConnected]); // This effect runs whenever isConnected changes
+  }, [isConnected]);
 
   return (
     <UserContext.Provider
       value={{
         activeBee,
         setActiveBee,
-        resourceCount,
-        updateResourceCount,
-        address: address ?? null, // Convert undefined to null
+        bees,
+        loadingBees,
+        fetchError,
+        address: address ?? null,
         isConnected,
-        balance: balanceData?.formatted ?? null, // Use the formatted balance or null
+        balance: balanceData?.formatted ?? null,
       }}
     >
       {children}

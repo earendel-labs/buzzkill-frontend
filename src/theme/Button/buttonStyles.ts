@@ -19,21 +19,22 @@ const buttonStyles = (theme: Theme) => ({
         height: "auto", // Ensure height is not fixed but flexible
 
         "&.goldButton, &.blueConnectWallet": {
+          borderWidth: "0px",
           padding: "12px 20px", // Ensure same padding for both buttons
         },
 
         "&.goldButton": {
           backgroundColor: theme.palette.Gold.main,
           color: "#fff",
-          borderColor: theme.palette.Gold.main,
+ 
 
           "&:hover": {
             backgroundColor: theme.palette.Gold.dark,
-            borderColor: theme.palette.Gold.dark,
+          
           },
           "&:active": {
             backgroundColor: theme.palette.Gold.light,
-            borderColor: theme.palette.Gold.light,
+ 
           },
         },
 

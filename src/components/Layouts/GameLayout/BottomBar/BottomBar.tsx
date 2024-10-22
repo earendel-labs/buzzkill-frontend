@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
-import BeeStatsPanel from "@/components/ControlPanels/BeeStatsPanel/BeeStatsPanel";
+import BeePanelCard from "@/components/Card/BeePanelCard/BeePanelCard"; // Import your BeePanelCard
 
 type BottomBarProps = {
   isAudioPanelVisible?: boolean;
@@ -21,30 +21,13 @@ const BottomBar: React.FC<BottomBarProps> = ({
         display: "flex",
         justifyContent: "space-between",
         zIndex: 1,
+        padding: {
+          xs: "0.5rem", // Small padding for mobile
+          md: "1rem", // Larger padding for desktop
+        },
       }}
     >
-      {/* Bee Stats Panel - Make sure this is above all content */}
-      <Box
-        sx={{
-          position: "fixed", // Use fixed to keep it above other content
-          bottom: {
-            xs: "0rem",
-            md: "0rem",
-            lg: "0rem",
-            xl: "3rem",
-            xxl: "3rem",
-          }, // 10px -> 0.625rem
-          left: {
-            xs: "0rem",
-            md: "0rem",
-            lg: "0rem",
-            xl: "4rem",
-            xxl: "5rem",
-          }, // 10px -> 0.625rem
-          zIndex: 100, // Very high z-index to keep it on top
-        }}
-      >
-        <BeeStatsPanel
+      {/* <BeeStatsPanel
           healthValue={"35/100"}
           productivityValue={"250/300"}
           energyValue={"15/100"}
@@ -56,17 +39,39 @@ const BottomBar: React.FC<BottomBarProps> = ({
           productivityBarLength={10}
           activityBarLength={70}
           beeFrameImage={"/NFTs/WorkerBee.png"}
-        />
+        /> */}
+      {/* Bee Panel Card - Positioned with some spacing from the left and bottom */}
+      <Box
+        sx={{
+          position: "fixed", // Keep it fixed so it remains visible on scroll
+          bottom: {
+            xs: "1rem", // Small space from the bottom on mobile
+            md: "2rem", // Larger space from the bottom on desktop
+          },
+          left: {
+            xs: "1rem", // Small space from the left on mobile
+            md: "2rem", // Larger space from the left on desktop
+          },
+          zIndex: 100, // High z-index to keep it above other content
+        }}
+      >
+        <BeePanelCard />
       </Box>
 
-      {/* Audio Panel - Conditionally render based on the isAudioPanelVisible prop */}
+      {/* Audio Panel - Positioned with some spacing from the right and bottom */}
       {isAudioPanelVisible && (
         <Box
           sx={{
-            position: "fixed", // Keep this above everything
-            bottom: "0.625rem", // 10px -> 0.625rem
-            right: "0.625rem", // 10px -> 0.625rem
-            zIndex: 100, // Same z-index to keep it above other components
+            position: "fixed", // Keep it fixed so it remains visible on scroll
+            bottom: {
+              xs: "1rem", // Small space from the bottom on mobile
+              md: "2rem", // Larger space from the bottom on desktop
+            },
+            right: {
+              xs: "1rem", // Small space from the right on mobile
+              md: "2rem", // Larger space from the right on desktop
+            },
+            zIndex: 100, // Same high z-index to keep it above other components
           }}
         >
           <AudioPanel />

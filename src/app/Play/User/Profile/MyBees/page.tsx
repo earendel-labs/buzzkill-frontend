@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid, Chip, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { useAccount } from "wagmi";
@@ -43,7 +43,7 @@ const BeeCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Styled chip components
+// Styled chip components for status and environment
 const StatusChip = styled(Chip)<{ status: string }>(({ theme, status }) => ({
   backgroundColor: status === "Free" ? "green" : theme.palette.info.main,
   color: "white",
@@ -63,7 +63,7 @@ const EnvironmentChip = styled(Chip)(({ theme }) => ({
   },
 }));
 
-// Overlay component to display the button on hover
+// Overlay component to display the Play button on hover
 const Overlay = styled(Box)({
   position: "absolute",
   top: 0,
@@ -182,18 +182,12 @@ const MyBeesTab = () => {
             justifyContent="center"
             alignItems="center"
             flexGrow={1}
-            height="65vh"
+            height="60vh"
           >
-            <Typography marginTop="24px">
+            <Typography marginTop="24px" marginBottom="24px">
               No Bees Found. Mint yours here
             </Typography>
-            <Button
-              className="blueButton"
-              sx={{ mt: 2, minWidth: 200 }}
-              onClick={() => router.push("/Mint")}
-            >
-              Mint
-            </Button>
+            <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
           </Box>
         ) : (
           myBees.map((bee) => (

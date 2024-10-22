@@ -37,22 +37,27 @@ const RewardsPage = () => {
           <Grid item xs={12}>
             <SemiTransparentCard
               transparency={0.7}
-              sx={{ padding: "20px 0px 0px 0px" }}
+              sx={{
+                padding: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center", // Center vertically
+                alignItems: "center", // Center horizontally
+                textAlign: "center", // Ensure text is centered
+              }}
             >
               <Typography variant="h6" color="white" gutterBottom>
                 Total Earnings
               </Typography>
-              <Box sx={{ textAlign: "center", py: 2 }}>
-                {/* Centralize and add padding */}
-                <Typography
-                  variant="h3"
-                  component="p"
-                  fontWeight="bold"
-                  color="white"
-                >
-                  5,230 Honey
-                </Typography>
-              </Box>
+              <Typography
+                variant="h3"
+                component="p"
+                fontWeight="bold"
+                color="white"
+                sx={{ py: 2 }}
+              >
+                5,230 Honey
+              </Typography>
             </SemiTransparentCard>
           </Grid>
 
@@ -125,8 +130,20 @@ const RewardsPage = () => {
               <Typography variant="h6" color="white" gutterBottom>
                 Bee Production
               </Typography>
-              <Box sx={{ textAlign: "center", py: 2 }}>
-                <Typography variant="h4" fontWeight="bold" color="white">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  fontWeight="bold"
+                  color="white"
+                  gutterBottom
+                >
                   150 Honey/day
                 </Typography>
               </Box>

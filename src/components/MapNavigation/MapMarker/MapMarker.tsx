@@ -43,11 +43,11 @@ const MapMarker: React.FC<MapMarkerProps> = ({
 
   // Define common sizes for different breakpoints
   const sizeByBreakpoint = {
-    xs: "40px",
-    sm: "50px",
-    md: "50px",
-    lg: "60px",
-    xl: "70px",
+    xs: "25px",
+    sm: "30px",
+    md: "40px",
+    lg: "50px",
+    xl: "60px",
   };
 
   useEffect(() => {

@@ -19,12 +19,9 @@ const SemiTransparentCard: React.FC<SemiTransparentCardProps> = ({
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "20px",
         backgroundColor: `rgba(34, 46, 80, ${transparency})`, // Dynamic transparency
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.12)", // Subtle shadow
-        borderRadius: "16px", // Rounded corners
+        boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)", // Increased shadow for higher elevation
+        borderRadius: "12px", // Rounded corners
         overflow: "hidden", // Ensure the pseudo-element stays within the box
         zIndex: 1, // Ensure content is above the pseudo-element
         "&::before": {
