@@ -38,9 +38,16 @@ const nextConfig = {
       },
     ];
   },
-  // Add this section to allow images from 'gateway.pinata.cloud'
+  // Use remotePatterns instead of domains for image loading
   images: {
-    domains: ["gateway.pinata.cloud"], // Allows loading images from this domain
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "gateway.pinata.cloud", // Allows loading images from this domain
+        port: "", // No port
+        pathname: "/**", // Allow loading all paths
+      },
+    ],
   },
 };
 
