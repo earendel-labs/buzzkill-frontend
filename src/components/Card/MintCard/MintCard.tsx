@@ -83,10 +83,38 @@ const CardBack = styled(CardFace)({
   color: "white",
 });
 
+const NFTImageContainer = styled(Box)({
+  width: "auto",
+  textAlign: "center",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative", // For pseudo-element positioning
+  borderRadius: "12px", // Border radius applied to the box and pseudo-element
+  padding: "2px", // Optional: Add some padding for the inner image to create space
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 1, // Ensure it's behind the image
+    borderRadius: "12px", // Match the border-radius of the container
+    padding: "2px", // This defines the thickness of the border
+    background:
+      "linear-gradient(135deg, #68341B 6%, #915E28 29%, #E9B743 77%, #E9B743 98%)", // Golden gradient
+    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", // Masking for stroke effect
+    WebkitMaskComposite: "xor",
+    maskComposite: "exclude",
+  },
+});
+
 const NFTImage = styled("img")({
-  maxWidth: "100%",
-  maxHeight: "100%",
   objectFit: "contain",
+  borderRadius: "14px",
+  position: "relative",
+  zIndex: 2,
 });
 
 interface NFTCardProps {
@@ -176,16 +204,26 @@ export default function NFTCard({
                   textAlign: "center",
                 }}
               >
-                <NFTImage
-                  src={backImage}
-                  alt="Minted NFT"
+                {" "}
+                <Box
                   sx={{
-                    maxWidth: "80%",
+                    maxWidth: "70%",
                     maxHeight: "90%",
                     objectFit: "contain",
                     borderRadius: "8px",
                   }}
-                />
+                >
+                  <NFTImageContainer>
+                    <NFTImage
+                      src={backImage}
+                      alt="Minted NFT"
+                      sx={{
+                        objectFit: "contain",
+                        borderRadius: "12px",
+                      }}
+                    />{" "}
+                  </NFTImageContainer>
+                </Box>
               </Grid>
 
               {/* Right Column - Text and Button */}
@@ -239,13 +277,13 @@ export default function NFTCard({
                     <PrimaryButton
                       text="Awaken"
                       onClick={() => router.push("/Play")}
-                      scale={1.2}
+                      scale={1.1}
                     />
 
                     <PrimaryButton
                       text="My Bees"
                       onClick={() => router.push("/Play/User/Profile/MyBees")}
-                      scale={1.2}
+                      scale={1.1}
                     />
                   </Box>
                   {/* Transaction Hash Link */}
