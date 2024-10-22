@@ -187,7 +187,14 @@ export default function NFTCard({
       <StyledCard isMinted={localIsMinted}>
         <CardInner flipped={flipped}>
           <CardFront isMinted={localIsMinted}>
-            <NFTImage src={frontImage} alt="NFT Front Image" />
+            <NFTImage
+              src={frontImage}
+              alt="NFT Front Image"
+              sx={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            />
           </CardFront>
           <CardBack>
             <Grid container spacing={0}>

@@ -38,6 +38,10 @@ const nextConfig = {
       },
     ];
   },
+  // Add this section to allow images from 'gateway.pinata.cloud'
+  images: {
+    domains: ["gateway.pinata.cloud"], // Allows loading images from this domain
+  },
 };
 
 export default nextConfig;

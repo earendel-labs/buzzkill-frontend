@@ -3,8 +3,8 @@ import { Box, Typography, Skeleton } from "@mui/material";
 import { useUserContext } from "@/context/UserContext"; // Adjust import path
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import SemiTransparentCard from "@/components/Card/SemiTransaprentCard"; // Ensure correct path
 import Image from "next/image";
-
 // Dynamic import of the PrimaryButton to avoid SSR
 const PrimaryButton = dynamic(
   () => import("@/components/Buttons/PrimaryButton/PrimaryButton"),
@@ -30,41 +30,16 @@ const BeePanelCard: React.FC = () => {
 
   if (loadingBees) {
     return (
-      <Box
+      <SemiTransparentCard
         sx={{
           width: "450px",
           height: "220px",
           padding: "16px",
-          backgroundColor: "rgba(34, 46, 80, 0.6)", // Semi-transparent background
-          borderRadius: "12px",
-          boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)", // Elevation for depth
-          position: "relative", // Pseudo-element positioning
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1,
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            borderRadius: "inherit",
-            background:
-              "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)",
-            padding: "1px",
-            WebkitMask:
-              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "xor",
-            maskComposite: "exclude",
-            zIndex: -1,
-          },
-        }}
+          backgroundColor: "rgba(34, 46, 80, 0.6)",
+        }} // Adjust transparency
       >
         <Skeleton variant="rectangular" width="100%" height="100%" />
-      </Box>
+      </SemiTransparentCard>
     );
   }
 
@@ -73,14 +48,20 @@ const BeePanelCard: React.FC = () => {
       sx={{
         width: "420px",
         height: "200px",
-        padding: "20px",
-        backgroundColor: "rgba(34, 46, 80, 0.75)", // More opaque background
-        borderRadius: "16px",
-        boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)", // Higher elevation
-        position: "relative", // For pseudo-elements
+        padding: "32px",
+        position: "relative", // Needed for the pseudo-element to work
         display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
+        flexDirection: "column",
+        backgroundColor: `rgba(34, 46, 80, 0.7)`, // Dynamic transparency
+        borderRadius: "8px", // Rounded corners
+        overflow: "hidden", // Ensure the pseudo-element stays within the box
+        zIndex: 1, // Ensure content is above the pseudo-element
+        backdropFilter: "blur(2px)",
+        // Inner Shadows
+        boxShadow: `
+      inset 4px 4px 4px rgba(0, 0, 0, 0.25), // First inner shadow (X: 4px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.25))
+      inset 0px 4px 4px rgba(0, 0, 0, 0.12)  // Second inner shadow (X: 0px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.12))
+    `,
         "&::before": {
           content: '""',
           position: "absolute",
@@ -88,103 +69,133 @@ const BeePanelCard: React.FC = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          borderRadius: "inherit",
+          borderRadius: "inherit", // Inherit border radius for gradient
           background:
-            "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)",
-          padding: "1px",
+            "linear-gradient(135deg, #68341B 6%, #915E28 29%, #E9B743 77%, #E9B743 98%)", // Golden gradient
+          padding: "2px", // Border width
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
+          WebkitMaskComposite: "xor", // Apply the mask to make only the border show gradient
           maskComposite: "exclude",
-          zIndex: -1,
+          zIndex: -1, // Make sure it's behind the content
         },
-      }}
+      }} // Adjust transparency
     >
-      {/* Left column with bee image */}
       <Box
-        sx={{
-          width: "40%",
-          boxShadow:
-            "0px 4px 4px rgba(0, 0, 0, 0.25), -2px -2px 4px rgba(0, 0, 0, 0.25)", // Both shadows
-          borderRadius: "8px", // Maintain rounded corners for the image
-        }}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ width: "100%" }}
       >
-        <Image
-          src={activeBeeImage}
-          alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
-          layout="responsive"
-          width={500}
-          height={500}
-          style={{ borderRadius: "8px" }}
-        />
-      </Box>
+        {/* Left column with bee image or placeholder */}
+        <Box
+          sx={{
+            width: "40%",
+            padding: "0px",
+            boxShadow: `
+      0px 4px 4px rgba(0, 0, 0, 0.25), 
+      -2px -2px 4px rgba(0, 0, 0, 0.25)  
+    `,
+            borderRadius: "8px", // Ensure the shadow follows the image's rounded corners
+          }}
+        >
+          <Image
+            src={activeBeeImage}
+            alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
+            width={300}
+            height={300}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "8px", // Ensure the image itself has rounded corners
+            }}
+          />
+        </Box>
 
-      {/* Right column with text and button */}
-      <Box
-        sx={{
-          width: "55%",
-          padding: "4px",
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between", // Ensure top/bottom layout
-          alignItems: "center",
-        }}
-      >
-        {activeBee ? (
-          <>
-            {/* Typography at the top */}
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              {`Hatchling #${activeBee}`}
-            </Typography>
+        {/* Right column with text and button */}
+        <Box sx={{ width: "55%", padding: "4px", textAlign: "center" }}>
+          {activeBee ? (
+            <>
+              {/* Container for Typography and Button */}
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="flex-start" // Start the text at the top
+                alignItems="center" // Horizontally center the text and button
+                sx={{
+                  height: "100%", // Full height to distribute content
+                }}
+              >
+                {/* Typography at the top */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    textAlign: "center", // Keep text horizontally centered
+                    mb: 4, // Ensure no top margin
+                  }}
+                >
+                  <Typography variant="h6">
+                    {`Hatchling #${activeBee}`}
+                  </Typography>
+                </Box>
 
-            {/* Button towards the bottom */}
-            <Box>
-              <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
-            </Box>
-          </>
-        ) : bees.length > 0 ? (
-          <>
-            <Typography
-              sx={{
-                mb: 3,
-                textAlign: "center",
-                maxWidth: "480px", // Set maxWidth for the paragraph
-                fontSize: {
-                  xs: "0.9rem",
-                  sm: "1rem",
-                  xxl: "1.2rem",
-                },
-              }}
-            >
-              Select Your Bee
-            </Typography>
-            <Box display="flex" justifyContent="center">
-              <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
-            </Box>
-          </>
-        ) : (
-          <>
-            <Typography
-              sx={{
-                mb: 3,
-                textAlign: "justify",
-                maxWidth: "480px", // Set maxWidth for the paragraph
-                fontSize: {
-                  xs: "0.9rem",
-                  sm: "1rem",
-                  xxl: "1.2rem",
-                },
-              }}
-            >
-              You have no Hatchlings. <br />
-              Mint yours here
-            </Typography>
-            <Box display="flex" justifyContent="center">
-              <PrimaryButton text="Mint" onClick={handleMintClick} />
-            </Box>
-          </>
-        )}
+                {/* Use flexGrow to push the button towards the center */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexGrow: 1, // Take up the remaining space to push the button down
+                    mb: 6,
+                  }}
+                >
+                  <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
+                </Box>
+              </Box>
+            </>
+          ) : bees.length > 0 ? (
+            <>
+              <Typography
+                sx={{
+                  mb: 3,
+                  textAlign: "center",
+                  maxWidth: "480px", // Set maxWidth for the paragraph
+                  fontSize: {
+                    xs: "0.9rem", // Smaller font for smaller screens
+                    sm: "1rem", // Default font size for small-medium screens
+                    xxl: "1.2rem", // Default font size for small-medium screens
+                  },
+                }}
+              >
+                Select Your Bee
+              </Typography>
+              <Box display="flex" justifyContent="center">
+                <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography
+                sx={{
+                  mb: 3,
+                  textAlign: "center",
+                  maxWidth: "480px", // Set maxWidth for the paragraph
+                  fontSize: {
+                    xs: "0.9rem", // Smaller font for smaller screens
+                    sm: "1rem", // Default font size for small-medium screens
+                    xxl: "1.2rem", // Default font size for small-medium screens
+                  },
+                }}
+              >
+                You have no Hatchlings. <br></br>
+                Mint yours here
+              </Typography>
+              <Box display="flex" justifyContent="center">
+                <PrimaryButton text="Mint" onClick={handleMintClick} />
+              </Box>
+            </>
+          )}
+        </Box>
       </Box>
     </Box>
   );
