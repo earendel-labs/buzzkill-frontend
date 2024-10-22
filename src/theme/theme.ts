@@ -224,6 +224,14 @@ const getTheme = (): Theme => {
           },
         },
       },
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            backgroundColor: "#050b2b",
+            backgroundImage: ` conic-gradient(from -42.04deg at 83.78% 127.06%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg)`,
+          },
+        },
+      },
     },
   });
 

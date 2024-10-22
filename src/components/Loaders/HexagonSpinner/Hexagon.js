@@ -15,10 +15,10 @@ const Hexagon = ({ className }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: theme.palette.Blue.main,
+        backgroundColor: theme.palette.DarkBlue.main,
         clipPath:
           "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)", // Hexagon shape
-        border: `4px solid ${theme.palette.Blue.main}`, // Outline border
+        border: `4px solid ${theme.palette.DarkBlue.main}`, // Outline border
         transform: "rotate(0deg)", // Start with no rotation
         position: "absolute",
       }}

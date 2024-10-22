@@ -8,7 +8,7 @@ import { Box, Button, Snackbar, Alert } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
 
@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
 
   const handleClick = () => {
     router.push("/Mint");
-  }; 
+  };
   return (
     <Layout>
       {/* Conditionally render loading spinner */}
@@ -139,14 +139,12 @@ const HomePage: React.FC = () => {
               textAlign: "center",
             }}
           >
-            {/* Main Title */}
-            <Box
-              component="img"
+            <Image
               src="/Maps/backgroundText.svg"
-              sx={{
-                width: "85%",
-                height: "85%",
-              }}
+              alt="Buzzkill Text "
+              width={850}
+              height={850}
+              style={{ width: "85%", height: "85%" }} // Adjust style if necessary
             />
 
             {/* Render login message if not authenticated */}

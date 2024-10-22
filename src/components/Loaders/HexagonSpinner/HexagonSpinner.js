@@ -16,7 +16,7 @@ const HexagonSpinner = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: theme.palette.background.default, // Spinner background color
+        backgroundColor:  "transparent", // Spinner background color
         transform: "translate(-20px, -10px)", // Adjust this for perfect centering
       }}
     >

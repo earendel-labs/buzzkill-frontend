@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import { Box, Typography, CircularProgress, Grid, Button } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";

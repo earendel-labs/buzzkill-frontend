@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
@@ -15,6 +17,7 @@ import {
   useReadBuzzkillHatchlingsNftUri,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import ProfileLayout from "../page";
 
 // Define the type for hatchlings
 interface Hatchling {
@@ -196,10 +199,11 @@ const MyBeesTab = () => {
   };
 
   return (
-    <Box>
+    <ProfileLayout loading={loading}>
       <Typography variant="h5" color="white" sx={{ mb: 4 }}>
-        My Bees
+        Hatchlings
       </Typography>
+
       <Grid container spacing={3}>
         {!loading && myBees.length === 0 && !fetchError ? (
           <Box
@@ -304,7 +308,7 @@ const MyBeesTab = () => {
           Failed to load hatchlings, please try again later.
         </Typography>
       )}
-    </Box>
+    </ProfileLayout>
   );
 };
 

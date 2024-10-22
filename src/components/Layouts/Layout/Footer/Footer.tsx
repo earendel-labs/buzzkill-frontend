@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
       </Typography>
 
       {/* Social icons in the center */}
-      <Box sx={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", gap: "32px", justifyContent: "center" }}>
         {/* Social icons in the center */}
         <SocialIcon
           Component={DiscordIcon}
