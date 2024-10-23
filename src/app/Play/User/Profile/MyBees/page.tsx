@@ -9,6 +9,8 @@ import {
   useReadBuzzkillHatchlingsNftBalanceOfBatch,
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftUri,
+  useWriteBuzzkillHatchlingsNftSetApprovalForAll,
+  useReadBuzzkillHatchlingsNftIsApprovedForAll,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
@@ -97,7 +99,8 @@ const MyBeesTab = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [fetchError, setFetchError] = useState(false);
   const router = useRouter();
-  const { setActiveBee } = useUserContext();
+  const { setActiveBee, checkAndPromptApproval, approvalForStaking } =
+    useUserContext(); // Get approval status from UserContext
 
   const { data: totalMinted } = useReadBuzzkillHatchlingsNftTotalMinted();
   const { data: uri } = useReadBuzzkillHatchlingsNftUri({ args: [BigInt(1)] });
@@ -153,6 +156,23 @@ const MyBeesTab = () => {
 
     setMyBees(hatchlings);
     setLoading(false);
+  };
+
+  const handlePlayClick = async (beeId: number) => {
+    try {
+      // Check if user has already approved the staking contract
+      const isApproved = await checkAndPromptApproval(); // Prompt approval if needed
+
+      if (isApproved) {
+        // If approval is successful or already approved, navigate to the Play page
+        setActiveBee(beeId);
+        router.push("/Play");
+      } else {
+        console.log("User did not approve the staking contract.");
+      }
+    } catch (error) {
+      console.error("Error during approval check:", error);
+    }
   };
 
   useEffect(() => {
@@ -223,10 +243,7 @@ const MyBeesTab = () => {
                     <Overlay className="overlay" />
                     <PlayButtonWrapper className="playButtonWrapper">
                       <PrimaryButton
-                        onClick={() => {
-                          setActiveBee(bee.id);
-                          router.push("/Play");
-                        }}
+                        onClick={() => handlePlayClick(bee.id)}
                         text="Play"
                       />
                     </PlayButtonWrapper>

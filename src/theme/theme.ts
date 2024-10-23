@@ -85,7 +85,7 @@ const getTheme = (): Theme => {
         dark: "#9a0036",
       },
       NavBarBackground: {
-        main: "rgba(34, 46, 80, 0.8)",
+        main: "rgba(34, 46, 80, 0.7)",
         light: "rgba(34, 46, 80, 0.8)",
         dark: "rgba(34, 46, 80, 0.8)",
       },
@@ -228,7 +228,10 @@ const getTheme = (): Theme => {
         styleOverrides: {
           body: {
             backgroundColor: "#050b2b",
-            backgroundImage: ` conic-gradient(from -42.04deg at 83.78% 127.06%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg)`,
+            backgroundImage: `
+            linear-gradient(rgba(5, 11, 43, 0.7), rgba(5, 11, 43, 0.1)),
+            conic-gradient(from -23.81deg at 72.82% 162.44%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg);
+border-radius: 0px`,
           },
         },
       },

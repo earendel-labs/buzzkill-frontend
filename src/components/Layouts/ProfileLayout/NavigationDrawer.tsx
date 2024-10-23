@@ -79,7 +79,7 @@ const NavigationDrawer = () => {
                   color:
                     selectedTab === 0
                       ? theme.palette.Gold.main // Highlighted text for selected tab
-                      : theme.palette.DarkBlue.main, // Default text color
+                      : theme.palette.GoldFaded.main, // Default text color
                   fontWeight: "bold",
                   borderBottom:
                     selectedTab === 0
@@ -100,7 +100,7 @@ const NavigationDrawer = () => {
                   color:
                     selectedTab === 1
                       ? theme.palette.Gold.main // Highlighted text for selected tab
-                      : theme.palette.DarkBlue.main, // Default text color
+                      : theme.palette.GoldFaded.main, // Default text color
                   fontWeight: "bold",
                   borderBottom:
                     selectedTab === 1
@@ -121,7 +121,7 @@ const NavigationDrawer = () => {
                   color:
                     selectedTab === 2
                       ? theme.palette.Gold.main // Highlighted text for selected tab
-                      : theme.palette.DarkBlue.main, // Default text color
+                      : theme.palette.GoldFaded.main, // Default text color
                   fontWeight: "bold",
                   borderBottom:
                     selectedTab === 2

@@ -47,7 +47,7 @@ const BeePanelCard: React.FC = () => {
     <Box
       sx={{
         width: "420px",
-        height: "200px",
+        height: "220px",
         padding: "28px",
         position: "relative", // Needed for the pseudo-element to work
         display: "flex",

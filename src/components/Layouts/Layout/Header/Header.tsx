@@ -34,7 +34,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
-  const NavBarColour = theme.palette.NavBarBackground.main;
+  const NavBarColour = theme.palette.NavBarBackground.light;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

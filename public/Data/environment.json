@@ -1,0 +1,47 @@
+{
+    "environments": [
+      {
+        "id": 0,
+        "name": "Beach",
+        "environmentType": "Coastal",
+        "jsonUrl": "/environments/beach.json"
+      },
+      {
+        "id": 1,
+        "name": "Desert",
+        "environmentType": "Arid",
+        "jsonUrl": "/environments/desert.json"
+      },
+      {
+        "id": 2,
+        "name": "Whisperwood Valleys",
+        "environmentType": "Forest",
+        "jsonUrl": "/environments/whisperwood-valleys.json"
+      },
+      {
+        "id": 3,
+        "name": "Oceanic",
+        "environmentType": "Aquatic",
+        "jsonUrl": "/environments/oceanic.json"
+      },
+      {
+        "id": 4,
+        "name": "Snow",
+        "environmentType": "Tundra",
+        "jsonUrl": "/environments/snow.json"
+      },
+      {
+        "id": 5,
+        "name": "Spires",
+        "environmentType": "Mountainous",
+        "jsonUrl": "/environments/spires.json"
+      },
+      {
+        "id": 6,
+        "name": "Volcanic",
+        "environmentType": "Volcanic",
+        "jsonUrl": "/environments/volcanic.json"
+      }
+    ]
+  }
+  

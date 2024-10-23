@@ -11,6 +11,8 @@ import {
   useReadBuzzkillHatchlingsNftBalanceOfBatch,
   useReadBuzzkillHatchlingsNftTotalMinted,
   useReadBuzzkillHatchlingsNftUri,
+  useWriteBuzzkillHatchlingsNftSetApprovalForAll,
+  useReadBuzzkillHatchlingsNftIsApprovedForAll,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 
 interface Hatchling {
@@ -29,6 +31,8 @@ interface UserContextType {
   address: string | null;
   isConnected: boolean;
   balance: string | null;
+  approvalForStaking: boolean;
+  checkAndPromptApproval: () => Promise<boolean>; // Return a boolean for success/failure
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -37,15 +41,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { address, isConnected } = useAccount();
-  const { data: balanceData } = useBalance({
-    address: address,
-  });
-
+  const { data: balanceData } = useBalance({ address });
   const [activeBee, setActiveBeeState] = useState<number | null>(null);
   const [bees, setBees] = useState<Hatchling[]>([]);
   const [loadingBees, setLoadingBees] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [approvalForStaking, setApprovalForStaking] = useState(false);
+  const [isCheckingApproval, setIsCheckingApproval] = useState(false); // Track approval check status
+
+  const hiveStakingAddress = process.env.NEXT_PUBLIC_HiVE_STAKING_ADDRESS as
+    | `0x${string}`
+    | undefined;
 
   const { data: totalMinted } = useReadBuzzkillHatchlingsNftTotalMinted();
   const { data: uri } = useReadBuzzkillHatchlingsNftUri({ args: [BigInt(1)] });
@@ -59,8 +66,54 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     ],
   });
 
+  const { data: isApproved } = useReadBuzzkillHatchlingsNftIsApprovedForAll({
+    args: [
+      address ?? "0x0000000000000000000000000000000000000000",
+      hiveStakingAddress ?? "0x0000000000000000000000000000000000000000",
+    ],
+  });
+
+  const { writeContractAsync: approveTokens } =
+    useWriteBuzzkillHatchlingsNftSetApprovalForAll();
+
   const setActiveBee = (beeId: number) => {
     setActiveBeeState(beeId);
+  };
+
+  const checkAndPromptApproval = async () => {
+    if (!address || !hiveStakingAddress || isApproved === undefined) {
+      console.log("Address, hive staking, or approval status is not available.");
+      return false;
+    }
+
+    setIsCheckingApproval(true);
+    console.log("Checking if approval is already set...");
+
+    if (!isApproved) {
+      console.log(
+        "Approval is not set, prompting user to approve staking contract..."
+      );
+      // If the user has not yet approved the staking contract, prompt for approval
+      try {
+        await approveTokens({
+          args: [hiveStakingAddress, true], // Using the environment variable here
+        });
+        setApprovalForStaking(true); // Set approval status to true after success
+        console.log("User has approved the staking contract.");
+        setIsCheckingApproval(false);
+        return true; // Success
+      } catch (error) {
+        console.error("Failed to set approval:", error);
+        setApprovalForStaking(false); // Handle error
+        setIsCheckingApproval(false);
+        return false; // Failure
+      }
+    } else {
+      setApprovalForStaking(true); // User has already approved the staking contract
+      console.log("User has already approved the staking contract.");
+      setIsCheckingApproval(false);
+      return true; // Already approved
+    }
   };
 
   const fetchMetadata = async (metadataUri: string) => {
@@ -141,6 +194,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         address: address ?? null,
         isConnected,
         balance: balanceData?.formatted ?? null,
+        approvalForStaking,
+        checkAndPromptApproval,
       }}
     >
       {children}
