@@ -203,7 +203,7 @@ const Forest: React.FC = () => {
       {/* Pollen Markers */}
       <CombinedResourceMarker
         left="17%"
-        top="68%"
+        top="6%"
         link="/resource-link"
         resourceType={ResourceType.Pollen}
         contentValue="58%"

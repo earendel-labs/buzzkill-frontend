@@ -16,7 +16,7 @@
         "id": 2,
         "name": "Whisperwood Valleys",
         "environmentType": "Forest",
-        "jsonUrl": "/environments/whisperwood-valleys.json"
+        "jsonUrl": "/public/Data/Maps/Forest.json"
       },
       {
         "id": 3,

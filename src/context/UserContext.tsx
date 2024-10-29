@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   createContext,
   useContext,
@@ -14,25 +15,31 @@ import {
   useWriteBuzzkillHatchlingsNftSetApprovalForAll,
   useReadBuzzkillHatchlingsNftIsApprovedForAll,
 } from "@/hooks/BuzzkillHatchlingsNFT";
+import {
+  useReadHiveStakingUserInfo,
+  useReadHiveStakingGetStakedNfTsInHive,
+} from "@/hooks/HiveStaking"; // Import staking hooks
 
 interface Hatchling {
   id: number;
   imageAddress: string;
   status: string;
   environment: string | null;
+  hive: string | null;
 }
 
 interface UserContextType {
   activeBee: number | null;
   setActiveBee: (beeId: number) => void;
   bees: Hatchling[];
+  stakedBees: Hatchling[];
   loadingBees: boolean;
   fetchError: boolean;
   address: string | null;
   isConnected: boolean;
   balance: string | null;
   approvalForStaking: boolean;
-  checkAndPromptApproval: () => Promise<boolean>; // Return a boolean for success/failure
+  checkAndPromptApproval: () => Promise<boolean>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -44,13 +51,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const { data: balanceData } = useBalance({ address });
   const [activeBee, setActiveBeeState] = useState<number | null>(null);
   const [bees, setBees] = useState<Hatchling[]>([]);
+  const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
   const [loadingBees, setLoadingBees] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [approvalForStaking, setApprovalForStaking] = useState(false);
-  const [isCheckingApproval, setIsCheckingApproval] = useState(false); // Track approval check status
+  const [isCheckingApproval, setIsCheckingApproval] = useState(false);
 
-  const hiveStakingAddress = process.env.NEXT_PUBLIC_HiVE_STAKING_ADDRESS as
+  const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
     | undefined;
 
@@ -76,13 +84,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const { writeContractAsync: approveTokens } =
     useWriteBuzzkillHatchlingsNftSetApprovalForAll();
 
+  const { data: userInfoData } = useReadHiveStakingUserInfo({
+    args: [address ?? "0x0000000000000000000000000000000000000000"],
+  });
+
   const setActiveBee = (beeId: number) => {
     setActiveBeeState(beeId);
   };
 
   const checkAndPromptApproval = async () => {
     if (!address || !hiveStakingAddress || isApproved === undefined) {
-      console.log("Address, hive staking, or approval status is not available.");
+      console.log(
+        "Address, hive staking, or approval status is not available."
+      );
       return false;
     }
 
@@ -93,26 +107,25 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       console.log(
         "Approval is not set, prompting user to approve staking contract..."
       );
-      // If the user has not yet approved the staking contract, prompt for approval
       try {
         await approveTokens({
-          args: [hiveStakingAddress, true], // Using the environment variable here
+          args: [hiveStakingAddress, true],
         });
-        setApprovalForStaking(true); // Set approval status to true after success
+        setApprovalForStaking(true);
         console.log("User has approved the staking contract.");
         setIsCheckingApproval(false);
-        return true; // Success
+        return true;
       } catch (error) {
         console.error("Failed to set approval:", error);
-        setApprovalForStaking(false); // Handle error
+        setApprovalForStaking(false);
         setIsCheckingApproval(false);
-        return false; // Failure
+        return false;
       }
     } else {
-      setApprovalForStaking(true); // User has already approved the staking contract
+      setApprovalForStaking(true);
       console.log("User has already approved the staking contract.");
       setIsCheckingApproval(false);
-      return true; // Already approved
+      return true;
     }
   };
 
@@ -141,25 +154,48 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       return;
     }
 
-    const hatchlings: Hatchling[] = [];
+    const unstakedHatchlings: Hatchling[] = [];
     for (let i = 0; i < totalMinted; i++) {
       const balance = batchBalances[i];
       if (balance && Number(balance) > 0) {
-        hatchlings.push({
+        unstakedHatchlings.push({
           id: i + 1,
           imageAddress: imageUrl || "/default-image.png",
           status: "Free",
           environment: null,
+          hive: null,
         });
       }
     }
-    setBees(hatchlings);
-    setLoadingBees(false);
+    setBees(unstakedHatchlings);
+  };
 
-    // If the user owns bees but hasn't selected one, we don't set `activeBee`
-    if (hatchlings.length > 0 && !activeBee) {
-      setActiveBeeState(null); // Ensure activeBee is null for 'Select Your Bee'
+  const fetchStakedBees = async () => {
+    if (!userInfoData) return;
+
+    const stakedBeeArray: Hatchling[] = [];
+
+    // Assume that we know the environment and hive IDs here, adjust as necessary
+    for (let environmentId = 0; environmentId < 6; environmentId++) {
+      for (let hiveId = 0; hiveId < 9; hiveId++) {
+        const { data: stakedBeesData } = useReadHiveStakingGetStakedNfTsInHive({
+          args: [BigInt(environmentId), BigInt(hiveId)],
+        });
+
+        if (stakedBeesData) {
+          stakedBeesData.forEach((bee: any) => {
+            stakedBeeArray.push({
+              id: Number(bee.tokenId),
+              imageAddress: imageUrl || "/default-image.png",
+              status: "Staked",
+              environment: environmentId.toString(),
+              hive: hiveId.toString(),
+            });
+          });
+        }
+      }
     }
+    setStakedBees(stakedBeeArray);
   };
 
   useEffect(() => {
@@ -171,14 +207,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (batchBalances && address && imageUrl) {
       setLoadingBees(true);
-      fetchBeesData();
+      fetchBeesData()
+        .then(() => fetchStakedBees())
+        .finally(() => setLoadingBees(false));
     }
   }, [batchBalances, address, imageUrl]);
 
-  // Reset the state on disconnect
   useEffect(() => {
     if (!isConnected) {
       setBees([]);
+      setStakedBees([]);
       setActiveBeeState(null);
     }
   }, [isConnected]);
@@ -189,6 +227,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         activeBee,
         setActiveBee,
         bees,
+        stakedBees,
         loadingBees,
         fetchError,
         address: address ?? null,

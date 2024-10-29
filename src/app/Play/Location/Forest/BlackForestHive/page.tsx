@@ -5,25 +5,29 @@ import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { Typography } from "@mui/material"; // Added import for Typography
 import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
 import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
-import { HiveInfo } from "@/types/HiveInfo";
-import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
+import { useWriteHiveStakingStake } from "@/hooks/HiveStaking";
 import Image from "next/image";
+import { HiveInfo } from "@/types/HiveInfo";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import { useUserContext } from "@/context/UserContext"; // Import your UserContext
 
+// Hive and Environment Info for the Black Forest Hive in Whisperwood Valleys
 const hiveInfo: HiveInfo = {
-  queenBees: 2,
-  workerBees: 42,
+  queenBees: 1,
+  workerBees: 24,
   healthValue: 100,
   productivityValue: 80,
   attackValue: 50,
-  defenceValue: 22,
+  defenceValue: 21,
   status: "Active",
-  location: "Hive 1",
-  environment: "Forest",
+  location: "Black Forest Hive",
+  environment: "Whisperwood Valleys",
 };
 
 const Forest: React.FC = () => {
@@ -31,6 +35,11 @@ const Forest: React.FC = () => {
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [environmentData, setEnvironmentData] = useState<any>(null);
+  const { activeBee, address, checkAndPromptApproval } = useUserContext(); 
+  // Staking Hook (fix: using writeContractAsync)
+  const { writeContractAsync: stakeNFT } = useWriteHiveStakingStake();
 
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
@@ -53,12 +62,50 @@ const Forest: React.FC = () => {
     }
   }, [isMusicMuted, isMuted, music]);
 
-  const navigate = (link: string) => {
-    router.push(link);
-  };
+  useEffect(() => {
+    // Fetch environment data for Whisperwood Valleys
+    fetch("/Data/Maps/Forest/whisperwood-valleys.json")
+      .then((response) => response.json())
+      .then((data) => setEnvironmentData(data))
+      .catch((error) =>
+        console.error("Failed to load environment data:", error)
+      );
+  }, []);
 
-  const handleStake = () => {
-    console.log("Stake button clicked");
+  const handleStake = async () => {
+
+    try {
+      // Ensure the user has selected an activeBee
+      if (activeBee === null) {
+        console.log("No active bee selected for staking");
+        return;
+      }
+
+      // Ensure the user has approved the staking contract
+      const isApproved = await checkAndPromptApproval();
+      if (!isApproved) {
+        console.log("User did not approve the staking contract.");
+        return;
+      }
+
+      // Example hiveId and environmentId - you will get these from the environment or UI
+      const hiveId = BigInt(2); // Example hive ID, replace with actual
+      const environmentId = BigInt(2); // Example environment ID, replace with actual
+      const tokenId = BigInt(activeBee); // Convert activeBee to BigInt
+
+      console.log(
+        `Staking tokenId: ${tokenId}, environmentId: ${environmentId}, hiveId: ${hiveId}`
+      );
+
+      // Call the staking contract function
+      await stakeNFT({
+        args: [tokenId, environmentId, hiveId], // Pass tokenId, environmentId, and hiveId
+      });
+
+      console.log("Staking successful");
+    } catch (error) {
+      console.error("Failed to stake NFT:", error);
+    }
   };
 
   const handleRaid = () => {
@@ -84,15 +131,36 @@ const Forest: React.FC = () => {
             border: "1px solid #000000",
           }}
         >
+          {!isImageLoaded && (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100vh"
+              flexDirection="column"
+              position="fixed"
+              width="100vw"
+              bgcolor="background.default"
+              zIndex={1300}
+            >
+              <HexagonSpinner />
+              <Typography className="body1" padding="24px 0px">
+                Loading World...
+              </Typography>
+            </Box>
+          )}
           <Image
-            src="/Maps/ForestMap.jpg"
+            src={
+              environmentData?.environment?.backgroundImage ||
+              "/Maps/ForestMap.jpg"
+            }
             alt="Forest map background"
             fill
             style={{
               objectFit: "cover",
               objectPosition: "center",
             }}
-            onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
+            onLoad={() => setIsImageLoaded(true)}
             priority
           />
         </Box>
@@ -107,7 +175,7 @@ const Forest: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <HiveTopBar mapHeaderLabel="Black Forest Hive" />
+          <HiveTopBar mapHeaderLabel={hiveInfo.location} />
 
           <Grid
             container
@@ -125,7 +193,6 @@ const Forest: React.FC = () => {
                 alignItems: "flex-start",
               }}
             >
-              {" "}
               <Box
                 sx={{
                   padding: "0.8rem",
@@ -148,11 +215,10 @@ const Forest: React.FC = () => {
             </Grid>
 
             {/* Second Column - Bee Grid */}
-
             <Grid
               item
-              xs={12} // Set to full width by default for small screens
-              sm={9} // Reduce width for larger screens
+              xs={12}
+              sm={9}
               xxl={9}
               sx={{
                 display: "flex",
@@ -163,8 +229,7 @@ const Forest: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              {" "}
-              <BeeGrid />{" "}
+              <BeeGrid />
             </Grid>
           </Grid>
 
