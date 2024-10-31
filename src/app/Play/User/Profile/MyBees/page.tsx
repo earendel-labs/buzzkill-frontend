@@ -1,46 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
-import { Hatchling } from "@/types/Hatchling";
-import { BeeCard } from "@/components/Card/BeeCard";
 import ProfileLayout from "@/components/Layouts/ProfileLayout/ProfileLayout";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useUserContext } from "@/context/UserContext";
-import {
-  useReadBuzzkillHatchlingsNftBalanceOfBatch,
-  useReadBuzzkillHatchlingsNftTotalMinted,
-  useReadBuzzkillHatchlingsNftUri,
-} from "@/hooks/BuzzkillHatchlingsNFT";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import { BeeCard } from "@/components/Card/BeeCard";
 
 const MyBeesTab = () => {
   const { address } = useAccount();
-  const [myBees, setMyBees] = useState<Hatchling[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [fetchError, setFetchError] = useState(false);
   const router = useRouter();
-  const { setActiveBee, checkAndPromptApproval } = useUserContext();
 
-  const { data: totalMinted } = useReadBuzzkillHatchlingsNftTotalMinted();
-  const { data: uri } = useReadBuzzkillHatchlingsNftUri({ args: [BigInt(1)] });
+  // Get context values for both unstaked and staked bees
+  const {
+    bees: myBees,
+    stakedBees,
+    loadingBees,
+    fetchError,
+    checkAndPromptApproval,
+    setActiveBee,
+  } = useUserContext();
 
-  const userAddress = address || "0x0000000000000000000000000000000000000000";
-  const addressesArray = Array.from(
-    { length: Number(totalMinted) },
-    () => userAddress
-  );
-
-  const { data: batchBalances } = useReadBuzzkillHatchlingsNftBalanceOfBatch({
-    args: [
-      addressesArray as `0x${string}`[],
-      Array.from({ length: Number(totalMinted) }, (_, i) => BigInt(i + 1)),
-    ],
-  });
-
+  // Handle 'Play' button click for each bee
   const handlePlayClick = async (beeId: number): Promise<void> => {
     try {
       const isApproved = await checkAndPromptApproval();
@@ -53,68 +37,18 @@ const MyBeesTab = () => {
     }
   };
 
-  const ipfsToHttp = (ipfsUri: string) => {
-    if (ipfsUri.startsWith("ipfs://")) {
-      return ipfsUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
-    }
-    return ipfsUri;
-  };
-
-  const fetchMetadata = async (metadataUri: string) => {
-    try {
-      const response = await fetch(ipfsToHttp(metadataUri));
-      const metadata = await response.json();
-      return ipfsToHttp(metadata.image);
-    } catch (err) {
-      console.error("Failed to fetch metadata:", err);
-      setFetchError(true);
-      return "/default-image.png";
-    }
-  };
-
-  const fetchHatchlings = async () => {
-    if (!batchBalances || !address || !imageUrl || !totalMinted) {
-      setLoading(false);
-      return;
-    }
-
-    const hatchlings: Hatchling[] = [];
-    for (let i = 0; i < totalMinted; i++) {
-      const balance = batchBalances[i];
-      if (balance && Number(balance) > 0) {
-        hatchlings.push({
-          id: i + 1,
-          imageAddress: imageUrl || "/default-image.png",
-          status: "Free",
-          environment: null,
-        });
-      }
-    }
-
-    setMyBees(hatchlings);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (uri && !imageUrl && totalMinted) {
-      fetchMetadata(uri).then((image: string) => setImageUrl(image));
-    }
-  }, [uri, totalMinted]);
-
-  useEffect(() => {
-    if (batchBalances && address && imageUrl) {
-      setLoading(true);
-      fetchHatchlings();
-    }
-  }, [batchBalances, address, imageUrl]);
-
   return (
-    <ProfileLayout loading={loading}>
+    <ProfileLayout loading={loadingBees}>
       <Typography variant="h5" color="white" sx={{ mb: 4 }}>
-        Hatchlings
+        My Hatchlings
+      </Typography>
+
+      {/* Display Unstaked Bees */}
+      <Typography variant="h6" color="white" sx={{ mb: 2 }}>
+        Unstaked Bees
       </Typography>
       <Grid container spacing={3}>
-        {!loading && myBees.length === 0 && !fetchError ? (
+        {!loadingBees && myBees.length === 0 && !fetchError ? (
           <Box
             display="flex"
             flexDirection="column"
@@ -134,7 +68,31 @@ const MyBeesTab = () => {
           ))
         )}
       </Grid>
-      {loading && <HexagonSpinner />}
+
+      {/* Display Staked Bees */}
+      <Typography variant="h6" color="white" sx={{ mt: 4, mb: 2 }}>
+        Staked Bees
+      </Typography>
+      <Grid container spacing={3} marginBottom="5rem">
+        {!loadingBees && stakedBees.length === 0 && !fetchError ? (
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            height="40vh"
+          >
+            <Typography>No Staked Bees Found</Typography>
+          </Box>
+        ) : (
+          stakedBees.map((bee) => (
+            <Grid item xs={6} sm={4} md={3} key={`staked-bee-${bee.id}`}>
+              <BeeCard bee={bee} onPlayClick={handlePlayClick} />
+            </Grid>
+          ))
+        )}
+      </Grid>
+
+      {loadingBees && <HexagonSpinner />}
       {fetchError && (
         <Typography variant="h6" color="error">
           Failed to load hatchlings, please try again later.

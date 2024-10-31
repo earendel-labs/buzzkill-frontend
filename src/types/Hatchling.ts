@@ -3,5 +3,6 @@ export interface Hatchling {
   id: number;
   imageAddress: string;
   status: string;
-  environment: string | null;
+  environmentID: string | null;
+  hiveID: string | null;
 }

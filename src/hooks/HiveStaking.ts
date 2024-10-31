@@ -455,6 +455,26 @@ export const hiveStakingAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'getAllStakedNFTsForUser',
+    outputs: [
+      {
+        name: '',
+        internalType: 'struct HiveStaking.StakedNFT[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+          { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+          { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+          { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
       { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
@@ -557,6 +577,7 @@ export const hiveStakingAbi = [
       { name: '', internalType: 'address', type: 'address' },
       { name: '', internalType: 'uint256', type: 'uint256' },
       { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'stakedNFTsByUser',
     outputs: [
@@ -639,6 +660,49 @@ export const hiveStakingAbi = [
       { name: 'totalPoints', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'message',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'user',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'userBalance',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'DebugStake',
   },
   {
     type: 'event',
@@ -742,7 +806,7 @@ export const hiveStakingAbi = [
  *
  */
 export const hiveStakingAddress = {
-  89: '0x7F347EdaAFA791a3991a4Ee94f1f8f3EC686e83b',
+  89: '0x67421A9c38eE3a9Ed5Eb665E2B9B0123fd749bB3',
 } as const
 
 /**
@@ -1338,6 +1402,18 @@ export const useReadHiveStakingBuzzkillHatchlingsNft =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getAllStakedNFTsForUser"`
+ *
+ *
+ */
+export const useReadHiveStakingGetAllStakedNfTsForUser =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'getAllStakedNFTsForUser',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getStakedNFTsInHive"`
  *
  *
@@ -1698,6 +1774,18 @@ export const useWatchHiveStakingEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"DebugStake"`
+ *
+ *
+ */
+export const useWatchHiveStakingDebugStakeEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    eventName: 'DebugStake',
   })
 
 /**

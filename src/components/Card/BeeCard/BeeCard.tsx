@@ -1,3 +1,4 @@
+// BeeCard.tsx
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
@@ -55,7 +56,43 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => (
     {bee.status === "Free" && (
       <PlayOverlay onPlayClick={() => onPlayClick(bee.id)} />
     )}
-    <HatchlingStatus status={bee.status} environment={bee.environment} />
+
+    {/* Pass environmentID to HatchlingStatus */}
+    <HatchlingStatus status={bee.status} environment={bee.environmentID} />
+
+    {/* Conditionally render Environment and Hive chips */}
+    {bee.environmentID && (
+      <Typography
+        variant="caption"
+        color="white"
+        sx={{
+          position: "absolute",
+          bottom: "8px",
+          left: "8px",
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+          padding: "2px 4px",
+          borderRadius: "4px",
+        }}
+      >
+        Env: {bee.environmentID}
+      </Typography>
+    )}
+    {bee.hiveID && (
+      <Typography
+        variant="caption"
+        color="white"
+        sx={{
+          position: "absolute",
+          bottom: "8px",
+          left: "80px", // Adjust positioning to avoid overlap
+          backgroundColor: "rgba(0, 0, 0, 0.6)",
+          padding: "2px 4px",
+          borderRadius: "4px",
+        }}
+      >
+        Hive: {bee.hiveID}
+      </Typography>
+    )}
   </StyledBeeCard>
 );
 

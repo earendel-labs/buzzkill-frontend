@@ -1,3 +1,4 @@
+// src/context/UserContext.tsx
 "use client";
 
 import React, {
@@ -17,16 +18,11 @@ import {
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import {
   useReadHiveStakingUserInfo,
+  useReadHiveStakingGetAllStakedNfTsForUser,
+  useReadHiveStakingTotalBeesStaked,
   useReadHiveStakingGetStakedNfTsInHive,
-} from "@/hooks/HiveStaking"; // Import staking hooks
-
-interface Hatchling {
-  id: number;
-  imageAddress: string;
-  status: string;
-  environment: string | null;
-  hive: string | null;
-}
+} from "@/hooks/HiveStaking";
+import { Hatchling } from "@/types/Hatchling";
 
 interface UserContextType {
   activeBee: number | null;
@@ -84,9 +80,26 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const { writeContractAsync: approveTokens } =
     useWriteBuzzkillHatchlingsNftSetApprovalForAll();
 
+  // Fetch user info data
   const { data: userInfoData } = useReadHiveStakingUserInfo({
     args: [address ?? "0x0000000000000000000000000000000000000000"],
   });
+
+  // Fetch all staked NFTs for the user
+  const { data: allStakedNFTsData } =
+    useReadHiveStakingGetAllStakedNfTsForUser();
+  console.log("Connected address:", address);
+  console.log("userInfoData", userInfoData);
+  console.log("allStakedNFTsData in beginning", allStakedNFTsData);
+
+  // Fetch total staked bees
+  const { data: totalStaked } = useReadHiveStakingTotalBeesStaked();
+  console.log("totalStaked", totalStaked);
+  const { data: AllStakedInHive } = useReadHiveStakingGetStakedNfTsInHive({
+    args: [BigInt(2), BigInt(2)],
+  });
+
+  console.log("AllStakedInHive", AllStakedInHive);
 
   const setActiveBee = (beeId: number) => {
     setActiveBeeState(beeId);
@@ -137,7 +150,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     } catch (err) {
       console.error("Failed to fetch metadata:", err);
       setFetchError(true);
-      return "/default-image.png";
+      return "/default-image.png"; // Fallback image
     }
   };
 
@@ -162,41 +175,41 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           id: i + 1,
           imageAddress: imageUrl || "/default-image.png",
           status: "Free",
-          environment: null,
-          hive: null,
+          environmentID: null,
+          hiveID: null,
         });
       }
     }
+    console.log("Unstaked Hatchlings:", unstakedHatchlings);
     setBees(unstakedHatchlings);
   };
 
-  const fetchStakedBees = async () => {
-    if (!userInfoData) return;
+  useEffect(() => {
+    if (allStakedNFTsData) {
+      const stakedBeeArray: Hatchling[] = [];
+      console.log("allStakedNFTsData:", allStakedNFTsData); // Log to inspect data
 
-    const stakedBeeArray: Hatchling[] = [];
+      // Assuming allStakedNFTsData is an array of StakedNFTData
+      allStakedNFTsData.forEach((nft: any) => {
+        const tokenId = Number(nft.tokenId);
+        const environmentID = nft.environmentId.toString();
+        const hiveID = nft.hiveId.toString();
 
-    // Assume that we know the environment and hive IDs here, adjust as necessary
-    for (let environmentId = 0; environmentId < 6; environmentId++) {
-      for (let hiveId = 0; hiveId < 9; hiveId++) {
-        const { data: stakedBeesData } = useReadHiveStakingGetStakedNfTsInHive({
-          args: [BigInt(environmentId), BigInt(hiveId)],
-        });
-
-        if (stakedBeesData) {
-          stakedBeesData.forEach((bee: any) => {
-            stakedBeeArray.push({
-              id: Number(bee.tokenId),
-              imageAddress: imageUrl || "/default-image.png",
-              status: "Staked",
-              environment: environmentId.toString(),
-              hive: hiveId.toString(),
-            });
+        if (!isNaN(tokenId)) {
+          stakedBeeArray.push({
+            id: tokenId,
+            imageAddress: imageUrl || "/default-image.png",
+            status: "Staked",
+            environmentID: environmentID || null,
+            hiveID: hiveID || null,
           });
         }
-      }
+      });
+
+      console.log("Fetched Staked Bees:", stakedBeeArray);
+      setStakedBees(stakedBeeArray);
     }
-    setStakedBees(stakedBeeArray);
-  };
+  }, [allStakedNFTsData, imageUrl]);
 
   useEffect(() => {
     if (uri && !imageUrl && totalMinted) {
@@ -207,9 +220,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (batchBalances && address && imageUrl) {
       setLoadingBees(true);
-      fetchBeesData()
-        .then(() => fetchStakedBees())
-        .finally(() => setLoadingBees(false));
+      fetchBeesData().finally(() => setLoadingBees(false));
     }
   }, [batchBalances, address, imageUrl]);
 
