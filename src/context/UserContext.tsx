@@ -8,7 +8,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useReadContract } from "wagmi";
 import {
   useReadBuzzkillHatchlingsNftBalanceOfBatch,
   useReadBuzzkillHatchlingsNftTotalMinted,
@@ -23,6 +23,32 @@ import {
   useReadHiveStakingGetStakedNfTsInHive,
 } from "@/hooks/HiveStaking";
 import { Hatchling } from "@/types/Hatchling";
+
+const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS;
+
+// Function-specific ABI for `getAllStakedNFTsForUser`
+const getAllStakedNFTsForUserABI = [
+  {
+    type: "function",
+    name: "getAllStakedNFTsForUser",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        internalType: "struct HiveStaking.StakedNFT[]",
+        type: "tuple[]",
+        components: [
+          { name: "tokenId", internalType: "uint256", type: "uint256" },
+          { name: "stakedAt", internalType: "uint256", type: "uint256" },
+          { name: "environmentId", internalType: "uint256", type: "uint256" },
+          { name: "hiveId", internalType: "uint256", type: "uint256" },
+          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
+        ],
+      },
+    ],
+    stateMutability: "view",
+  },
+];
 
 interface UserContextType {
   activeBee: number | null;
@@ -86,11 +112,38 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   // Fetch all staked NFTs for the user
-  const { data: allStakedNFTsData } =
-    useReadHiveStakingGetAllStakedNfTsForUser();
+  const {
+    data: allStakedNFTsData,
+    isError,
+    error,
+  } = useReadHiveStakingGetAllStakedNfTsForUser({
+    args: [address ?? "0x0000000000000000000000000000000000000000"],
+  });
+  if (isError) {
+    console.error("Error fetching staked NFTs:", error);
+  } else {
+    console.log("Fetched staked NFTs:", allStakedNFTsData);
+  }
   console.log("Connected address:", address);
   console.log("userInfoData", userInfoData);
-  console.log("allStakedNFTsData in beginning", allStakedNFTsData);
+  console.log("Data Type:", typeof allStakedNFTsData);
+  console.log("Data Structure:", allStakedNFTsData);
+
+  useEffect(() => {
+    if (allStakedNFTsData && allStakedNFTsData.length > 0) {
+      console.log("Staked NFTs:", allStakedNFTsData);
+    } else {
+      console.log("Staked NFTs data is not yet available.");
+    }
+  }, [allStakedNFTsData]);
+
+  const result = useReadContract({
+    abi: getAllStakedNFTsForUserABI,
+    address: hiveStakingAddress,
+    functionName: "getAllStakedNFTsForUser",
+  });
+
+  console.log("result", result);
 
   // Fetch total staked bees
   const { data: totalStaked } = useReadHiveStakingTotalBeesStaked();

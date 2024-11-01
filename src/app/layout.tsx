@@ -10,6 +10,7 @@ import WalletConfiguration from "@/hooks/WalletConfiguration";
 import { UserProvider } from "@/context/UserContext";
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
+import { EnvironmentProvider } from "@/context/EnvironmentContext";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -70,8 +71,11 @@ export default function RootLayout({
               <UserProvider>
                 <CssBaseline />
                 <GlobalScrollbarStyles />
-                {children}
-                <SpeedInsights />
+                <EnvironmentProvider>
+                  {children}
+
+                  <SpeedInsights />
+                </EnvironmentProvider>
               </UserProvider>
             </SoundProvider>
           </LoadingProvider>

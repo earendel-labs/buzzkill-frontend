@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
 
       {/* Centered Semi-Transparent Card */}
       <Box width="55%">
-        <SemiTransparentCard transparency={1} >
+        <SemiTransparentCard transparency={1}>
           <Box
             padding="3rem"
             sx={{

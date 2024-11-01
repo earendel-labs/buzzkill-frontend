@@ -121,7 +121,7 @@ const Forest: React.FC = () => {
         QueenBeesValue="1/3"
         WorkerBeesValue="24/55"
         primaryButtonClick={handleClick}
-        secondaryButtonLink="/Play/Location/Forest/BlackForestHive"
+        secondaryButtonLink="/Play/Location/WhisperwoodValleys/BlackForestHive"
       />
       <CombinedResourceMarker
         left="30%"

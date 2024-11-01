@@ -439,6 +439,7 @@ export const hiveStakingAbi = [
     ],
     stateMutability: 'nonpayable',
   },
+  { type: 'receive', stateMutability: 'payable' },
   {
     type: 'function',
     inputs: [],
@@ -455,7 +456,7 @@ export const hiveStakingAbi = [
   },
   {
     type: 'function',
-    inputs: [],
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
     name: 'getAllStakedNFTsForUser',
     outputs: [
       {
@@ -494,6 +495,13 @@ export const hiveStakingAbi = [
         ],
       },
     ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'maxBeesPerHive',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
   },
   {
@@ -550,6 +558,13 @@ export const hiveStakingAbi = [
       { name: 'newHives', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'setEnvironmentsAndHives',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newMaxBees', internalType: 'uint256', type: 'uint256' }],
+    name: 'setMaxBeesPerHive',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -662,6 +677,23 @@ export const hiveStakingAbi = [
     stateMutability: 'view',
   },
   {
+    type: 'function',
+    inputs: [
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'withdrawERC1155',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
+    name: 'withdrawEther',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
     type: 'event',
     anonymous: false,
     inputs: [
@@ -703,6 +735,25 @@ export const hiveStakingAbi = [
       },
     ],
     name: 'DebugStake',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MaxBeesPerHiveUpdated',
   },
   {
     type: 'event',
@@ -806,7 +857,7 @@ export const hiveStakingAbi = [
  *
  */
 export const hiveStakingAddress = {
-  89: '0x67421A9c38eE3a9Ed5Eb665E2B9B0123fd749bB3',
+  89: '0x8256Db44AC26c81593CC67ebe14beFFec47414c5',
 } as const
 
 /**
@@ -1426,6 +1477,18 @@ export const useReadHiveStakingGetStakedNfTsInHive =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"maxBeesPerHive"`
+ *
+ *
+ */
+export const useReadHiveStakingMaxBeesPerHive =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'maxBeesPerHive',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"owner"`
  *
  *
@@ -1602,6 +1665,18 @@ export const useWriteHiveStakingSetEnvironmentsAndHives =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
+ *
+ *
+ */
+export const useWriteHiveStakingSetMaxBeesPerHive =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setMaxBeesPerHive',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
  *
@@ -1646,6 +1721,30 @@ export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
   address: hiveStakingAddress,
   functionName: 'unstake',
 })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC1155"`
+ *
+ *
+ */
+export const useWriteHiveStakingWithdrawErc1155 =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'withdrawERC1155',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
+ *
+ *
+ */
+export const useWriteHiveStakingWithdrawEther =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'withdrawEther',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__
@@ -1718,6 +1817,18 @@ export const useSimulateHiveStakingSetEnvironmentsAndHives =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
+ *
+ *
+ */
+export const useSimulateHiveStakingSetMaxBeesPerHive =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setMaxBeesPerHive',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
  *
@@ -1766,6 +1877,30 @@ export const useSimulateHiveStakingUnstake =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC1155"`
+ *
+ *
+ */
+export const useSimulateHiveStakingWithdrawErc1155 =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'withdrawERC1155',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
+ *
+ *
+ */
+export const useSimulateHiveStakingWithdrawEther =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'withdrawEther',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__
  *
  *
@@ -1786,6 +1921,18 @@ export const useWatchHiveStakingDebugStakeEvent =
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
     eventName: 'DebugStake',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"MaxBeesPerHiveUpdated"`
+ *
+ *
+ */
+export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    eventName: 'MaxBeesPerHiveUpdated',
   })
 
 /**

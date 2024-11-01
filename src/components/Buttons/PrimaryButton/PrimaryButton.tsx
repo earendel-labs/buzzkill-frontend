@@ -1,3 +1,4 @@
+// src/components/Buttons/PrimaryButton/PrimaryButton.tsx
 import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
@@ -14,6 +15,7 @@ interface PrimaryButtonProps {
   isActiveTab?: boolean;
   onClick: () => void;
   scale?: number; // New scale prop to adjust size dynamically
+  disabled?: boolean; // Add the disabled prop here
 }
 
 const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
@@ -21,6 +23,7 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   isActiveTab = false,
   onClick,
   scale = 1, // Default scale is 1 (no scaling)
+  disabled = false, // Default disabled to false
 }) => {
   const theme = useTheme();
   const { isMuted } = useSound();
@@ -60,7 +63,7 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   }, []);
 
   const handleMouseEnter = () => {
-    if (!isMuted && hoverSound) {
+    if (!isMuted && hoverSound && !disabled) {
       hoverSound.currentTime = 0;
       hoverSound.play();
     }
@@ -72,7 +75,7 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   };
 
   const handleMouseDown = () => {
-    if (!isMuted && clickSound) {
+    if (!isMuted && clickSound && !disabled) {
       clickSound.currentTime = 0;
       clickSound.play();
     }
@@ -80,11 +83,18 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   };
 
   const handleMouseUp = () => {
-    setIsPressed(false);
-    onClick();
+    if (!disabled) {
+      setIsPressed(false);
+      onClick();
+    } else {
+      setIsPressed(false);
+    }
   };
 
   const getImageSrc = () => {
+    if (disabled) {
+      return "/Frames/Buttons/PrimaryButton/PrimaryButtonDisabled.svg"; // Optional: Create a disabled state image
+    }
     if (isPressed) {
       return "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg";
     }
@@ -119,13 +129,16 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
         justifyContent: "center",
         alignItems: "center",
         color: "white",
         fontWeight: "bold",
         width: `${scale * 105}px`, // Adjust for your custom scaling
         height: `${scale * 35}px`,
+        opacity: disabled ? 0.6 : 1, // Visual indication of disabled state
+        pointerEvents: disabled ? "none" : "auto", // Prevent interactions when disabled
+        transition: "opacity 0.3s ease",
       }}
     >
       <Typography
