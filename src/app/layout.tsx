@@ -15,6 +15,7 @@ import { EnvironmentProvider } from "@/context/EnvironmentContext";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
 });
 
 // Load custom "Vera Humana 95" font
@@ -41,7 +42,7 @@ export default function RootLayout({
   session,
 }: Readonly<{ session: Session; children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${veraHumana.variable} ${poppins}`}>
+    <html lang="en" className={`${veraHumana.variable} ${poppins.variable}`}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,7 +67,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://buzzkill.world/" />
         <title>Buzzkill - Play Game</title>
       </head>
-      <body className={veraHumana.className}>
+      <body className={`${veraHumana.className} ${poppins.className}`}>
         <WalletConfiguration session={session}>
           <LoadingProvider>
             <SoundProvider>

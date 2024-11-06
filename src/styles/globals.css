@@ -8,6 +8,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --font-vera-humana: var(--font-vera-humana);
+  --font-poppins: var(--font-poppins);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,7 @@
 /* Let Material-UI handle body color and background */
 body {
   margin: 0;
+  font-family: var(--font-vera-humana), var(--font-poppins), sans-serif;
 }
 
 @layer utilities {

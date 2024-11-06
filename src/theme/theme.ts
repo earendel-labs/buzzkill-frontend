@@ -149,59 +149,59 @@ const getTheme = (): Theme => {
       },
     },
     typography: (palette) => ({
-      fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+      fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
       h1: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontWeight: "bold",
-        fontSize: "5rem", // Already using rem here
-        WebkitTextStroke: `1px ${palette.DarkOrange.main}`, // Strokes often stay in px
+        fontSize: "5rem",
+        WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
       },
       h2: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
         fontSize: "4rem",
       },
       h3: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
         fontSize: "3.5rem",
       },
       h4: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontWeight: "bold",
         WebkitTextStroke: `1px ${palette.DarkOrange.main}`,
         fontSize: "2.5rem",
       },
       h5: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontWeight: "bold",
         fontSize: "2rem",
       },
       h6: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1.25rem",
         fontWeight: "bold",
         WebkitTextStroke: `0px ${palette.DarkBlue.main}`,
       },
       body1: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1.125rem",
       },
       body2: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1rem",
       },
       ToolTipLabel: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1.125rem",
         fontWeight: "700",
         lineHeight: "100%",
         color: palette.Gold.main,
       },
       ToolTipValue: {
-        fontFamily: '"Vera Humana 95", "Poppins", sans-serif',
+        fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1.125rem",
         fontWeight: "800",
         lineHeight: "100%",
