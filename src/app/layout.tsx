@@ -22,12 +22,12 @@ const poppins = Poppins({
 const veraHumana = localFont({
   src: [
     {
-      path: "../Fonts/VeraHumana95-Regular.ttf", // Path relative to layout.tsx file
+      path: "../../public/Fonts/VeraHumana95-Regular.ttf", 
       weight: "400",
       style: "normal",
     },
     {
-      path: "../Fonts/VeraHumana95-Bold.ttf", // Path relative to layout.tsx file
+      path: "../../public/Fonts/VeraHumana95-Bold.ttf", 
       weight: "700",
       style: "normal",
     },

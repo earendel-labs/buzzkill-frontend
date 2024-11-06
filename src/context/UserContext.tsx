@@ -111,9 +111,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   console.log("Data Type:", typeof allStakedNFTsData);
   console.log("Data Structure:", allStakedNFTsData);
 
-
-
-  console.log("CHECKING STAKING ENV CARIABLE LOG!!!", process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS)
   useEffect(() => {
     if (allStakedNFTsData && allStakedNFTsData.length > 0) {
       console.log("Staked NFTs:", allStakedNFTsData);
@@ -138,10 +135,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const checkAndPromptApproval = async () => {
     if (!address || !hiveStakingAddress || isApproved === undefined) {
       console.log(
-        "Address, hive staking, or approval status is not available.",
-        address,
-        hiveStakingAddress,
-        isApproved
+        "Address, hive staking, or approval status is not available."
       );
       return false;
     }

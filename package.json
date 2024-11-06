@@ -17,6 +17,7 @@
     "@headlessui/tailwindcss": "^0.2.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@next/font": "^14.2.15",
     "@rainbow-me/rainbowkit": "^2.1.6",
     "@rainbow-me/rainbowkit-siwe-next-auth": "^0.4.1",
     "@remixicon/react": "^4.2.0",
