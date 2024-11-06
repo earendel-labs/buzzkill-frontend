@@ -1,71 +1,92 @@
-// src/components/Card/BeeCard/BeeCard.tsx
+// src/components/Card/BeeCard.tsx
+"use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Snackbar,
-  Alert,
-  Button,
-  Modal,
-} from "@mui/material";
+import { Box, Typography, Snackbar, Alert, Button, Modal } from "@mui/material";
 import { styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
-import HatchlingStatus from "./HatchlingStatus";
-import ActionOverlay from "./ActionOverlay"; // Ensure correct relative path
 import HatchlingImage from "./HatchlingImage";
-import { useWriteHiveStakingUnstake } from "@/hooks/HiveStaking"; // Ensure correct relative path
-import SemiTransparentCard from "../SemiTransaprentCard"; // Ensure correct relative path
-import { useWaitForTransactionReceipt } from "wagmi"; // Import useWaitForTransactionReceipt
-import { useEnvironment } from "@/context/EnvironmentContext"; // Import useEnvironment
+import { useWriteHiveStakingUnstake } from "@/hooks/HiveStaking";
+import SemiTransparentCard from "../SemiTransaprentCard";
+import { useWaitForTransactionReceipt } from "wagmi";
+import { useEnvironment } from "@/context/EnvironmentContext";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import HiveIcon from "@mui/icons-material/Hive";
+import { useRouter } from "next/navigation";
+import { useUserContext } from "@/context/UserContext";
 
 export interface BeeCardProps {
   bee: Hatchling;
   onPlayClick: (beeId: number) => void | Promise<void>;
 }
 
+const HoneycombIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16" // Adjusted size for better alignment
+    height="16" // Adjusted size for better alignment
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="feather feather-honeycomb"
+    style={{ verticalAlign: "middle", marginRight: "4px" }} // Adjust for spacing
+  >
+    <path d="M4 6L12 2L20 6V18L12 22L4 18V6Z" />
+    <path d="M8 6V18M16 6V18" />
+  </svg>
+);
+
 const StyledBeeCard = styled(Box)(({ theme }) => ({
   position: "relative",
+  borderRadius: "12px",
+  width: "350px", // Adjusted width for better layout
   overflow: "hidden",
-  borderRadius: "4px",
-  height: "300px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
   transition: "transform 0.3s ease, box-shadow 0.3s ease",
-  "&:hover .overlay, &:hover .actionButtonWrapper": {
-    opacity: 1,
-    visibility: "visible",
-  },
   "&:hover": {
-    transform: "scale(1.05)",
+    transform: "scale(1.03)",
     boxShadow: "0px 0px 10px 5px rgba(255, 255, 255, 0.8)",
   },
 }));
 
-const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
-  // Destructure the correct properties from the Wagmi-generated hook
-  const { writeContractAsync, isPending, isSuccess, isError, error } =
-    useWriteHiveStakingUnstake();
+const StatusChip = styled(Box)<{ isFree: boolean }>(({ theme, isFree }) => ({
+  backgroundColor: isFree
+    ? theme.palette.success.main
+    : theme.palette.info.main,
+  color: "white",
+  padding: "4px 20px",
+  borderRadius: "24px",
+  position: "absolute",
+  top: "16px",
+  right: "16px",
+  fontWeight: "bold",
+  fontSize: "16px",
+  zIndex: 1,
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+}));
 
-  // State for Snackbar notifications
+const ActionButton = styled(Button)(({ theme }) => ({
+  width: "95%", // Set width to 75% of the container
+  margin: "16px auto 0", // Center button with margin at the top
+  padding: "6px 12px",
+  fontSize: "1.1rem",
+}));
+
+const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
+  const { refreshBeesData } = useUserContext(); // Access refreshBeesData from context
+  const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
     "success"
   );
   const [alertMessage, setAlertMessage] = useState<string>("");
-
-  // State for Confirmation Modal
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-
-  // State to capture transaction hash
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
-
-  // Access environment and hive data
   const { getEnvironmentById, getHiveById } = useEnvironment();
-
   const environment = bee.environmentID
     ? getEnvironmentById(Number(bee.environmentID))
     : null;
@@ -73,26 +94,13 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
     bee.environmentID && bee.hiveID
       ? getHiveById(Number(bee.environmentID), Number(bee.hiveID))
       : null;
+  const router = useRouter();
 
-  // Debugging: Log environment and hive information
-  useEffect(() => {
-    console.log("Hatchling ID:", bee.id);
-    console.log("Environment ID:", bee.environmentID);
-    console.log("Hive ID:", bee.hiveID);
-    console.log("Environment Object:", environment);
-    console.log("Hive Object:", hive);
-  }, [bee.id, bee.environmentID, bee.hiveID, environment, hive]);
-
-  // Handler for unstaking
+  // Handle Unstake button click
   const handleUnstakeClick = () => {
-    if (
-      bee.id !== undefined &&
-      bee.environmentID !== null &&
-      bee.hiveID !== null
-    ) {
+    if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
     } else {
-      console.error("Missing necessary IDs to unstake.");
       setAlertSeverity("error");
       setAlertMessage("Missing necessary IDs to unstake.");
       setSnackbarOpen(true);
@@ -102,43 +110,25 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
   // Confirm Unstake
   const handleConfirmUnstake = async () => {
     setConfirmModalOpen(false);
-
-    // Destructure bee properties for clarity
     const { id, environmentID, hiveID } = bee;
-
-    // Type Narrowing: Ensure environmentID and hiveID are not null
     if (environmentID === null || hiveID === null) {
-      console.error("Cannot unstake: environmentID or hiveID is null.");
       setAlertSeverity("error");
       setAlertMessage("Invalid environment or hive ID.");
       setSnackbarOpen(true);
       return;
     }
-
-    // Now TypeScript knows environmentID and hiveID are not null
     try {
       const tx = await writeContractAsync({
-        args: [
-          BigInt(id), // Convert id to BigInt
-          BigInt(environmentID), // Convert environmentID to BigInt
-          BigInt(hiveID), // Convert hiveID to BigInt
-        ],
+        args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
-
-      // Capture the transaction hash to monitor its receipt
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
-        console.log("Transaction initiated with hash:", tx);
       } else {
-        // If tx.hash is undefined, handle it as an error
-        console.error("Transaction hash is undefined.");
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
       }
     } catch (err) {
-      console.error("Unstake failed:", err);
-      // Handle error by showing an error Snackbar
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
@@ -150,7 +140,7 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
     setConfirmModalOpen(false);
   };
 
-  // Use `useWaitForTransactionReceipt` to track the transaction
+  // Wait for transaction receipt
   const {
     isLoading: isTransactionLoading,
     isSuccess: isTransactionSuccess,
@@ -160,14 +150,14 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
     hash: transactionHash,
   });
 
-  // Effect to handle transaction status
+  // Handle transaction success or error
   useEffect(() => {
     if (isTransactionSuccess) {
       setAlertSeverity("success");
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
-      // Optionally, refresh data or update UI
-      setTransactionHash(undefined); // Reset transaction hash
+      setTransactionHash(undefined);
+      // No manual refresh here
     }
     if (isTransactionError) {
       setAlertSeverity("error");
@@ -175,7 +165,7 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
         transactionError?.message || "Failed to unstake the Hatchling."
       );
       setSnackbarOpen(true);
-      setTransactionHash(undefined); // Reset transaction hash
+      setTransactionHash(undefined);
     }
   }, [isTransactionSuccess, isTransactionError, transactionError]);
 
@@ -186,137 +176,212 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
 
   return (
     <StyledBeeCard>
-      <Typography
-        variant="body2"
-        color="white"
-        sx={{
-          position: "absolute",
-          top: "8px",
-          left: "8px",
-          backgroundColor: "rgba(0, 0, 0, 0.6)",
-          padding: "4px 8px",
-          borderRadius: "4px",
-        }}
-      >
-        Hatchling ID: {bee.id}
-      </Typography>
-      <HatchlingImage
-        imageAddress={bee.imageAddress}
-        alt={`Hatchling ${bee.id}`}
-      />
-      {bee.status === "Free" ? (
-        <ActionOverlay
-          actionType="Play"
-          onActionClick={() => onPlayClick(bee.id)}
+      <SemiTransparentCard>
+        <HatchlingImage
+          imageAddress={bee.imageAddress}
+          alt={`Hatchling ${bee.id}`}
+          sx={{ width: "100%", height: "250px", objectFit: "cover" }} // Set height for square image
         />
-      ) : (
-        <ActionOverlay
-          actionType="Unstake"
-          onActionClick={handleUnstakeClick}
-          isLoading={isPending || isTransactionLoading} // Disable during pending or transaction
-        />
-      )}
-      <HatchlingStatus
-        status={bee.status}
-        environmentID={
-          bee.environmentID !== null ? Number(bee.environmentID) : null
-        }
-        hiveID={bee.hiveID !== null ? Number(bee.hiveID) : null}
-      />
+        <StatusChip isFree={bee.status === "Free"}>{bee.status}</StatusChip>
+        <Box sx={{ padding: "16px" }}>
+          <Typography
+            variant="h6"
+            color="white"
+            sx={{ fontWeight: "bold", fontSize: "1.3rem", marginLeft: 1 }}
+          >
+            Hatchling ID: {bee.id}
+          </Typography>
+          {bee.status === "Free" ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 1,
+                paddingTop: 1,
+              }}
+            >
+              <ActionButton
+                variant="contained"
+                color="primary"
+                onClick={() => onPlayClick(bee.id)}
+                disabled={isPending || isTransactionLoading}
+              >
+                Play
+              </ActionButton>
+            </Box>
+          ) : (
+            <>
+              {environment && (
+                <Box
+                  sx={{ display: "flex", alignItems: "center", marginTop: 1, marginLeft: 1 }}
+                >
+                  <Typography
+                    variant="body1"
+                    fontSize="16px"
+                    color="lightgreen"
+                    onClick={() =>
+                      router.push(
+                        `/Play/Location/${encodeURIComponent(
+                          environment.name.replace(/\s+/g, "")
+                        )}`
+                      )
+                    }
+                    sx={{
+                      cursor: "pointer",
+                      marginRight: 1,
+                      display: "flex", // Use flex display
+                      alignItems: "center", // Center vertically
+                      "&:hover": {
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    <LocationOnIcon sx={{ marginRight: 0.5 }} />
+                    {environment.name}
+                  </Typography>
+                </Box>
+              )}
+              {hive && (
+                <Box sx={{ marginBottom: 1 }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", marginTop: 1.5, marginLeft: 1 }}
+                  >
+                    <Typography
+                      variant="body1"
+                      fontSize="16px"
+                      color="lightblue"
+                      onClick={() => {
+                        if (environment?.name && hive.name) {
+                          router.push(
+                            `/Play/Location/${encodeURIComponent(
+                              environment.name.replace(/\s+/g, "")
+                            )}/${encodeURIComponent(
+                              hive.name.replace(/\s+/g, "")
+                            )}`
+                          );
+                        } else {
+                          console.error("Environment or hive name is missing");
+                          // Optionally, provide alternative behavior here if values are undefined
+                        }
+                      }}
+                      sx={{
+                        cursor: "pointer",
+                        marginLeft: 0.25,
+                        display: "flex", // Use flex display
+                        alignItems: "center", // Center vertically
+                        "&:hover": {
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      <HiveIcon sx={{ marginRight: 0.5 }} />
+                      {hive.name}
+                    </Typography>
+                  </Box>
+                  <ActionButton
+                    variant="contained"
+                    color="primary"
+                    onClick={handleUnstakeClick}
+                    disabled={isPending || isTransactionLoading}
+                    sx={{ marginLeft: "auto" }}
+                  >
+                    {isPending || isTransactionLoading
+                      ? "Unstaking..."
+                      : "Unstake"}
+                  </ActionButton>
+                </Box>
+              )}
+            </>
+          )}
+        </Box>
 
-      {/* Snackbar for transaction feedback */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert
+        {/* Success/Error Snackbar */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
           onClose={handleSnackbarClose}
-          severity={alertSeverity}
-          sx={{ width: "100%" }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={alertSeverity}
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
 
-      {/* Confirmation Modal for Unstake */}
-      <Modal
-        open={confirmModalOpen}
-        onClose={handleCancelUnstake}
-        aria-labelledby="confirm-unstake-title"
-        aria-describedby="confirm-unstake-description"
-      >
-        <Box
-          sx={{
-            position: "fixed", // Ensure the modal covers the entire screen
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            bgcolor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1300, // Ensure it's above other elements
-          }}
+        {/* Confirmation Modal for Unstaking */}
+        <Modal
+          open={confirmModalOpen}
+          onClose={handleCancelUnstake}
+          aria-labelledby="confirm-unstake-title"
+          aria-describedby="confirm-unstake-description"
         >
-          <SemiTransparentCard
+          <Box
             sx={{
-              transparency: 1, // No transparency
-              padding: "30px", // Increased padding for comfort
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              bgcolor: "rgba(0, 0, 0, 0.5)",
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "center",
               alignItems: "center",
-              gap: "30px", // Increased gap for better spacing
-              maxWidth: "500px",
-              width: "90%", // Responsive width
-              boxShadow: 24,
+              zIndex: 1300,
             }}
           >
-            <Typography
-              id="confirm-unstake-title"
-              variant="h5"
-              component="h2"
-              align="center"
-              sx={{ fontWeight: "bold" }}
+            <SemiTransparentCard
+              sx={{
+                padding: "30px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "30px",
+                maxWidth: "500px",
+                width: "90%",
+                boxShadow: 24,
+              }}
             >
-              Confirm Unstake
-            </Typography>
-            <Typography
-              id="confirm-unstake-description"
-              variant="body1"
-              align="center"
-              sx={{ fontSize: "1rem" }}
-            >
-              Are you sure you want to unstake{" "}
-              <strong>Hatchling ID {bee.id}</strong> from{" "}
-              <strong>{hive ? hive.name : `Hive ID ${bee.hiveID}`}</strong> in{" "}
-              <strong>
-                {environment ? environment.name : `Unknown Environment`}
-              </strong>
-              ?
-            </Typography>
-            <Box sx={{ display: "flex", gap: "20px" }}>
-              <Button
-                onClick={handleCancelUnstake}
-                className="goldButton" // Use goldButton for Cancel
-                variant="contained" // Ensure consistent styling
+              <Typography
+                id="confirm-unstake-title"
+                variant="h5"
+                component="h2"
+                align="center"
+                sx={{ fontWeight: "bold" }}
               >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleConfirmUnstake}
-                className="blueConnectWallet" // Use blueConnectWallet for Unstake
-                variant="contained" // Ensure consistent styling
-                disabled={isPending || isTransactionLoading} // Disable during pending or transaction
+                Confirm Unstake
+              </Typography>
+              <Typography
+                id="confirm-unstake-description"
+                variant="body1"
+                align="center"
+                sx={{ fontSize: "1rem" }}
               >
-                {isPending || isTransactionLoading ? "Unstaking..." : "Unstake"}
-              </Button>
-            </Box>
-          </SemiTransparentCard>
-        </Box>
-      </Modal>
+                Are you sure you want to unstake{" "}
+                <strong>Hatchling ID {bee.id}</strong> from{" "}
+                <strong>{hive ? hive.name : `Unknown Hive`}</strong>?
+              </Typography>
+              <Box sx={{ display: "flex", gap: "20px" }}>
+                <Button onClick={handleCancelUnstake} variant="contained">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleConfirmUnstake}
+                  variant="contained"
+                  disabled={isPending || isTransactionLoading}
+                >
+                  {isPending || isTransactionLoading
+                    ? "Unstaking..."
+                    : "Unstake"}
+                </Button>
+              </Box>
+            </SemiTransparentCard>
+          </Box>
+        </Modal>
+      </SemiTransparentCard>
     </StyledBeeCard>
   );
 };

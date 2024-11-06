@@ -1,9 +1,16 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-const HatchlingImage: React.FC<{ imageAddress: string; alt: string }> = ({
+interface HatchlingImageProps {
+  imageAddress: string;
+  alt: string;
+  sx?: React.CSSProperties; // Allowing optional sx prop
+}
+
+const HatchlingImage: React.FC<HatchlingImageProps> = ({
   imageAddress,
   alt,
+  sx, // Destructure the sx prop
 }) => (
   <Box
     component="img"
@@ -14,6 +21,7 @@ const HatchlingImage: React.FC<{ imageAddress: string; alt: string }> = ({
       height: "100%",
       objectFit: "cover",
       borderRadius: "4px",
+      ...sx, // Apply additional styles from sx prop
     }}
   />
 );

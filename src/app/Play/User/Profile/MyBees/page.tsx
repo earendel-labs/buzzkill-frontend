@@ -1,3 +1,4 @@
+// src/pages/MyBeesTab.tsx
 "use client";
 
 import React from "react";
@@ -34,6 +35,7 @@ const MyBeesTab = () => {
       }
     } catch (error) {
       console.error("Error during approval check:", error);
+      // Optionally, display a user-facing error message
     }
   };
 
@@ -49,20 +51,22 @@ const MyBeesTab = () => {
       </Typography>
       <Grid container spacing={3}>
         {!loadingBees && myBees.length === 0 && !fetchError ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            height="60vh"
-          >
-            <Typography marginTop="24px" marginBottom="24px">
-              No Bees Found. Mint yours here
-            </Typography>
-            <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
-          </Box>
+          <Grid item xs={12}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              height="60vh"
+            >
+              <Typography marginTop="24px" marginBottom="24px">
+                No Bees Found. Mint yours here
+              </Typography>
+              <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
+            </Box>
+          </Grid>
         ) : (
           myBees.map((bee) => (
-            <Grid item xs={6} sm={4} md={3} key={`bee-${bee.id}`}>
+            <Grid item xs={12} sm={6} md={4} key={`bee-${bee.id}`}>
               <BeeCard bee={bee} onPlayClick={handlePlayClick} />
             </Grid>
           ))
@@ -75,26 +79,32 @@ const MyBeesTab = () => {
       </Typography>
       <Grid container spacing={3} marginBottom="5rem">
         {!loadingBees && stakedBees.length === 0 && !fetchError ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            height="40vh"
-          >
-            <Typography>No Staked Bees Found</Typography>
-          </Box>
+          <Grid item xs={12}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              height="40vh"
+            >
+              <Typography>No Staked Bees Found</Typography>
+            </Box>
+          </Grid>
         ) : (
           stakedBees.map((bee) => (
-            <Grid item xs={6} sm={4} md={3} key={`staked-bee-${bee.id}`}>
+            <Grid item xs={12} sm={6} md={4} key={`staked-bee-${bee.id}`}>
               <BeeCard bee={bee} onPlayClick={handlePlayClick} />
             </Grid>
           ))
         )}
       </Grid>
 
-      {loadingBees && <HexagonSpinner />}
+      {loadingBees && (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <HexagonSpinner />
+        </Box>
+      )}
       {fetchError && (
-        <Typography variant="h6" color="error">
+        <Typography variant="h6" color="error" align="center">
           Failed to load hatchlings, please try again later.
         </Typography>
       )}

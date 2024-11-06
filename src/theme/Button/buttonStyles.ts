@@ -12,7 +12,7 @@ const buttonStyles = (theme: Theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderWidth: "2px",
+
         borderRadius: "8px",
         borderStyle: "solid",
         boxSizing: "border-box",
@@ -26,15 +26,12 @@ const buttonStyles = (theme: Theme) => ({
         "&.goldButton": {
           backgroundColor: theme.palette.Gold.main,
           color: "#fff",
- 
 
           "&:hover": {
             backgroundColor: theme.palette.Gold.dark,
-          
           },
           "&:active": {
             backgroundColor: theme.palette.Gold.light,
- 
           },
         },
 

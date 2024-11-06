@@ -8,7 +8,8 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useAccount, useBalance, useReadContract } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
+import { Log } from "viem"; // Ensure this import is correct
 import {
   useReadBuzzkillHatchlingsNftBalanceOfBatch,
   useReadBuzzkillHatchlingsNftTotalMinted,
@@ -22,33 +23,9 @@ import {
   useReadHiveStakingTotalBeesStaked,
   useReadHiveStakingGetStakedNfTsInHive,
 } from "@/hooks/HiveStaking";
+import { useWatchContractEvent } from "wagmi"; // Import the hook directly
+import hiveStakingAbi from "@/app/libs/abi/HiveStaking.json"; // Import your ABI
 import { Hatchling } from "@/types/Hatchling";
-
-const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS;
-
-// Function-specific ABI for `getAllStakedNFTsForUser`
-const getAllStakedNFTsForUserABI = [
-  {
-    type: "function",
-    name: "getAllStakedNFTsForUser",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        internalType: "struct HiveStaking.StakedNFT[]",
-        type: "tuple[]",
-        components: [
-          { name: "tokenId", internalType: "uint256", type: "uint256" },
-          { name: "stakedAt", internalType: "uint256", type: "uint256" },
-          { name: "environmentId", internalType: "uint256", type: "uint256" },
-          { name: "hiveId", internalType: "uint256", type: "uint256" },
-          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
-        ],
-      },
-    ],
-    stateMutability: "view",
-  },
-];
 
 interface UserContextType {
   activeBee: number | null;
@@ -62,6 +39,7 @@ interface UserContextType {
   balance: string | null;
   approvalForStaking: boolean;
   checkAndPromptApproval: () => Promise<boolean>;
+  refreshBeesData: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -119,11 +97,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   } = useReadHiveStakingGetAllStakedNfTsForUser({
     args: [address ?? "0x0000000000000000000000000000000000000000"],
   });
-  if (isError) {
-    console.error("Error fetching staked NFTs:", error);
-  } else {
-    console.log("Fetched staked NFTs:", allStakedNFTsData);
-  }
+
+  useEffect(() => {
+    if (isError) {
+      console.error("Error fetching staked NFTs:", error);
+    } else {
+      console.log("Fetched staked NFTs:", allStakedNFTsData);
+    }
+  }, [isError, error, allStakedNFTsData]);
+
   console.log("Connected address:", address);
   console.log("userInfoData", userInfoData);
   console.log("Data Type:", typeof allStakedNFTsData);
@@ -136,14 +118,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       console.log("Staked NFTs data is not yet available.");
     }
   }, [allStakedNFTsData]);
-
-  const result = useReadContract({
-    abi: getAllStakedNFTsForUserABI,
-    address: hiveStakingAddress,
-    functionName: "getAllStakedNFTsForUser",
-  });
-
-  console.log("result", result);
 
   // Fetch total staked bees
   const { data: totalStaked } = useReadHiveStakingTotalBeesStaked();
@@ -214,7 +188,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     return ipfsUri;
   };
 
-  const fetchBeesData = async () => {
+  // Fetch unstaked (free) bees
+  const fetchUnstakedBees = async () => {
     if (!batchBalances || !address || !imageUrl || !totalMinted) {
       setLoadingBees(false);
       return;
@@ -237,53 +212,111 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     setBees(unstakedHatchlings);
   };
 
-  useEffect(() => {
-    if (allStakedNFTsData) {
-      const stakedBeeArray: Hatchling[] = [];
-      console.log("allStakedNFTsData:", allStakedNFTsData); // Log to inspect data
-
-      // Assuming allStakedNFTsData is an array of StakedNFTData
-      allStakedNFTsData.forEach((nft: any) => {
-        const tokenId = Number(nft.tokenId);
-        const environmentID = nft.environmentId.toString();
-        const hiveID = nft.hiveId.toString();
-
-        if (!isNaN(tokenId)) {
-          stakedBeeArray.push({
-            id: tokenId,
-            imageAddress: imageUrl || "/default-image.png",
-            status: "Staked",
-            environmentID: environmentID || null,
-            hiveID: hiveID || null,
-          });
-        }
-      });
-
-      console.log("Fetched Staked Bees:", stakedBeeArray);
-      setStakedBees(stakedBeeArray);
+  // Fetch staked bees
+  const fetchStakedBees = async () => {
+    if (!allStakedNFTsData || !imageUrl) {
+      return;
     }
-  }, [allStakedNFTsData, imageUrl]);
 
-  useEffect(() => {
-    if (uri && !imageUrl && totalMinted) {
-      fetchMetadata(uri).then((image) => setImageUrl(image));
+    const stakedBeeArray: Hatchling[] = [];
+    console.log("allStakedNFTsData:", allStakedNFTsData); // Log to inspect data
+
+    allStakedNFTsData.forEach((nft: any) => {
+      const tokenId = Number(nft.tokenId);
+      const environmentID = nft.environmentId?.toString() || null;
+      const hiveID = nft.hiveId?.toString() || null;
+
+      if (!isNaN(tokenId)) {
+        stakedBeeArray.push({
+          id: tokenId,
+          imageAddress: imageUrl || "/default-image.png",
+          status: "Staked",
+          environmentID: environmentID,
+          hiveID: hiveID,
+        });
+      }
+    });
+
+    console.log("Fetched Staked Bees:", stakedBeeArray);
+    setStakedBees(stakedBeeArray);
+  };
+
+  // Function to refresh all bees data
+  const refreshBeesData = async () => {
+    console.log("Refreshing bees data due to event...");
+    setLoadingBees(true);
+    try {
+      // Re-fetch unstaked bees
+      await fetchUnstakedBees();
+
+      // Re-fetch staked bees
+      await fetchStakedBees();
+    } catch (error) {
+      console.error("Failed to refresh bees data:", error);
+      setFetchError(true);
+    } finally {
+      setLoadingBees(false);
     }
-  }, [uri, totalMinted]);
+  };
 
+  // Initialize event watchers using useWatchContractEvent directly
+  useWatchContractEvent({
+    address: hiveStakingAddress,
+    abi: hiveStakingAbi,
+    eventName: "Staked",
+    onLogs: (logs: Log[]) => {
+      console.log("Staked event detected:", logs);
+      refreshBeesData();
+    },
+    onError: (error: Error) => {
+      console.error("Error watching Staked events:", error);
+    },
+  });
+
+  useWatchContractEvent({
+    address: hiveStakingAddress,
+    abi: hiveStakingAbi,
+    eventName: "Unstaked",
+    onLogs: (logs: Log[]) => {
+      console.log("Unstaked event detected:", logs);
+      refreshBeesData();
+    },
+    onError: (error: Error) => {
+      console.error("Error watching Unstaked events:", error);
+    },
+  });
+
+  // Initial data fetching
   useEffect(() => {
-    if (batchBalances && address && imageUrl) {
+    const initializeData = async () => {
       setLoadingBees(true);
-      fetchBeesData().finally(() => setLoadingBees(false));
-    }
-  }, [batchBalances, address, imageUrl]);
+      try {
+        if (uri && !imageUrl && totalMinted) {
+          const image = await fetchMetadata(uri);
+          setImageUrl(image);
+        }
+        await fetchUnstakedBees();
+        await fetchStakedBees();
+      } catch (error) {
+        console.error("Error initializing data:", error);
+        setFetchError(true);
+      } finally {
+        setLoadingBees(false);
+      }
+    };
 
-  useEffect(() => {
-    if (!isConnected) {
+    if (isConnected) {
+      initializeData();
+    } else {
+      // Reset state when not connected
       setBees([]);
       setStakedBees([]);
       setActiveBeeState(null);
+      setImageUrl(null);
+      setLoadingBees(false);
+      setFetchError(false);
     }
-  }, [isConnected]);
+  }, [isConnected, address, batchBalances, uri, totalMinted, imageUrl]);
 
   return (
     <UserContext.Provider
@@ -299,6 +332,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         balance: balanceData?.formatted ?? null,
         approvalForStaking,
         checkAndPromptApproval,
+        refreshBeesData,
       }}
     >
       {children}

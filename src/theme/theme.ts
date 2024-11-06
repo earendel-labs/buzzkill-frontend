@@ -95,9 +95,9 @@ const getTheme = (): Theme => {
         dark: "#151515",
       },
       FooterBackground: {
-        main: "#222E50",
-        light: "#F0EEDF",
-        dark: "#050C17",
+        main: "rgba(34, 46, 80, 0.7)",
+        light: "rgba(34, 46, 80, 0.8)",
+        dark: "rgba(34, 46, 80, 0.8)",
       },
       Blue: {
         main: "#007991",
