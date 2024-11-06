@@ -135,7 +135,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const checkAndPromptApproval = async () => {
     if (!address || !hiveStakingAddress || isApproved === undefined) {
       console.log(
-        "Address, hive staking, or approval status is not available."
+        "Address, hive staking, or approval status is not available.",
+        address,
+        hiveStakingAddress,
+        isApproved
       );
       return false;
     }
