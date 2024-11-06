@@ -260,31 +260,33 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   // Initialize event watchers using useWatchContractEvent directly
-  useWatchContractEvent({
-    address: hiveStakingAddress,
-    abi: hiveStakingAbi,
-    eventName: "Staked",
-    onLogs: (logs: Log[]) => {
-      console.log("Staked event detected:", logs);
-      refreshBeesData();
-    },
-    onError: (error: Error) => {
-      console.error("Error watching Staked events:", error);
-    },
-  });
+  // TODO: THIS DOESN NOT WORK WITh THE VIC RPC -> Migrate to Websocket RPC 
+  // (Perhaps fixed using a subgraph?)
+  // useWatchContractEvent({
+  //   address: hiveStakingAddress,
+  //   abi: hiveStakingAbi,
+  //   eventName: "Staked",
+  //   onLogs: (logs: Log[]) => {
+  //     console.log("Staked event detected:", logs);
+  //     refreshBeesData();
+  //   },
+  //   onError: (error: Error) => {
+  //     console.error("Error watching Staked events:", error);
+  //   },
+  // });
 
-  useWatchContractEvent({
-    address: hiveStakingAddress,
-    abi: hiveStakingAbi,
-    eventName: "Unstaked",
-    onLogs: (logs: Log[]) => {
-      console.log("Unstaked event detected:", logs);
-      refreshBeesData();
-    },
-    onError: (error: Error) => {
-      console.error("Error watching Unstaked events:", error);
-    },
-  });
+  // useWatchContractEvent({
+  //   address: hiveStakingAddress,
+  //   abi: hiveStakingAbi,
+  //   eventName: "Unstaked",
+  //   onLogs: (logs: Log[]) => {
+  //     console.log("Unstaked event detected:", logs);
+  //     refreshBeesData();
+  //   },
+  //   onError: (error: Error) => {
+  //     console.error("Error watching Unstaked events:", error);
+  //   },
+  // });
 
   // Initial data fetching
   useEffect(() => {
