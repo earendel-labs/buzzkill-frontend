@@ -22,12 +22,12 @@ const poppins = Poppins({
 const veraHumana = localFont({
   src: [
     {
-      path: "../../public/Fonts/VeraHumana95-Regular.ttf", 
+      path: "../../public/Fonts/VeraHumana95-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/Fonts/VeraHumana95-Bold.ttf", 
+      path: "../../public/Fonts/VeraHumana95-Bold.ttf",
       weight: "700",
       style: "normal",
     },
@@ -39,7 +39,7 @@ export default function RootLayout({
   session,
 }: Readonly<{ session: Session; children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={veraHumana.className}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
