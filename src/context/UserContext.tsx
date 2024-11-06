@@ -111,6 +111,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   console.log("Data Type:", typeof allStakedNFTsData);
   console.log("Data Structure:", allStakedNFTsData);
 
+
+
+  console.log("CHECKING STAKING ENV CARIABLE LOG!!!", process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS)
   useEffect(() => {
     if (allStakedNFTsData && allStakedNFTsData.length > 0) {
       console.log("Staked NFTs:", allStakedNFTsData);
