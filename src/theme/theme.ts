@@ -86,7 +86,7 @@ const getTheme = (): Theme => {
       },
       NavBarBackground: {
         main: "rgba(34, 46, 80, 0.7)",
-        light: "rgba(34, 46, 80, 0.8)",
+        light: "rgba(34, 46, 80, 0.6)",
         dark: "rgba(34, 46, 80, 0.8)",
       },
       cardBorder: {
