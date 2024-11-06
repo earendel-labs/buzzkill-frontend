@@ -32,6 +32,9 @@ const veraHumana = localFont({
       style: "normal",
     },
   ],
+  variable: "--font-vera-humana",
+  preload: true,
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -39,7 +42,7 @@ export default function RootLayout({
   session,
 }: Readonly<{ session: Session; children: React.ReactNode }>) {
   return (
-    <html lang="en" className={veraHumana.className}>
+    <html lang="en" className={`${veraHumana.variable} ${poppins.variable}`}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
