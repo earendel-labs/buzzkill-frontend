@@ -1,7 +1,7 @@
 // src/pages/MyBeesTab.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,12 @@ const MyBeesTab = () => {
     checkAndPromptApproval,
     setActiveBee,
   } = useUserContext();
+
+  // Debugging: Log the bees and stakedBees on each render
+  useEffect(() => {
+    console.log("MyBeesTab - myBees:", myBees);
+    console.log("MyBeesTab - stakedBees:", stakedBees);
+  }, [myBees, stakedBees]);
 
   // Handle 'Play' button click for each bee
   const handlePlayClick = async (beeId: number): Promise<void> => {

@@ -1,4 +1,5 @@
 // src/components/Card/BeeCard.tsx
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -19,25 +20,6 @@ export interface BeeCardProps {
   bee: Hatchling;
   onPlayClick: (beeId: number) => void | Promise<void>;
 }
-
-const HoneycombIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16" // Adjusted size for better alignment
-    height="16" // Adjusted size for better alignment
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="feather feather-honeycomb"
-    style={{ verticalAlign: "middle", marginRight: "4px" }} // Adjust for spacing
-  >
-    <path d="M4 6L12 2L20 6V18L12 22L4 18V6Z" />
-    <path d="M8 6V18M16 6V18" />
-  </svg>
-);
 
 const StyledBeeCard = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -68,7 +50,7 @@ const StatusChip = styled(Box)<{ isFree: boolean }>(({ theme, isFree }) => ({
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
-  width: "95%", // Set width to 75% of the container
+  width: "95%", // Set width to 95% of the container
   margin: "16px auto 0", // Center button with margin at the top
   padding: "6px 12px",
   fontSize: "1.1rem",
@@ -118,20 +100,25 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
       return;
     }
     try {
+      console.log("Initiating unstake transaction...");
       const tx = await writeContractAsync({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
+      console.log("Transaction initiated:", tx);
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
+        console.log("Transaction hash set:", tx);
       } else {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
+        console.error("Transaction failed to initiate.");
       }
     } catch (err) {
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
+      console.error("Error during unstake transaction:", err);
     }
   };
 
@@ -152,12 +139,21 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
 
   // Handle transaction success or error
   useEffect(() => {
+    console.log(
+      "Transaction Receipt Status - Loading:",
+      isTransactionLoading,
+      "Success:",
+      isTransactionSuccess,
+      "Error:",
+      isTransactionError
+    );
     if (isTransactionSuccess) {
       setAlertSeverity("success");
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      // No manual refresh here
+      refreshBeesData(); // Trigger data refresh
+      console.log("Called refreshBeesData() after successful transaction.");
     }
     if (isTransactionError) {
       setAlertSeverity("error");
@@ -166,8 +162,14 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
       );
       setSnackbarOpen(true);
       setTransactionHash(undefined);
+      console.error("Transaction Error:", transactionError);
     }
-  }, [isTransactionSuccess, isTransactionError, transactionError]);
+  }, [
+    isTransactionSuccess,
+    isTransactionError,
+    transactionError,
+    refreshBeesData,
+  ]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -214,7 +216,12 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
             <>
               {environment && (
                 <Box
-                  sx={{ display: "flex", alignItems: "center", marginTop: 1, marginLeft: 1 }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: 1,
+                    marginLeft: 1,
+                  }}
                 >
                   <Typography
                     variant="body1"
@@ -245,7 +252,12 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
               {hive && (
                 <Box sx={{ marginBottom: 1 }}>
                   <Box
-                    sx={{ display: "flex", alignItems: "center", marginTop: 1.5, marginLeft: 1 }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: 1.5,
+                      marginLeft: 1,
+                    }}
                   >
                     <Typography
                       variant="body1"
@@ -334,6 +346,7 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick }) => {
             }}
           >
             <SemiTransparentCard
+              transparency={0.8}
               sx={{
                 padding: "30px",
                 display: "flex",

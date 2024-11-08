@@ -29,7 +29,7 @@ import { Hatchling } from "@/types/Hatchling";
 
 interface UserContextType {
   activeBee: number | null;
-  setActiveBee: (beeId: number) => void;
+  setActiveBee: (beeId: number | null) => void;
   bees: Hatchling[];
   stakedBees: Hatchling[];
   loadingBees: boolean;
@@ -40,6 +40,8 @@ interface UserContextType {
   approvalForStaking: boolean;
   checkAndPromptApproval: () => Promise<boolean>;
   refreshBeesData: () => void;
+  stakeBee: (beeId: number, environmentID: string, hiveID: string) => void; // Updated
+  unstakeBee: (beeId: number) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -128,7 +130,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   console.log("AllStakedInHive", AllStakedInHive);
 
-  const setActiveBee = (beeId: number) => {
+  const setActiveBee = (beeId: number | null) => {
+    console.log(`Setting activeBee to: ${beeId}`);
     setActiveBeeState(beeId);
   };
 
@@ -196,7 +199,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     const unstakedHatchlings: Hatchling[] = [];
-    for (let i = 0; i < totalMinted; i++) {
+    for (let i = 0; i < Number(totalMinted); i++) {
       const balance = batchBalances[i];
       if (balance && Number(balance) > 0) {
         unstakedHatchlings.push({
@@ -260,7 +263,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   // Initialize event watchers using useWatchContractEvent directly
-  // TODO: THIS DOESN NOT WORK WITh THE VIC RPC -> Migrate to Websocket RPC 
+  // TODO: THIS DOESN'T WORK WITH THE VIC RPC -> Migrate to Websocket RPC
   // (Perhaps fixed using a subgraph?)
   // useWatchContractEvent({
   //   address: hiveStakingAddress,
@@ -320,6 +323,76 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [isConnected, address, batchBalances, uri, totalMinted, imageUrl]);
 
+  // Function to move a bee from unstaked to staked
+  const stakeBee = (beeId: number, environmentID: string, hiveID: string) => {
+    console.log(`Attempting to stake Bee ID ${beeId}`);
+    setBees((prevBees) => {
+      const beeToStake = prevBees.find((bee) => bee.id === beeId);
+      if (beeToStake) {
+        console.log(`Staking Bee ID ${beeId}:`, beeToStake);
+        setStakedBees((prevStakedBees) => {
+          const updatedStakedBees = [
+            ...prevStakedBees,
+            { ...beeToStake, status: "Staked", environmentID, hiveID },
+          ];
+          console.log(
+            `Added Bee ID ${beeId} to stakedBees:`,
+            updatedStakedBees
+          );
+          return updatedStakedBees;
+        });
+        const updatedBees = prevBees.filter((bee) => bee.id !== beeId);
+        console.log(
+          `Removed Bee ID ${beeId} from bees. Updated bees:`,
+          updatedBees
+        );
+        return updatedBees;
+      } else {
+        console.warn(`Bee ID ${beeId} not found in unstaked bees.`);
+        return prevBees;
+      }
+    });
+  };
+
+  // Function to move a bee from staked to unstaked
+  const unstakeBee = (beeId: number) => {
+    console.log(`Attempting to unstake Bee ID ${beeId}`);
+    setStakedBees((prevStakedBees) => {
+      const beeToUnstake = prevStakedBees.find((bee) => bee.id === beeId);
+      if (beeToUnstake) {
+        console.log(`Unstaking Bee ID ${beeId}:`, beeToUnstake);
+        setBees((prevBees) => {
+          const updatedBees = [
+            ...prevBees,
+            { ...beeToUnstake, status: "Free", environmentID: null, hiveID: null },
+          ];
+          console.log(`Added Bee ID ${beeId} back to bees:`, updatedBees);
+          return updatedBees;
+        });
+        const updatedStakedBees = prevStakedBees.filter(
+          (bee) => bee.id !== beeId
+        );
+        console.log(
+          `Removed Bee ID ${beeId} from stakedBees. Updated stakedBees:`,
+          updatedStakedBees
+        );
+        return updatedStakedBees;
+      } else {
+        console.warn(`Bee ID ${beeId} not found in staked bees.`);
+        return prevStakedBees;
+      }
+    });
+  };
+
+  // Optional: Log bees and stakedBees whenever they change
+  useEffect(() => {
+    console.log("Current Unstaked Bees:", bees);
+  }, [bees]);
+
+  useEffect(() => {
+    console.log("Current Staked Bees:", stakedBees);
+  }, [stakedBees]);
+
   return (
     <UserContext.Provider
       value={{
@@ -335,6 +408,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         approvalForStaking,
         checkAndPromptApproval,
         refreshBeesData,
+        stakeBee, // Provide stakeBee with updated signature
+        unstakeBee, // Provide unstakeBee
       }}
     >
       {children}
