@@ -96,7 +96,7 @@ const Forest: React.FC = () => {
 
   useEffect(() => {
     // Fetch environment data for Whisperwood Valleys
-    fetch("/Data/Maps/Forest/whisperwood-valleys.json")
+    fetch("/Data/Maps/Forest/Forest.json")
       .then((response) => response.json())
       .then((data) => setEnvironmentData(data))
       .catch((error) =>
@@ -199,7 +199,7 @@ const Forest: React.FC = () => {
         console.log(
           "Called stakeBee() with environmentID and hiveID, and reset activeBee after successful transaction."
         );
-      } 
+      }
       refreshBeesData();
     }
     if (isTransactionError) {

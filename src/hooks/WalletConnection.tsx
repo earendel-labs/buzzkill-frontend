@@ -1,22 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
   RainbowKitSiweNextAuthProvider,
   GetSiweMessageOptions,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { useAccount } from "wagmi";
-import { supabase } from "@/app/libs/supabaseClient";
-import { signIn, signOut } from "next-auth/react"; // Import signIn from next-auth/react
+import { signIn, signOut } from "next-auth/react";
 import getTheme from "../theme/theme";
-import { useMemo } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { createWalletTheme } from "@/theme/walletTheme";
-import { ThemeProvider, Box, Skeleton, Modal } from "@mui/material";
+import { ThemeProvider, Box, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
-import { useRouter } from "next/navigation"; // Import the router
+import { useRouter } from "next/navigation";
 import HCaptchaComponent from "@/components/Verification/HCaptchaComponent";
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
@@ -28,7 +26,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
   const walletTheme = useMemo(() => createWalletTheme(theme), [theme]);
 
-  const [isSiweEnabled, setIsSiweEnabled] = useState(true); // Control SIWE flow
+  const [isSiweEnabled, setIsSiweEnabled] = useState<boolean | null>(null); // Initialize as null
   const { address, isConnected } = useAccount(); // Get connected wallet address
   const [loading, setLoading] = useState(false); // State to control loading indicator
   const router = useRouter(); // Initialize router
@@ -45,7 +43,6 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         if (!address) {
           console.error("Address is undefined. Cannot query Supabase.");
           setIsSiweEnabled(true); // Enable SIWE by default if no address is present
-          setLoading(false); // Disable loader if address is missing
           return;
         }
 
@@ -90,9 +87,8 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           }
         } else {
           console.log("User does not exist in Supabase. SIWE enabled.");
-          console.log("userData", user);
-          hCaptchaRef.current?.handleExecute();
           setIsSiweEnabled(true); // User does not exist, enable SIWE
+          hCaptchaRef.current?.handleExecute(); // Trigger Captcha
         }
       } catch (err) {
         console.error("Error during Supabase check:", err);
@@ -143,7 +139,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
   return (
     <RainbowKitSiweNextAuthProvider
-      enabled={isSiweEnabled} // Conditionally enable SIWE based on user existence
+      enabled={isSiweEnabled === true} // Convert null to false
       getSiweMessageOptions={getSiweMessageOptions}
     >
       <QueryClientProvider client={queryClient}>
@@ -153,7 +149,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
             {/* hCaptcha Modal */}
             <Modal
               open={
-                isSiweEnabled &&
+                isSiweEnabled === true && // Only open if SIWE is enabled (user does not exist)
                 captchaToken === null &&
                 isConnected &&
                 !loading
