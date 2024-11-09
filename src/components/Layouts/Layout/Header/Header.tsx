@@ -1,3 +1,4 @@
+// src/app/HoneyDrops/page.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -14,6 +15,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getAuthOptions } from "@/pages/api/auth/[...nextauth]";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
+import Typography from "@mui/material/Typography"; // Import Typography
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
@@ -84,14 +86,14 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               alignItems: "center",
             }}
           >
-            {/* Logo */}
-            <Box>
+            {/* Logo and "Honey Drops" Label */}
+            <Box display="flex" alignItems="center">
               <Link href="/">
                 <Box
                   component="img"
                   src="/Logos/buzzkill-logo-nav.png"
                   alt="Buzzkill Logo"
-                  sx={{ height: "30px", cursor: "pointer" }}
+                  sx={{ height: "30px", cursor: "pointer", mr: 1 }}
                 />
               </Link>
             </Box>
@@ -124,6 +126,14 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 className="linkStyle2"
               >
                 Mint
+              </Link>
+              <Link
+                href="/HoneyDrops"
+                color="inherit"
+                underline="none"
+                className="linkStyle2"
+              >
+                Honey Drops
               </Link>
             </Box>
 
