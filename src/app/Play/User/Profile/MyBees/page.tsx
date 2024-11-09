@@ -67,12 +67,15 @@ const MyBeesTab = () => {
               <Typography marginTop="24px" marginBottom="24px">
                 No Bees Found. Mint yours here
               </Typography>
-              <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
+              <PrimaryButton
+                text="Mint"
+                onClick={() => router.push("/Mint")}
+              />
             </Box>
           </Grid>
         ) : (
           myBees.map((bee) => (
-            <Grid item xs={12} sm={6} md={4} key={`bee-${bee.id}`}>
+            <Grid item xs={12} sm={6} md={4} key={`unstaked-bee-${bee.id}`}>
               <BeeCard bee={bee} onPlayClick={handlePlayClick} />
             </Grid>
           ))
