@@ -104,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 flex: 1,
                 display: "flex",
                 justifyContent: "left",
-                gap: "18px",
+                gap: "24px",
                 padding: "0 0 0 44px",
               }}
             >

@@ -1,4 +1,4 @@
-// LeaderboardTable.tsx
+// src/app/HoneyDrops/Components/RewardsTable.tsx
 import React, { useState, useMemo } from "react";
 import {
   Table,
@@ -15,18 +15,21 @@ import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
+// Define sort directions
 type SortDirection = "asc" | "desc";
-type SortableColumn = "rank" | "name" | "invitesSent" | "pointsEarned" | "tasksCompleted";
 
-export interface LeaderboardEntry {
-  rank: number;
-  name: string;
-  address: string;
-  invitesSent: number;
-  pointsEarned: number;
-  tasksCompleted: number;
+// Define sortable columns
+type SortableColumn = "task" | "phase" | "points";
+
+// Interface for Reward entries
+export interface RewardEntry {
+  id: number;
+  task: string;
+  phase: string;
+  points: number;
 }
 
+// Styled TableRow with gradient bottom border
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   position: "relative",
   "&::after": {
@@ -41,19 +44,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+// Styled Typography for table headers
 const HeaderTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.Gold.main,
+  fontWeight: "bold",
 }));
 
-interface LeaderboardTableProps {
-  data: LeaderboardEntry[];
+interface RewardsTableProps {
+  data: RewardEntry[];
   loading: boolean;
 }
 
-export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loading }) => {
+export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => {
   const theme = useTheme();
-  const [sortColumn, setSortColumn] = useState<SortableColumn>("rank");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [sortColumn, setSortColumn] = useState<SortableColumn>("points");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const handleSort = (column: SortableColumn) => {
     if (sortColumn === column) {
@@ -72,25 +77,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
       let bValue: number | string = "";
 
       switch (sortColumn) {
-        case "rank":
-          aValue = a.rank;
-          bValue = b.rank;
+        case "task":
+          aValue = a.task.toLowerCase();
+          bValue = b.task.toLowerCase();
           break;
-        case "name":
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+        case "phase":
+          aValue = a.phase.toLowerCase();
+          bValue = b.phase.toLowerCase();
           break;
-        case "invitesSent":
-          aValue = a.invitesSent;
-          bValue = b.invitesSent;
-          break;
-        case "pointsEarned":
-          aValue = a.pointsEarned;
-          bValue = b.pointsEarned;
-          break;
-        case "tasksCompleted":
-          aValue = a.tasksCompleted;
-          bValue = b.tasksCompleted;
+        case "points":
+          aValue = a.points;
+          bValue = b.points;
           break;
         default:
           return 0;
@@ -147,13 +144,14 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
       <Table>
         <TableHead>
           <TableRow>
+            {/* Task Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("rank")}
+              onClick={() => handleSort("task")}
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Rank</HeaderTypography>
-                {sortColumn === "rank" &&
+                <HeaderTypography variant="h6">Task</HeaderTypography>
+                {sortColumn === "task" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -167,13 +165,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                   ))}
               </Box>
             </TableCell>
+
+            {/* Phase Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("name")}
+              onClick={() => handleSort("phase")}
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Name</HeaderTypography>
-                {sortColumn === "name" &&
+                <HeaderTypography variant="h6">Phase</HeaderTypography>
+                {sortColumn === "phase" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -187,13 +187,15 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                   ))}
               </Box>
             </TableCell>
+
+            {/* Points Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("invitesSent")}
+              onClick={() => handleSort("points")}
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Invites Sent</HeaderTypography>
-                {sortColumn === "invitesSent" &&
+                <HeaderTypography variant="h6">Points</HeaderTypography>
+                {sortColumn === "points" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -206,12 +208,6 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                     />
                   ))}
               </Box>
-            </TableCell>
-            <TableCell>
-              <HeaderTypography variant="h6">Points Earned</HeaderTypography>
-            </TableCell>
-            <TableCell>
-              <HeaderTypography variant="h6">Tasks Completed</HeaderTypography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -220,47 +216,36 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
             ? Array.from({ length: 5 }).map((_, idx) => (
                 <StyledTableRow key={idx}>
                   <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width={20} />
-                  </TableCell>
-                  <TableCell>
                     <Skeleton variant="text" width="80%" />
                   </TableCell>
                   <TableCell sx={{ color: "white" }}>
                     <Skeleton variant="text" width="50%" />
                   </TableCell>
                   <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="60%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="40%" />
+                    <Skeleton variant="text" width="30%" />
                   </TableCell>
                 </StyledTableRow>
               ))
-            : sortedData.map((row) => (
-                <StyledTableRow key={row.rank}>
-                  <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
-                  <TableCell>
-                    <Box sx={{ color: "white" }}>
-                      <Typography variant="body1">{row.name}</Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{ color: theme.palette.Gold.main }}
-                      >
-                        {row.address}
-                      </Typography>
-                    </Box>
+            : sortedData.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} align="center" sx={{ padding: "2rem" }}>
+                    <Typography variant="h6" color="text.secondary">
+                      No rewards available at the moment.
+                    </Typography>
                   </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.invitesSent}
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.pointsEarned.toLocaleString()} Points
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.tasksCompleted}
-                  </TableCell>
-                </StyledTableRow>
-              ))}
+                </TableRow>
+              ) : (
+                sortedData.map((row) => (
+                  <StyledTableRow key={row.id}>
+                    {/* Task */}
+                    <TableCell sx={{ color: "white" }}>{row.task}</TableCell>
+                    {/* Phase */}
+                    <TableCell sx={{ color: "white" }}>{row.phase}</TableCell>
+                    {/* Points */}
+                    <TableCell sx={{ color: "white" }}>{row.points}</TableCell>
+                  </StyledTableRow>
+                ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>

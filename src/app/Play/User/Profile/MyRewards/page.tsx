@@ -4,9 +4,29 @@ import { Box, Grid, Typography, Button } from "@mui/material";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
+import { getRewardsData } from "@/pages/api/user/getRewardsData";
+import { RewardsTable, RewardEntry } from "./Components/RewardsTable";
 
 const RewardsPage = () => {
   const [loading, setLoading] = useState(true);
+  const [rewards, setRewards] = useState<RewardEntry[]>([]);
+
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRewards = async () => {
+      try {
+        const data = await getRewardsData();
+        setRewards(data);
+      } catch (err) {
+        setError("Failed to fetch rewards data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRewards();
+  }, []);
 
   useEffect(() => {
     const fetchRewardsData = async () => {
@@ -32,7 +52,7 @@ const RewardsPage = () => {
           Check your earnings and claim rewards.
         </Typography>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={3} marginBottom={6}>
           {/* Total Earnings */}
           <Grid item xs={12}>
             <SemiTransparentCard
@@ -150,6 +170,7 @@ const RewardsPage = () => {
             </SemiTransparentCard>
           </Grid>
         </Grid>
+        <RewardsTable data={rewards} loading={loading} />
       </Box>
     </ProfileLayout>
   );

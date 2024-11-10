@@ -11,6 +11,7 @@ import {
   LeaderboardEntry,
 } from "./Components/leaderboardTable"; // Import the interface
 import { getLeaderboardData } from "@/pages/leaderboard-data";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 const HoneyDropsPage = () => {
   const [loading, setLoading] = useState(true);
 
@@ -39,9 +40,17 @@ const HoneyDropsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <Typography variant="h6" color="white">
-            Loading...
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          flexGrow={1}
+          sx={{ height: "65vh" }} // Ensure the loading spinner covers the full height
+        >
+          <HexagonSpinner />
+          <Typography marginTop="32px">
+            Fetching Data from the Hive Mind...
           </Typography>
         </Box>
       </Layout>
@@ -203,7 +212,7 @@ const HoneyDropsPage = () => {
         <Typography variant="h5" color="white" sx={{ mb: 2 }}>
           Leaderboard
         </Typography>
-        <LeaderboardTable data={leaderboardData} />
+        <LeaderboardTable data={leaderboardData} loading={loading} />
       </Box>
     </Layout>
   );
