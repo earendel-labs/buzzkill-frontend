@@ -10,7 +10,7 @@ import {
   LeaderboardTable,
   LeaderboardEntry,
 } from "./Components/leaderboardTable"; // Import the interface
-import { getLeaderboardData } from "@/pages/leaderboard-data";
+import { getLeaderboardData } from "@/pages/api/leaderboard-data";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 const HoneyDropsPage = () => {
   const [loading, setLoading] = useState(true);
