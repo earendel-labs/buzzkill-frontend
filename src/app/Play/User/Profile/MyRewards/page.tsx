@@ -170,7 +170,7 @@ const RewardsPage = () => {
             </SemiTransparentCard>
           </Grid>
         </Grid>
-        <RewardsTable data={rewards} loading={loading} />
+        <RewardsTable data={rewards} />
       </Box>
     </ProfileLayout>
   );

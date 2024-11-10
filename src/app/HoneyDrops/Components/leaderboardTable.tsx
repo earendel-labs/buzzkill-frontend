@@ -9,16 +9,25 @@ import {
   TableRow,
   Box,
   Typography,
-  Skeleton,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/system";
+// Updated imports for solid triangle icons
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
+// Define the sort directions
 type SortDirection = "asc" | "desc";
-type SortableColumn = "rank" | "name" | "invitesSent" | "pointsEarned" | "tasksCompleted";
+
+// Define the columns that can be sorted
+type SortableColumn =
+  | "rank"
+  | "name"
+  | "invitesSent"
+  | "pointsEarned"
+  | "tasksCompleted";
 
 export interface LeaderboardEntry {
+  // Export the interface
   rank: number;
   name: string;
   address: string;
@@ -27,6 +36,7 @@ export interface LeaderboardEntry {
   tasksCompleted: number;
 }
 
+// Styled TableRow to include gradient bottom border
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   position: "relative",
   "&::after": {
@@ -41,31 +51,32 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+// Custom styled Typography for table headers
 const HeaderTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.Gold.main,
 }));
 
 interface LeaderboardTableProps {
   data: LeaderboardEntry[];
-  loading: boolean;
 }
 
-export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loading }) => {
-  const theme = useTheme();
+export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
+  const theme = useTheme(); // Access the theme
   const [sortColumn, setSortColumn] = useState<SortableColumn>("rank");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   const handleSort = (column: SortableColumn) => {
     if (sortColumn === column) {
+      // Toggle sort direction
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
+      // Set new sort column and default to ascending
       setSortColumn(column);
       setSortDirection("asc");
     }
   };
 
   const sortedData = useMemo(() => {
-    if (loading) return data;
     const sorted = [...data];
     sorted.sort((a, b) => {
       let aValue: number | string = "";
@@ -109,7 +120,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
       return 0;
     });
     return sorted;
-  }, [data, sortColumn, sortDirection, loading]);
+  }, [data, sortColumn, sortDirection]);
 
   return (
     <TableContainer
@@ -147,9 +158,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
       <Table>
         <TableHead>
           <TableRow>
+            {/* Rank Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("rank")}
+              aria-sort={
+                sortColumn === "rank"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Rank</HeaderTypography>
@@ -167,9 +186,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                   ))}
               </Box>
             </TableCell>
+            {/* Name Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("name")}
+              aria-sort={
+                sortColumn === "name"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Name</HeaderTypography>
@@ -187,9 +214,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                   ))}
               </Box>
             </TableCell>
+            {/* Invites Sent Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("invitesSent")}
+              aria-sort={
+                sortColumn === "invitesSent"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Invites Sent</HeaderTypography>
@@ -207,60 +242,95 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data, loadin
                   ))}
               </Box>
             </TableCell>
-            <TableCell>
-              <HeaderTypography variant="h6">Points Earned</HeaderTypography>
+            {/* Points Earned Column */}
+            <TableCell
+              sx={{ cursor: "pointer" }}
+              onClick={() => handleSort("pointsEarned")}
+              aria-sort={
+                sortColumn === "pointsEarned"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
+            >
+              <Box display="flex" alignItems="center">
+                <HeaderTypography variant="h6">Points Earned</HeaderTypography>
+                {sortColumn === "pointsEarned" &&
+                  (sortDirection === "asc" ? (
+                    <ArrowDropUpIcon
+                      fontSize="small"
+                      sx={{ color: theme.palette.Gold.main }}
+                    />
+                  ) : (
+                    <ArrowDropDownIcon
+                      fontSize="small"
+                      sx={{ color: theme.palette.Gold.main }}
+                    />
+                  ))}
+              </Box>
             </TableCell>
-            <TableCell>
-              <HeaderTypography variant="h6">Tasks Completed</HeaderTypography>
+            {/* Tasks Completed Column */}
+            <TableCell
+              sx={{ cursor: "pointer" }}
+              onClick={() => handleSort("tasksCompleted")}
+              aria-sort={
+                sortColumn === "tasksCompleted"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
+            >
+              <Box display="flex" alignItems="center">
+                <HeaderTypography variant="h6">
+                  Tasks Completed
+                </HeaderTypography>
+                {sortColumn === "tasksCompleted" &&
+                  (sortDirection === "asc" ? (
+                    <ArrowDropUpIcon
+                      fontSize="small"
+                      sx={{ color: theme.palette.Gold.main }}
+                    />
+                  ) : (
+                    <ArrowDropDownIcon
+                      fontSize="small"
+                      sx={{ color: theme.palette.Gold.main }}
+                    />
+                  ))}
+              </Box>
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading
-            ? Array.from({ length: 5 }).map((_, idx) => (
-                <StyledTableRow key={idx}>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width={20} />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton variant="text" width="80%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="50%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="60%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="40%" />
-                  </TableCell>
-                </StyledTableRow>
-              ))
-            : sortedData.map((row) => (
-                <StyledTableRow key={row.rank}>
-                  <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
-                  <TableCell>
-                    <Box sx={{ color: "white" }}>
-                      <Typography variant="body1">{row.name}</Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{ color: theme.palette.Gold.main }}
-                      >
-                        {row.address}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.invitesSent}
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.pointsEarned.toLocaleString()} Points
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    {row.tasksCompleted}
-                  </TableCell>
-                </StyledTableRow>
-              ))}
+          {sortedData.map((row) => (
+            <StyledTableRow key={row.rank}>
+              {/* Rank */}
+              <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
+              {/* Name and Handle */}
+              <TableCell>
+                <Box sx={{ color: "white" }}>
+                  <Typography variant="body1">{row.name}</Typography>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: theme.palette.GoldFaded.main }}
+                  >
+                    {row.address}
+                  </Typography>
+                </Box>
+              </TableCell>
+              {/* Invites Sent */}
+              <TableCell sx={{ color: "white" }}>{row.invitesSent}</TableCell>
+              {/* Points Earned */}
+              <TableCell sx={{ color: "white" }}>
+                {row.pointsEarned.toLocaleString()} Points
+              </TableCell>
+              {/* Tasks Completed */}
+              <TableCell sx={{ color: "white" }}>
+                {row.tasksCompleted}
+              </TableCell>
+            </StyledTableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

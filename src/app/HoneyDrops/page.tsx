@@ -212,7 +212,7 @@ const HoneyDropsPage = () => {
         <Typography variant="h5" color="white" sx={{ mb: 2 }}>
           Leaderboard
         </Typography>
-        <LeaderboardTable data={leaderboardData} loading={loading} />
+        <LeaderboardTable data={leaderboardData} />
       </Box>
     </Layout>
   );

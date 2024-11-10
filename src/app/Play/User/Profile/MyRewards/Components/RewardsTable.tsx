@@ -9,7 +9,6 @@ import {
   TableRow,
   Box,
   Typography,
-  Skeleton,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -52,25 +51,25 @@ const HeaderTypography = styled(Typography)(({ theme }) => ({
 
 interface RewardsTableProps {
   data: RewardEntry[];
-  loading: boolean;
 }
 
-export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => {
-  const theme = useTheme();
+export const RewardsTable: React.FC<RewardsTableProps> = ({ data }) => {
+  const theme = useTheme(); // Access the theme
   const [sortColumn, setSortColumn] = useState<SortableColumn>("points");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const handleSort = (column: SortableColumn) => {
     if (sortColumn === column) {
+      // Toggle sort direction
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
+      // Set new sort column and default to ascending
       setSortColumn(column);
       setSortDirection("asc");
     }
   };
 
   const sortedData = useMemo(() => {
-    if (loading) return data;
     const sorted = [...data];
     sorted.sort((a, b) => {
       let aValue: number | string = "";
@@ -106,7 +105,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => 
       return 0;
     });
     return sorted;
-  }, [data, sortColumn, sortDirection, loading]);
+  }, [data, sortColumn, sortDirection]);
 
   return (
     <TableContainer
@@ -148,6 +147,13 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => 
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("task")}
+              aria-sort={
+                sortColumn === "task"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Task</HeaderTypography>
@@ -170,6 +176,13 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => 
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("phase")}
+              aria-sort={
+                sortColumn === "phase"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Phase</HeaderTypography>
@@ -192,6 +205,13 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => 
             <TableCell
               sx={{ cursor: "pointer" }}
               onClick={() => handleSort("points")}
+              aria-sort={
+                sortColumn === "points"
+                  ? sortDirection === "asc"
+                    ? "ascending"
+                    : "descending"
+                  : "none"
+              }
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Points</HeaderTypography>
@@ -212,39 +232,25 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data, loading }) => 
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading
-            ? Array.from({ length: 5 }).map((_, idx) => (
-                <StyledTableRow key={idx}>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="80%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="50%" />
-                  </TableCell>
-                  <TableCell sx={{ color: "white" }}>
-                    <Skeleton variant="text" width="30%" />
-                  </TableCell>
-                </StyledTableRow>
-              ))
-            : sortedData.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={3} align="center" sx={{ padding: "2rem" }}>
-                    <Typography variant="h6" color="text.secondary">
-                      No rewards available at the moment.
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                sortedData.map((row) => (
-                  <StyledTableRow key={row.id}>
-                    {/* Task */}
-                    <TableCell sx={{ color: "white" }}>{row.task}</TableCell>
-                    {/* Phase */}
-                    <TableCell sx={{ color: "white" }}>{row.phase}</TableCell>
-                    {/* Points */}
-                    <TableCell sx={{ color: "white" }}>{row.points}</TableCell>
-                  </StyledTableRow>
-                ))
+          {sortedData.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={3} align="center" sx={{ padding: "2rem" }}>
+                <Typography variant="h6" color="text.secondary">
+                  No rewards available at the moment.
+                </Typography>
+              </TableCell>
+            </TableRow>
+          ) : (
+            sortedData.map((row) => (
+              <StyledTableRow key={row.id}>
+                {/* Task */}
+                <TableCell sx={{ color: "white" }}>{row.task}</TableCell>
+                {/* Phase */}
+                <TableCell sx={{ color: "white" }}>{row.phase}</TableCell>
+                {/* Points */}
+                <TableCell sx={{ color: "white" }}>{row.points}</TableCell>
+              </StyledTableRow>
+            ))
           )}
         </TableBody>
       </Table>
