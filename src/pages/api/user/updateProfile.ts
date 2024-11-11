@@ -1,3 +1,5 @@
+// pages/api/user/updateProfile.ts
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -50,7 +52,17 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (error) {
       console.error("Error updating profile:", error);
-      return res.status(500).json({ error: "Error updating profile data" });
+
+      // Handle specific Supabase errors
+      if (error.code === "23505") {
+        if (error.message.includes("users_email_key")) {
+          return res.status(409).json({ error: "Email address is already in use." });
+        }
+        // Add more specific error handlers here if needed
+      }
+
+      // Fallback to generic error message
+      return res.status(500).json({ error: "An unexpected error occurred while updating the profile." });
     }
 
     return res

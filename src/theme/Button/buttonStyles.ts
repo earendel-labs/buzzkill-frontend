@@ -26,7 +26,8 @@ const buttonStyles = (theme: Theme) => ({
         "&.goldButton": {
           backgroundColor: theme.palette.Gold.main,
           color: "#fff",
-
+          borderColor: theme.palette.GoldFaded.main,
+          borderWidth: "1.25px",
           "&:hover": {
             backgroundColor: theme.palette.Gold.dark,
           },

@@ -10,6 +10,7 @@ import { UserProvider } from "@/context/UserContext";
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import { EnvironmentProvider } from "@/context/EnvironmentContext";
+import { ProfileProvider } from "@/context/ProfileContext";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -72,12 +73,14 @@ export default function RootLayout({
           <LoadingProvider>
             <SoundProvider>
               <UserProvider>
-                <CssBaseline />
-                <GlobalScrollbarStyles />
-                <EnvironmentProvider>
-                  {children}
-                  <SpeedInsights />
-                </EnvironmentProvider>
+                <ProfileProvider>
+                  <CssBaseline />
+                  <GlobalScrollbarStyles />
+                  <EnvironmentProvider>
+                    {children}
+                    <SpeedInsights />
+                  </EnvironmentProvider>
+                </ProfileProvider>
               </UserProvider>
             </SoundProvider>
           </LoadingProvider>

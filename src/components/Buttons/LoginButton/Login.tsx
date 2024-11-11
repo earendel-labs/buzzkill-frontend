@@ -120,7 +120,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     boxShadow: "none",
                     borderColor: open ? "#2e447a  !important" : "white",
                     color: theme.palette.text.primary,
-                    borderRadius: open ? "2px 2px 0 0" : "2px",
+                    borderRadius: open ? "6px 6px 0 0" : "6px",
                     borderBottomWidth: open ? "0px" : "1.25px",
                     borderBottomStyle: open ? "none" : "solid",
                     display: "flex",
@@ -165,7 +165,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     elevation: 2,
                     sx: {
                       backgroundColor: theme.palette.DarkBlue.main,
-                      borderRadius: "0px 0px 2px 2px",
+                      borderRadius: "0px 0px 6px 6px",
                       borderColor: "#2e447a",
                       borderWidth: "1.25px",
                       borderTopStyle: "none",

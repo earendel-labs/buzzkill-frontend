@@ -1,17 +1,23 @@
+// src/pages/RewardsPage.tsx
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography, Button, CircularProgress } from "@mui/material";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { getRewardsData } from "@/pages/api/user/getRewardsData";
 import { RewardsTable, RewardEntry } from "./Components/RewardsTable";
+import { useProfileContext } from "@/context/ProfileContext"; // Import the ProfileContext
+import { ContentCopy as CopyIcon } from "@mui/icons-material"; // Import CopyIcon
 
 const RewardsPage = () => {
   const [loading, setLoading] = useState(true);
   const [rewards, setRewards] = useState<RewardEntry[]>([]);
 
   const [error, setError] = useState<string | null>(null);
+
+  const { copyInviteLink, profileData, loadingProfile } = useProfileContext(); // Destructure necessary context
 
   useEffect(() => {
     const fetchRewards = async () => {
@@ -28,19 +34,28 @@ const RewardsPage = () => {
     fetchRewards();
   }, []);
 
-  useEffect(() => {
-    const fetchRewardsData = async () => {
-      // Simulate data fetching delay
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000); // Replace with actual API call or logic
-    };
+  // Remove the redundant useEffect that was simulating a fetch delay
+  // as getRewardsData presumably handles the actual data fetching
 
-    fetchRewardsData();
-  }, []);
+  if (loading || loadingProfile) {
+    return (
+      <ProfileLayout loading={true}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </ProfileLayout>
+    );
+  }
 
   return (
-    <ProfileLayout loading={loading}>
+    <ProfileLayout loading={false}>
       <Box sx={{ maxWidth: "1000px", mx: "auto", px: 2 }}>
         {/* Limit the overall width and center the content */}
 
@@ -56,7 +71,6 @@ const RewardsPage = () => {
           {/* Total Earnings */}
           <Grid item xs={12}>
             <SemiTransparentCard
-              transparency={0.7}
               sx={{
                 padding: "20px",
                 display: "flex",
@@ -83,10 +97,7 @@ const RewardsPage = () => {
 
           {/* Daily Bonus */}
           <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard
-              transparency={0.7}
-              sx={{ height: "100%", p: 2 }}
-            >
+            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
               <Typography variant="h6" color="white" gutterBottom>
                 Daily Bonus
               </Typography>
@@ -113,10 +124,7 @@ const RewardsPage = () => {
 
           {/* Referral Rewards */}
           <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard
-              transparency={0.7}
-              sx={{ height: "100%", p: 2 }}
-            >
+            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
               <Typography variant="h6" color="white" gutterBottom>
                 Referral Rewards
               </Typography>
@@ -136,17 +144,21 @@ const RewardsPage = () => {
                 >
                   500 Honey
                 </Typography>
-                <Button className="blueConnectWallet">Invite Friends</Button>
+                {/* Update the Invite Friends button to use copyInviteLink */}
+                <Button
+                  className="blueConnectWallet"
+                  onClick={copyInviteLink}
+                  startIcon={<CopyIcon />} // Optional: Add a copy icon for better UX
+                >
+                  Invite Friends
+                </Button>
               </Box>
             </SemiTransparentCard>
           </Grid>
 
           {/* Bee Production */}
           <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard
-              transparency={0.7}
-              sx={{ height: "100%", p: 2 }}
-            >
+            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
               <Typography variant="h6" color="white" gutterBottom>
                 Bee Production
               </Typography>

@@ -1,7 +1,7 @@
-// RewardsPage.tsx
+// src/pages/HoneyDropsPage.tsx
 "use client";
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography, Button, CircularProgress } from "@mui/material";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import Layout from "@/components/Layouts/Layout/Layout";
@@ -12,32 +12,37 @@ import {
 } from "./Components/leaderboardTable"; // Import the interface
 import { getLeaderboardData } from "@/pages/api/leaderboard-data";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import { useProfileContext } from "@/context/ProfileContext"; // Import the ProfileContext
+import { ContentCopy as CopyIcon } from "@mui/icons-material"; // Import CopyIcon
+
 const HoneyDropsPage = () => {
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchRewardsData = async () => {
-      // Simulate data fetching delay
-      // You can implement actual data fetching logic here
-      setLoading(false);
-    };
-
-    fetchRewardsData();
-  }, []);
-
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>(
     []
-  ); // Define the state type
+  );
+  const [error, setError] = useState<string | null>(null);
+
+  // Destructure necessary context
+  const { copyInviteLink, profileData, loadingProfile } = useProfileContext();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getLeaderboardData();
-      setLeaderboardData(data);
+    const fetchLeaderboard = async () => {
+      try {
+        const data = await getLeaderboardData();
+        setLeaderboardData(data);
+      } catch (err) {
+        setError("Failed to fetch leaderboard data.");
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchData();
+
+    fetchLeaderboard();
   }, []);
 
-  if (loading) {
+  // Remove redundant useEffect that simulates a fetch delay
+
+  if (loading || loadingProfile) {
     return (
       <Layout>
         <Box
@@ -66,9 +71,7 @@ const HoneyDropsPage = () => {
           {/* Total Earnings */}
           <Grid item xs={12}>
             <SemiTransparentCard
-              // Removed transparency prop since you wanted it fixed
               sx={{
-                backgroundColor: "rgba(34, 46, 80, 0.9)", // Fixed transparency
                 boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)",
                 borderRadius: "12px",
                 padding: "20px",
@@ -98,11 +101,10 @@ const HoneyDropsPage = () => {
           <Grid item xs={12} md={6} lg={4}>
             <SemiTransparentCard
               sx={{
-                backgroundColor: "rgba(34, 46, 80, 0.7)", // Fixed transparency
                 boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)",
                 borderRadius: "12px",
                 height: "100%",
-                padding: "16px", // Using shorthand for padding: p: 2
+                padding: "16px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -136,11 +138,10 @@ const HoneyDropsPage = () => {
           <Grid item xs={12} md={6} lg={4}>
             <SemiTransparentCard
               sx={{
-                backgroundColor: "rgba(34, 46, 80, 0.7)", // Fixed transparency
                 boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)",
                 borderRadius: "12px",
                 height: "100%",
-                padding: "16px", // Using shorthand for padding: p: 2
+                padding: "16px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -165,7 +166,14 @@ const HoneyDropsPage = () => {
                 >
                   500 Honey
                 </Typography>
-                <Button className="blueConnectWallet">Invite Friends</Button>
+                {/* Invite Code Display and Copy Button */}
+                <Button
+                  className="blueConnectWallet"
+                  onClick={copyInviteLink}
+                  startIcon={<CopyIcon />} // Optional: Add a copy icon for better UX
+                >
+                  Invite Friends
+                </Button>
               </Box>
             </SemiTransparentCard>
           </Grid>
@@ -174,11 +182,10 @@ const HoneyDropsPage = () => {
           <Grid item xs={12} md={6} lg={4}>
             <SemiTransparentCard
               sx={{
-                backgroundColor: "rgba(34, 46, 80, 0.7)", // Fixed transparency
                 boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)",
                 borderRadius: "12px",
                 height: "100%",
-                padding: "16px", // Using shorthand for padding: p: 2
+                padding: "16px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -212,7 +219,13 @@ const HoneyDropsPage = () => {
         <Typography variant="h5" color="white" sx={{ mb: 2 }}>
           Leaderboard
         </Typography>
-        <LeaderboardTable data={leaderboardData} />
+        {error ? (
+          <Typography variant="body1" color="error">
+            {error}
+          </Typography>
+        ) : (
+          <LeaderboardTable data={leaderboardData} />
+        )}
       </Box>
     </Layout>
   );
