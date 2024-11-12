@@ -149,7 +149,7 @@ const ProfileTab = () => {
                 </Typography>
                 <TextField
                   fullWidth
-                  value={profileData.invite_count}
+                  value={profileData.invited_count}
                   variant="filled"
                   disabled
                   sx={{

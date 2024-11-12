@@ -10,7 +10,7 @@ import {
   LeaderboardTable,
   LeaderboardEntry,
 } from "./Components/leaderboardTable"; // Import the interface
-import { getLeaderboardData } from "@/pages/api/leaderboard-data";
+import { getLeaderboardData } from "@/pages/api/rewards/leaderboard-data";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useProfileContext } from "@/context/ProfileContext"; // Import the ProfileContext
 import { ContentCopy as CopyIcon } from "@mui/icons-material"; // Import CopyIcon

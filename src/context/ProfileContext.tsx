@@ -12,14 +12,7 @@ import React, {
 import { useSession } from "next-auth/react";
 import { AlertColor } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
-
-interface ProfileData {
-  account_name: string;
-  email_address: string;
-  address: string;
-  invite_code: string;
-  invite_count: number;
-}
+import { ProfileData } from "@/types/ProfileData";
 
 interface ProfileContextType {
   profileData: ProfileData;
@@ -46,7 +39,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     email_address: "",
     address: "",
     invite_code: "",
-    invite_count: 0,
+    invited_count: 0,
+    total_rewards: 0,
   });
 
   const [originalData, setOriginalData] = useState<ProfileData>({
@@ -54,7 +48,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     email_address: "",
     address: "",
     invite_code: "",
-    invite_count: 0,
+    invited_count: 0,
+    total_rewards: 0,
   });
 
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -82,14 +77,16 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
             email_address: data.email_address || "",
             address: data.address || "",
             invite_code: data.invite_code || "",
-            invite_count: data.invite_count || 0,
+            invited_count: data.invited_count || 0,
+            total_rewards: data.total_rewards || 0,
           });
           setOriginalData({
             account_name: data.account_name || "",
             email_address: data.email_address || "",
             address: data.address || "",
             invite_code: data.invite_code || "",
-            invite_count: data.invite_count || 0,
+            invited_count: data.invited_count || 0,
+            total_rewards: data.total_rewards || 0,
           });
         } catch (error) {
           console.error("Error fetching profile:", error);

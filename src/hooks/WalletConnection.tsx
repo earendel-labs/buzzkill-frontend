@@ -147,7 +147,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           <ThemeProvider theme={theme}>
             {children}
             {/* hCaptcha Modal */}
-            <Modal
+            {/* <Modal
               open={
                 isSiweEnabled === true && // Only open if SIWE is enabled (user does not exist)
                 captchaToken === null &&
@@ -170,7 +170,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                   ref={hCaptchaRef}
                 />
               </Box>
-            </Modal>
+            </Modal> */}
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
