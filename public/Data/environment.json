@@ -4,13 +4,13 @@
       "id": 0,
       "name": "Beach",
       "environmentType": "Coastal",
-      "jsonUrl": "/Data/environments/beach.json"
+      "jsonUrl": "/Data/Maps/beach.json"
     },
     {
       "id": 1,
       "name": "Desert",
       "environmentType": "Arid",
-      "jsonUrl": "/Data/environments/desert.json"
+      "jsonUrl": "/Data/Maps/desert.json"
     },
     {
       "id": 2,
@@ -22,25 +22,25 @@
       "id": 3,
       "name": "Oceanic",
       "environmentType": "Aquatic",
-      "jsonUrl": "/Data/environments/oceanic.json"
+      "jsonUrl": "/Data/Maps/oceanic.json"
     },
     {
       "id": 4,
       "name": "Snow",
       "environmentType": "Tundra",
-      "jsonUrl": "/Data/environments/snow.json"
+      "jsonUrl": "/Data/Maps/snow.json"
     },
     {
       "id": 5,
       "name": "Spires",
       "environmentType": "Mountainous",
-      "jsonUrl": "/Data/environments/spires.json"
+      "jsonUrl": "/Data/Maps/spires.json"
     },
     {
       "id": 6,
       "name": "Volcanic",
       "environmentType": "Volcanic",
-      "jsonUrl": "/Data/environments/volcanic.json"
+      "jsonUrl": "/Data/Maps/volcanic.json"
     }
   ]
 }

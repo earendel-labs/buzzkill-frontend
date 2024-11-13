@@ -1,4 +1,5 @@
-// LeaderboardTable.tsx
+// src/app/HoneyDrops/Components/leaderboardTable.tsx
+
 import React, { useState, useMemo } from "react";
 import {
   Table,
@@ -11,66 +12,65 @@ import {
   Typography,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/system";
-// Updated imports for solid triangle icons
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-// Define the sort directions
 type SortDirection = "asc" | "desc";
-
-// Define the columns that can be sorted
 type SortableColumn =
   | "rank"
-  | "name"
-  | "invitesSent"
-  | "pointsEarned"
-  | "tasksCompleted";
+  | "account_name"
+  | "invited_count"
+  | "total_rewards";
 
 export interface LeaderboardEntry {
-  // Export the interface
   rank: number;
-  name: string;
+  account_name: string | null;
   address: string;
-  invitesSent: number;
-  pointsEarned: number;
-  tasksCompleted: number;
+  invited_count: number;
+  total_rewards: number;
 }
 
-// Styled TableRow to include gradient bottom border
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  position: "relative",
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: "2px",
-    background:
-      "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)",
-  },
-}));
+interface LeaderboardTableProps {
+  data: LeaderboardEntry[];
+  currentUserAddress: string; // New prop for current user's address
+}
 
-// Custom styled Typography for table headers
+// Styled TableRow with optional highlighting
+const StyledTableRow = styled(TableRow)<{ isCurrentUser: boolean }>(
+  ({ theme, isCurrentUser }) => ({
+    position: "relative",
+    backgroundColor: isCurrentUser
+      ? "rgba(255, 215, 0, 0.2)" // Gold highlight for current user
+      : "inherit",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "100%",
+      height: "2px",
+      background:
+        "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)",
+    },
+  })
+);
+
 const HeaderTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.Gold.main,
 }));
 
-interface LeaderboardTableProps {
-  data: LeaderboardEntry[];
-}
-
-export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
-  const theme = useTheme(); // Access the theme
+export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
+  data,
+  currentUserAddress,
+}) => {
+  const theme = useTheme();
   const [sortColumn, setSortColumn] = useState<SortableColumn>("rank");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   const handleSort = (column: SortableColumn) => {
     if (sortColumn === column) {
-      // Toggle sort direction
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      // Set new sort column and default to ascending
       setSortColumn(column);
       setSortDirection("asc");
     }
@@ -87,21 +87,17 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
           aValue = a.rank;
           bValue = b.rank;
           break;
-        case "name":
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+        case "account_name":
+          aValue = a.account_name ? a.account_name.toLowerCase() : "";
+          bValue = b.account_name ? b.account_name.toLowerCase() : "";
           break;
-        case "invitesSent":
-          aValue = a.invitesSent;
-          bValue = b.invitesSent;
+        case "invited_count":
+          aValue = a.invited_count;
+          bValue = b.invited_count;
           break;
-        case "pointsEarned":
-          aValue = a.pointsEarned;
-          bValue = b.pointsEarned;
-          break;
-        case "tasksCompleted":
-          aValue = a.tasksCompleted;
-          bValue = b.tasksCompleted;
+        case "total_rewards":
+          aValue = a.total_rewards;
+          bValue = b.total_rewards;
           break;
         default:
           return 0;
@@ -186,12 +182,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
                   ))}
               </Box>
             </TableCell>
-            {/* Name Column */}
+            {/* Account Name Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("name")}
+              onClick={() => handleSort("account_name")}
               aria-sort={
-                sortColumn === "name"
+                sortColumn === "account_name"
                   ? sortDirection === "asc"
                     ? "ascending"
                     : "descending"
@@ -199,8 +195,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
               }
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Name</HeaderTypography>
-                {sortColumn === "name" &&
+                <HeaderTypography variant="h6">Account Name</HeaderTypography>
+                {sortColumn === "account_name" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -214,12 +210,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
                   ))}
               </Box>
             </TableCell>
-            {/* Invites Sent Column */}
+            {/* Invited Count Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("invitesSent")}
+              onClick={() => handleSort("invited_count")}
               aria-sort={
-                sortColumn === "invitesSent"
+                sortColumn === "invited_count"
                   ? sortDirection === "asc"
                     ? "ascending"
                     : "descending"
@@ -227,8 +223,8 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
               }
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Invites Sent</HeaderTypography>
-                {sortColumn === "invitesSent" &&
+                <HeaderTypography variant="h6">Total Invites</HeaderTypography>
+                {sortColumn === "invited_count" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -242,12 +238,12 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
                   ))}
               </Box>
             </TableCell>
-            {/* Points Earned Column */}
+            {/* Total Rewards Column */}
             <TableCell
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("pointsEarned")}
+              onClick={() => handleSort("total_rewards")}
               aria-sort={
-                sortColumn === "pointsEarned"
+                sortColumn === "total_rewards"
                   ? sortDirection === "asc"
                     ? "ascending"
                     : "descending"
@@ -256,37 +252,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
             >
               <Box display="flex" alignItems="center">
                 <HeaderTypography variant="h6">Points Earned</HeaderTypography>
-                {sortColumn === "pointsEarned" &&
-                  (sortDirection === "asc" ? (
-                    <ArrowDropUpIcon
-                      fontSize="small"
-                      sx={{ color: theme.palette.Gold.main }}
-                    />
-                  ) : (
-                    <ArrowDropDownIcon
-                      fontSize="small"
-                      sx={{ color: theme.palette.Gold.main }}
-                    />
-                  ))}
-              </Box>
-            </TableCell>
-            {/* Tasks Completed Column */}
-            <TableCell
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("tasksCompleted")}
-              aria-sort={
-                sortColumn === "tasksCompleted"
-                  ? sortDirection === "asc"
-                    ? "ascending"
-                    : "descending"
-                  : "none"
-              }
-            >
-              <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">
-                  Tasks Completed
-                </HeaderTypography>
-                {sortColumn === "tasksCompleted" &&
+                {sortColumn === "total_rewards" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
                       fontSize="small"
@@ -303,34 +269,65 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((row) => (
-            <StyledTableRow key={row.rank}>
-              {/* Rank */}
-              <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
-              {/* Name and Handle */}
-              <TableCell>
-                <Box sx={{ color: "white" }}>
-                  <Typography variant="body1">{row.name}</Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: theme.palette.GoldFaded.main }}
-                  >
-                    {row.address}
-                  </Typography>
-                </Box>
-              </TableCell>
-              {/* Invites Sent */}
-              <TableCell sx={{ color: "white" }}>{row.invitesSent}</TableCell>
-              {/* Points Earned */}
-              <TableCell sx={{ color: "white" }}>
-                {row.pointsEarned.toLocaleString()} Points
-              </TableCell>
-              {/* Tasks Completed */}
-              <TableCell sx={{ color: "white" }}>
-                {row.tasksCompleted}
-              </TableCell>
-            </StyledTableRow>
-          ))}
+          {sortedData.map((row) => {
+            const isCurrentUser =
+              row.address.toLowerCase() === currentUserAddress.toLowerCase();
+            return (
+              <StyledTableRow
+                key={row.address}
+                isCurrentUser={isCurrentUser}
+                // Optional: Add hover effect for better UX
+                sx={{
+                  "&:hover": {
+                    backgroundColor: isCurrentUser
+                      ? "rgba(255, 215, 0, 0.3)"
+                      : "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+              >
+                {/* Rank */}
+                <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
+                {/* Account Name and Address */}
+                <TableCell>
+                  <Box sx={{ color: "white" }}>
+                    {/* Account Name and "You" Label */}
+                    <Box display="flex" alignItems="center">
+                      <Typography variant="body1">
+                        {row.account_name || "Anonymous"}
+                      </Typography>
+                      {isCurrentUser && (
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            marginLeft: 1,
+                            color: theme.palette.Gold.main,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          You
+                        </Typography>
+                      )}
+                    </Box>
+                    {/* Address */}
+                    <Typography
+                      variant="body2"
+                      sx={{ color: theme.palette.LightBlue.main }}
+                    >
+                      {row.address}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                {/* Invited Count */}
+                <TableCell sx={{ color: "white" }}>
+                  {row.invited_count}
+                </TableCell>
+                {/* Total Rewards */}
+                <TableCell sx={{ color: "white" }}>
+                  {row.total_rewards.toLocaleString()} Points
+                </TableCell>
+              </StyledTableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

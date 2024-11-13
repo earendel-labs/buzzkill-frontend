@@ -1,0 +1,134 @@
+{
+  "environment": {
+    "id": 8,
+    "name": "Molten Ridge",
+    "type": "Volcanic",
+    "backgroundImage": "/Maps/VolcanicMap.jpg",
+    "audioFile": "/Audio/Soundtrack/MoltenRidge/Volcano.wav",
+    "resources": [
+      {
+        "type": "LavaFlow",
+        "id": 0,
+        "name": "Raging Lava Stream",
+        "defenseValue": 50,
+        "temperature": "1200°C",
+        "flowRate": "Fast",
+        "position": { "left": "10%", "top": "20%" },
+        "resourceLink": "/resource-link",
+        "lavaFlowId": 1
+      },
+      {
+        "type": "Crater",
+        "id": 1,
+        "name": "Smokey Crater",
+        "defenseValue": 40,
+        "depth": "300m",
+        "activityLevel": "Active",
+        "position": { "left": "25%", "top": "35%" },
+        "resourceLink": "/Play/Location/MoltenRidge/SmokeyCrater",
+        "craterId": 2
+      },
+      {
+        "type": "ObsidianField",
+        "id": 2,
+        "name": "Glittering Obsidian",
+        "defenseValue": 30,
+        "coverage": "70%",
+        "resourceQuality": "High",
+        "position": { "left": "40%", "top": "25%" },
+        "resourceLink": "/resource-link",
+        "obsidianFieldId": 3
+      },
+      {
+        "type": "SulfurDeposit",
+        "id": 3,
+        "contentValue": "65%",
+        "position": { "left": "55%", "top": "30%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "GeothermalVent",
+        "id": 4,
+        "name": "Steam Geyser",
+        "defenseValue": 35,
+        "temperature": "250°C",
+        "pressure": "High",
+        "position": { "left": "60%", "top": "40%" },
+        "resourceLink": "/resource-link",
+        "geothermalVentId": 4
+      },
+      {
+        "type": "VolcanicRock",
+        "id": 5,
+        "contentValue": "80%",
+        "position": { "left": "70%", "top": "35%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "AshCloud",
+        "id": 6,
+        "contentValue": "50%",
+        "position": { "left": "20%", "top": "50%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "MagmaChamber",
+        "id": 7,
+        "name": "Deep Magma Reservoir",
+        "defenseValue": 60,
+        "volume": "5000m³",
+        "activityStatus": "Stable",
+        "position": { "left": "35%", "top": "60%" },
+        "resourceLink": "/resource-link",
+        "magmaChamberId": 5
+      },
+      {
+        "type": "VolcanicAsh",
+        "id": 8,
+        "contentValue": "75%",
+        "position": { "left": "50%", "top": "55%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "HotSpring",
+        "id": 9,
+        "name": "Thermal Springs",
+        "defenseValue": 25,
+        "waterTemperature": "90°C",
+        "mineralsRichness": "High",
+        "position": { "left": "65%", "top": "45%" },
+        "resourceLink": "/resource-link",
+        "hotSpringId": 6
+      },
+      {
+        "type": "BasaltPillar",
+        "id": 10,
+        "name": "Columnar Basalt",
+        "contentValue": "85%",
+        "position": { "left": "30%", "top": "70%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "VolcanicAshTree",
+        "id": 11,
+        "name": "Ash-Covered Fir",
+        "defenseValue": 20,
+        "ashCoverage": "90%",
+        "treeHealth": "Moderate",
+        "position": { "left": "45%", "top": "75%" },
+        "resourceLink": "/resource-link",
+        "volcanicAshTreeId": 7
+      },
+      {
+        "type": "SulfurSpring",
+        "id": 12,
+        "name": "Yellow Sulfur Spring",
+        "defenseValue": 30,
+        "sulfurConcentration": "High",
+        "position": { "left": "80%", "top": "50%" },
+        "resourceLink": "/resource-link",
+        "sulfurSpringId": 8
+      }
+    ]
+  }
+}

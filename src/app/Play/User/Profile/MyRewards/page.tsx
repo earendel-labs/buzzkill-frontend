@@ -2,19 +2,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-  CircularProgress,
-  Skeleton,
-} from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
+import UserRewardsBento from "./Components/UserRewardsBento";
 import { RewardsTable, RewardEntry } from "./Components/RewardsTable";
 import { useProfileContext } from "@/context/ProfileContext";
-import { ContentCopy as CopyIcon } from "@mui/icons-material";
 import { useAccount } from "wagmi"; // Import useAccount from wagmi
 
 const RewardsPage = () => {
@@ -117,6 +109,7 @@ const RewardsPage = () => {
   return (
     <ProfileLayout loading={false}>
       <Box sx={{ maxWidth: "1000px", mx: "auto", px: 2 }}>
+        {/* Page Header */}
         <Typography variant="h5" color="white" sx={{ mb: 1 }}>
           Rewards
         </Typography>
@@ -124,138 +117,22 @@ const RewardsPage = () => {
           Check your earnings and claim rewards.
         </Typography>
 
-        <Grid container spacing={3} marginBottom={6}>
-          <Grid item xs={12}>
-            <SemiTransparentCard
-              sx={{
-                padding: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <Typography variant="h6" color="white" gutterBottom>
-                Total Earnings
-              </Typography>
-              {loadingProfile ? (
-                <Skeleton variant="text" width={150} height={60} />
-              ) : (
-                <Typography
-                  variant="h3"
-                  component="p"
-                  fontWeight="bold"
-                  color="white"
-                  sx={{ py: 2 }}
-                >
-                  {profileData?.total_rewards || 0} Honey
-                </Typography>
-              )}
-            </SemiTransparentCard>
-          </Grid>
+        {/* UserRewardsBento Component */}
+        <UserRewardsBento
+          loadingProfile={loadingProfile}
+          profileData={profileData}
+          constants={constants}
+          copyInviteLink={copyInviteLink}
+        />
 
-          {/* Daily Bonus */}
-          <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
-              <Typography variant="h6" color="white" gutterBottom>
-                Daily Bonus
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                {constants.dailyBonus ? (
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    color="white"
-                    gutterBottom
-                  >
-                    {constants.dailyBonus} Honey
-                  </Typography>
-                ) : (
-                  <Skeleton variant="text" width={80} height={40} />
-                )}
-                <Button className="goldButton">Claim</Button>
-              </Box>
-            </SemiTransparentCard>
-          </Grid>
-
-          {/* Referral Rewards */}
-          <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
-              <Typography variant="h6" color="white" gutterBottom>
-                Referral Rewards
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                {constants.referralReward ? (
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    color="white"
-                    gutterBottom
-                  >
-                    {constants.referralReward} Honey
-                  </Typography>
-                ) : (
-                  <Skeleton variant="text" width={80} height={40} />
-                )}
-                <Button
-                  className="blueConnectWallet"
-                  onClick={copyInviteLink}
-                  startIcon={<CopyIcon />}
-                >
-                  Invite Friends
-                </Button>
-              </Box>
-            </SemiTransparentCard>
-          </Grid>
-
-          {/* Bee Production */}
-          <Grid item xs={12} md={6} lg={4}>
-            <SemiTransparentCard sx={{ height: "100%", p: 2 }}>
-              <Typography variant="h6" color="white" gutterBottom>
-                Bee Production
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  fontWeight="bold"
-                  color="white"
-                  gutterBottom
-                >
-                  {150} Honey/day
-                </Typography>
-              </Box>
-            </SemiTransparentCard>
-          </Grid>
-        </Grid>
-
+        {/* Display Error Message if Any */}
         {error && (
           <Typography variant="body1" color="error" sx={{ mb: 4 }}>
             {error}
           </Typography>
         )}
 
+        {/* Rewards Table */}
         <RewardsTable data={rewards} />
       </Box>
     </ProfileLayout>

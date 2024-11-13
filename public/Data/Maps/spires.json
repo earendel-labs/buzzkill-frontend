@@ -1,0 +1,133 @@
+{
+  "environment": {
+    "id": 7,
+    "name": "Crystal Spires",
+    "type": "Spires",
+    "backgroundImage": "/Maps/SpiresMap.jpg",
+    "audioFile": "/Audio/Soundtrack/CrystalSpires/Spires.wav",
+    "resources": [
+      {
+        "type": "ObservationTower",
+        "id": 0,
+        "name": "Eagle's Perch Tower",
+        "defenseValue": 45,
+        "height": "30m",
+        "guardCount": "5/10",
+        "position": { "left": "10%", "top": "20%" },
+        "resourceLink": "/resource-link",
+        "observationTowerId": 1
+      },
+      {
+        "type": "CrystalFormation",
+        "id": 1,
+        "name": "Shardspire Crystal",
+        "defenseValue": 25,
+        "crystalSize": "Large",
+        "rarity": "Rare",
+        "position": { "left": "25%", "top": "35%" },
+        "resourceLink": "/Play/Location/CrystalSpires/ShardspireCrystal",
+        "crystalFormationId": 2
+      },
+      {
+        "type": "Monastery",
+        "id": 2,
+        "name": "Serenity Monastery",
+        "defenseValue": 60,
+        "residentMonks": "15/20",
+        "templeAreas": "3/5",
+        "position": { "left": "40%", "top": "25%" },
+        "resourceLink": "/resource-link",
+        "monasteryId": 3
+      },
+      {
+        "type": "Windspire",
+        "id": 3,
+        "name": "Gale Windspire",
+        "defenseValue": 20,
+        "windSpeed": "High",
+        "energyOutput": "500W",
+        "position": { "left": "55%", "top": "30%" },
+        "resourceLink": "/resource-link",
+        "windspireId": 4
+      },
+      {
+        "type": "EagleNest",
+        "id": 4,
+        "contentValue": "4 eagle nests spotted",
+        "position": { "left": "60%", "top": "40%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "RareHerb",
+        "id": 5,
+        "name": "Spirescent Herb",
+        "contentValue": "70%",
+        "position": { "left": "70%", "top": "35%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "RockArch",
+        "id": 6,
+        "name": "Echoing Arch",
+        "defenseValue": 35,
+        "length": "15m",
+        "stability": "High",
+        "position": { "left": "80%", "top": "50%" },
+        "resourceLink": "/resource-link",
+        "rockArchId": 5
+      },
+      {
+        "type": "SkyGarden",
+        "id": 7,
+        "name": "Azure Sky Garden",
+        "defenseValue": 50,
+        "plantDiversity": "High",
+        "maintenanceLevel": "Moderate",
+        "position": { "left": "50%", "top": "60%" },
+        "resourceLink": "/resource-link",
+        "skyGardenId": 6
+      },
+      {
+        "type": "MysticPool",
+        "id": 8,
+        "name": "Luminescent Pool",
+        "defenseValue": 30,
+        "waterClarity": "Crystal Clear",
+        "magicalProperties": "Healing",
+        "position": { "left": "65%", "top": "55%" },
+        "resourceLink": "/resource-link",
+        "mysticPoolId": 7
+      },
+      {
+        "type": "CliffsideCave",
+        "id": 9,
+        "name": "Whispering Cave",
+        "defenseValue": 40,
+        "caveDepth": "50m",
+        "hiddenTreasures": "2/4",
+        "position": { "left": "85%", "top": "40%" },
+        "resourceLink": "/resource-link",
+        "cliffsideCaveId": 8
+      },
+      {
+        "type": "StalactiteField",
+        "id": 10,
+        "name": "Glittering Stalactites",
+        "contentValue": "85%",
+        "position": { "left": "30%", "top": "70%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "FalconryPost",
+        "id": 11,
+        "name": "Falcon's Roost",
+        "defenseValue": 55,
+        "trainedFalcons": "10/15",
+        "trainingAreas": "2/3",
+        "position": { "left": "45%", "top": "75%" },
+        "resourceLink": "/resource-link",
+        "falconryPostId": 9
+      }
+    ]
+  }
+}

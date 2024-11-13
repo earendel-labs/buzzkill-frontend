@@ -1,0 +1,111 @@
+{
+    "environment": {
+      "id": 5,
+      "name": "Azure Abyss",
+      "type": "Oceanic",
+      "backgroundImage": "/Maps/OceanicMap.jpg",
+      "audioFile": "/Audio/Soundtrack/AzureAbyss/Ocean.wav",
+      "resources": [
+        {
+          "type": "CoralReef",
+          "id": 0,
+          "name": "Bright Coral Reef",
+          "defenseValue": 30,
+          "health": "80/100",
+          "marineLife": "Diverse",
+          "position": { "left": "10%", "top": "25%" },
+          "resourceLink": "/resource-link",
+          "coralReefId": 1
+        },
+        {
+          "type": "Shipwreck",
+          "id": 1,
+          "name": "Sunken Galleon",
+          "defenseValue": 20,
+          "age": "150 years",
+          "treasureChests": "3/5",
+          "position": { "left": "35%", "top": "40%" },
+          "resourceLink": "/Play/Location/AzureAbyss/SunkenGalleon",
+          "shipwreckId": 2
+        },
+        {
+          "type": "KelpForest",
+          "id": 2,
+          "name": "Emerald Kelp Forest",
+          "defenseValue": 25,
+          "density": "High",
+          "species": "Multiple",
+          "position": { "left": "50%", "top": "30%" },
+          "resourceLink": "/resource-link",
+          "kelpForestId": 3
+        },
+        {
+          "type": "Whale",
+          "id": 3,
+          "contentValue": "5 whales spotted",
+          "position": { "left": "60%", "top": "50%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Shark",
+          "id": 4,
+          "contentValue": "12 sharks detected",
+          "position": { "left": "70%", "top": "55%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "SeaTurtle",
+          "id": 5,
+          "contentValue": "8 sea turtles nesting",
+          "position": { "left": "80%", "top": "60%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Seaweed",
+          "id": 6,
+          "contentValue": "60%",
+          "position": { "left": "20%", "top": "70%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Pearl",
+          "id": 7,
+          "contentValue": "40%",
+          "position": { "left": "45%", "top": "65%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "DolphinPod",
+          "id": 8,
+          "contentValue": "3 pods observed",
+          "position": { "left": "55%", "top": "75%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Lighthouse",
+          "id": 9,
+          "name": "Beacon Lighthouse",
+          "defenseValue": 50,
+          "operationalStatus": "Active",
+          "position": { "left": "90%", "top": "20%" },
+          "resourceLink": "/resource-link",
+          "lighthouseId": 4
+        },
+        {
+          "type": "Anemone",
+          "id": 10,
+          "contentValue": "70%",
+          "position": { "left": "25%", "top": "85%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Jellyfish",
+          "id": 11,
+          "contentValue": "50%",
+          "position": { "left": "35%", "top": "80%" },
+          "resourceLink": "/resource-link"
+        }
+      ]
+    }
+  }
+  

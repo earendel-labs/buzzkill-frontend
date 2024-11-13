@@ -1,4 +1,5 @@
 // src/components/ProfileTab/ProfileTab.tsx
+
 "use client";
 
 import React from "react";
@@ -46,6 +47,39 @@ const ProfileTab = () => {
         >
           <CircularProgress />
         </Box>
+      </ProfileLayout>
+    );
+  }
+
+  // Handle case when profileData is null (user not authenticated)
+  if (!profileData) {
+    return (
+      <ProfileLayout loading={false}>
+        <SemiTransparentCard
+          sx={{
+            padding: "40px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "100%", // Ensure it spans full width
+          }}
+        >
+          <Typography variant="h6" color="white" gutterBottom>
+            No user is logged in
+          </Typography>
+          <Typography variant="body1" color="white" sx={{ mb: 3 }}>
+            Sign-up or login to view your profile
+          </Typography>
+          <Button
+            className="blueConnectWallet" // Use the old setup for styling
+            onClick={() => window.location.href = "/"} // Redirect to home
+            sx={{ mt: 2 }}
+          >
+            Go to Home
+          </Button>
+        </SemiTransparentCard>
       </ProfileLayout>
     );
   }

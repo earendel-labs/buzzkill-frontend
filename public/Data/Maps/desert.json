@@ -1,0 +1,93 @@
+{
+  "environment": {
+    "id": 4,
+    "name": "Sahara Dunes",
+    "type": "Desert",
+    "backgroundImage": "/Maps/DesertMap.jpg",
+    "audioFile": "/Audio/Soundtrack/SaharaDunes/Desert.wav",
+    "resources": [
+      {
+        "type": "Oasis",
+        "id": 0,
+        "name": "Mirage Oasis",
+        "defenseValue": 35,
+        "waterSources": "3/5",
+        "cacti": "10/20",
+        "position": { "left": "15%", "top": "40%" },
+        "resourceLink": "/resource-link",
+        "oasisId": 1
+      },
+      {
+        "type": "Oasis",
+        "id": 1,
+        "name": "Sunset Oasis",
+        "defenseValue": 28,
+        "waterSources": "2/5",
+        "cacti": "8/20",
+        "position": { "left": "30%", "top": "25%" },
+        "resourceLink": "/Play/Location/SaharaDunes/SunsetOasis",
+        "oasisId": 2
+      },
+      {
+        "type": "SandDune",
+        "id": 2,
+        "name": "Golden Dune",
+        "defenseValue": 40,
+        "height": "15m",
+        "stability": "High",
+        "position": { "left": "50%", "top": "30%" },
+        "resourceLink": "/resource-link",
+        "sandDuneId": 3
+      },
+      {
+        "type": "Cactus",
+        "id": 3,
+        "contentValue": "70%",
+        "position": { "left": "60%", "top": "45%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "Scorpion",
+        "id": 4,
+        "contentValue": "25%",
+        "position": { "left": "65%", "top": "55%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "Scorpion",
+        "id": 5,
+        "contentValue": "50%",
+        "position": { "left": "75%", "top": "60%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "Fossil",
+        "id": 6,
+        "contentValue": "40%",
+        "position": { "left": "85%", "top": "35%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "RockFormation",
+        "id": 7,
+        "contentValue": "60%",
+        "position": { "left": "20%", "top": "70%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "Vulture",
+        "id": 8,
+        "contentValue": "15%",
+        "position": { "left": "40%", "top": "65%" },
+        "resourceLink": "/resource-link"
+      },
+      {
+        "type": "Vulture",
+        "id": 9,
+        "contentValue": "35%",
+        "position": { "left": "55%", "top": "75%" },
+        "resourceLink": "/resource-link"
+      }
+    ]
+  }
+}

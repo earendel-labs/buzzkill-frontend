@@ -13,8 +13,7 @@ import {
 import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
-// Define sort directions
+ // Define sort directions
 type SortDirection = "asc" | "desc";
 
 // Define sortable columns

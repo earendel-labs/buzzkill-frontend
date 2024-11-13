@@ -1,0 +1,118 @@
+{
+    "environment": {
+      "id": 6,
+      "name": "Frostpeak Highlands",
+      "type": "Snow",
+      "backgroundImage": "/Maps/SnowMap.jpg",
+      "audioFile": "/Audio/Soundtrack/FrostpeakHighlands/Snow.wav",
+      "resources": [
+        {
+          "type": "Igloo",
+          "id": 0,
+          "name": "Snowhaven Igloo",
+          "defenseValue": 40,
+          "entryPoints": "2/4",
+          "residents": "5/10",
+          "position": { "left": "15%", "top": "30%" },
+          "resourceLink": "/resource-link",
+          "iglooId": 1
+        },
+        {
+          "type": "Snowdrift",
+          "id": 1,
+          "name": "Blizzard Drift",
+          "defenseValue": 25,
+          "depth": "2m",
+          "stability": "Medium",
+          "position": { "left": "28%", "top": "22%" },
+          "resourceLink": "/Play/Location/FrostpeakHighlands/BlizzardDrift",
+          "snowdriftId": 2
+        },
+        {
+          "type": "IceCrystal",
+          "id": 2,
+          "contentValue": "60%",
+          "position": { "left": "35%", "top": "40%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "PolarBear",
+          "id": 3,
+          "contentValue": "3 polar bears sighted",
+          "position": { "left": "50%", "top": "35%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Penguin",
+          "id": 4,
+          "contentValue": "15 penguins waddling",
+          "position": { "left": "65%", "top": "45%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "SnowFort",
+          "id": 5,
+          "name": "Frostbite Fort",
+          "defenseValue": 55,
+          "wallsHeight": "1.5m",
+          "guardTowers": "2/3",
+          "position": { "left": "75%", "top": "50%" },
+          "resourceLink": "/resource-link",
+          "snowFortId": 3
+        },
+        {
+          "type": "FrozenLake",
+          "id": 6,
+          "name": "Crystal Lake",
+          "defenseValue": 30,
+          "thickness": "0.5m",
+          "position": { "left": "40%", "top": "60%" },
+          "resourceLink": "/resource-link",
+          "frozenLakeId": 4
+        },
+        {
+          "type": "Snowflake",
+          "id": 7,
+          "contentValue": "80%",
+          "position": { "left": "55%", "top": "65%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "AvalancheZone",
+          "id": 8,
+          "name": "Echo Ridge",
+          "defenseValue": 45,
+          "riskLevel": "High",
+          "position": { "left": "20%", "top": "75%" },
+          "resourceLink": "/resource-link",
+          "avalancheZoneId": 5
+        },
+        {
+          "type": "SnowyPine",
+          "id": 9,
+          "contentValue": "70%",
+          "position": { "left": "60%", "top": "80%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "SnowyOwl",
+          "id": 10,
+          "contentValue": "5 snowy owls perched",
+          "position": { "left": "70%", "top": "85%" },
+          "resourceLink": "/resource-link"
+        },
+        {
+          "type": "Glacier",
+          "id": 11,
+          "name": "Iceflow Glacier",
+          "defenseValue": 60,
+          "length": "10km",
+          "movementRate": "Slow",
+          "position": { "left": "85%", "top": "20%" },
+          "resourceLink": "/resource-link",
+          "glacierId": 6
+        }
+      ]
+    }
+  }
+  

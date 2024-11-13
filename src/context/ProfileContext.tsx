@@ -15,7 +15,7 @@ import { Snackbar, Alert } from "@mui/material";
 import { ProfileData } from "@/types/ProfileData";
 
 interface ProfileContextType {
-  profileData: ProfileData;
+  profileData: ProfileData | null;
   loadingProfile: boolean;
   savingProfile: boolean;
   isEditable: boolean;
@@ -34,24 +34,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState<ProfileData>({
-    account_name: "",
-    email_address: "",
-    address: "",
-    invite_code: "",
-    invited_count: 0,
-    total_rewards: 0,
-  });
-
-  const [originalData, setOriginalData] = useState<ProfileData>({
-    account_name: "",
-    email_address: "",
-    address: "",
-    invite_code: "",
-    invited_count: 0,
-    total_rewards: 0,
-  });
-
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [originalData, setOriginalData] = useState<ProfileData | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [savingProfile, setSavingProfile] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
@@ -91,6 +75,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         } catch (error) {
           console.error("Error fetching profile:", error);
           showSnackbar("Failed to fetch profile data.", "error");
+          setProfileData(null); // Ensure profileData is null on error
         } finally {
           setLoadingProfile(false);
         }
@@ -98,6 +83,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
 
       fetchProfile();
     } else {
+      setProfileData(null); // User not authenticated
       setLoadingProfile(false);
     }
   }, [status]);
@@ -109,6 +95,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const copyInviteLink = () => {
+    if (!profileData?.invite_code) return; // Prevent copying if invite_code is missing
+
     const inviteLink = `${window.location.origin}/?invite=${profileData.invite_code}`;
     navigator.clipboard
       .writeText(inviteLink)
@@ -133,15 +121,14 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfileData({ ...profileData, [name]: value });
+    setProfileData((prev) => (prev ? { ...prev, [name]: value } : prev));
   };
 
   const validateAccountName = (value: string) => {
     const sanitizedValue = value.replace(/[^A-Za-z0-9_-]/g, "");
-    setProfileData((prevState) => ({
-      ...prevState,
-      account_name: sanitizedValue,
-    }));
+    setProfileData((prev) =>
+      prev ? { ...prev, account_name: sanitizedValue } : prev
+    );
     if (
       !/^[A-Za-z0-9_-]*$/.test(sanitizedValue) ||
       sanitizedValue.length > 20
@@ -165,8 +152,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          account_name: profileData.account_name,
-          email_address: profileData.email_address,
+          account_name: profileData?.account_name,
+          email_address: profileData?.email_address,
         }),
       });
 
@@ -182,8 +169,10 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
       const successData = await response.json();
       showSnackbar("Account details updated successfully.", "success");
 
-      setIsEditable(false);
-      setOriginalData({ ...profileData });
+      if (profileData) {
+        setIsEditable(false);
+        setOriginalData({ ...profileData });
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       showSnackbar("An unexpected error occurred.", "error");
@@ -193,7 +182,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const handleCancelEdit = () => {
-    setProfileData({ ...originalData });
+    setProfileData(originalData);
     setIsEditable(false);
   };
 
