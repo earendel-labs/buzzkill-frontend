@@ -30,7 +30,6 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const decodedToken = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET);
     const jwtPayload = decodedToken as JwtPayload;
-    console.log("Decoded Token:", jwtPayload);
 
     const address = jwtPayload.sub;
     if (!address) {
@@ -56,13 +55,19 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       // Handle specific Supabase errors
       if (error.code === "23505") {
         if (error.message.includes("users_email_key")) {
-          return res.status(409).json({ error: "Email address is already in use." });
+          return res
+            .status(409)
+            .json({ error: "Email address is already in use." });
         }
         // Add more specific error handlers here if needed
       }
 
       // Fallback to generic error message
-      return res.status(500).json({ error: "An unexpected error occurred while updating the profile." });
+      return res
+        .status(500)
+        .json({
+          error: "An unexpected error occurred while updating the profile.",
+        });
     }
 
     return res

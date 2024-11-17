@@ -2,7 +2,7 @@
 
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   TextField,
   Button,
@@ -12,11 +12,12 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import { ContentCopy as CopyIcon } from "@mui/icons-material";
+import { ContentCopy as CopyIcon, Link as LinkIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useProfileContext } from "@/context/ProfileContext";
+import { OneID } from "@oneid-xyz/inspect";
 
 const ProfileTab = () => {
   const theme = useTheme();
@@ -30,9 +31,24 @@ const ProfileTab = () => {
     handleSubmit,
     handleCancelEdit,
     copyInviteLink,
+    handleSyncOneID,
     error,
     helperText,
   } = useProfileContext();
+
+  useEffect(() => {
+    const initializeOneID = async () => {
+      try {
+        const oneid = new OneID();
+        await oneid.systemConfig.initConfig();
+        console.log("OneID initialized successfully.");
+      } catch (error) {
+        console.error("Error initializing OneID:", error);
+      }
+    };
+    console.log("oneID function call");
+    initializeOneID();
+  }, []);
 
   if (loadingProfile) {
     return (
@@ -74,7 +90,7 @@ const ProfileTab = () => {
           </Typography>
           <Button
             className="blueConnectWallet" // Use the old setup for styling
-            onClick={() => window.location.href = "/"} // Redirect to home
+            onClick={() => (window.location.href = "/")} // Redirect to home
             sx={{ mt: 2 }}
           >
             Go to Home
@@ -100,21 +116,121 @@ const ProfileTab = () => {
             <Typography
               variant="h5"
               gutterBottom
-              sx={{ textAlign: "center", mb: 1, fontWeight: "bold" }}
+              sx={{ textAlign: "center", mb: 3, fontWeight: "bold" }}
             >
               My Profile
             </Typography>
 
             <Grid container spacing={4}>
+              {/* Wallet Address and OneID Integration */}
               <Grid item xs={12}>
-                <Typography sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
-                  Wallet Address
-                </Typography>
-                <Typography variant="body1" sx={{ color: "white" }}>
-                  {profileData.address}
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    gap: 2,
+                  }}
+                >
+                  {/* Wallet Address */}
+                  <Box sx={{ flex: "1 1 300px" }}>
+                    <Typography
+                      sx={{ mb: 1, fontWeight: "bold", color: "white" }}
+                    >
+                      Wallet Address
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "white", padding: "5px 0px" }}
+                    >
+                      {profileData.address}
+                    </Typography>
+                  </Box>
+
+                  {/* OneID Integration */}
+                  <Box sx={{ flex: "1 1 300px", textAlign: "left" }}>
+                    {profileData.has_oneid ? (
+                      <>
+                        <Typography
+                          sx={{ mb: 1, fontWeight: "bold", color: "white" }}
+                        >
+                          OneID Name
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                          }}
+                        >
+                          <Typography variant="body1" sx={{ color: "white" }}>
+                            {profileData.oneid_name}
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            className="oneIDRedButton"
+                            onClick={handleSyncOneID}
+                            disabled={savingProfile}
+                            startIcon={<LinkIcon />}
+                            sx={{
+                              textTransform: "none",
+                              paddingX: 2,
+                              paddingY: 1,
+                            }}
+                          >
+                            {savingProfile ? (
+                              <CircularProgress size={24} color="inherit" />
+                            ) : (
+                              "Sync"
+                            )}
+                          </Button>
+                        </Box>
+                      </>
+                    ) : (
+                      <>
+                        <Typography
+                          sx={{ mb: 1, fontWeight: "bold", color: "white" }}
+                        >
+                          OneID
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                          }}
+                        >
+                          <Typography variant="body1" sx={{ color: "white" }}>
+                            OneID is not linked.
+                          </Typography>
+                          <Button
+                            variant="contained"
+                            className="blueButtonSmall"
+                            onClick={handleSyncOneID}
+                            disabled={savingProfile}
+                            startIcon={<LinkIcon />}
+                            sx={{
+                              textTransform: "none",
+                              paddingX: 2,
+                              paddingY: 1,
+                            }}
+                          >
+                            {savingProfile ? (
+                              <CircularProgress size={24} color="inherit" />
+                            ) : (
+                              "Link OneID"
+                            )}
+                          </Button>
+                        </Box>
+                      </>
+                    )}
+                  </Box>
+                </Box>
               </Grid>
-              <Grid item xs={6}>
+
+              {/* Invite Code */}
+              <Grid item xs={12} sm={6}>
                 <Typography sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
                   Invite Code
                 </Typography>
@@ -123,7 +239,7 @@ const ProfileTab = () => {
                   sx={{
                     display: "flex",
                     alignItems: "stretch",
-                    border: `1px solid ${theme.palette.DarkBlue.light}`,
+                    border: `1px solid ${theme.palette.DarkBlueFaded.dark}`,
                     borderRadius: "4px",
                     overflow: "hidden",
                     width: "100%",
@@ -142,7 +258,7 @@ const ProfileTab = () => {
                       input: {
                         color: "white",
                         fontWeight: "bold",
-                        backgroundColor: theme.palette.DarkBlue.light,
+                        backgroundColor: theme.palette.DarkBlueFaded.dark,
                         padding: "0.5rem",
                         borderRadius: "2px 0 0 2px",
                         pointerEvents: "none",
@@ -154,7 +270,7 @@ const ProfileTab = () => {
                         },
                       },
                       "& .MuiFilledInput-root": {
-                        backgroundColor: theme.palette.DarkBlue.light,
+                        backgroundColor: theme.palette.DarkBlueFaded.dark,
                         borderRadius: "4px 0 0 4px",
                       },
                     }}
@@ -177,7 +293,8 @@ const ProfileTab = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={6}>
+              {/* Users Invited */}
+              <Grid item xs={12} sm={6}>
                 <Typography sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
                   Users Invited
                 </Typography>
@@ -190,7 +307,7 @@ const ProfileTab = () => {
                     input: {
                       color: "white",
                       fontWeight: "bold",
-                      background: theme.palette.background.default,
+                      background: theme.palette.DarkBlueFaded.dark,
                       "&.Mui-disabled": {
                         WebkitTextFillColor: "white",
                         fontSize: "1.25rem",
@@ -199,16 +316,14 @@ const ProfileTab = () => {
                       },
                     },
                     "& .MuiFilledInput-root": {
-                      backgroundColor: theme.palette.Gold.light,
-                      "&.Mui-focused, &:hover, &.Mui-disabled": {
-                        backgroundColor: theme.palette.Gold.light,
-                      },
+                      "&.Mui-focused, &:hover, &.Mui-disabled": {},
                     },
                   }}
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              {/* Account Name */}
+              <Grid item xs={12} sm={6}>
                 <Typography sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
                   Account Name
                 </Typography>
@@ -228,44 +343,47 @@ const ProfileTab = () => {
                       fontWeight: "bold",
                       background: isEditable
                         ? "#4272ce"
-                        : theme.palette.background.default,
+                        : theme.palette.DarkBlueFaded.dark,
                       "&:-webkit-autofill": {
                         WebkitBoxShadow: `0 0 0 100px ${
-                          isEditable
-                            ? "#4272ce"
-                            : theme.palette.background.default
+                          profileData.has_oneid
+                            ? theme.palette.DarkBlueFaded.dark
+                            : isEditable
+                            ? theme.palette.DarkBlueFaded.light
+                            : theme.palette.DarkBlueFaded.dark
                         } inset`,
                         WebkitTextFillColor: "white",
                       },
                       "&.Mui-disabled": {
                         WebkitTextFillColor: "white",
-                        fontSize: "1.25rem",
                         color: "white",
+                        fontSize: "1.25rem",
                       },
                     },
                     "& .MuiFilledInput-root": {
                       backgroundColor: isEditable
                         ? "#4272ce"
-                        : theme.palette.background.default,
+                        : theme.palette.DarkBlueFaded.dark,
                       "&:hover": {
                         backgroundColor: isEditable
                           ? "#609de6"
-                          : theme.palette.background.default,
+                          : theme.palette.DarkBlueFaded.dark,
                       },
                       "&.Mui-focused": {
                         backgroundColor: isEditable
                           ? "#609de6"
-                          : theme.palette.background.default,
+                          : theme.palette.DarkBlueFaded.dark,
                       },
                       "&.Mui-disabled": {
-                        backgroundColor: theme.palette.background.default,
+                        backgroundColor: theme.palette.DarkBlueFaded.dark,
                       },
                     },
                   }}
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              {/* Email Address */}
+              <Grid item xs={12} sm={6}>
                 <Typography sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
                   Email Address
                 </Typography>
@@ -284,12 +402,12 @@ const ProfileTab = () => {
                       fontWeight: "bold",
                       background: isEditable
                         ? "#4272ce"
-                        : theme.palette.background.default,
+                        : theme.palette.DarkBlueFaded.dark,
                       "&:-webkit-autofill": {
                         WebkitBoxShadow: `0 0 0 100px ${
                           isEditable
                             ? "#4272ce"
-                            : theme.palette.background.default
+                            : theme.palette.DarkBlueFaded.dark
                         } inset`,
                         WebkitTextFillColor: "white",
                       },
@@ -302,49 +420,55 @@ const ProfileTab = () => {
                     "& .MuiFilledInput-root": {
                       backgroundColor: isEditable
                         ? "#4272ce"
-                        : theme.palette.background.default,
+                        : theme.palette.DarkBlueFaded.dark,
                       "&:hover": {
                         backgroundColor: isEditable
                           ? "#609de6"
-                          : theme.palette.background.default,
+                          : theme.palette.DarkBlueFaded.dark,
                       },
                       "&.Mui-focused": {
                         backgroundColor: isEditable
                           ? "#609de6"
-                          : theme.palette.background.default,
+                          : theme.palette.DarkBlueFaded.dark,
                       },
                       "&.Mui-disabled": {
-                        backgroundColor: theme.palette.background.default,
+                        backgroundColor: theme.palette.DarkBlueFaded.dark,
                       },
                     },
                   }}
                 />
               </Grid>
 
+              {/* Action Buttons */}
               <Grid
                 item
                 xs={12}
                 sx={{
                   display: "flex",
-                  mt: 0,
                   justifyContent: "space-between",
+                  gap: 2,
                 }}
               >
                 <Button
                   className="blueButton"
-                  fullWidth
-                  sx={{ mr: 2 }}
                   onClick={
                     isEditable ? handleCancelEdit : () => setIsEditable(true)
                   }
+                  sx={{
+                    flex: 1,
+                    paddingY: 1.5,
+                  }}
                 >
                   {isEditable ? "Cancel Edit" : "Edit Profile"}
                 </Button>
                 <Button
                   className="blueButton"
-                  fullWidth
                   type="submit"
                   disabled={!isEditable || savingProfile}
+                  sx={{
+                    flex: 1,
+                    paddingY: 1.5,
+                  }}
                 >
                   {savingProfile ? "Saving..." : "Save Changes"}
                 </Button>

@@ -87,12 +87,12 @@ export default async function createUser(
       .from("users")
       .insert({
         address,
+        total_rewards: 0,
         role: "authenticated",
         created_at: new Date().toISOString(),
         invite_code: inviteCode,
         invited_by: invitedBy,
         invited_count: 0,
-        total_rewards: 0,
       })
       .single();
 
@@ -126,7 +126,7 @@ export default async function createUser(
         );
       }
 
-      // Step 4: Get Total Rewards 
+      // Step 4: Get Total Rewards
       const referralPoints = await getReferralRewardPoints();
 
       // Step 5: Insert an entry into rewards_table to log the referral reward

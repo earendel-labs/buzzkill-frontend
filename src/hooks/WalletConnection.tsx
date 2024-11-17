@@ -6,7 +6,7 @@ import {
   GetSiweMessageOptions,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { useAccount } from "wagmi";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, getSession } from "next-auth/react";
 import getTheme from "../theme/theme";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import { ThemeProvider, Box, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation";
 import HCaptchaComponent from "@/components/Verification/HCaptchaComponent";
+import { OneIDProvider, useOneID } from "@/context/OneIDContext";
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",
@@ -34,6 +35,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const hCaptchaRef = useRef<{ handleExecute: () => void }>(null); // Using the correct type
+  const oneid = useOneID();
 
   useEffect(() => {
     console.log("WalletConnection mounted");
@@ -126,20 +128,44 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     setCaptchaToken(token);
 
     if (token && address) {
-      await fetch("/api/auth/verify-captcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ captchaToken: token }),
-      });
+      try {
+        console.log("Verifying captcha and triggering SIWE...");
+        const verifyResponse = await fetch("/api/auth/verify-captcha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ captchaToken: token }),
+        });
 
-      await signIn("credentials", { address });
-      setCaptchaToken(null);
+        if (!verifyResponse.ok) {
+          throw new Error("Captcha verification failed");
+        }
+
+        // Re-enable SIWE after captcha verification
+        // setIsSiweEnabled(true);
+
+        // Clear the captcha token after verification
+        setCaptchaToken(null);
+
+        // Trigger RainbowKit SIWE signing process
+        const signInResult = await signIn("credentials", { address });
+        if (signInResult?.error) {
+          console.error("SIWE sign-in failed:", signInResult.error);
+        } else {
+          console.log("SIWE sign-in successful, redirecting...");
+        }
+      } catch (err) {
+        console.error(
+          "Error during captcha verification or SIWE sign-in:",
+          err
+        );
+        setCaptchaToken(null); // Reset captchaToken on error
+      }
     }
   };
 
   return (
     <RainbowKitSiweNextAuthProvider
-      enabled={isSiweEnabled === true} // Convert null to false
+      enabled={isSiweEnabled === true} // Convert null to true
       getSiweMessageOptions={getSiweMessageOptions}
     >
       <QueryClientProvider client={queryClient}>
@@ -147,7 +173,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           <ThemeProvider theme={theme}>
             {children}
             {/* hCaptcha Modal */}
-            {/* <Modal
+            <Modal
               open={
                 isSiweEnabled === true && // Only open if SIWE is enabled (user does not exist)
                 captchaToken === null &&
@@ -170,7 +196,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                   ref={hCaptchaRef}
                 />
               </Box>
-            </Modal> */}
+            </Modal>
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

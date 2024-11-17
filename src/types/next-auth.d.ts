@@ -5,11 +5,13 @@ import NextAuth from "next-auth";
 declare module "next-auth" {
   interface User {
     address?: string;
+    isNewUser?: boolean;
   }
 
   interface Session {
     address?: string;
     inviteCode?: string;
+    isNewUser?: boolean;
     user: {
       name?: string;
       address?: string; // Attach address to the user session

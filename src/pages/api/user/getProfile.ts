@@ -1,3 +1,5 @@
+// src/pages/api/user/getProfile.ts
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -34,7 +36,7 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: userData, error } = await supabase
       .from("users")
       .select(
-        "account_name, email_address, address, invited_count, invite_code, total_rewards"
+        "account_name, email_address, address, invited_count, invite_code, total_rewards, oneid_name, has_oneid"
       )
       .eq("address", address)
       .maybeSingle();
@@ -54,8 +56,10 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       invite_code: userData.invite_code,
       invited_count: userData.invited_count,
       total_rewards: userData.total_rewards,
+      oneid_name: userData.oneid_name || null,
+      has_oneid: userData.has_oneid,
     };
-    console.log("profileData returned: ", userData);
+    console.log("profileData returned: ", profileData);
     return res.status(200).json(profileData);
   } catch (err) {
     console.error("Error decoding token or fetching profile:", err);

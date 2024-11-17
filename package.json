@@ -17,6 +17,7 @@
     "@headlessui/tailwindcss": "^0.2.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@oneid-xyz/inspect": "^1.1.1",
     "@rainbow-me/rainbowkit": "^2.1.6",
     "@rainbow-me/rainbowkit-siwe-next-auth": "^0.4.1",
     "@remixicon/react": "^4.2.0",
@@ -36,6 +37,7 @@
     "encoding": "^0.1.13",
     "ethers": "^6.13.4",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "lodash.merge": "^4.6.2",
     "next": "^14.2.2",
     "next-sitemap": "^4.2.3",
@@ -46,7 +48,9 @@
     "sharp": "^0.33.5",
     "siwe": "^2.3.2",
     "viem": "^2.21.14",
-    "wagmi": "^2.12.14"
+    "wagmi": "^2.12.14",
+    "web3": "^4.15.0",
+    "web3-core": "^4.7.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

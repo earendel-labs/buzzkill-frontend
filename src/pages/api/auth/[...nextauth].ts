@@ -7,7 +7,7 @@ import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
-import { serialize } from "cookie";
+import { parse, serialize } from "cookie";
 
 export function getAuthOptions(
   req: IncomingMessage,
@@ -16,8 +16,6 @@ export function getAuthOptions(
   const providers = [
     CredentialsProvider({
       async authorize(credentials) {
-        console.log("Starting the authorize function...");
-
         if (!credentials) {
           console.log("Credentials are missing");
           return null;
@@ -34,10 +32,7 @@ export function getAuthOptions(
           // Case 1: User exists and provides an address
           address = credentials.address;
           console.log("credentials.message are here", credentials.message);
-          console.log(
-            "credentials.signature are here",
-            credentials.signature
-          );
+          console.log("credentials.signature are here", credentials.signature);
         } else if (credentials.message && credentials.signature) {
           // Case 2: SIWE flow is initiated
           try {
@@ -143,7 +138,17 @@ export function getAuthOptions(
               expires: new Date(0),
             });
             res.setHeader("Set-Cookie", clearInviteCookie);
-            return { id: address, address };
+
+            // Set isNewUser cookie
+            const setNewUserCookie = serialize("isNewUser", "true", {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "strict",
+              maxAge: 60 * 60 * 24 * 30, // 30 days
+            });
+            res.setHeader("Set-Cookie", setNewUserCookie);
+
+            return { id: address, address, isNewUser: true };
           }
         } catch (error) {
           console.error("Authorization error:", error);
@@ -177,7 +182,7 @@ export function getAuthOptions(
           token.role = "authenticated"; // Ensure role is included
           token.exp = currentTime + 60 * 60; // 1-hour expiration
         }
-
+        console.log("JWT token:", token);
         // Ensure that `exp` is defined before performing arithmetic
         if (
           typeof token.exp === "number" &&
@@ -195,9 +200,13 @@ export function getAuthOptions(
         session.user = {
           name: token.address as string,
         };
+        // Map `isNewUser` to session
+        session.isNewUser = (token.isNewUser as boolean) || false;
+
         if (typeof token.exp === "number") {
           session.expires = new Date(token.exp * 1000).toISOString(); // Convert expiration to ISO string
         }
+        console.log("session token:", token);
         return session;
       },
       async redirect({ url, baseUrl }) {
@@ -214,12 +223,27 @@ export function getAuthOptions(
           return `${baseUrl}/?invite=${inviteCode}`;
         }
 
+        // Parse cookies from the request
+        const cookies = req.headers.cookie;
+        const parsedCookies = cookies ? parse(cookies) : {};
+
+        const isNewUser = parsedCookies.isNewUser === "true";
+
+        if (isNewUser) {
+          // Redirect new users to the profile setup page
+          console.log("New user detected, redirecting to profile setup...");
+          return `${baseUrl}/Play/User/Profile/MyProfile`;
+        }
+
         if (isAuthError) {
           urlObj.searchParams.delete("error");
           console.log("Redirecting due to error", urlObj.toString());
           return urlObj.toString();
         }
-        if (url === baseUrl || url === `${baseUrl}/`) {
+
+        // Check if the user is a new user
+
+        if (url === baseUrl || (url === `${baseUrl}/` && !isNewUser)) {
           const playUrl = `${baseUrl}/Play`;
           console.log("Redirecting to Play:", playUrl);
           return playUrl;

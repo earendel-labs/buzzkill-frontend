@@ -11,6 +11,7 @@ import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import { EnvironmentProvider } from "@/context/EnvironmentContext";
 import { ProfileProvider } from "@/context/ProfileContext";
+import { OneIDProvider } from "@/context/OneIDContext";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -69,22 +70,24 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
-        <WalletConfiguration session={session}>
-          <LoadingProvider>
-            <SoundProvider>
-              <UserProvider>
-                <ProfileProvider>
-                  <CssBaseline />
-                  <GlobalScrollbarStyles />
-                  <EnvironmentProvider>
-                    {children}
-                    <SpeedInsights />
-                  </EnvironmentProvider>
-                </ProfileProvider>
-              </UserProvider>
-            </SoundProvider>
-          </LoadingProvider>
-        </WalletConfiguration>
+        <OneIDProvider>
+          <WalletConfiguration session={session}>
+            <LoadingProvider>
+              <SoundProvider>
+                <UserProvider>
+                  <ProfileProvider>
+                    <CssBaseline />
+                    <GlobalScrollbarStyles />
+                    <EnvironmentProvider>
+                      {children}
+                      <SpeedInsights />
+                    </EnvironmentProvider>
+                  </ProfileProvider>
+                </UserProvider>
+              </SoundProvider>
+            </LoadingProvider>
+          </WalletConfiguration>
+        </OneIDProvider>
       </body>
     </html>
   );

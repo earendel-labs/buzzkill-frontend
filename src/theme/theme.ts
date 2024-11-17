@@ -19,6 +19,7 @@ declare module "@mui/material/styles" {
     BlueFaded: Palette["primary"];
     ContrarianBlue: Palette["primary"];
     OneIDRed: Palette["primary"];
+    DarkBlueFaded: Palette["primary"];
   }
   interface PaletteOptions {
     NavBarBackground?: PaletteOptions["primary"];
@@ -34,6 +35,7 @@ declare module "@mui/material/styles" {
     BlueFaded?: PaletteOptions["primary"];
     ContrarianBlue?: PaletteOptions["primary"];
     OneIDRed?: PaletteOptions["primary"];
+    DarkBlueFaded?: PaletteOptions["primary"];
   }
 
   interface TypographyVariants {
@@ -136,7 +138,12 @@ const getTheme = (): Theme => {
       BlueFaded: {
         main: "rgba(0, 121, 145, 0.4)",
         light: "rgba(0, 145, 172, 0.4)",
-        dark: "rgba(5, 94, 116, 0.4)",
+        dark: "rgba(5, 94, 116, 0.7)",
+      },
+      DarkBlueFaded: {
+        main: "rgba(34, 46, 80, 0.4)",
+        light: "rgba(34, 46, 80, 0.4)",
+        dark: "rgba(34, 46, 80, 0.5)",
       },
       GoldFaded: {
         main: "rgba(242, 180, 23, 0.4)",
@@ -148,6 +155,8 @@ const getTheme = (): Theme => {
       },
       OneIDRed: {
         main: "#D9180F",
+        dark: "#4a0805",
+        light: "#881914",
       },
       background: {
         default: "#2e447a",

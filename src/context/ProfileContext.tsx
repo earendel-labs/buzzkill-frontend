@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { AlertColor } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { ProfileData } from "@/types/ProfileData";
+import { useOneID } from "@/context/OneIDContext"; // Import OneID hook
 
 interface ProfileContextType {
   profileData: ProfileData | null;
@@ -24,6 +25,7 @@ interface ProfileContextType {
   handleSubmit: (e: React.FormEvent) => void;
   handleCancelEdit: () => void;
   copyInviteLink: () => void;
+  handleSyncOneID: () => Promise<void>;
   error: boolean;
   helperText: string;
 }
@@ -48,45 +50,145 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   const [snackbarSeverity, setSnackbarSeverity] =
     useState<AlertColor>("success");
 
+  const oneid = useOneID(); // Access OneID context
+
+  const [isNewUser, setIsNewUser] = useState(false); // Local state for isNewUser
+
+  // Define fetchProfile outside useEffect to reuse it
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch("/api/user/getProfile");
+      if (!response.ok) throw new Error("Failed to fetch profile data");
+
+      const data = await response.json();
+      setProfileData({
+        account_name: data.account_name || "",
+        email_address: data.email_address || "",
+        address: data.address || "",
+        oneid_name: data.oneid_name || "",
+        invite_code: data.invite_code || "",
+        invited_count: data.invited_count || 0,
+        total_rewards: data.total_rewards || 0,
+        has_oneid: data.has_oneid || false,
+      });
+      setOriginalData({
+        account_name: data.account_name || "",
+        email_address: data.email_address || "",
+        address: data.address || "",
+        oneid_name: data.oneid_name || "",
+        invite_code: data.invite_code || "",
+        invited_count: data.invited_count || 0,
+        total_rewards: data.total_rewards || 0,
+        has_oneid: data.has_oneid || false,
+      });
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      showSnackbar("Failed to fetch profile data.", "error");
+      setProfileData(null); // Ensure profileData is null on error
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
   useEffect(() => {
     if (status === "authenticated") {
-      const fetchProfile = async () => {
+      fetchProfile();
+      // Fetch isNewUser status
+      const fetchIsNewUser = async () => {
         try {
-          const response = await fetch("/api/user/getProfile");
-          if (!response.ok) throw new Error("Failed to fetch profile data");
-
+          const response = await fetch("/api/user/getIsNewUser");
+          if (!response.ok) {
+            console.error("Failed to fetch isNewUser status");
+            setIsNewUser(false);
+            return;
+          }
           const data = await response.json();
-          setProfileData({
-            account_name: data.account_name || "",
-            email_address: data.email_address || "",
-            address: data.address || "",
-            invite_code: data.invite_code || "",
-            invited_count: data.invited_count || 0,
-            total_rewards: data.total_rewards || 0,
-          });
-          setOriginalData({
-            account_name: data.account_name || "",
-            email_address: data.email_address || "",
-            address: data.address || "",
-            invite_code: data.invite_code || "",
-            invited_count: data.invited_count || 0,
-            total_rewards: data.total_rewards || 0,
-          });
+          setIsNewUser(data.isNewUser);
         } catch (error) {
-          console.error("Error fetching profile:", error);
-          showSnackbar("Failed to fetch profile data.", "error");
-          setProfileData(null); // Ensure profileData is null on error
-        } finally {
-          setLoadingProfile(false);
+          console.error("Error fetching isNewUser status:", error);
+          setIsNewUser(false);
         }
       };
-
-      fetchProfile();
+      fetchIsNewUser();
     } else {
       setProfileData(null); // User not authenticated
       setLoadingProfile(false);
+      setIsNewUser(false);
     }
   }, [status]);
+
+  // Effect to handle new user synchronization
+  useEffect(() => {
+    const synchronizeOneID = async () => {
+      if (isNewUser && oneid && profileData?.address) {
+        try {
+          const primaryName = await oneid.getPrimaryName(profileData.address);
+          if (primaryName) {
+            // Call the syncOneID endpoint
+            const response = await fetch("/api/user/syncOneID", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                address: profileData.address,
+                oneid_name: primaryName,
+              }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              showSnackbar(errorData.error || "Error syncing OneID.", "error");
+              return;
+            }
+
+            const successData = await response.json();
+            showSnackbar("OneID synced successfully!", "success");
+
+            // Update profile data with the new OneID information
+            setProfileData((prev) =>
+              prev
+                ? {
+                    ...prev,
+                    account_name: primaryName,
+                    oneid_name: primaryName,
+                    has_oneid: true,
+                  }
+                : prev
+            );
+
+            setProfileData((prev) =>
+              prev
+                ? {
+                    ...prev,
+                    account_name: primaryName,
+                    oneid_name: primaryName,
+                    has_oneid: true,
+                  }
+                : prev
+            );
+            // Clear the isNewUser cookie by calling an API route
+            await fetch("/api/user/clearIsNewUser", {
+              method: "POST",
+            });
+
+            // Update local isNewUser state
+            setIsNewUser(false);
+          } else {
+            showSnackbar("Primary name not found in OneID.", "error");
+          }
+        } catch (error) {
+          console.error("Error synchronizing OneID:", error);
+          showSnackbar(
+            "An unexpected error occurred during OneID sync.",
+            "error"
+          );
+        }
+      }
+    };
+
+    synchronizeOneID();
+  }, [isNewUser, oneid, profileData]);
 
   const showSnackbar = (message: string, severity: AlertColor) => {
     setSnackbarMessage(message);
@@ -186,6 +288,66 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     setIsEditable(false);
   };
 
+  const handleSyncOneID = async () => {
+    if (!oneid || !profileData?.address) {
+      showSnackbar("OneID is not initialized or address is missing.", "error");
+      return;
+    }
+
+    try {
+      const primaryName = await oneid.getPrimaryName(profileData.address);
+      if (primaryName) {
+        const has_oneid = true;
+        const response = await fetch("/api/user/syncOneID", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            address: profileData.address,
+            account_name: profileData.account_name,
+            oneid_name: primaryName,
+            has_oneid: has_oneid,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          showSnackbar(errorData.error || "Error syncing OneID.", "error");
+          return;
+        }
+
+        const successData = await response.json();
+        showSnackbar("OneID synced successfully!", "success");
+
+        // Update profile data with the new OneID information
+        setProfileData((prev) =>
+          prev
+            ? {
+                ...prev,
+                account_name: primaryName,
+                oneid_name: primaryName,
+                has_oneid: true,
+              }
+            : prev
+        );
+
+        // Clear the isNewUser cookie by calling an API route
+        await fetch("/api/user/clearIsNewUser", {
+          method: "POST",
+        });
+
+        // Update local isNewUser state
+        setIsNewUser(false);
+      } else {
+        showSnackbar("Primary name not found in OneID.", "error");
+      }
+    } catch (error) {
+      console.error("Error syncing OneID:", error);
+      showSnackbar("An unexpected error occurred.", "error");
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -204,6 +366,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         handleSubmit,
         handleCancelEdit,
         copyInviteLink,
+        handleSyncOneID,
         error,
         helperText,
       }}

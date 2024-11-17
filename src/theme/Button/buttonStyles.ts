@@ -37,18 +37,40 @@ const buttonStyles = (theme: Theme) => ({
         },
 
         "&.blueButton": {
-          backgroundColor: "#568ddb",
+          backgroundColor: "#1b48f5",
           color: "#fff",
           borderColor: theme.palette.DarkBlue.main,
           "&:hover": {
-            backgroundColor: "#4272ce",
+            backgroundColor: "#5992ff",
             color: "#fff",
             borderColor: theme.palette.Gold.main,
           },
           "&:active": {
-            backgroundColor: "#385fbd",
+            backgroundColor: "#8eb9ff",
             color: "#fff",
             borderColor: theme.palette.DarkBlue.light,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#141c57",
+            color: "#4477ff",
+            borderColor: "#141c57",
+          },
+        },
+
+        "&.oneIDRedButton": {
+          backgroundColor: theme.palette.OneIDRed.light,
+          padding: "2px 20px",
+          color: "#fff",
+          borderColor: theme.palette.OneIDRed.light,
+          "&:hover": {
+            backgroundColor: theme.palette.OneIDRed.dark,
+            color: "#fff",
+            borderColor: theme.palette.OneIDRed.dark,
+          },
+          "&:active": {
+            backgroundColor: theme.palette.OneIDRed.light,
+            color: "#fff",
+            borderColor: theme.palette.OneIDRed.light,
           },
           "&.Mui-disabled": {
             backgroundColor: "#222e50",
