@@ -37,35 +37,28 @@ export default async function syncOneID(
   if (!process.env.NEXTAUTH_SECRET) {
     throw new Error("Error: NEXTAUTH_SECRET not defined");
   }
-  console.log("account_name inside is", account_name);
+
+  console.log("account_name inside syncOneID:", account_name);
+
   try {
     const supabase = getSupabaseClientWithAuth(sessionToken);
-    if (account_name === "Not provided") {
-      const { data, error } = await supabase
-        .from("users")
-        .update({
-          account_name: oneid_name,
-          oneid_name: oneid_name,
-          has_oneid: has_oneid,
-        })
-        .eq("address", address);
-    } else {
-      const { data, error } = await supabase
-        .from("users")
-        .update({
-          oneid_name: oneid_name,
-          has_oneid: has_oneid,
-        })
-        .eq("address", address);
+
+    let updateData: any = {
+      oneid_name: oneid_name,
+      has_oneid: has_oneid,
+    };
+
+    if (account_name && account_name !== "Not provided") {
+      updateData.account_name = account_name;
+    } else if (account_name === "Not provided") {
+      updateData.account_name = oneid_name;
     }
 
     const { data, error } = await supabase
       .from("users")
-      .update({
-        oneid_name: oneid_name,
-        has_oneid: has_oneid,
-      })
-      .eq("address", address);
+      .update(updateData)
+      .eq("address", address)
+      .single(); // Use .single() to get a single record
 
     if (error) {
       console.error("Error updating ONEID info:", error);

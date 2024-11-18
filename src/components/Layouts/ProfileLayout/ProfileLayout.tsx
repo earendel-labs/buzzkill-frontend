@@ -33,7 +33,7 @@ const ProfileLayout = ({
           sx={{
             display: "flex",
             flexDirection: "column",
-            maxWidth: "1200px",
+            maxWidth: "1300px",
             width: "100%",
             flexGrow: 1,
             margin: "0 auto", // Center the content horizontally

@@ -1,13 +1,18 @@
-// src/pages/RewardsPage.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
 import UserRewardsBento from "./Components/UserRewardsBento";
 import { RewardsTable, RewardEntry } from "./Components/RewardsTable";
 import { useProfileContext } from "@/context/ProfileContext";
-import { useAccount } from "wagmi"; // Import useAccount from wagmi
+import { useAccount } from "wagmi";
 
 const RewardsPage = () => {
   const { address, isConnected } = useAccount(); // Get account info from wagmi
@@ -19,12 +24,14 @@ const RewardsPage = () => {
   }>({});
   const [error, setError] = useState<string | null>(null);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const { copyInviteLink, profileData, loadingProfile } = useProfileContext();
 
   useEffect(() => {
     const fetchRewards = async () => {
       if (!address) {
         setError("User address not found.");
+        setSnackbarOpen(true); // Show snackbar
         setLoading(false);
         return;
       }
@@ -41,10 +48,12 @@ const RewardsPage = () => {
         } else {
           const errorData = await response.json();
           setError(errorData.error || "Failed to fetch rewards data.");
+          setSnackbarOpen(true); // Show snackbar
         }
       } catch (err) {
         console.error("Error fetching rewards data:", err);
         setError("Failed to fetch rewards data.");
+        setSnackbarOpen(true); // Show snackbar
       } finally {
         setLoading(false);
       }
@@ -89,6 +98,10 @@ const RewardsPage = () => {
     fetchConstants();
   }, [isConnected, address]);
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   if (loading || loadingProfile) {
     return (
       <ProfileLayout loading={true}>
@@ -108,15 +121,7 @@ const RewardsPage = () => {
 
   return (
     <ProfileLayout loading={false}>
-      <Box sx={{ maxWidth: "1000px", mx: "auto", px: 2 }}>
-        {/* Page Header */}
-        <Typography variant="h5" color="white" sx={{ mb: 1 }}>
-          Rewards
-        </Typography>
-        <Typography variant="body1" color="white" sx={{ mb: 4 }}>
-          Check your earnings and claim rewards.
-        </Typography>
-
+      <Box sx={{ px: 2, py: 2 }}>
         {/* UserRewardsBento Component */}
         <UserRewardsBento
           loadingProfile={loadingProfile}
@@ -125,16 +130,25 @@ const RewardsPage = () => {
           copyInviteLink={copyInviteLink}
         />
 
-        {/* Display Error Message if Any */}
-        {error && (
-          <Typography variant="body1" sx={{ mb: 4 }}>
-            {error}
-          </Typography>
-        )}
-
         {/* Rewards Table */}
         <RewardsTable data={rewards} />
       </Box>
+
+      {/* Snackbar for Error Alert */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000} // Automatically close after 6 seconds
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </ProfileLayout>
   );
 };

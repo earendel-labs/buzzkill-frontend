@@ -124,6 +124,8 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         try {
           const primaryName = await oneid.getPrimaryName(profileData.address);
           if (primaryName) {
+            const has_oneid = true;
+
             // Call the syncOneID endpoint
             const response = await fetch("/api/user/syncOneID", {
               method: "POST",
@@ -132,7 +134,9 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
               },
               body: JSON.stringify({
                 address: profileData.address,
+                account_name: primaryName,
                 oneid_name: primaryName,
+                has_oneid: has_oneid,
               }),
             });
 

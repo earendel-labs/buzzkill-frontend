@@ -4,11 +4,13 @@ import { Box, BoxProps } from "@mui/material";
 interface SemiTransparentCardProps extends BoxProps {
   children: React.ReactNode;
   transparency?: number; // Optional transparency prop
+  shadowTransparency?: number; // Optional shadow transparency prop
 }
 
 const SemiTransparentCard: React.FC<SemiTransparentCardProps> = ({
   children,
-  transparency = 0.4, // Default transparency value is 0.4
+  transparency = 0.4, // Default transparency value
+  shadowTransparency = 0.3, // Default shadow transparency value
   sx, // Allow additional styles to be passed
   ...props // Spread other BoxProps
 }) => {
@@ -20,7 +22,7 @@ const SemiTransparentCard: React.FC<SemiTransparentCardProps> = ({
         display: "flex",
         flexDirection: "column",
         backgroundColor: `rgba(34, 46, 80, ${transparency})`, // Dynamic transparency
-        boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)", // Increased shadow for higher elevation
+        boxShadow: `0px 12px 24px rgba(0, 0, 0, ${shadowTransparency})`, // Dynamic shadow transparency
         borderRadius: "12px", // Rounded corners
         overflow: "hidden", // Ensure the pseudo-element stays within the box
         zIndex: 1, // Ensure content is above the pseudo-element

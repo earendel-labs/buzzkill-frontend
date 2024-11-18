@@ -6,33 +6,58 @@ const buttonStyles = (theme: Theme) => ({
       root: {
         fontFamily: '"Vera Humana 95", "Poppins"',
         fontSize: "18px",
-        fontWeight: "600",
+        fontWeight: "900",
         textTransform: "none",
         padding: "10px 20px", // Ensure this is consistent for both buttons
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-
         borderRadius: "6px",
         borderStyle: "solid",
         boxSizing: "border-box",
         height: "auto", // Ensure height is not fixed but flexible
 
-        "&.goldButton, &.blueConnectWallet": {
-          borderWidth: "0px",
-          padding: "12px 20px", // Ensure same padding for both buttons
+        "&.blueConnectWallet": {
+          backgroundColor: theme.palette.DarkBlue.main,
+          color: "#fff",
+          borderColor: theme.palette.DarkBlue.dark,
+          borderWidth: "1.25px",
+          "&:hover": {
+            backgroundColor: "#4272ce",
+            color: "#fff",
+            borderColor: theme.palette.DarkBlue.light,
+          },
+          "&:active": {
+            backgroundColor: "#385fbd",
+            color: "#fff",
+            borderColor: theme.palette.DarkBlue.light,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#222e50",
+            color: "#385fbd",
+            borderColor: "#222e50",
+          },
         },
 
         "&.goldButton": {
           backgroundColor: theme.palette.Gold.main,
-          color: "#fff",
-          borderColor: theme.palette.GoldFaded.main,
+          color: "#2E2E2E",
+          borderColor: theme.palette.Gold.dark,
           borderWidth: "1.25px",
           "&:hover": {
-            backgroundColor: theme.palette.Gold.dark,
+            backgroundColor: theme.palette.Gold.light,
+            color: "#fff",
+            borderColor: theme.palette.Gold.light,
           },
           "&:active": {
             backgroundColor: theme.palette.Gold.light,
+            color: "#fff",
+            borderColor: theme.palette.Gold.light,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#222e50",
+            color: "#385fbd",
+            borderColor: "#222e50",
           },
         },
 
@@ -77,28 +102,6 @@ const buttonStyles = (theme: Theme) => ({
             backgroundColor: theme.palette.OneIDRedFaded.dark,
             color: "#9c4b48",
             borderColor: theme.palette.OneIDRedFaded.dark,
-          },
-        },
-
-        "&.blueConnectWallet": {
-          backgroundColor: theme.palette.DarkBlue.main,
-          color: "#fff",
-          borderColor: theme.palette.DarkBlue.dark,
-          borderWidth: "1.25px",
-          "&:hover": {
-            backgroundColor: "#4272ce",
-            color: "#fff",
-            borderColor: theme.palette.DarkBlue.light,
-          },
-          "&:active": {
-            backgroundColor: "#385fbd",
-            color: "#fff",
-            borderColor: theme.palette.DarkBlue.light,
-          },
-          "&.Mui-disabled": {
-            backgroundColor: "#222e50",
-            color: "#385fbd",
-            borderColor: "#222e50",
           },
         },
 

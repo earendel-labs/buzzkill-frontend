@@ -140,7 +140,7 @@ export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({
           height: "100%",
           borderRadius: "inherit",
           background:
-            "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)",
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.2) 70%, rgba(215, 215, 215, 0.25) 90%, rgba(255, 255, 255, 0.3) 100%)", // Lighter bottom-right corner
           padding: "1px",
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",

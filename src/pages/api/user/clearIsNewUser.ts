@@ -19,7 +19,11 @@ export default async function clearIsNewUser(
     path: "/",
     expires: new Date(0),
   });
+  console.log("isNewUser cookie cleared");
 
   res.setHeader("Set-Cookie", clearedCookie);
   return res.status(200).json({ message: "isNewUser cookie cleared" });
 }
+
+
+ 

@@ -43,20 +43,6 @@ const ProfileTab = () => {
     helperText,
   } = useProfileContext();
 
-  useEffect(() => {
-    const initializeOneID = async () => {
-      try {
-        const oneid = new OneID();
-        await oneid.systemConfig.initConfig();
-        console.log("OneID initialized successfully.");
-      } catch (error) {
-        console.error("Error initializing OneID:", error);
-      }
-    };
-    console.log("oneID function call");
-    initializeOneID();
-  }, []);
-
   if (loadingProfile) {
     return (
       <ProfileLayout loading={true}>
@@ -135,6 +121,7 @@ const ProfileTab = () => {
                 {/* Wallet Address */}
                 <Box sx={{ flex: "1 1 300px" }}>
                   <Typography
+                    component="div"
                     sx={{
                       mb: 1,
                       fontWeight: "bold",
@@ -170,6 +157,7 @@ const ProfileTab = () => {
                   {profileData.has_oneid ? (
                     <>
                       <Typography
+                        component="div"
                         sx={{
                           mb: 1,
                           fontWeight: "bold",
@@ -279,6 +267,7 @@ const ProfileTab = () => {
               {/* Invite Code */}
               <Grid item xs={12} sm={6}>
                 <Typography
+                  component="div"
                   sx={{
                     mb: 1,
                     fontWeight: "bold",
@@ -362,6 +351,7 @@ const ProfileTab = () => {
               {/* Users Invited */}
               <Grid item xs={12} sm={6}>
                 <Typography
+                  component="div"
                   sx={{
                     mb: 1,
                     fontWeight: "bold",
@@ -411,6 +401,7 @@ const ProfileTab = () => {
               {/* Account Name */}
               <Grid item xs={12} sm={6}>
                 <Typography
+                  component="div"
                   sx={{
                     mb: 1,
                     fontWeight: "bold",
@@ -498,6 +489,7 @@ const ProfileTab = () => {
               {/* Email Address */}
               <Grid item xs={12} sm={6}>
                 <Typography
+                  component="div"
                   sx={{
                     mb: 1,
                     fontWeight: "bold",
