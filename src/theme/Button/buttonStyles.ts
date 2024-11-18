@@ -13,7 +13,7 @@ const buttonStyles = (theme: Theme) => ({
         alignItems: "center",
         justifyContent: "center",
 
-        borderRadius: "8px",
+        borderRadius: "6px",
         borderStyle: "solid",
         boxSizing: "border-box",
         height: "auto", // Ensure height is not fixed but flexible
@@ -51,15 +51,16 @@ const buttonStyles = (theme: Theme) => ({
             borderColor: theme.palette.DarkBlue.light,
           },
           "&.Mui-disabled": {
-            backgroundColor: "#141c57",
-            color: "#4477ff",
-            borderColor: "#141c57",
+            backgroundColor: theme.palette.DarkBlueFaded.dark,
+            color: "#5e9dff",
+            borderColor: theme.palette.DarkBlueFaded.dark,
           },
         },
 
         "&.oneIDRedButton": {
           backgroundColor: theme.palette.OneIDRed.light,
-          padding: "2px 20px",
+          padding: "4px 16px",
+          borderRadius: "6px",
           color: "#fff",
           borderColor: theme.palette.OneIDRed.light,
           "&:hover": {
@@ -73,9 +74,9 @@ const buttonStyles = (theme: Theme) => ({
             borderColor: theme.palette.OneIDRed.light,
           },
           "&.Mui-disabled": {
-            backgroundColor: "#222e50",
-            color: "#385fbd",
-            borderColor: "#222e50",
+            backgroundColor: theme.palette.OneIDRedFaded.dark,
+            color: "#9c4b48",
+            borderColor: theme.palette.OneIDRedFaded.dark,
           },
         },
 
