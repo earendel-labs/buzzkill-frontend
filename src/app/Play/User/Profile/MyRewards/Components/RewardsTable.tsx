@@ -235,7 +235,7 @@ export const RewardsTable: React.FC<RewardsTableProps> = ({ data }) => {
             <TableRow>
               <TableCell colSpan={3} align="center" sx={{ padding: "2rem" }}>
                 <Typography variant="h6" color="text.secondary">
-                  No rewards available at the moment.
+                  No rewards available at the moment
                 </Typography>
               </TableCell>
             </TableRow>

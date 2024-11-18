@@ -127,7 +127,7 @@ const RewardsPage = () => {
 
         {/* Display Error Message if Any */}
         {error && (
-          <Typography variant="body1" color="error" sx={{ mb: 4 }}>
+          <Typography variant="body1" sx={{ mb: 4 }}>
             {error}
           </Typography>
         )}

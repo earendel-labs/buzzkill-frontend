@@ -33,8 +33,8 @@ const SemiTransparentCard: React.FC<SemiTransparentCardProps> = ({
           height: "100%",
           borderRadius: "inherit", // Inherit border radius for gradient
           background:
-            "linear-gradient(135deg, rgba(34, 46, 80, 0.6) 0%, rgba(215, 215, 215, 0.3) 97%)", // Darker top-left, lighter bottom-right
-          padding: "1px", // Border width
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.2) 70%, rgba(215, 215, 215, 0.25) 90%, rgba(255, 255, 255, 0.3) 100%)", // Lighter bottom-right corner
+          padding: "0.55px", // Border width
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor", // Apply the mask to make only the border show gradient

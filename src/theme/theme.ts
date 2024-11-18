@@ -171,7 +171,7 @@ const getTheme = (): Theme => {
       },
       text: {
         primary: "#ffffff",
-        secondary: "#555555",
+        secondary: "#cfb167",
       },
     },
     typography: (palette) => ({
