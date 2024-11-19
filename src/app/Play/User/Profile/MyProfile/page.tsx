@@ -131,13 +131,14 @@ const ProfileTab = () => {
                     }}
                   >
                     <AccountBalanceWalletIcon
-                      sx={{ color: "white", marginRight: 1 }}
+                      sx={{ color: "white", marginRight: 1, marginBottom: 1 }}
                     />
                     <Box
                       sx={{
                         display: "inline-flex",
                         alignItems: "center",
-                        lineHeight: 1.0, // Adjust line height for better alignment
+                        mb: 1,
+                        lineHeight: 1.0,
                       }}
                     >
                       Wallet Address
@@ -154,35 +155,35 @@ const ProfileTab = () => {
               {/* OneID Integration */}
               <Grid item xs={12} sm={6}>
                 <Box sx={{ flex: "1 1 300px", textAlign: "left" }}>
+                  <Typography
+                    component="div"
+                    sx={{
+                      mb: 1.4,
+                      fontWeight: "bold",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <FingerprintIcon
+                      sx={{
+                        color: "white",
+                        fontSize: "24px",
+                        marginRight: 1,
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        lineHeight: 1.0, // Adjust line height for better alignment
+                      }}
+                    >
+                      OneID Name
+                    </Box>
+                  </Typography>
                   {profileData.has_oneid ? (
                     <>
-                      <Typography
-                        component="div"
-                        sx={{
-                          mb: 1,
-                          fontWeight: "bold",
-                          color: "white",
-                          display: "flex",
-                          alignItems: "flex-end",
-                        }}
-                      >
-                        <FingerprintIcon
-                          sx={{
-                            color: "white",
-                            fontSize: "24px",
-                            marginRight: 1,
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            lineHeight: 1.0, // Adjust line height for better alignment
-                          }}
-                        >
-                          OneID Name
-                        </Box>
-                      </Typography>
                       <Box
                         sx={{
                           display: "flex",
@@ -215,16 +216,11 @@ const ProfileTab = () => {
                     </>
                   ) : (
                     <>
-                      <Typography
-                        sx={{ mb: 1, fontWeight: "bold", color: "white" }}
-                      >
-                        OneID
-                      </Typography>
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          gap: 2,
+                          gap: 1,
                         }}
                       >
                         <Typography variant="body1" sx={{ color: "white" }}>
