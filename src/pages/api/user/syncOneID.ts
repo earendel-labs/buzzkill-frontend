@@ -48,9 +48,9 @@ export default async function syncOneID(
       has_oneid: has_oneid,
     };
 
-    if (account_name && account_name !== "Not provided") {
+    if (account_name && account_name !== "") {
       updateData.account_name = account_name;
-    } else if (account_name === "Not provided") {
+    } else if (account_name === "") {
       updateData.account_name = oneid_name;
     }
 

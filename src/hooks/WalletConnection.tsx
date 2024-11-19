@@ -115,7 +115,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     };
 
     handleWalletChange();
-  }, [isConnected, address]); // Removed previousAddress from dependencies
+  }, [isConnected, address]); 
 
   const handleCaptchaVerify = async (token: string) => {
     setCaptchaToken(token);

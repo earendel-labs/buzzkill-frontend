@@ -17,8 +17,6 @@ export default async function checkUser(
     return res.status(400).json({ error: "Address is required" });
   }
 
-  console.log(`Received request to check user with address: ${address}`);
-
   try {
     const { data: user, error } = await supabase
       .from("users")

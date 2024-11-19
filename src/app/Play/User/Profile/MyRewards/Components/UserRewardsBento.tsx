@@ -1,3 +1,5 @@
+// src/app/Play/User/Profile/MyRewards/Components/UserRewardsBento.tsx
+
 "use client";
 
 import React from "react";
@@ -20,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/system";
 import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
+
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
   profileData: {
@@ -80,6 +83,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
           textAlign: "center",
           maxWidth: "1200px",
           margin: "24px auto",
+          minHeight: "200px", // Reserve space to prevent layout shift
         }}
       >
         <Typography variant="h6" color="white" gutterBottom>

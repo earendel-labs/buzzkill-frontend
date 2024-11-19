@@ -50,8 +50,8 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const profileData = {
-      account_name: userData.account_name || "Not provided",
-      email_address: userData.email_address || "Not provided",
+      account_name: userData.account_name || "",
+      email_address: userData.email_address || "",
       address: userData.address,
       invite_code: userData.invite_code,
       invited_count: userData.invited_count,

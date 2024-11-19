@@ -19,6 +19,9 @@ import { useRouter } from "next/navigation";
 import { signOut, signIn } from "next-auth/react";
 import { useDisconnect } from "wagmi";
 
+// Import the useProfileContext hook
+import { useProfileContext } from "@/context/ProfileContext";
+
 interface LoginButtonProps {
   loginButtonText?: string; // Optional prop for custom button text
   loading?: boolean; // Add loading prop to handle skeleton state
@@ -58,6 +61,9 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     }
   };
 
+  // Access profileData and loadingProfile from ProfileContext
+  const { profileData, loadingProfile } = useProfileContext();
+
   return (
     <ConnectButton.Custom>
       {({
@@ -77,8 +83,11 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
           (authenticationStatus === "authenticated" || !authenticationStatus);
         const router = useRouter();
 
+        // Determine if the component should show a loading state
+        const isLoading = !mounted || !ready || loading || loadingProfile;
+
         // Show skeleton loader if the component is not ready or custom loading state is true
-        if (!mounted || !ready || loading) {
+        if (isLoading) {
           return (
             <Skeleton
               variant="rectangular"
@@ -146,7 +155,10 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       color: theme.palette.text.primary,
                     }}
                   >
-                    {account.displayName}
+                    {/* Display account_name if available, else displayName */}
+                    {profileData && profileData.account_name
+                      ? profileData.account_name
+                      : account.displayName}
                   </Typography>
                   <ArrowDropDownIcon
                     sx={{

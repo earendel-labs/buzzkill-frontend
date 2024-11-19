@@ -1,5 +1,3 @@
-// src/pages/HoneyDropsPage.tsx
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -24,52 +22,66 @@ const HoneyDropsPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true; // Flag to prevent state updates if component is unmounted
+
     const fetchLeaderboardAndConstants = async () => {
       try {
         // Fetch leaderboard data and constants concurrently
         const [leaderboardResponse, constantsResponse] = await Promise.all([
           fetch("/api/rewards/leaderboard-data", {
             method: "GET",
-          }).then((res) => res.json()),
+          }).then(async (res) => {
+            if (!res.ok) {
+              const errorData = await res.json();
+              throw new Error(errorData.error || "Failed to fetch leaderboard data.");
+            }
+            return res.json();
+          }),
           fetch("/api/rewards/syncRewardsConstants", {
             method: "GET",
             credentials: "include", // Include cookies if needed
+          }).then(async (res) => {
+            if (!res.ok) {
+              const errorData = await res.json();
+              throw new Error(errorData.error || "Failed to fetch reward constants.");
+            }
+            return res.json();
           }),
         ]);
 
-        // Set leaderboard data
-        setLeaderboardData(leaderboardResponse);
+        if (isMounted) {
+          // Set leaderboard data
+          setLeaderboardData(leaderboardResponse.data || []);
 
-        // Handle constants data
-        if (constantsResponse.ok) {
-          const data = await constantsResponse.json();
+          // Handle constants data
           setConstants({
-            dailyBonus: data.dailyBonus || 100,
-            referralReward: data.referralReward || 500,
+            dailyBonus: constantsResponse.dailyBonus ?? 100,
+            referralReward: constantsResponse.referralReward ?? 500,
           });
-        } else {
-          console.error(
-            "Failed to fetch reward constants:",
-            constantsResponse.statusText
-          );
+
+          setError(null); // Clear any previous errors
+        }
+      } catch (err: any) {
+        if (isMounted) {
+          console.error("Error fetching data:", err.message || err);
+          setError(err.message || "Failed to fetch leaderboard data.");
           setConstants({
             dailyBonus: 100,
             referralReward: 500,
           });
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("Failed to fetch leaderboard data.");
-        setConstants({
-          dailyBonus: 100,
-          referralReward: 500,
-        });
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchLeaderboardAndConstants();
+
+    return () => {
+      isMounted = false; // Cleanup flag on unmount
+    };
   }, []);
 
   const isLoading = loading || loadingProfile;
@@ -122,6 +134,10 @@ const HoneyDropsPage = () => {
         {error ? (
           <Typography variant="body1" color="error">
             {error}
+          </Typography>
+        ) : leaderboardData.length === 0 ? (
+          <Typography variant="body1" color="white">
+            No leaderboard data available.
           </Typography>
         ) : (
           <LeaderboardTable data={leaderboardData} currentUserAddress={currentUserAddress} />

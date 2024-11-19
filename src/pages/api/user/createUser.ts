@@ -145,7 +145,6 @@ export default async function createUser(
         console.error("Error inserting entry into rewards_table:", rewardError);
       } else {
         console.log(
-          "Reward entry created successfully in rewards_table:",
           rewardEntry
         );
       }
