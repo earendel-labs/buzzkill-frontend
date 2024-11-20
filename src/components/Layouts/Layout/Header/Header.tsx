@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               alignItems: "center",
             }}
           >
-            {/* Logo and "Honey Drops" Label */}
+            {/* Logo   Label */}
             <Box display="flex" alignItems="center">
               <Link href="/">
                 <Box
@@ -111,14 +111,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               <Link href="/Play" className="linkStyle2">
                 Play
               </Link>
-              <Link
-                href="/Gallery"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
-                Gallery
-              </Link>
+
               <Link
                 href="/Mint"
                 color="inherit"
@@ -134,6 +127,22 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 className="linkStyle2"
               >
                 Honey Drops
+              </Link>
+              <Link
+                href="/Play/User/Profile/MyProfile"
+                color="inherit"
+                underline="none"
+                className="linkStyle2"
+              >
+                My Profile
+              </Link>
+              <Link
+                href="/Gallery"
+                color="inherit"
+                underline="none"
+                className="linkStyle2"
+              >
+                Gallery
               </Link>
             </Box>
 
