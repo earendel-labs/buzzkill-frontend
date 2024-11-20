@@ -10,6 +10,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import WaterDropRoundedIcon from "@mui/icons-material/WaterDropRounded";
+import SportsEsportsRoundedIcon from "@mui/icons-material/SportsEsportsRounded";
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
@@ -47,6 +49,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
   const handleProfileNavigation = () => {
     router.push("/Play/User/Profile/MyProfile");
+  };
+
+  const handleMyBeesNavigation = () => {
+    router.push("/Play/User/Profile/MyBees");
+  };
+
+  const handleMyRewardsNavigation = () => {
+    router.push("/Play/User/Profile/MyRewards");
   };
 
   const handleLogout = async () => {
@@ -300,6 +310,88 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       }}
                     >
                       My Profile
+                    </Typography>
+                  </MenuItem>
+
+                  {/* MyBees Option */}
+                  <MenuItem
+                    onClick={handleMyBeesNavigation}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "left",
+                      "&:hover": {
+                        backgroundColor: theme.palette.DarkOrange.main,
+                      },
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <SportsEsportsRoundedIcon
+                        sx={{
+                          color: theme.palette.Orange.main,
+                          fontSize: "1.7rem",
+                        }}
+                      />
+                    </ListItemIcon>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        lineHeight: "1.7rem",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      My Bees
+                    </Typography>
+                  </MenuItem>
+
+                  {/* MyRewards Option */}
+                  <MenuItem
+                    onClick={handleMyRewardsNavigation}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "left",
+                      "&:hover": {
+                        backgroundColor: theme.palette.DarkOrange.main,
+                      },
+                      padding: "10px 16px",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: "36px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <WaterDropRoundedIcon
+                        sx={{
+                          color: theme.palette.Orange.main,
+                          fontSize: "1.7rem",
+                        }}
+                      />
+                    </ListItemIcon>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        lineHeight: "1.7rem",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      My Rewards
                     </Typography>
                   </MenuItem>
 
