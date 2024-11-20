@@ -1,5 +1,7 @@
 // src/components/Card/BeeCard.tsx
 
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
 import { styled } from "@mui/system";
@@ -19,7 +21,9 @@ import BeeInfo from "./BeeInfo";
 export interface BeeCardProps {
   bee: Hatchling;
   onPlayClick: (beeId: number) => void | Promise<void>;
-  variant?: "default" | "hive"; // Determines the context in which the card is used
+  isOwnedByUser: boolean; // Determines if "Unstake" button should be shown
+  variant?: "default" | "hive" | "myBees"; // Context variants
+  additionalInfo?: Record<string, any>; // Any extra data required by specific views
 }
 
 const StyledBeeCard = styled(Box)(({ theme }) => ({
@@ -34,17 +38,31 @@ const StyledBeeCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default" }) => {
+const BeeCard: React.FC<BeeCardProps> = ({
+  bee,
+  onPlayClick,
+  isOwnedByUser,
+  variant = "default",
+  additionalInfo = {},
+}) => {
   const { refreshBeesData } = useUserContext();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
+  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
+    "success"
+  );
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [transactionHash, setTransactionHash] = useState<`0x${string}` | undefined>(undefined);
+  const [transactionHash, setTransactionHash] = useState<
+    `0x${string}` | undefined
+  >(undefined);
   const { getEnvironmentById, getHiveById } = useEnvironment();
-  const environment = bee.environmentID ? getEnvironmentById(Number(bee.environmentID)) : null;
-  const hive = bee.hiveID ? getHiveById(Number(bee.environmentID), Number(bee.hiveID)) : null;
+  const environment = bee.environmentID
+    ? getEnvironmentById(Number(bee.environmentID))
+    : null;
+  const hive = bee.hiveID
+    ? getHiveById(Number(bee.environmentID), Number(bee.hiveID))
+    : null;
   const router = useRouter();
 
   // Handle Unstake button click
@@ -147,17 +165,21 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
   };
 
   // Prepare links based on variant
-  const environmentLink =
-    environment
-      ? `/Play/Location/${encodeURIComponent(environment.name.replace(/\s+/g, ""))}`
-      : undefined;
+  const environmentLink = environment
+    ? `/Play/Location/${encodeURIComponent(
+        environment.name.replace(/\s+/g, "")
+      )}`
+    : undefined;
 
-  const hiveLink =
-    hive
-      ? `/Play/Location/${encodeURIComponent(environment!.name.replace(/\s+/g, ""))}/${encodeURIComponent(
-          hive.name.replace(/\s+/g, "")
-        )}`
-      : undefined;
+  const hiveLink = hive
+    ? `/Play/Location/${encodeURIComponent(
+        environment!.name.replace(/\s+/g, "")
+      )}/${encodeURIComponent(hive.name.replace(/\s+/g, ""))}`
+    : undefined;
+
+  // Determine ownerAddress based on variant
+  const ownerAddressToShow =
+    variant !== "myBees" ? (isOwnedByUser ? "You" : "Other") : undefined;
 
   return (
     <StyledBeeCard>
@@ -181,11 +203,18 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
             hiveName={hive ? hive.name : undefined}
             environmentLink={environmentLink}
             hiveLink={hiveLink}
+            ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
           />
           <ActionButtons
             status={bee.status} // bee.status is now "Free" | "Staked"
-            onPlayClick={bee.status === "Free" ? () => onPlayClick(bee.id) : undefined} // Zero-arg function
-            onUnstakeClick={bee.status === "Staked" ? handleUnstakeClick : undefined}
+            onPlayClick={
+              bee.status === "Free" ? () => onPlayClick(bee.id) : undefined
+            } // Zero-arg function
+            onUnstakeClick={
+              bee.status === "Staked" && isOwnedByUser
+                ? handleUnstakeClick
+                : undefined
+            }
             isPending={isPending}
             isTransactionLoading={isTransactionLoading}
           />
@@ -211,9 +240,9 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
         <ConfirmationModal
           open={confirmModalOpen}
           title="Confirm Unstake"
-          description={`Are you sure you want to unstake Hatchling ID ${bee.id} from ${
-            hive ? hive.name : "Unknown Hive"
-          }?`}
+          description={`Are you sure you want to unstake Hatchling ID ${
+            bee.id
+          } from ${hive ? hive.name : "Unknown Hive"}?`}
           onConfirm={handleConfirmUnstake}
           onCancel={handleCancelUnstake}
           confirmButtonText="Unstake"

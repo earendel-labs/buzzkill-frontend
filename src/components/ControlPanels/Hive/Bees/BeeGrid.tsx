@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// src/components/ControlPanels/Hive/BeeGrid.tsx
+
+import React from "react";
 import {
   Box,
   Typography,
@@ -8,160 +10,24 @@ import {
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent } from "react";
-import BeeCard from "../Old/BeeCard";
+import { BeeCard } from "@/components/Card/BeeCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
-import { BeeInfo, BeeType } from "@/types/BeeInfo";
+import { Hatchling } from "@/types/Hatchling"; // Updated import
+import { useUserContext } from "@/context/UserContext"; // To get user's address
 
 const beeCategories = [
   { label: "All Bees", filter: "all" },
   { label: "Your Bees", filter: "yours" },
 ];
 
-// Example data for bees
+interface BeeGridProps {
+  bees: Hatchling[]; // Array of all bees with ownership info
+}
 
-// Example data for bees
-const allBees: BeeInfo[] = [
-  {
-    ownerAddress: "user",
-    nftAddress: "0x1234562",
-    beeName: "Worker Bee",
-    beeURL: "/NFTs/WorkerBee.png",
-    beeType: BeeType.Worker,
-    level: 1,
-    energyValue: 50,
-    healthValue: 100,
-    productivityValue: 70,
-    attackValue: 30,
-    defenceValue: 40,
-    forageValue: 60,
-    status: "idle",
-    location: "hive",
-    environment: "earth",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0x4563456",
-    beeName: "Queen Bee",
-    beeURL: "/NFTs/Queens/earth-queen.png",
-    beeType: BeeType.Queen,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "earth",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0x789928",
-    beeName: "Queen Bee",
-    beeURL: "/NFTs/Queens/ice-queen.png",
-    beeType: BeeType.Queen,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "ice",
-  },
-  {
-    ownerAddress: "user",
-    nftAddress: "0xabc42",
-    beeName: "Queen Bee",
-    beeURL: "/NFTs/Queens/fire-queen.png",
-    beeType: BeeType.Queen,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "fire",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0xa12ef3",
-    beeName: "Worker Bee",
-    beeURL: "/NFTs/WorkerBee.png",
-    beeType: BeeType.Worker,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "fire",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0xdef135g",
-    beeName: "Worker Bee",
-    beeURL: "/NFTs/WorkerBee.png",
-    beeType: BeeType.Worker,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "fire",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0xdef12345",
-    beeName: "Worker Bee",
-    beeURL: "/NFTs/WorkerBee.png",
-    beeType: BeeType.Worker,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "fire",
-  },
-  {
-    ownerAddress: "other",
-    nftAddress: "0xdefg1",
-    beeName: "Worker Bee",
-    beeURL: "/NFTs/WorkerBee.png",
-    beeType: BeeType.Worker,
-    level: 5,
-    energyValue: 80,
-    healthValue: 150,
-    productivityValue: 200,
-    attackValue: 100,
-    defenceValue: 120,
-    forageValue: 90,
-    status: "active",
-    location: "hive",
-    environment: "fire",
-  },
-];
-
-const BeeGrid: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<string>("all");
-  const [selectedBeeAddress, setSelectedBeeAddress] = useState<string | null>(
+const BeeGrid: React.FC<BeeGridProps> = ({ bees }) => {
+  const { address } = useUserContext(); // Get current user's address
+  const [selectedTab, setSelectedTab] = React.useState<string>("all");
+  const [selectedBeeAddress, setSelectedBeeAddress] = React.useState<string | null>(
     null
   ); // Unified state for selected bee's nftAddress
 
@@ -181,19 +47,26 @@ const BeeGrid: React.FC = () => {
     window.open("/mint", "_blank");
   };
 
-  const filteredWorkerBees = allBees.filter(
-    (bee) =>
-      bee.beeType === BeeType.Worker &&
-      (selectedTab === "all" || bee.ownerAddress === "user")
-  );
+  // Filter bees based on selected tab
+  const filteredBees = bees.filter((bee) => {
+    if (selectedTab === "all") {
+      return true;
+    } else if (selectedTab === "yours") {
+      return bee.ownerAddress === address;
+    }
+    return false;
+  });
 
-  const filteredQueenBees = allBees.filter(
-    (bee) =>
-      bee.beeType === BeeType.Queen &&
-      (selectedTab === "all" || bee.ownerAddress === "user")
-  );
+  // Separate Worker and Queen Bees
+  const filteredWorkerBees = filteredBees.filter(
+    (bee) => bee.status === "Free" || bee.status === "Staked"
+  ); // Adjust based on actual type indicators
+  const filteredQueenBees = filteredBees.filter(
+    (bee) => bee.status === "Free" || bee.status === "Staked"
+  ); // Adjust based on actual type indicators
 
-  const hasQueenBees = filteredQueenBees.length > 0;
+  // Determine if there are any bees in each category
+  const hasQueenBees = filteredQueenBees.some((bee) => bee.status === "Staked"); // Adjust condition
   const hasWorkerBees = filteredWorkerBees.length > 0;
 
   return (
@@ -266,7 +139,6 @@ const BeeGrid: React.FC = () => {
           >
             Queen Bees
           </Typography>
-
           <Box
             sx={{
               display: "grid",
@@ -279,11 +151,13 @@ const BeeGrid: React.FC = () => {
           >
             {filteredQueenBees.map((bee) => (
               <BeeCard
-                key={bee.nftAddress}
-                beeInfo={bee}
-                isSelected={selectedBeeAddress === bee.nftAddress}
-                onSelect={() => setSelectedBeeAddress(bee.nftAddress)}
-                cardSize={is1440pxOrLower ? "large" : "extraLarge"}
+                key={bee.id}
+                bee={bee}
+                isOwnedByUser={bee.ownerAddress === address}
+                onPlayClick={() => {
+                  // Implement play logic if applicable
+                }}
+                variant="default"
               />
             ))}
           </Box>
@@ -307,7 +181,6 @@ const BeeGrid: React.FC = () => {
           >
             Worker Bees
           </Typography>
-
           <Box
             sx={{
               display: "grid",
@@ -328,11 +201,13 @@ const BeeGrid: React.FC = () => {
           >
             {filteredWorkerBees.map((bee) => (
               <BeeCard
-                key={bee.nftAddress}
-                beeInfo={bee}
-                isSelected={selectedBeeAddress === bee.nftAddress}
-                onSelect={() => setSelectedBeeAddress(bee.nftAddress)}
-                cardSize={is1440pxOrLower ? "large" : "extraLarge"}
+                key={bee.id}
+                bee={bee}
+                isOwnedByUser={bee.ownerAddress === address}
+                onPlayClick={() => {
+                  // Implement play logic if applicable
+                }}
+                variant="default"
               />
             ))}
           </Box>

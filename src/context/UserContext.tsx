@@ -198,13 +198,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     imageAddress: string,
     status: HatchlingStatus,
     environmentID: string | null,
-    hiveID: string | null
+    hiveID: string | null,
+    ownerAddress: string
   ): Hatchling => ({
     id,
     imageAddress,
     status,
     environmentID,
     hiveID,
+    ownerAddress,
   });
 
   // Fetch unstaked (free) bees
@@ -223,7 +225,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           imageUrl || "/default-image.png",
           "Free",
           null,
-          null
+          null,
+          address as string
         );
         unstakedHatchlings.push(hatchling);
       }
@@ -252,7 +255,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           imageUrl || "/default-image.png",
           "Staked",
           environmentID,
-          hiveID
+          hiveID,
+          address as string
         );
         stakedBeeArray.push(hatchling);
       }
@@ -325,7 +329,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             beeToStake.imageAddress,
             "Staked",
             environmentID,
-            hiveID
+            hiveID,
+            address as string
           );
           const updatedStakedBees = [...prevStakedBees, hatchling];
           console.log(
@@ -359,7 +364,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             beeToUnstake.imageAddress,
             "Free",
             null,
-            null
+            null,
+            address as string
           );
           const updatedBees = [...prevBees, hatchling];
           console.log(`Added Bee ID ${beeId} back to bees:`, updatedBees);

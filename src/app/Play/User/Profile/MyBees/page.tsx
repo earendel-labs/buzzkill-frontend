@@ -74,7 +74,12 @@ const MyBeesTab = () => {
         ) : (
           myBees.map((bee) => (
             <Grid item xs={12} sm={6} md={4} key={`unstaked-bee-${bee.id}`}>
-              <BeeCard bee={bee} onPlayClick={handlePlayClick} variant="default" />
+              <BeeCard
+                bee={bee}
+                onPlayClick={handlePlayClick}
+                isOwnedByUser={true}
+                variant="myBees" // Changed variant to 'myBees'
+              />
             </Grid>
           ))
         )}
@@ -99,7 +104,12 @@ const MyBeesTab = () => {
         ) : (
           stakedBees.map((bee) => (
             <Grid item xs={12} sm={6} md={4} key={`staked-bee-${bee.id}`}>
-              <BeeCard bee={bee} onPlayClick={handlePlayClick} variant="hive" />
+              <BeeCard
+                bee={bee}
+                onPlayClick={handlePlayClick}
+                isOwnedByUser={true}
+                variant="myBees" // Changed variant to 'myBees'
+              />
             </Grid>
           ))
         )}

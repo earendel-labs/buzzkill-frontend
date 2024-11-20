@@ -4,6 +4,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HiveIcon from "@mui/icons-material/Hive";
+import PersonIcon from "@mui/icons-material/Person"; // Icon for owner
 import { useRouter } from "next/navigation";
 
 interface BeeInfoProps {
@@ -11,6 +12,7 @@ interface BeeInfoProps {
   hiveName?: string;
   environmentLink?: string;
   hiveLink?: string;
+  ownerAddress?: string; // New prop for owner information
 }
 
 const BeeInfo: React.FC<BeeInfoProps> = ({
@@ -18,6 +20,7 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
   hiveName,
   environmentLink,
   hiveLink,
+  ownerAddress,
 }) => {
   const router = useRouter();
 
@@ -78,6 +81,29 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
           >
             <HiveIcon sx={{ marginRight: 0.5 }} />
             {hiveName}
+          </Typography>
+        </Box>
+      )}
+      {ownerAddress && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: 1.5,
+            marginLeft: 1,
+          }}
+        >
+          <Typography
+            variant="body1"
+            fontSize="16px"
+            color="lightcoral"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <PersonIcon sx={{ marginRight: 0.5 }} />
+            Owner: {ownerAddress}
           </Typography>
         </Box>
       )}
