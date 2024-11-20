@@ -1,4 +1,5 @@
 // src/context/UserContext.tsx
+
 "use client";
 
 import React, {
@@ -25,7 +26,7 @@ import {
 } from "@/hooks/HiveStaking";
 import { useWatchContractEvent } from "wagmi"; // Import the hook directly
 import hiveStakingAbi from "@/app/libs/abi/HiveStaking.json"; // Import your ABI
-import { Hatchling } from "@/types/Hatchling";
+import { Hatchling, HatchlingStatus } from "@/types/Hatchling";
 
 interface UserContextType {
   activeBee: number | null;
@@ -191,6 +192,21 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     return ipfsUri;
   };
 
+  // Helper function to create Hatchling objects
+  const createHatchling = (
+    id: number,
+    imageAddress: string,
+    status: HatchlingStatus,
+    environmentID: string | null,
+    hiveID: string | null
+  ): Hatchling => ({
+    id,
+    imageAddress,
+    status,
+    environmentID,
+    hiveID,
+  });
+
   // Fetch unstaked (free) bees
   const fetchUnstakedBees = async () => {
     if (!batchBalances || !address || !imageUrl || !totalMinted) {
@@ -202,13 +218,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     for (let i = 0; i < Number(totalMinted); i++) {
       const balance = batchBalances[i];
       if (balance && Number(balance) > 0) {
-        unstakedHatchlings.push({
-          id: i + 1,
-          imageAddress: imageUrl || "/default-image.png",
-          status: "Free",
-          environmentID: null,
-          hiveID: null,
-        });
+        const hatchling = createHatchling(
+          i + 1,
+          imageUrl || "/default-image.png",
+          "Free",
+          null,
+          null
+        );
+        unstakedHatchlings.push(hatchling);
       }
     }
     console.log("Unstaked Hatchlings:", unstakedHatchlings);
@@ -230,13 +247,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       const hiveID = nft.hiveId?.toString() || null;
 
       if (!isNaN(tokenId)) {
-        stakedBeeArray.push({
-          id: tokenId,
-          imageAddress: imageUrl || "/default-image.png",
-          status: "Staked",
-          environmentID: environmentID,
-          hiveID: hiveID,
-        });
+        const hatchling = createHatchling(
+          tokenId,
+          imageUrl || "/default-image.png",
+          "Staked",
+          environmentID,
+          hiveID
+        );
+        stakedBeeArray.push(hatchling);
       }
     });
 
@@ -261,35 +279,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       setLoadingBees(false);
     }
   };
-
-  // Initialize event watchers using useWatchContractEvent directly
-  // TODO: THIS DOESN'T WORK WITH THE VIC RPC -> Migrate to Websocket RPC
-  // (Perhaps fixed using a subgraph?)
-  // useWatchContractEvent({
-  //   address: hiveStakingAddress,
-  //   abi: hiveStakingAbi,
-  //   eventName: "Staked",
-  //   onLogs: (logs: Log[]) => {
-  //     console.log("Staked event detected:", logs);
-  //     refreshBeesData();
-  //   },
-  //   onError: (error: Error) => {
-  //     console.error("Error watching Staked events:", error);
-  //   },
-  // });
-
-  // useWatchContractEvent({
-  //   address: hiveStakingAddress,
-  //   abi: hiveStakingAbi,
-  //   eventName: "Unstaked",
-  //   onLogs: (logs: Log[]) => {
-  //     console.log("Unstaked event detected:", logs);
-  //     refreshBeesData();
-  //   },
-  //   onError: (error: Error) => {
-  //     console.error("Error watching Unstaked events:", error);
-  //   },
-  // });
 
   // Initial data fetching
   useEffect(() => {
@@ -331,10 +320,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       if (beeToStake) {
         console.log(`Staking Bee ID ${beeId}:`, beeToStake);
         setStakedBees((prevStakedBees) => {
-          const updatedStakedBees = [
-            ...prevStakedBees,
-            { ...beeToStake, status: "Staked", environmentID, hiveID },
-          ];
+          const hatchling = createHatchling(
+            beeToStake.id,
+            beeToStake.imageAddress,
+            "Staked",
+            environmentID,
+            hiveID
+          );
+          const updatedStakedBees = [...prevStakedBees, hatchling];
           console.log(
             `Added Bee ID ${beeId} to stakedBees:`,
             updatedStakedBees
@@ -354,7 +347,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
-  // Function to move a bee from staked to unstaked
   const unstakeBee = (beeId: number) => {
     console.log(`Attempting to unstake Bee ID ${beeId}`);
     setStakedBees((prevStakedBees) => {
@@ -362,15 +354,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       if (beeToUnstake) {
         console.log(`Unstaking Bee ID ${beeId}:`, beeToUnstake);
         setBees((prevBees) => {
-          const updatedBees = [
-            ...prevBees,
-            {
-              ...beeToUnstake,
-              status: "Free",
-              environmentID: null,
-              hiveID: null,
-            },
-          ];
+          const hatchling = createHatchling(
+            beeToUnstake.id,
+            beeToUnstake.imageAddress,
+            "Free",
+            null,
+            null
+          );
+          const updatedBees = [...prevBees, hatchling];
           console.log(`Added Bee ID ${beeId} back to bees:`, updatedBees);
           return updatedBees;
         });

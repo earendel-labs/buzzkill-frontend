@@ -1,7 +1,5 @@
 // src/components/Card/BeeCard.tsx
 
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
 import { styled } from "@mui/system";
@@ -46,7 +44,7 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
   const [transactionHash, setTransactionHash] = useState<`0x${string}` | undefined>(undefined);
   const { getEnvironmentById, getHiveById } = useEnvironment();
   const environment = bee.environmentID ? getEnvironmentById(Number(bee.environmentID)) : null;
-  const hive = bee.environmentID && bee.hiveID ? getHiveById(Number(bee.environmentID), Number(bee.hiveID)) : null;
+  const hive = bee.hiveID ? getHiveById(Number(bee.environmentID), Number(bee.hiveID)) : null;
   const router = useRouter();
 
   // Handle Unstake button click
@@ -149,14 +147,13 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
   };
 
   // Prepare links based on variant
-  // Ensure that environmentLink is always provided if environment exists
   const environmentLink =
-    environment && environment.name
+    environment
       ? `/Play/Location/${encodeURIComponent(environment.name.replace(/\s+/g, ""))}`
       : undefined;
 
   const hiveLink =
-    hive && hive.name
+    hive
       ? `/Play/Location/${encodeURIComponent(environment!.name.replace(/\s+/g, ""))}/${encodeURIComponent(
           hive.name.replace(/\s+/g, "")
         )}`
@@ -214,7 +211,9 @@ const BeeCard: React.FC<BeeCardProps> = ({ bee, onPlayClick, variant = "default"
         <ConfirmationModal
           open={confirmModalOpen}
           title="Confirm Unstake"
-          description={`Are you sure you want to unstake Hatchling ID ${bee.id} from ${hive ? hive.name : "Unknown Hive"}?`}
+          description={`Are you sure you want to unstake Hatchling ID ${bee.id} from ${
+            hive ? hive.name : "Unknown Hive"
+          }?`}
           onConfirm={handleConfirmUnstake}
           onCancel={handleCancelUnstake}
           confirmButtonText="Unstake"
