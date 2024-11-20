@@ -1,8 +1,9 @@
-// src/types.ts
+export type HatchlingStatus = "Free" | "Staked";
+
 export interface Hatchling {
   id: number;
   imageAddress: string;
-  status: string;
-  environmentID: string | null;
-  hiveID: string | null;
+  status: HatchlingStatus;
+  environmentID: string;
+  hiveID: string;
 }

@@ -1,4 +1,5 @@
 // src/pages/MyBeesTab.tsx
+
 "use client";
 
 import React, { useEffect } from "react";
@@ -73,7 +74,7 @@ const MyBeesTab = () => {
         ) : (
           myBees.map((bee) => (
             <Grid item xs={12} sm={6} md={4} key={`unstaked-bee-${bee.id}`}>
-              <BeeCard bee={bee} onPlayClick={handlePlayClick} />
+              <BeeCard bee={bee} onPlayClick={handlePlayClick} variant="default" />
             </Grid>
           ))
         )}
@@ -98,7 +99,7 @@ const MyBeesTab = () => {
         ) : (
           stakedBees.map((bee) => (
             <Grid item xs={12} sm={6} md={4} key={`staked-bee-${bee.id}`}>
-              <BeeCard bee={bee} onPlayClick={handlePlayClick} />
+              <BeeCard bee={bee} onPlayClick={handlePlayClick} variant="hive" />
             </Grid>
           ))
         )}
