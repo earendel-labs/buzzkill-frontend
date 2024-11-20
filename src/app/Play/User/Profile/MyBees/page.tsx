@@ -62,15 +62,12 @@ const MyBeesTab = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              height="60vh"
+              height="20vh"
             >
               <Typography marginTop="24px" marginBottom="24px">
                 No Bees Found. Mint yours here
               </Typography>
-              <PrimaryButton
-                text="Mint"
-                onClick={() => router.push("/Mint")}
-              />
+              <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
             </Box>
           </Grid>
         ) : (

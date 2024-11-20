@@ -364,7 +364,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         setBees((prevBees) => {
           const updatedBees = [
             ...prevBees,
-            { ...beeToUnstake, status: "Free", environmentID: null, hiveID: null },
+            {
+              ...beeToUnstake,
+              status: "Free",
+              environmentID: null,
+              hiveID: null,
+            },
           ];
           console.log(`Added Bee ID ${beeId} back to bees:`, updatedBees);
           return updatedBees;

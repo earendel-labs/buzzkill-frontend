@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent } from "react";
-import BeeCard from "./BeeCard";
+import BeeCard from "../Old/BeeCard";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { BeeInfo, BeeType } from "@/types/BeeInfo";
 

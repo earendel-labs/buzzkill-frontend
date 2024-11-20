@@ -44,7 +44,9 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
   children,
 }) => {
   const [environments, setEnvironments] = useState<Environment[]>([]);
-  const [hivesMap, setHivesMap] = useState<Map<number, Map<number, Hive>>>(new Map());
+  const [hivesMap, setHivesMap] = useState<Map<number, Map<number, Hive>>>(
+    new Map()
+  );
 
   // Fetch environments.json
   useEffect(() => {

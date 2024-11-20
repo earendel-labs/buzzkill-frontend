@@ -90,8 +90,7 @@ const HomePage: React.FC = () => {
           height="100vh"
           flexDirection="column"
           position="fixed"
-          width="100vw"
-          bgcolor="background.default"
+          width="100vw" 
           zIndex={1300} // Ensures the spinner is above other components
         >
           <HexagonSpinner />

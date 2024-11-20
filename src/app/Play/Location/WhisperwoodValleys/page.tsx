@@ -61,7 +61,6 @@ const Forest: React.FC = () => {
           flexDirection="column"
           position="fixed"
           width="100vw"
-          bgcolor="background.default"
           zIndex={1300}
         >
           <HexagonSpinner />
@@ -172,7 +171,8 @@ const Forest: React.FC = () => {
         secondaryButtonClick={handleClick}
       />
       {/* Sap Markers */}
-      <CombinedResourceMarker
+
+      {/* <CombinedResourceMarker
         left="23%"
         top="62%"
         link="/resource-link"
@@ -200,7 +200,7 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Sap}
         contentValue="25%"
       />
-      {/* Pollen Markers */}
+      {/* Pollen Markers  
       <CombinedResourceMarker
         left="17%"
         top="6%"
@@ -222,7 +222,7 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Pollen}
         contentValue="37%"
       />
-      {/* Nectar Markers */}
+      {/* Nectar Markers  
       <CombinedResourceMarker
         left="47%"
         top="42%"
@@ -251,6 +251,7 @@ const Forest: React.FC = () => {
         resourceType={ResourceType.Nectar}
         contentValue="93%"
       />
+       */}
       <BottomBar />
     </GameLayout>
   );

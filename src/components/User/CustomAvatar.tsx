@@ -6,7 +6,7 @@ const CACHE_KEY = "avatar_cache"; // Key for localStorage
 const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // Cache expiry set to 24 hours
 
 const CustomAvatar: AvatarComponent = ({ address, ensImage, size }) => {
-  const defaultAvatar = "/NFTs/Avatar.svg";
+  const defaultAvatar = "/NFTs/Avatar.png";
   const [loading, setLoading] = useState(true);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 

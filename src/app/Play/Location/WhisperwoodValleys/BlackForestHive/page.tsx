@@ -11,7 +11,7 @@ import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
-import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
+import BeeGrid from "@/components/ControlPanels/Hive/Old/BeeGrid";
 import { useWriteHiveStakingStake } from "@/hooks/HiveStaking";
 import Image from "next/image";
 import { HiveInfo } from "@/types/HiveInfo";
@@ -96,7 +96,7 @@ const Forest: React.FC = () => {
 
   useEffect(() => {
     // Fetch environment data for Whisperwood Valleys
-    fetch("/Data/Maps/Forest/Forest.json")
+    fetch("/Data/Maps/Forest.json")
       .then((response) => response.json())
       .then((data) => setEnvironmentData(data))
       .catch((error) =>
@@ -258,7 +258,6 @@ const Forest: React.FC = () => {
               flexDirection="column"
               position="fixed"
               width="100vw"
-              bgcolor="background.default"
               zIndex={1300}
             >
               <HexagonSpinner />
