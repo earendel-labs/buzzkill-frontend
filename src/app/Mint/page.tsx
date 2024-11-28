@@ -16,24 +16,33 @@ import Layout from "@/components/Layouts/Layout/Layout";
 
 import { useAccount, useBalance, useWaitForTransactionReceipt } from "wagmi";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
-import SemiTransaprentCard from "@/components/Card/SemiTransaprentCard";
-import { formatEther } from "ethers"; // Use formatEther for native token balances
-import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import NFTCard from "@/components/Card/MintCard/MintCard";
 import {
-  useReadBuzzkillHatchlingsNftTotalMinted,
-  useReadBuzzkillHatchlingsNftMaxSupply,
-  useWriteBuzzkillHatchlingsNftPublicMint,
+  useReadBuzzkillHatchlingsNftTotalSupply,
+  useReadBuzzkillHatchlingsNftCurrentBatchSize,
+  useWriteBuzzkillHatchlingsNftMint,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 
-// Placeholder data for total collection and minted count
+import { useUserContext } from "@/context/UserContext"; // Import UserContext
+
+// Adjust the import based on your ethers version
+import { formatEther } from "ethers"; // For ethers v6
+
+import { LoginButton } from "@/components/Buttons/LoginButton/Login";
+
 const MintPage: React.FC = () => {
   const { address, isConnected } = useAccount(); // Get account info from RainbowKit and wagmi
+  const { bees, stakedBees, refreshBeesData } = useUserContext(); // Access from context
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [quantity, setQuantity] = useState(1);
-  const maxQuantity = 3;
+  const currentMinted = bees.length + stakedBees.length;
+  const maxPerAddress = 2;
+  const remainingMint = maxPerAddress - currentMinted;
+
+  const initialMaxQuantity = remainingMint > 0 ? remainingMint : 0;
+  const [quantity, setQuantity] = useState(remainingMint > 0 ? 1 : 0);
+  const [maxQuantity, setMaxQuantity] = useState(initialMaxQuantity);
 
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
@@ -63,21 +72,22 @@ const MintPage: React.FC = () => {
     isError: isMintedCountError,
     refetch: refetchMintedCount,
     error: mintedCountError,
-  } = useReadBuzzkillHatchlingsNftTotalMinted();
+  } = useReadBuzzkillHatchlingsNftTotalSupply();
 
   const {
     data: totalSupplyData,
     isLoading: isTotalSupplyLoading,
     isError: isTotalSupplyError,
     error: totalSupplyError,
-  } = useReadBuzzkillHatchlingsNftMaxSupply();
+  } = useReadBuzzkillHatchlingsNftCurrentBatchSize();
+
   // Utilize the generated properties from the hook
   const {
     writeContractAsync: mintBatch,
     isPending,
     isSuccess,
     isError,
-  } = useWriteBuzzkillHatchlingsNftPublicMint();
+  } = useWriteBuzzkillHatchlingsNftMint();
 
   // Update mintedCount when mintedData changes
   useEffect(() => {
@@ -87,7 +97,7 @@ const MintPage: React.FC = () => {
     }
   }, [mintedData]);
 
-  // Update mintedCount and totalSupply when data is fetched
+  // Update totalSupply when data is fetched
   useEffect(() => {
     if (totalSupplyData) {
       const formattedTotalSupply = new Intl.NumberFormat().format(
@@ -107,6 +117,18 @@ const MintPage: React.FC = () => {
     }
   }, [balanceData]);
 
+  // Update maxQuantity and quantity based on remainingMint
+  useEffect(() => {
+    setMaxQuantity(remainingMint > 0 ? remainingMint : 0);
+    if (remainingMint > 0 && quantity > remainingMint) {
+      setQuantity(remainingMint);
+    } else if (remainingMint <= 0) {
+      setQuantity(0);
+    } else if (quantity === 0 && remainingMint > 0) {
+      setQuantity(1);
+    }
+  }, [remainingMint]);
+
   const incrementQuantity = () => {
     if (quantity < maxQuantity) setQuantity(quantity + 1);
   };
@@ -117,14 +139,17 @@ const MintPage: React.FC = () => {
 
   // Mint function with error handling
   const handleMint = async () => {
-    setIsMinted(false); // Minting success
+    if (quantity > remainingMint) {
+      setErrorMessage("You cannot mint more than the allowed limit.");
+      setSnackbarOpen(true);
+      return;
+    }
 
+    setIsMinted(false); // Reset minting success
     setFlipped(false);
-
     setErrorMessage(null); // Reset error message
     setIsMintLoading(true); // Set loading state
 
-    setIsMinted(false); // Reset mint success state
     if (mintBatch && address) {
       try {
         const { data: latestMintedData } = await refetchMintedCount();
@@ -134,23 +159,21 @@ const MintPage: React.FC = () => {
           if (latestMintedData + BigInt(quantity) > totalSupplyData) {
             setErrorMessage("Requested quantity exceeds available supply.");
             setSnackbarOpen(true);
+            setIsMintLoading(false);
             return;
           }
         } else {
           setErrorMessage("Unable to fetch supply data. Please try again.");
           setSnackbarOpen(true);
+          setIsMintLoading(false);
           return;
         }
         const txResponse = await mintBatch({
           args: [BigInt(quantity)],
         });
-        const { data: updatedMintedData } = await refetchMintedCount();
-        console.log("mintedData", mintedData);
-        console.log("updatedMintedData", updatedMintedData);
-        console.log("message output");
         setTransactionHash(txResponse);
         setErrorMessage(null);
-      } catch (error) {
+      } catch (error: any) {
         let userFriendlyMessage = "An unknown error occurred during minting";
 
         if (error instanceof Error) {
@@ -179,6 +202,9 @@ const MintPage: React.FC = () => {
       }
     } else {
       console.error("No address found or minting function not available");
+      setErrorMessage("Wallet not connected or minting unavailable.");
+      setSnackbarOpen(true);
+      setIsMintLoading(false);
     }
   };
 
@@ -193,18 +219,27 @@ const MintPage: React.FC = () => {
 
   // Effect to handle transaction state change
   useEffect(() => {
-    if (isTransactionSuccess) {
-      setIsMinted(true); // Minting success
-      setSnackbarOpen(true);
-      setFlipped(true);
-      refetchMintedCount(); // Refetch minted data after success
-      setIsMintLoading(false); // Reset loading state
-    }
-    if (transactionError) {
-      setErrorMessage("Transaction error: " + transactionError.message); // Set transaction error message
-      setIsMintLoading(false); // Reset loading state
-    }
-  }, [isTransactionSuccess, transactionError, refetchMintedCount]);
+    const handleTransaction = async () => {
+      if (isTransactionSuccess) {
+        setIsMinted(true); // Minting success
+        setSnackbarOpen(true);
+        setFlipped(true);
+        await refetchMintedCount(); // Refetch minted data after success
+        await refreshBeesData(); // Refresh UserContext data
+        setIsMintLoading(false); // Reset loading state
+      }
+      if (transactionError) {
+        setErrorMessage("Transaction error: " + transactionError.message); // Set transaction error message
+        setIsMintLoading(false); // Reset loading state
+      }
+    };
+    handleTransaction();
+  }, [
+    isTransactionSuccess,
+    transactionError,
+    refetchMintedCount,
+    refreshBeesData,
+  ]);
 
   // Close Snackbar function
   const handleSnackbarClose = () => {
@@ -222,6 +257,7 @@ const MintPage: React.FC = () => {
     defense: 95,
     forage: 25,
   };
+
   return (
     <Layout>
       {/* Background */}
@@ -292,18 +328,9 @@ const MintPage: React.FC = () => {
             quantityMinted={quantity}
             transactionHash={transactionHash}
           />
-          {/* <Box
-            component="img"
-            src="/Mint/NFT-Cards.png"
-            sx={{
-              maxWidth: "100%",
-              height: "auto",
-            }}
-            alt="NFT Cards"
-          /> */}
         </Grid>
 
-        {/* Second column - SemiTransparentCard with maxWidth set to 600px */}
+        {/* Second column - SemiTransparentCard with maxWidth set to 800px */}
         <Grid
           item
           xs={12}
@@ -316,7 +343,7 @@ const MintPage: React.FC = () => {
         >
           <Box
             sx={{
-              maxWidth: "800px", // Set maxWidth to 600px
+              maxWidth: "800px", // Set maxWidth to 800px
               padding: {
                 xs: "1rem", // Small screen size
                 md: "2rem", // Medium screen size
@@ -577,10 +604,10 @@ const MintPage: React.FC = () => {
                         lineHeight: "1.5rem", // Ensures consistent vertical height
                       }}
                     >
-                      Select Quantity. Max {maxQuantity}
+                      Select Quantity. Max{" "}
+                      {remainingMint > 0 ? remainingMint : 0}
                     </Typography>
 
-                    {/* Quantity Control Buttons */}
                     {/* Quantity Control Buttons */}
                     <Box
                       sx={{
@@ -592,25 +619,31 @@ const MintPage: React.FC = () => {
                     >
                       {/* Decrement Button */}
                       <Button
-                        onClick={decrementQuantity} // Adjust to use decrement function
-                        disabled={quantity === 1} // Disable when quantity is 1
+                        onClick={decrementQuantity}
+                        disabled={quantity === 1 || remainingMint <= 0}
                         disableRipple
                         disableElevation
                         variant="text"
                         sx={{
                           fontSize: "1.5rem",
-                          color: quantity === 1 ? "#b8ab67" : "#FFD700", // Gray out the color when disabled
+                          color:
+                            quantity === 1 || remainingMint <= 0
+                              ? "#b8ab67"
+                              : "#FFD700", // Gray out the color when disabled
                           opacity: 1, // Keep the opacity constant
-                          cursor: quantity === 1 ? "not-allowed" : "pointer", // Disable cursor when at min
-                          minWidth: "20px", // Consistent button size
-                          height: "30px", // Consistent button size
+                          cursor:
+                            quantity === 1 || remainingMint <= 0
+                              ? "not-allowed"
+                              : "pointer", // Disable cursor when at min
+                          minWidth: "20px",
+                          height: "30px",
                           padding: 0,
-                          backgroundColor: "transparent", // No background color
-                          border: "none", // No border
+                          backgroundColor: "transparent",
+                          border: "none",
                           marginRight: 0,
                           "&:disabled": {
-                            color: "#b8ab67", // Gray out when disabled
-                            opacity: 0.6, // Slightly reduce opacity when disabled
+                            color: "#b8ab67",
+                            opacity: 0.6,
                           },
                         }}
                       >
@@ -631,7 +664,7 @@ const MintPage: React.FC = () => {
                           },
                           width: "30px",
                           textAlign: "center",
-                          lineHeight: "30px", // Ensure text is vertically centered
+                          lineHeight: "30px",
                         }}
                       >
                         {quantity}
@@ -639,29 +672,33 @@ const MintPage: React.FC = () => {
 
                       {/* Increment Button */}
                       <Button
-                        onClick={incrementQuantity} // Adjust to use increment function
-                        disabled={quantity === maxQuantity} // Disable when at max quantity
+                        onClick={incrementQuantity}
+                        disabled={
+                          quantity === maxQuantity || remainingMint <= 0
+                        }
                         disableRipple
                         disableElevation
                         variant="text"
                         sx={{
                           fontSize: "1.5rem",
                           color:
-                            quantity === maxQuantity ? "#b8ab67" : "#FFD700", // Gray out the color when disabled
-                          opacity: 1, // Keep the opacity constant
+                            quantity === maxQuantity || remainingMint <= 0
+                              ? "#b8ab67"
+                              : "#FFD700",
+                          opacity: 1,
                           cursor:
-                            quantity === maxQuantity
+                            quantity === maxQuantity || remainingMint <= 0
                               ? "not-allowed"
-                              : "pointer", // Disable cursor when at max
-                          minWidth: "20px", // Consistent button size
-                          height: "30px", // Consistent button size
+                              : "pointer",
+                          minWidth: "20px",
+                          height: "30px",
                           padding: 0,
-                          backgroundColor: "transparent", // No background color
-                          border: "none", // No border
+                          backgroundColor: "transparent",
+                          border: "none",
                           marginRight: 0,
                           "&:disabled": {
-                            color: "#b8ab67", // Gray out when disabled
-                            opacity: 0.6, // Slightly reduce opacity when disabled
+                            color: "#b8ab67",
+                            opacity: 0.6,
                           },
                         }}
                       >
@@ -681,6 +718,18 @@ const MintPage: React.FC = () => {
                   alignItems: "center",
                 }}
               >
+                {/* Inform user if they've reached the mint limit */}
+                {remainingMint <= 0 && isConnected && (
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    sx={{ mb: 2, color: theme.palette.Orange.light }}
+                  >
+                    You have reached the maximum minting limit of{" "}
+                    {maxPerAddress} NFTs.
+                  </Typography>
+                )}
+
                 {/* Display success message if minted successfully */}
                 {isMinted && (
                   <Typography
@@ -709,7 +758,7 @@ const MintPage: React.FC = () => {
                     {isMintLoading
                       ? "Minting..."
                       : isTransactionLoading
-                      ? "Minting..."
+                      ? "Processing transaction..."
                       : "Mint Tokens"}
                   </Typography>
                 ) : !isConnected ? (
@@ -719,14 +768,19 @@ const MintPage: React.FC = () => {
                   </Box>
                 ) : (
                   /* Display Mint Button if connected and ready to mint */
-                  <PrimaryButton text="Mint" onClick={handleMint} scale={1.4} />
+                  <PrimaryButton
+                    text="Mint"
+                    onClick={handleMint}
+                    scale={1.4}
+                    disabled={remainingMint <= 0 || isMintLoading}
+                  />
                 )}
               </Box>
             </Box>
           </Box>
         </Grid>
       </Grid>
-      {/* Snackbar for successful minting */}
+      {/* Snackbar for successful minting or errors */}
 
       <Snackbar
         open={snackbarOpen}

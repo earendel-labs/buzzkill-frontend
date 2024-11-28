@@ -12,6 +12,9 @@ import localFont from "next/font/local";
 import { EnvironmentProvider } from "@/context/EnvironmentContext";
 import { ProfileProvider } from "@/context/ProfileContext";
 import { OneIDProvider } from "@/context/OneIDContext";
+import { ApolloProvider } from "@apollo/client";
+import client from "./libs/apolloClient";
+import ApolloWrapper from "@/components/Apollo/ApolloWrapper";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -79,8 +82,11 @@ export default function RootLayout({
                     <CssBaseline />
                     <GlobalScrollbarStyles />
                     <EnvironmentProvider>
-                      {children}
-                      <SpeedInsights />
+                      <ApolloWrapper>
+                        {children}
+
+                        <SpeedInsights />
+                      </ApolloWrapper>
                     </EnvironmentProvider>
                   </ProfileProvider>
                 </UserProvider>

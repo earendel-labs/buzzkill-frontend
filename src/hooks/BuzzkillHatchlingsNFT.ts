@@ -10,252 +10,56 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const buzzkillHatchlingsNftAbi = [
   {
     type: 'constructor',
     inputs: [
       { name: 'initialOwner', internalType: 'address', type: 'address' },
-      { name: 'initialCooldownTime', internalType: 'uint256', type: 'uint256' },
+      { name: '_maxSupply', internalType: 'uint256', type: 'uint256' },
+      { name: '_initialBatchSize', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_initialCurrentMaxSupply',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      { name: '_maxMintPerAddr', internalType: 'uint256', type: 'uint256' },
+      { name: '_cooldown', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'MAX_PER_TX',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'MAX_SUPPLY',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'balanceOf',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'accounts', internalType: 'address[]', type: 'address[]' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-    ],
-    name: 'balanceOfBatch',
-    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'value', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'burn',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
-    ],
-    name: 'burnBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'cooldownTime',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'exists',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'operator', internalType: 'address', type: 'address' },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'amount', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'mintBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'owner',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
-    name: 'publicMint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'safeBatchTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'value', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'operator', internalType: 'address', type: 'address' },
-      { name: 'approved', internalType: 'bool', type: 'bool' },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'newCooldownTime', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'setCooldownTime',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'newURI', internalType: 'string', type: 'string' },
-    ],
-    name: 'setTokenURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newuri', internalType: 'string', type: 'string' }],
-    name: 'setURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'totalMinted',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'totalSupply',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
-    name: 'uri',
-    outputs: [{ name: '', internalType: 'string', type: 'string' }],
-    stateMutability: 'view',
   },
   {
     type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: 'account',
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'approved',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'Approval',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
         internalType: 'address',
         type: 'address',
         indexed: true,
@@ -269,6 +73,44 @@ export const buzzkillHatchlingsNftAbi = [
       { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
     ],
     name: 'ApprovalForAll',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newMaxSupply',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'BatchReleased',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newMaxMintPerAddress',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newCooldownTime',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newBatchSize',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MintingParametersUpdated',
   },
   {
     type: 'event',
@@ -294,126 +136,396 @@ export const buzzkillHatchlingsNftAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'operator',
+        name: 'account',
         internalType: 'address',
         type: 'address',
-        indexed: true,
-      },
-      { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      { name: 'to', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'ids',
-        internalType: 'uint256[]',
-        type: 'uint256[]',
-        indexed: false,
-      },
-      {
-        name: 'values',
-        internalType: 'uint256[]',
-        type: 'uint256[]',
         indexed: false,
       },
     ],
-    name: 'TransferBatch',
+    name: 'Paused',
   },
   {
     type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: 'operator',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
+        name: 'newCommonURI',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
       },
-      { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      { name: 'to', internalType: 'address', type: 'address', indexed: true },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
       {
-        name: 'value',
+        name: 'newRareURI',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+      {
+        name: 'newUltraRareURI',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'RarityURIsUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
         internalType: 'uint256',
         type: 'uint256',
         indexed: false,
       },
+      {
+        name: 'rarity',
+        internalType: 'enum BuzzkillHatchlings.Rarity',
+        type: 'uint8',
+        indexed: false,
+      },
+      {
+        name: 'tokenURI',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
     ],
-    name: 'TransferSingle',
+    name: 'TokenMintedData',
   },
   {
     type: 'event',
     anonymous: false,
     inputs: [
-      { name: 'value', internalType: 'string', type: 'string', indexed: false },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'quantity',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'tokenIds',
+        internalType: 'uint256[]',
+        type: 'uint256[]',
+        indexed: false,
+      },
     ],
-    name: 'URI',
+    name: 'TokensMinted',
   },
   {
-    type: 'error',
+    type: 'event',
+    anonymous: false,
     inputs: [
-      { name: 'sender', internalType: 'address', type: 'address' },
-      { name: 'balance', internalType: 'uint256', type: 'uint256' },
-      { name: 'needed', internalType: 'uint256', type: 'uint256' },
+      { name: 'from', internalType: 'address', type: 'address', indexed: true },
+      { name: 'to', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'Transfer',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'account',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'Unpaused',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'addressMintedCount',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'quantity', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'adminMint',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'to', internalType: 'address', type: 'address' },
       { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'ERC1155InsufficientBalance',
+    name: 'approve',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidApprover',
+    type: 'function',
+    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
+    type: 'function',
+    inputs: [],
+    name: 'cooldownTime',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'currentBatchSize',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'currentMaxSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getApproved',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: 'idsLength', internalType: 'uint256', type: 'uint256' },
-      { name: 'valuesLength', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'operator', internalType: 'address', type: 'address' },
     ],
-    name: 'ERC1155InvalidArrayLength',
+    name: 'isApprovedForAll',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidOperator',
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'lastMintedTime',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidReceiver',
+    type: 'function',
+    inputs: [],
+    name: 'maxMintPerAddress',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidSender',
+    type: 'function',
+    inputs: [],
+    name: 'maxSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
+    type: 'function',
+    inputs: [{ name: 'quantity', internalType: 'uint256', type: 'uint256' }],
+    name: 'mint',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'ownerOf',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'pause',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'paused',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'releaseNextBatch',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     inputs: [
       { name: 'operator', internalType: 'address', type: 'address' },
-      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'approved', internalType: 'bool', type: 'bool' },
     ],
-    name: 'ERC1155MissingApprovalForAll',
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
-    name: 'OwnableInvalidOwner',
+    type: 'function',
+    inputs: [],
+    name: 'setMaxSupply',
+    outputs: [],
+    stateMutability: 'view',
   },
   {
-    type: 'error',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'OwnableUnauthorizedAccount',
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'index', internalType: 'uint256', type: 'uint256' }],
+    name: 'tokenByIndex',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: 'index', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'tokenOfOwnerByIndex',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'tokenRarity',
+    outputs: [
+      {
+        name: '',
+        internalType: 'enum BuzzkillHatchlings.Rarity',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'tokenURI',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'from', internalType: 'address', type: 'address' },
+      { name: 'to', internalType: 'address', type: 'address' },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'unpause',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
 ] as const
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const buzzkillHatchlingsNftAddress = {
-  89: '0x603a23682ae999c5A33BaC9a15216521c9f32Cd8',
+  89: '0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe',
 } as const
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const buzzkillHatchlingsNftConfig = {
   address: buzzkillHatchlingsNftAddress,
@@ -427,40 +539,28 @@ export const buzzkillHatchlingsNftConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNft = /*#__PURE__*/ createUseReadContract(
   { abi: buzzkillHatchlingsNftAbi, address: buzzkillHatchlingsNftAddress },
 )
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_PER_TX"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"addressMintedCount"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useReadBuzzkillHatchlingsNftMaxPerTx =
+export const useReadBuzzkillHatchlingsNftAddressMintedCount =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'MAX_PER_TX',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_SUPPLY"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftMaxSupply =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'MAX_SUPPLY',
+    functionName: 'addressMintedCount',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOf"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftBalanceOf =
   /*#__PURE__*/ createUseReadContract({
@@ -470,21 +570,9 @@ export const useReadBuzzkillHatchlingsNftBalanceOf =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOfBatch"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftBalanceOfBatch =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'balanceOfBatch',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"cooldownTime"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftCooldownTime =
   /*#__PURE__*/ createUseReadContract({
@@ -494,21 +582,45 @@ export const useReadBuzzkillHatchlingsNftCooldownTime =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"exists"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"currentBatchSize"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useReadBuzzkillHatchlingsNftExists =
+export const useReadBuzzkillHatchlingsNftCurrentBatchSize =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'exists',
+    functionName: 'currentBatchSize',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"currentMaxSupply"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftCurrentMaxSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'currentMaxSupply',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"getApproved"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftGetApproved =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'getApproved',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"isApprovedForAll"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
   /*#__PURE__*/ createUseReadContract({
@@ -518,9 +630,57 @@ export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"lastMintedTime"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftLastMintedTime =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'lastMintedTime',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"maxMintPerAddress"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftMaxMintPerAddress =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'maxMintPerAddress',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"maxSupply"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftMaxSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'maxSupply',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"name"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftName =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'name',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"owner"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftOwner =
   /*#__PURE__*/ createUseReadContract({
@@ -530,9 +690,45 @@ export const useReadBuzzkillHatchlingsNftOwner =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"ownerOf"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftOwnerOf =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'ownerOf',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"paused"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftPaused =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'paused',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setMaxSupply"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftSetMaxSupply =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'setMaxSupply',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"supportsInterface"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftSupportsInterface =
   /*#__PURE__*/ createUseReadContract({
@@ -542,21 +738,69 @@ export const useReadBuzzkillHatchlingsNftSupportsInterface =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalMinted"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"symbol"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useReadBuzzkillHatchlingsNftTotalMinted =
+export const useReadBuzzkillHatchlingsNftSymbol =
   /*#__PURE__*/ createUseReadContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'totalMinted',
+    functionName: 'symbol',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenByIndex"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftTokenByIndex =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'tokenByIndex',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenOfOwnerByIndex"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftTokenOfOwnerByIndex =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'tokenOfOwnerByIndex',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenRarity"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftTokenRarity =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'tokenRarity',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenURI"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useReadBuzzkillHatchlingsNftTokenUri =
+  /*#__PURE__*/ createUseReadContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'tokenURI',
   })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalSupply"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useReadBuzzkillHatchlingsNftTotalSupply =
   /*#__PURE__*/ createUseReadContract({
@@ -566,21 +810,9 @@ export const useReadBuzzkillHatchlingsNftTotalSupply =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"uri"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftUri =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'uri',
-  })
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseWriteContract({
@@ -589,33 +821,33 @@ export const useWriteBuzzkillHatchlingsNft =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"adminMint"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWriteBuzzkillHatchlingsNftBurn =
+export const useWriteBuzzkillHatchlingsNftAdminMint =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'burn',
+    functionName: 'adminMint',
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"approve"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWriteBuzzkillHatchlingsNftBurnBatch =
+export const useWriteBuzzkillHatchlingsNftApprove =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'burnBatch',
+    functionName: 'approve',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseWriteContract({
@@ -625,33 +857,33 @@ export const useWriteBuzzkillHatchlingsNftMint =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"pause"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWriteBuzzkillHatchlingsNftMintBatch =
+export const useWriteBuzzkillHatchlingsNftPause =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'mintBatch',
+    functionName: 'pause',
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"releaseNextBatch"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWriteBuzzkillHatchlingsNftPublicMint =
+export const useWriteBuzzkillHatchlingsNftReleaseNextBatch =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'publicMint',
+    functionName: 'releaseNextBatch',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -661,21 +893,9 @@ export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSafeBatchTransferFrom =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeBatchTransferFrom',
-  })
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
@@ -687,7 +907,7 @@ export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseWriteContract({
@@ -697,45 +917,21 @@ export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferFrom"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
+export const useWriteBuzzkillHatchlingsNftTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'setCooldownTime',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetTokenUri =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setTokenURI',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetUri =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setURI',
+    functionName: 'transferFrom',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWriteBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -745,9 +941,21 @@ export const useWriteBuzzkillHatchlingsNftTransferOwnership =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"unpause"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWriteBuzzkillHatchlingsNftUnpause =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'unpause',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseSimulateContract({
@@ -756,33 +964,33 @@ export const useSimulateBuzzkillHatchlingsNft =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"adminMint"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useSimulateBuzzkillHatchlingsNftBurn =
+export const useSimulateBuzzkillHatchlingsNftAdminMint =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'burn',
+    functionName: 'adminMint',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"approve"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useSimulateBuzzkillHatchlingsNftBurnBatch =
+export const useSimulateBuzzkillHatchlingsNftApprove =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'burnBatch',
+    functionName: 'approve',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseSimulateContract({
@@ -792,33 +1000,33 @@ export const useSimulateBuzzkillHatchlingsNftMint =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"pause"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useSimulateBuzzkillHatchlingsNftMintBatch =
+export const useSimulateBuzzkillHatchlingsNftPause =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'mintBatch',
+    functionName: 'pause',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"releaseNextBatch"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useSimulateBuzzkillHatchlingsNftPublicMint =
+export const useSimulateBuzzkillHatchlingsNftReleaseNextBatch =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'publicMint',
+    functionName: 'releaseNextBatch',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -828,21 +1036,9 @@ export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSafeBatchTransferFrom =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeBatchTransferFrom',
-  })
-
-/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -854,7 +1050,7 @@ export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseSimulateContract({
@@ -864,45 +1060,21 @@ export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferFrom"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
+export const useSimulateBuzzkillHatchlingsNftTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    functionName: 'setCooldownTime',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetTokenUri =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setTokenURI',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetUri =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setURI',
+    functionName: 'transferFrom',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -912,9 +1084,21 @@ export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"unpause"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useSimulateBuzzkillHatchlingsNftUnpause =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    functionName: 'unpause',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWatchBuzzkillHatchlingsNftEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -923,9 +1107,21 @@ export const useWatchBuzzkillHatchlingsNftEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Approval"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftApprovalEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'Approval',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"ApprovalForAll"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -935,9 +1131,33 @@ export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"BatchReleased"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftBatchReleasedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'BatchReleased',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"MintingParametersUpdated"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftMintingParametersUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'MintingParametersUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
 export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -947,37 +1167,73 @@ export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferBatch"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Paused"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWatchBuzzkillHatchlingsNftTransferBatchEvent =
+export const useWatchBuzzkillHatchlingsNftPausedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: 'TransferBatch',
+    eventName: 'Paused',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferSingle"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"RarityURIsUpdated"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWatchBuzzkillHatchlingsNftTransferSingleEvent =
+export const useWatchBuzzkillHatchlingsNftRarityUrIsUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: 'TransferSingle',
+    eventName: 'RarityURIsUpdated',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"URI"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TokenMintedData"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
  */
-export const useWatchBuzzkillHatchlingsNftUriEvent =
+export const useWatchBuzzkillHatchlingsNftTokenMintedDataEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: buzzkillHatchlingsNftAbi,
     address: buzzkillHatchlingsNftAddress,
-    eventName: 'URI',
+    eventName: 'TokenMintedData',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TokensMinted"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftTokensMintedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'TokensMinted',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Transfer"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftTransferEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'Transfer',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Unpaused"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xF7804E4BDCB4A994d45139eb77d8f0f1ce4A3DEe)
+ */
+export const useWatchBuzzkillHatchlingsNftUnpausedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: buzzkillHatchlingsNftAbi,
+    address: buzzkillHatchlingsNftAddress,
+    eventName: 'Unpaused',
   })

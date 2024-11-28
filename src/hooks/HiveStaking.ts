@@ -6,269 +6,76 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// BuzzkillHatchlingsNFT
+// HiveStaking
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const buzzkillHatchlingsNftAbi = [
+export const hiveStakingAbi = [
   {
     type: 'constructor',
     inputs: [
+      {
+        name: '_buzzkillHatchlingsNFT',
+        internalType: 'address',
+        type: 'address',
+      },
       { name: 'initialOwner', internalType: 'address', type: 'address' },
-      { name: 'initialCooldownTime', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'MAX_PER_TX',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'MAX_SUPPLY',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'balanceOf',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'accounts', internalType: 'address[]', type: 'address[]' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-    ],
-    name: 'balanceOfBatch',
-    outputs: [{ name: '', internalType: 'uint256[]', type: 'uint256[]' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'value', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'burn',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
-    ],
-    name: 'burnBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'cooldownTime',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'exists',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'operator', internalType: 'address', type: 'address' },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'amount', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'amounts', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'mintBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'owner',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
-    name: 'publicMint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'ids', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'values', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'safeBatchTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'value', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'operator', internalType: 'address', type: 'address' },
-      { name: 'approved', internalType: 'bool', type: 'bool' },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'newCooldownTime', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'setCooldownTime',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'newURI', internalType: 'string', type: 'string' },
-    ],
-    name: 'setTokenURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newuri', internalType: 'string', type: 'string' }],
-    name: 'setURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'totalMinted',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'totalSupply',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
-    name: 'uri',
-    outputs: [{ name: '', internalType: 'string', type: 'string' }],
-    stateMutability: 'view',
   },
   {
     type: 'event',
     anonymous: false,
     inputs: [
       {
-        name: 'account',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
+        name: 'newEnvironments',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
       },
       {
-        name: 'operator',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
+        name: 'newHives',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
       },
-      { name: 'approved', internalType: 'bool', type: 'bool', indexed: false },
     ],
-    name: 'ApprovalForAll',
+    name: 'EnvironmentsAndHivesUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'hasExternalNFT',
+        internalType: 'bool',
+        type: 'bool',
+        indexed: false,
+      },
+    ],
+    name: 'ExternalNFTFlagUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MaxBeesPerHiveUpdated',
   },
   {
     type: 'event',
@@ -293,158 +100,120 @@ export const buzzkillHatchlingsNftAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
       {
-        name: 'operator',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      { name: 'to', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'ids',
-        internalType: 'uint256[]',
-        type: 'uint256[]',
+        name: 'points',
+        internalType: 'uint256',
+        type: 'uint256',
         indexed: false,
       },
       {
-        name: 'values',
-        internalType: 'uint256[]',
-        type: 'uint256[]',
-        indexed: false,
-      },
-    ],
-    name: 'TransferBatch',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'operator',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      { name: 'to', internalType: 'address', type: 'address', indexed: true },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
-      {
-        name: 'value',
+        name: 'timestamp',
         internalType: 'uint256',
         type: 'uint256',
         indexed: false,
       },
     ],
-    name: 'TransferSingle',
+    name: 'PointsClaimed',
   },
   {
     type: 'event',
     anonymous: false,
     inputs: [
-      { name: 'value', internalType: 'string', type: 'string', indexed: false },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
-    ],
-    name: 'URI',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: 'sender', internalType: 'address', type: 'address' },
-      { name: 'balance', internalType: 'uint256', type: 'uint256' },
-      { name: 'needed', internalType: 'uint256', type: 'uint256' },
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'ERC1155InsufficientBalance',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'approver', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidApprover',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: 'idsLength', internalType: 'uint256', type: 'uint256' },
-      { name: 'valuesLength', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'ERC1155InvalidArrayLength',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'operator', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidOperator',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'receiver', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidReceiver',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
-    name: 'ERC1155InvalidSender',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: 'operator', internalType: 'address', type: 'address' },
-      { name: 'owner', internalType: 'address', type: 'address' },
-    ],
-    name: 'ERC1155MissingApprovalForAll',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
-    name: 'OwnableInvalidOwner',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'OwnableUnauthorizedAccount',
-  },
-] as const
-
-/**
- *
- */
-export const buzzkillHatchlingsNftAddress = {
-  89: '0x603a23682ae999c5A33BaC9a15216521c9f32Cd8',
-} as const
-
-/**
- *
- */
-export const buzzkillHatchlingsNftConfig = {
-  address: buzzkillHatchlingsNftAddress,
-  abi: buzzkillHatchlingsNftAbi,
-} as const
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// HiveStaking
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- *
- */
-export const hiveStakingAbi = [
-  {
-    type: 'constructor',
-    inputs: [
       {
-        name: '_buzzkillHatchlingsNFT',
-        internalType: 'address',
-        type: 'address',
+        name: 'oldRate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newRate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
       },
     ],
+    name: 'RewardRateUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Staked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Unstaked',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'users', internalType: 'address[]', type: 'address[]' },
+      { name: 'flags', internalType: 'bool[]', type: 'bool[]' },
+    ],
+    name: 'batchSetUserExternalNFTFlag',
+    outputs: [],
     stateMutability: 'nonpayable',
   },
-  { type: 'receive', stateMutability: 'payable' },
   {
     type: 'function',
     inputs: [],
     name: 'buzzkillHatchlingsNFT',
-    outputs: [{ name: '', internalType: 'contract IERC1155', type: 'address' }],
+    outputs: [{ name: '', internalType: 'contract IERC721', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -456,7 +225,14 @@ export const hiveStakingAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    inputs: [],
+    name: 'externalFlagMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'userAddress', internalType: 'address', type: 'address' }],
     name: 'getAllStakedNFTsForUser',
     outputs: [
       {
@@ -469,6 +245,7 @@ export const hiveStakingAbi = [
           { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
           { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
           { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'owner', internalType: 'address', type: 'address' },
         ],
       },
     ],
@@ -492,9 +269,24 @@ export const hiveStakingAbi = [
           { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
           { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
           { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'owner', internalType: 'address', type: 'address' },
         ],
       },
     ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'getUserMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'hasExternalNFTFlag',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
   {
@@ -509,24 +301,10 @@ export const hiveStakingAbi = [
     inputs: [
       { name: '', internalType: 'address', type: 'address' },
       { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'onERC1155BatchReceived',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
       { name: '', internalType: 'uint256', type: 'uint256' },
       { name: '', internalType: 'bytes', type: 'bytes' },
     ],
-    name: 'onERC1155Received',
+    name: 'onERC721Received',
     outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
     stateMutability: 'nonpayable',
   },
@@ -578,6 +356,16 @@ export const hiveStakingAbi = [
   {
     type: 'function',
     inputs: [
+      { name: 'user', internalType: 'address', type: 'address' },
+      { name: 'hasNFT', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'setUserExternalNFTFlag',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
       { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
       { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
       { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
@@ -601,6 +389,7 @@ export const hiveStakingAbi = [
       { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
       { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
       { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
     ],
     stateMutability: 'view',
   },
@@ -618,14 +407,8 @@ export const hiveStakingAbi = [
       { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
       { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
       { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
     ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
   {
@@ -678,11 +461,15 @@ export const hiveStakingAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'amount', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'withdrawERC1155',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'userRewardMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'withdrawERC721',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -693,175 +480,18 @@ export const hiveStakingAbi = [
     outputs: [],
     stateMutability: 'nonpayable',
   },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'message',
-        internalType: 'string',
-        type: 'string',
-        indexed: false,
-      },
-      {
-        name: 'user',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'tokenId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'userBalance',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'DebugStake',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'oldMax',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'newMax',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'MaxBeesPerHiveUpdated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'previousOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'newOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'OwnershipTransferred',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'points',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'PointsClaimed',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'tokenId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: true,
-      },
-      {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'Staked',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'tokenId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: true,
-      },
-      {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'Unstaked',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
-    name: 'OwnableInvalidOwner',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: 'account', internalType: 'address', type: 'address' }],
-    name: 'OwnableUnauthorizedAccount',
-  },
-  { type: 'error', inputs: [], name: 'ReentrancyGuardReentrantCall' },
+  { type: 'receive', stateMutability: 'payable' },
 ] as const
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const hiveStakingAddress = {
-  89: '0x8256Db44AC26c81593CC67ebe14beFFec47414c5',
+  89: '0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2',
 } as const
 
 /**
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const hiveStakingConfig = {
   address: hiveStakingAddress,
@@ -873,567 +503,9 @@ export const hiveStakingConfig = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
- *
- *
- */
-export const useReadBuzzkillHatchlingsNft = /*#__PURE__*/ createUseReadContract(
-  { abi: buzzkillHatchlingsNftAbi, address: buzzkillHatchlingsNftAddress },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_PER_TX"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftMaxPerTx =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'MAX_PER_TX',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"MAX_SUPPLY"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftMaxSupply =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'MAX_SUPPLY',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOf"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftBalanceOf =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'balanceOf',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOfBatch"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftBalanceOfBatch =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'balanceOfBatch',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"cooldownTime"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftCooldownTime =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'cooldownTime',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"exists"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftExists =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'exists',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"isApprovedForAll"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'isApprovedForAll',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"owner"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftOwner =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'owner',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"supportsInterface"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftSupportsInterface =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'supportsInterface',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalMinted"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftTotalMinted =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'totalMinted',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalSupply"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftTotalSupply =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'totalSupply',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"uri"`
- *
- *
- */
-export const useReadBuzzkillHatchlingsNftUri =
-  /*#__PURE__*/ createUseReadContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'uri',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNft =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftBurn =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'burn',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftBurnBatch =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'burnBatch',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftMint =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'mint',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftMintBatch =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'mintBatch',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftPublicMint =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'publicMint',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'renounceOwnership',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSafeBatchTransferFrom =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeBatchTransferFrom',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeTransferFrom',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setApprovalForAll',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setCooldownTime',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetTokenUri =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setTokenURI',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftSetUri =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setURI',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
- *
- *
- */
-export const useWriteBuzzkillHatchlingsNftTransferOwnership =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNft =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burn"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftBurn =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'burn',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"burnBatch"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftBurnBatch =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'burnBatch',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftMint =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'mint',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mintBatch"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftMintBatch =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'mintBatch',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"publicMint"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftPublicMint =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'publicMint',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'renounceOwnership',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeBatchTransferFrom"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSafeBatchTransferFrom =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeBatchTransferFrom',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'safeTransferFrom',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setApprovalForAll',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setCooldownTime',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setTokenURI"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetTokenUri =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setTokenURI',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setURI"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftSetUri =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'setURI',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
- *
- *
- */
-export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"ApprovalForAll"`
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    eventName: 'ApprovalForAll',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    eventName: 'OwnershipTransferred',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferBatch"`
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftTransferBatchEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    eventName: 'TransferBatch',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TransferSingle"`
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftTransferSingleEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    eventName: 'TransferSingle',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"URI"`
- *
- *
- */
-export const useWatchBuzzkillHatchlingsNftUriEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: buzzkillHatchlingsNftAbi,
-    address: buzzkillHatchlingsNftAddress,
-    eventName: 'URI',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -1443,7 +515,7 @@ export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlingsNFT"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseReadContract({
@@ -1453,9 +525,21 @@ export const useReadHiveStakingBuzzkillHatchlingsNft =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"externalFlagMultiplier"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useReadHiveStakingExternalFlagMultiplier =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'externalFlagMultiplier',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getAllStakedNFTsForUser"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingGetAllStakedNfTsForUser =
   /*#__PURE__*/ createUseReadContract({
@@ -1467,7 +551,7 @@ export const useReadHiveStakingGetAllStakedNfTsForUser =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getStakedNFTsInHive"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingGetStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
@@ -1477,9 +561,33 @@ export const useReadHiveStakingGetStakedNfTsInHive =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getUserMultiplier"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useReadHiveStakingGetUserMultiplier =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'getUserMultiplier',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"hasExternalNFTFlag"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useReadHiveStakingHasExternalNftFlag =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'hasExternalNFTFlag',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"maxBeesPerHive"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingMaxBeesPerHive =
   /*#__PURE__*/ createUseReadContract({
@@ -1491,7 +599,7 @@ export const useReadHiveStakingMaxBeesPerHive =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"owner"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -1502,7 +610,7 @@ export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rewardRatePerDay"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingRewardRatePerDay =
   /*#__PURE__*/ createUseReadContract({
@@ -1514,7 +622,7 @@ export const useReadHiveStakingRewardRatePerDay =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsByUser"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingStakedNfTsByUser =
   /*#__PURE__*/ createUseReadContract({
@@ -1526,7 +634,7 @@ export const useReadHiveStakingStakedNfTsByUser =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsInHive"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
@@ -1536,21 +644,9 @@ export const useReadHiveStakingStakedNfTsInHive =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"supportsInterface"`
- *
- *
- */
-export const useReadHiveStakingSupportsInterface =
-  /*#__PURE__*/ createUseReadContract({
-    abi: hiveStakingAbi,
-    address: hiveStakingAddress,
-    functionName: 'supportsInterface',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalBeesStaked"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingTotalBeesStaked =
   /*#__PURE__*/ createUseReadContract({
@@ -1562,7 +658,7 @@ export const useReadHiveStakingTotalBeesStaked =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalEnvironments"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingTotalEnvironments =
   /*#__PURE__*/ createUseReadContract({
@@ -1574,7 +670,7 @@ export const useReadHiveStakingTotalEnvironments =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalHivesPerEnvironment"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingTotalHivesPerEnvironment =
   /*#__PURE__*/ createUseReadContract({
@@ -1586,7 +682,7 @@ export const useReadHiveStakingTotalHivesPerEnvironment =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userInfo"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -1595,9 +691,21 @@ export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userRewardMultiplier"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useReadHiveStakingUserRewardMultiplier =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'userRewardMultiplier',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -1605,9 +713,21 @@ export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useWriteHiveStakingBatchSetUserExternalNftFlag =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'batchSetUserExternalNFTFlag',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingClaimPoints =
   /*#__PURE__*/ createUseWriteContract({
@@ -1617,33 +737,21 @@ export const useWriteHiveStakingClaimPoints =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC1155BatchReceived"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const useWriteHiveStakingOnErc1155BatchReceived =
+export const useWriteHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'onERC1155BatchReceived',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC1155Received"`
- *
- *
- */
-export const useWriteHiveStakingOnErc1155Received =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: hiveStakingAbi,
-    address: hiveStakingAddress,
-    functionName: 'onERC1155Received',
+    functionName: 'onERC721Received',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -1655,7 +763,7 @@ export const useWriteHiveStakingRenounceOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseWriteContract({
@@ -1667,7 +775,7 @@ export const useWriteHiveStakingSetEnvironmentsAndHives =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseWriteContract({
@@ -1679,7 +787,7 @@ export const useWriteHiveStakingSetMaxBeesPerHive =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseWriteContract({
@@ -1689,9 +797,21 @@ export const useWriteHiveStakingSetRewardRate =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useWriteHiveStakingSetUserExternalNftFlag =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setUserExternalNFTFlag',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -1702,7 +822,7 @@ export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -1714,7 +834,7 @@ export const useWriteHiveStakingTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -1723,21 +843,21 @@ export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC1155"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const useWriteHiveStakingWithdrawErc1155 =
+export const useWriteHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawERC1155',
+    functionName: 'withdrawERC721',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWriteHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseWriteContract({
@@ -1749,7 +869,7 @@ export const useWriteHiveStakingWithdrawEther =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
   abi: hiveStakingAbi,
@@ -1757,9 +877,21 @@ export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
 })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useSimulateHiveStakingBatchSetUserExternalNftFlag =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'batchSetUserExternalNFTFlag',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingClaimPoints =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1769,33 +901,21 @@ export const useSimulateHiveStakingClaimPoints =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC1155BatchReceived"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const useSimulateHiveStakingOnErc1155BatchReceived =
+export const useSimulateHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'onERC1155BatchReceived',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC1155Received"`
- *
- *
- */
-export const useSimulateHiveStakingOnErc1155Received =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: hiveStakingAbi,
-    address: hiveStakingAddress,
-    functionName: 'onERC1155Received',
+    functionName: 'onERC721Received',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1807,7 +927,7 @@ export const useSimulateHiveStakingRenounceOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1819,7 +939,7 @@ export const useSimulateHiveStakingSetEnvironmentsAndHives =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1831,7 +951,7 @@ export const useSimulateHiveStakingSetMaxBeesPerHive =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1841,9 +961,21 @@ export const useSimulateHiveStakingSetRewardRate =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useSimulateHiveStakingSetUserExternalNftFlag =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setUserExternalNFTFlag',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingStake =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1855,7 +987,7 @@ export const useSimulateHiveStakingStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1867,7 +999,7 @@ export const useSimulateHiveStakingTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingUnstake =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1877,21 +1009,21 @@ export const useSimulateHiveStakingUnstake =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC1155"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const useSimulateHiveStakingWithdrawErc1155 =
+export const useSimulateHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawERC1155',
+    functionName: 'withdrawERC721',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useSimulateHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1903,7 +1035,7 @@ export const useSimulateHiveStakingWithdrawEther =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1912,21 +1044,33 @@ export const useWatchHiveStakingEvent =
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"DebugStake"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"EnvironmentsAndHivesUpdated"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
-export const useWatchHiveStakingDebugStakeEvent =
+export const useWatchHiveStakingEnvironmentsAndHivesUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'DebugStake',
+    eventName: 'EnvironmentsAndHivesUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"ExternalNFTFlagUpdated"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useWatchHiveStakingExternalNftFlagUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    eventName: 'ExternalNFTFlagUpdated',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"MaxBeesPerHiveUpdated"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1938,7 +1082,7 @@ export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1950,7 +1094,7 @@ export const useWatchHiveStakingOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"PointsClaimed"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingPointsClaimedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1960,9 +1104,21 @@ export const useWatchHiveStakingPointsClaimedEvent =
   })
 
 /**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RewardRateUpdated"`
+ *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
+ */
+export const useWatchHiveStakingRewardRateUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    eventName: 'RewardRateUpdated',
+  })
+
+/**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Staked"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingStakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1974,7 +1130,7 @@ export const useWatchHiveStakingStakedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Unstaked"`
  *
- *
+ * [__View Contract on Viction Testnet Vic Scan__](https://testnet.vicscan.xyz/address/0xEb2CBE98476Fc072605Fd5f46dCf2e480eed78b2)
  */
 export const useWatchHiveStakingUnstakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

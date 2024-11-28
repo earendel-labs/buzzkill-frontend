@@ -4,9 +4,21 @@ const nextConfig = {
   reactStrictMode: true,
   optimizeFonts: false,
   webpack(config) {
+    // Add SVG handling
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
+    });
+
+    // Add GraphQL file handling
+    config.module.rules.push({
+      test: /\.(graphql|gql)$/, // Match .graphql and .gql files
+      exclude: /node_modules/, // Exclude node_modules
+      use: [
+        {
+          loader: "graphql-tag/loader", // Use graphql-tag loader
+        },
+      ],
     });
 
     return config;
@@ -38,7 +50,6 @@ const nextConfig = {
       },
     ];
   },
-  // Use remotePatterns instead of domains for image loading
   images: {
     remotePatterns: [
       {

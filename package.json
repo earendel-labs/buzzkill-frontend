@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.10",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hcaptcha/react-hcaptcha": "^1.11.0",
@@ -36,6 +37,8 @@
     "echarts-for-react": "^3.0.2",
     "encoding": "^0.1.13",
     "ethers": "^6.13.4",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lodash.merge": "^4.6.2",

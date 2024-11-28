@@ -56,7 +56,9 @@ If you've made changes to your smart contract's ABI or need to update the genera
 
 2. Run the WAGMI CLI tool to regenerate the hooks:
 
-npx wagmi generate
+`npx wagmi generate --config wagmi.config.hatchlings.ts`
+
+`npx wagmi generate --config wagmi.config.hivestaking.ts`
 
 This will use the configuration in wagmi.config.ts to generate the hooks for your smart contract(s) and place them in src/hooks/BuzzkillHatchlingsNFT.ts.
 

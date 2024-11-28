@@ -1,0 +1,23 @@
+query getUserStakedTokens($userId: ID!) {
+  stakedNFTs(filter: { owner: { id: { equalTo: $userId } } }) {
+    nodes {
+      id
+      tokenIdNum
+      stakedAt
+      lastClaimedAt
+      environment {
+        id
+        environmentId
+      }
+      hive {
+        id
+        hiveId
+      }
+      token {
+        id
+        tokenURI
+        rarity
+      }
+    }
+  }
+}

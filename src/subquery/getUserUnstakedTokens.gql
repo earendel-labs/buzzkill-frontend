@@ -1,0 +1,14 @@
+query getUserUnstakedTokens($userId: ID!) {
+  tokens(filter: { owner: { equalTo: $userId } }) {
+    nodes {
+      id
+      owner
+      rarity
+      tokenURI
+      isStaked
+      stakedNFT {
+        id
+      }
+    }
+  }
+}

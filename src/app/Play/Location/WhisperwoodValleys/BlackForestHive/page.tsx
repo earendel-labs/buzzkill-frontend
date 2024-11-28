@@ -1,24 +1,36 @@
-// src/components/Forest.tsx
+// src/app/Play/Location/WhisperwoodValleys/BlackForestHive/page.tsx
+
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Typography, Snackbar, Alert, Button, Modal } from "@mui/material"; // Added imports
+import { Typography, Snackbar, Alert, Button, Modal } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
-import BeeGrid from "@/components/ControlPanels/Hive/Old/BeeGrid";
-import { useWriteHiveStakingStake } from "@/hooks/HiveStaking";
+import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
+import {
+  useWriteHiveStakingStake,
+  useWriteHiveStakingUnstake,
+} from "@/hooks/HiveStaking";
 import Image from "next/image";
 import { HiveInfo } from "@/types/HiveInfo";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useUserContext } from "@/context/UserContext";
-import { useWaitForTransactionReceipt } from "wagmi"; // Import useWaitForTransactionReceipt
+import { useWaitForTransactionReceipt, useReadContracts } from "wagmi";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
+import { Hatchling } from "@/types/Hatchling";
+import { useReadHiveStakingGetStakedNfTsInHive } from "@/hooks/HiveStaking";
+import buzzkillHatchlingsNftAbi from "@/app/libs/abi/BuzzkillHatchlingsNFT.json";
+import type { Abi } from "abitype";
+
+// Define specific result types
+type OwnerOfResult = string;
+type UriResult = string;
 
 const hiveInfo: HiveInfo = {
   queenBees: 1,
@@ -32,12 +44,19 @@ const hiveInfo: HiveInfo = {
   environment: "Whisperwood Valleys",
 };
 
+const abi: Abi = buzzkillHatchlingsNftAbi as Abi;
+
+const hatchlingContract = {
+  address: process.env
+    .NEXT_PUBLIC_BUZZKILL_HATCHLINGS_NFT_ADDRESS as `0x${string}`,
+  abi: buzzkillHatchlingsNftAbi,
+} as const;
+
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [environmentData, setEnvironmentData] = useState<any>(null);
   const {
     activeBee,
@@ -45,12 +64,14 @@ const Forest: React.FC = () => {
     checkAndPromptApproval,
     refreshBeesData,
     setActiveBee,
-    stakeBee, // Destructure stakeBee from context
+    stakeBee,
   } = useUserContext();
-  // Added setActiveBee
-  // Staking Hook (fix: using writeContractAsync)
+
+  // Staking Hooks
   const { writeContractAsync: stakeNFT, isPending: isStakingPending } =
     useWriteHiveStakingStake();
+  const { writeContractAsync: unstakeNFT, isPending: isUnstakingPending } =
+    useWriteHiveStakingUnstake();
 
   // State variables for transaction tracking and user feedback
   const [transactionHash, setTransactionHash] = useState<
@@ -62,6 +83,7 @@ const Forest: React.FC = () => {
   );
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [confirmUnstakeModalOpen, setConfirmUnstakeModalOpen] = useState(false);
 
   // Track transaction receipt
   const {
@@ -78,7 +100,6 @@ const Forest: React.FC = () => {
     audio.loop = true;
     audio.volume = 0.8;
     setMusic(audio);
-
     return () => {
       audio.pause();
     };
@@ -104,6 +125,22 @@ const Forest: React.FC = () => {
       );
   }, []);
 
+  // Fetch staked bees in the hive using WAGMI hook
+  const { data: stakedBeesData, isLoading: isStakedLoading } =
+    useReadHiveStakingGetStakedNfTsInHive({
+      args: [BigInt(2), BigInt(2)], // Replace with dynamic hiveId and environmentId if applicable
+    });
+
+  // Step 2: Prepare contract calls
+  const tokenIds = stakedBeesData || [];
+
+  // State variables for Bees data
+  const [bees, setBees] = useState<Hatchling[]>([]);
+  const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
+  const [beesError, setBeesError] = useState<string | null>(null);
+
+  
+
   // Handle staking confirmation
   const handleConfirmStake = async () => {
     setConfirmModalOpen(false);
@@ -116,7 +153,6 @@ const Forest: React.FC = () => {
         setSnackbarOpen(true);
         return;
       }
-
       // Ensure the user has approved the staking contract
       const isApproved = await checkAndPromptApproval();
       if (!isApproved) {
@@ -126,28 +162,23 @@ const Forest: React.FC = () => {
         setSnackbarOpen(true);
         return;
       }
-
       // Example hiveId and environmentId - you will get these from the environment or UI
       const hiveId = "2"; // Replace with actual hive ID if dynamic
       const environmentId = "2"; // Replace with actual environment ID if dynamic
       const tokenId = activeBee; // beeId is a number
-
       console.log(
         `Staking tokenId: ${tokenId}, environmentId: ${environmentId}, hiveId: ${hiveId}`
       );
-
       // Call the staking contract function
       const tx = await stakeNFT({
-        args: [BigInt(tokenId), BigInt(environmentId), BigInt(hiveId)], // Pass tokenId, environmentId, and hiveId as BigInts
+        args: [BigInt(tokenId), BigInt(environmentId), BigInt(hiveId)],
       });
-
       console.log("Staking transaction initiated:", tx);
       setTransactionHash(tx as `0x${string}`);
       setAlertSeverity("success");
       setAlertMessage("Staking transaction initiated!");
       setSnackbarOpen(true);
-
-      // **Manual State Update will occur after transaction confirmation**
+      // Manual State Update will occur after transaction confirmation
     } catch (error) {
       console.error("Failed to stake NFT:", error);
       setAlertSeverity("error");
@@ -173,6 +204,55 @@ const Forest: React.FC = () => {
     console.log("Raid button clicked");
   };
 
+  // Handle Unstaking confirmation
+  const handleConfirmUnstake = async () => {
+    setConfirmUnstakeModalOpen(false);
+    const targetBee = bees.find((bee) => bee.id === activeBee);
+    if (!targetBee || !targetBee.environmentID || !targetBee.hiveID) {
+      setAlertSeverity("error");
+      setAlertMessage("Invalid bee selected for unstaking.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    const { id, environmentID, hiveID } = targetBee;
+
+    try {
+      console.log("Initiating unstake transaction...");
+      const tx = await unstakeNFT({
+        args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
+      });
+
+      console.log("Transaction initiated:", tx);
+      if (tx) {
+        setTransactionHash(tx as `0x${string}`);
+        console.log("Transaction hash set:", tx);
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage("Transaction failed to initiate.");
+        setSnackbarOpen(true);
+        console.error("Transaction failed to initiate.");
+      }
+    } catch (err) {
+      setAlertSeverity("error");
+      setAlertMessage("Failed to unstake the Hatchling.");
+      setSnackbarOpen(true);
+      console.error("Error during unstake transaction:", err);
+    }
+  };
+
+  // Handle Unstaking - open confirmation modal
+  const handleUnstake = () => {
+    if (activeBee === null) {
+      console.log("No active bee selected to unstake.");
+      setAlertSeverity("error");
+      setAlertMessage("Please select a bee to unstake.");
+      setSnackbarOpen(true);
+      return;
+    }
+    setConfirmUnstakeModalOpen(true);
+  };
+
   // Handle transaction status changes
   useEffect(() => {
     console.log(
@@ -185,11 +265,10 @@ const Forest: React.FC = () => {
     );
     if (isTransactionSuccess && transactionHash) {
       setAlertSeverity("success");
-      setAlertMessage("Staking successful!");
+      setAlertMessage("Transaction successful!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-
-      // **Manual State Update After Successful Transaction**
+      // Manual State Update After Successful Transaction
       if (activeBee !== null) {
         console.log(`Confirmed staking of Bee ID ${activeBee}`);
         const hiveId = "2"; // Replace with actual value if dynamic
@@ -204,7 +283,7 @@ const Forest: React.FC = () => {
     }
     if (isTransactionError) {
       setAlertSeverity("error");
-      setAlertMessage(transactionError?.message || "Failed to stake the NFT.");
+      setAlertMessage(transactionError?.message || "Transaction failed.");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
       console.error("Transaction Error:", transactionError);
@@ -228,6 +307,10 @@ const Forest: React.FC = () => {
 
   const handleCancelStake = () => {
     setConfirmModalOpen(false);
+  };
+
+  const handleCancelUnstake = () => {
+    setConfirmUnstakeModalOpen(false);
   };
 
   return (
@@ -293,7 +376,6 @@ const Forest: React.FC = () => {
           }}
         >
           <HiveTopBar mapHeaderLabel={hiveInfo.location} />
-
           <Grid
             container
             spacing={1}
@@ -302,7 +384,11 @@ const Forest: React.FC = () => {
             {/* Left Column - Hive Stats */}
             <Grid
               item
-              xs={3}
+              xs={12}
+              sm={4}
+              md={3}
+              lg={3}
+              xl={3}
               xxl={3}
               sx={{
                 display: "flex",
@@ -313,8 +399,8 @@ const Forest: React.FC = () => {
               <Box
                 sx={{
                   padding: "0.8rem",
-                  borderRadius: "2px",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  borderRadius: "8px",
+                  backgroundColor: "rgba(0, 0, 0, 0.7)",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -335,7 +421,10 @@ const Forest: React.FC = () => {
             <Grid
               item
               xs={12}
-              sm={9}
+              sm={8}
+              md={9}
+              lg={9}
+              xl={9}
               xxl={9}
               sx={{
                 display: "flex",
@@ -346,10 +435,36 @@ const Forest: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              <BeeGrid />
+              {isBeesLoading ? (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                >
+                  <HexagonSpinner />
+                  <Typography className="body1" padding="24px 0px">
+                    Loading Bees...
+                  </Typography>
+                </Box>
+              ) : beesError ? (
+                <Box textAlign="center" mt={4}>
+                  <Typography color="error" variant="h6">
+                    {beesError}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    onClick={() => window.location.reload()}
+                    sx={{ mt: 2 }}
+                  >
+                    Retry
+                  </Button>
+                </Box>
+              ) : (
+                <BeeGrid bees={bees} variant="default" /> // Pass variant="default"
+              )}
             </Grid>
           </Grid>
-
           <BottomBar isAudioPanelVisible={false} />
         </Box>
 
@@ -418,6 +533,77 @@ const Forest: React.FC = () => {
                   {isStakingPending || isTransactionLoading
                     ? "Staking..."
                     : "Stake"}
+                </Button>
+              </Box>
+            </SemiTransparentCard>
+          </Box>
+        </Modal>
+
+        {/* Confirmation Modal for Unstaking */}
+        <Modal
+          open={confirmUnstakeModalOpen}
+          onClose={handleCancelUnstake}
+          aria-labelledby="confirm-unstake-title"
+          aria-describedby="confirm-unstake-description"
+        >
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              bgcolor: "rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1300,
+            }}
+          >
+            <SemiTransparentCard
+              transparency={0.8}
+              sx={{
+                padding: "30px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "30px",
+                maxWidth: "500px",
+                width: "90%",
+                boxShadow: 24,
+              }}
+            >
+              <Typography
+                id="confirm-unstake-title"
+                variant="h5"
+                component="h2"
+                align="center"
+                sx={{ fontWeight: "bold" }}
+              >
+                Confirm Unstake
+              </Typography>
+              <Typography
+                id="confirm-unstake-description"
+                variant="body1"
+                align="center"
+                sx={{ fontSize: "1rem" }}
+              >
+                Are you sure you want to unstake{" "}
+                <strong>Bee ID {activeBee}</strong> from{" "}
+                <strong>{hiveInfo.location}</strong>?
+              </Typography>
+              <Box sx={{ display: "flex", gap: "20px" }}>
+                <Button onClick={handleCancelUnstake} variant="contained">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleConfirmUnstake}
+                  variant="contained"
+                  disabled={isUnstakingPending || isTransactionLoading}
+                >
+                  {isUnstakingPending || isTransactionLoading
+                    ? "Unstaking..."
+                    : "Unstake"}
                 </Button>
               </Box>
             </SemiTransparentCard>

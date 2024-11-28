@@ -9,12 +9,18 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useAccount, useBalance } from "wagmi";
-import { Log } from "viem"; // Ensure this import is correct
 import {
-  useReadBuzzkillHatchlingsNftBalanceOfBatch,
-  useReadBuzzkillHatchlingsNftTotalMinted,
-  useReadBuzzkillHatchlingsNftUri,
+  useAccount,
+  useBalance,
+  useReadContracts,
+  useTransaction,
+} from "wagmi";
+import {
+  buzzkillHatchlingsNftAbi,
+  useReadBuzzkillHatchlingsNftBalanceOf,
+  useReadBuzzkillHatchlingsNftMaxSupply,
+  useReadBuzzkillHatchlingsNftTokenUri,
+  useReadBuzzkillHatchlingsNftOwnerOf,
   useWriteBuzzkillHatchlingsNftSetApprovalForAll,
   useReadBuzzkillHatchlingsNftIsApprovedForAll,
 } from "@/hooks/BuzzkillHatchlingsNFT";
@@ -24,10 +30,14 @@ import {
   useReadHiveStakingTotalBeesStaked,
   useReadHiveStakingGetStakedNfTsInHive,
 } from "@/hooks/HiveStaking";
-import { useWatchContractEvent } from "wagmi"; // Import the hook directly
 import hiveStakingAbi from "@/app/libs/abi/HiveStaking.json"; // Import your ABI
 import { Hatchling, HatchlingStatus } from "@/types/Hatchling";
 
+import { useQuery } from "@apollo/client";
+// import getUserStakedTokensQuery from "@/subquery/getUserStakedTokens.gql";
+// import getUserUnstakedTokensQuery from "@/subquery/getUserUnstakedTokens.gql";
+
+//src/pages/api/subquery/getUserStakedTokens.gql
 interface UserContextType {
   activeBee: number | null;
   setActiveBee: (beeId: number | null) => void;
@@ -41,7 +51,7 @@ interface UserContextType {
   approvalForStaking: boolean;
   checkAndPromptApproval: () => Promise<boolean>;
   refreshBeesData: () => void;
-  stakeBee: (beeId: number, environmentID: string, hiveID: string) => void; // Updated
+  stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
   unstakeBee: (beeId: number) => void;
 }
 
@@ -65,18 +75,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     | `0x${string}`
     | undefined;
 
-  const { data: totalMinted } = useReadBuzzkillHatchlingsNftTotalMinted();
-  const { data: uri } = useReadBuzzkillHatchlingsNftUri({ args: [BigInt(1)] });
-  const { data: batchBalances } = useReadBuzzkillHatchlingsNftBalanceOfBatch({
-    args: [
-      Array.from(
-        { length: Number(totalMinted) },
-        () => address || "0x0000000000000000000000000000000000000000"
-      ),
-      Array.from({ length: Number(totalMinted) }, (_, i) => BigInt(i + 1)),
-    ],
-  });
+  const buzzkillHatchlingsNftAddress = process.env
+    .NEXT_PUBLIC_HATCHLINGS_ADDRESS as `0x${string}` | undefined;
 
+  // ERC721 Hooks
+  const { data: totalSupply } = useReadBuzzkillHatchlingsNftMaxSupply();
+  const { data: balanceOf } = useReadBuzzkillHatchlingsNftBalanceOf({
+    args: [address || "0x0000000000000000000000000000000000000000"],
+  });
   const { data: isApproved } = useReadBuzzkillHatchlingsNftIsApprovedForAll({
     args: [
       address ?? "0x0000000000000000000000000000000000000000",
@@ -92,22 +98,40 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     args: [address ?? "0x0000000000000000000000000000000000000000"],
   });
 
-  // Fetch all staked NFTs for the user
+  // Fetch all staked NFTs for the user with correct typing
   const {
     data: allStakedNFTsData,
-    isError,
-    error,
+    isError: isStakedNFTsError,
+    error: stakedNFTsError,
   } = useReadHiveStakingGetAllStakedNfTsForUser({
     args: [address ?? "0x0000000000000000000000000000000000000000"],
   });
 
+  // const {
+  //   data: stakedData,
+  //   loading: loadingStaked,
+  //   error: errorStaked,
+  // } = useQuery(getUserStakedTokensQuery, {
+  //   variables: { userId: address },
+  //   skip: !isConnected || !address,
+  // });
+
+  // const {
+  //   data: tokensData,
+  //   loading: loadingTokens,
+  //   error: errorTokens,
+  // } = useQuery(getUserUnstakedTokensQuery, {
+  //   variables: { userId: address },
+  //   skip: !isConnected || !address,
+  // });
+
   useEffect(() => {
-    if (isError) {
-      console.error("Error fetching staked NFTs:", error);
+    if (isStakedNFTsError) {
+      console.error("Error fetching staked NFTs:", stakedNFTsError);
     } else {
       console.log("Fetched staked NFTs:", allStakedNFTsData);
     }
-  }, [isError, error, allStakedNFTsData]);
+  }, [isStakedNFTsError, stakedNFTsError, allStakedNFTsData]);
 
   console.log("Connected address:", address);
   console.log("userInfoData", userInfoData);
@@ -173,7 +197,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const fetchMetadata = async (metadataUri: string) => {
+  const fetchMetadata = async (metadataUri: string): Promise<string> => {
     try {
       const response = await fetch(ipfsToHttp(metadataUri));
       const metadata = await response.json();
@@ -185,7 +209,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const ipfsToHttp = (ipfsUri: string) => {
+  const ipfsToHttp = (ipfsUri: string): string => {
     if (ipfsUri.startsWith("ipfs://")) {
       return ipfsUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
     }
@@ -209,73 +233,200 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     ownerAddress,
   });
 
-  // Fetch unstaked (free) bees
-  const fetchUnstakedBees = async () => {
-    if (!batchBalances || !address || !imageUrl || !totalMinted) {
+  /**
+   * Fetch Unstaked Bees (Bees Owned by the User)
+   */
+  const fetchUnstakedBees = async (
+    totalSupply: number,
+    address: string,
+    imageUrl: string | null
+  ) => {
+    if (!address || !totalSupply || !imageUrl) {
       setLoadingBees(false);
       return;
     }
 
-    const unstakedHatchlings: Hatchling[] = [];
-    for (let i = 0; i < Number(totalMinted); i++) {
-      const balance = batchBalances[i];
-      if (balance && Number(balance) > 0) {
-        const hatchling = createHatchling(
-          i + 1,
-          imageUrl || "/default-image.png",
-          "Free",
-          null,
-          null,
-          address as string
-        );
-        unstakedHatchlings.push(hatchling);
+    try {
+      // Prepare contract read configurations for ownerOf
+      const contractReads = Array.from({ length: totalSupply }, (_, index) => ({
+        abi: buzzkillHatchlingsNftAbi,
+        address: buzzkillHatchlingsNftAddress,
+        functionName: "ownerOf",
+        args: [BigInt(index + 1)],
+      }));
+
+      // Use useContractReads to fetch all owners in a single hook without 'select'
+      const {
+        data: ownersData,
+        isError: isOwnersError,
+        error: ownersError,
+      } = useReadContracts({
+        contracts: contractReads,
+      });
+
+      if (isOwnersError) {
+        console.error("Error fetching owners:", ownersError);
+        setFetchError(true);
+        setLoadingBees(false);
+        return;
       }
+
+      // Assert ownersData as string[] safely
+      let owners: string[] = [];
+      if (ownersData && Array.isArray(ownersData)) {
+        owners = ownersData
+          .map((result) => {
+            if (
+              result.status === "success" &&
+              typeof result.result === "string"
+            ) {
+              return result.result;
+            } else {
+              console.error("Failed to fetch owner:", result.error);
+              setFetchError(true);
+              setLoadingBees(false);
+              return "";
+            }
+          })
+          .filter((owner): owner is string => owner !== "");
+      }
+
+      // Filter tokens owned by the user
+      const ownedTokenIds =
+        owners
+          ?.map((owner, idx) =>
+            owner.toLowerCase() === address.toLowerCase() ? idx + 1 : null
+          )
+          .filter((tokenId): tokenId is number => tokenId !== null) || [];
+
+      // Fetch token URIs for owned tokens
+      const tokenUriReads = ownedTokenIds.map((tokenId) => ({
+        abi: buzzkillHatchlingsNftAbi,
+        address: buzzkillHatchlingsNftAddress,
+        functionName: "tokenURI",
+        args: [BigInt(tokenId)],
+      }));
+      var isValidNFT = ownedTokenIds.length > 0;
+      // Use useReadContracts to fetch all token URIs without 'select'
+      const {
+        data: tokenUrisData,
+        isError: isTokenUriError,
+        error: tokenUriError,
+      } = useReadContracts({
+        contracts: tokenUriReads,
+      });
+
+      if (isTokenUriError) {
+        console.error("Error fetching token URIs:", tokenUriError);
+        setFetchError(true);
+        setLoadingBees(false);
+        return;
+      }
+
+      // Assert tokenUrisData as string[] safely
+      let tokenUris: string[] = [];
+      if (tokenUrisData && Array.isArray(tokenUrisData)) {
+        tokenUris = tokenUrisData
+          .map((result) => {
+            if (
+              result.status === "success" &&
+              typeof result.result === "string"
+            ) {
+              return result.result;
+            } else {
+              console.error("Failed to fetch token URI:", result.error);
+              setFetchError(true);
+              setLoadingBees(false);
+              return "";
+            }
+          })
+          .filter((uri): uri is string => uri !== "");
+      }
+
+      // Fetch metadata for each token URI
+      const metadataPromises = tokenUris.map((uri: string) =>
+        fetchMetadata(uri)
+      );
+      const images = await Promise.all(metadataPromises);
+
+      // Create Hatchling objects
+      const unstakedHatchlings: Hatchling[] = ownedTokenIds.map(
+        (tokenId, idx) =>
+          createHatchling(
+            tokenId,
+            images[idx] || "/default-image.png",
+            "Free",
+            null,
+            null,
+            address
+          )
+      );
+
+      console.log("Unstaked Hatchlings:", unstakedHatchlings);
+      setBees(unstakedHatchlings);
+    } catch (err) {
+      console.error("Error in fetchUnstakedBees:", err);
+      setFetchError(true);
+    } finally {
+      setLoadingBees(false);
     }
-    console.log("Unstaked Hatchlings:", unstakedHatchlings);
-    setBees(unstakedHatchlings);
   };
 
-  // Fetch staked bees
-  const fetchStakedBees = async () => {
-    if (!allStakedNFTsData || !imageUrl) {
+  /**
+   * Fetch Staked Bees
+   */
+  interface StakedNFT {
+    tokenId: bigint;
+    stakedAt: bigint;
+    environmentId: bigint;
+    hiveId: bigint;
+    lastClaimedAt: bigint;
+  }
+
+  const fetchStakedBees = (
+    allStakedNFTsData: ReadonlyArray<StakedNFT>,
+    imageUrl: string | null,
+    address: string
+  ) => {
+    if (!allStakedNFTsData || !imageUrl || !address) {
       return;
     }
 
-    const stakedBeeArray: Hatchling[] = [];
-    console.log("allStakedNFTsData:", allStakedNFTsData); // Log to inspect data
-
-    allStakedNFTsData.forEach((nft: any) => {
+    const stakedBeeArray: Hatchling[] = allStakedNFTsData.map((nft) => {
       const tokenId = Number(nft.tokenId);
       const environmentID = nft.environmentId?.toString() || null;
       const hiveID = nft.hiveId?.toString() || null;
 
-      if (!isNaN(tokenId)) {
-        const hatchling = createHatchling(
-          tokenId,
-          imageUrl || "/default-image.png",
-          "Staked",
-          environmentID,
-          hiveID,
-          address as string
-        );
-        stakedBeeArray.push(hatchling);
-      }
+      return createHatchling(
+        tokenId,
+        imageUrl || "/default-image.png",
+        "Staked",
+        environmentID,
+        hiveID,
+        address
+      );
     });
 
     console.log("Fetched Staked Bees:", stakedBeeArray);
     setStakedBees(stakedBeeArray);
   };
 
-  // Function to refresh all bees data
+  /**
+   * Function to refresh all bees data
+   */
   const refreshBeesData = async () => {
     console.log("Refreshing bees data due to event...");
     setLoadingBees(true);
-    try {
-      // Re-fetch unstaked bees
-      await fetchUnstakedBees();
+    setFetchError(false);
 
-      // Re-fetch staked bees
-      await fetchStakedBees();
+    try {
+      if (totalSupply && address && imageUrl && buzzkillHatchlingsNftAddress) {
+        await fetchUnstakedBees(Number(totalSupply), address, imageUrl);
+      }
+
+      if (allStakedNFTsData && imageUrl && address) {
+        fetchStakedBees(allStakedNFTsData, imageUrl, address);
+      }
     } catch (error) {
       console.error("Failed to refresh bees data:", error);
       setFetchError(true);
@@ -284,17 +435,39 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // Initial data fetching
+  /**
+   * Initial Data Fetching
+   */
   useEffect(() => {
     const initializeData = async () => {
       setLoadingBees(true);
+      setFetchError(false);
+
       try {
-        if (uri && !imageUrl && totalMinted) {
-          const image = await fetchMetadata(uri);
-          setImageUrl(image);
+        if (
+          isConnected &&
+          address &&
+          totalSupply &&
+          balanceOf &&
+          buzzkillHatchlingsNftAddress
+        ) {
+          await fetchUnstakedBees(
+            Number(totalSupply),
+            address,
+            imageUrl || "/default-image.png"
+          );
+          if (allStakedNFTsData) {
+            fetchStakedBees(allStakedNFTsData, imageUrl, address);
+          }
+        } else {
+          // Reset state when not connected
+          setBees([]);
+          setStakedBees([]);
+          setActiveBeeState(null);
+          setImageUrl(null);
+          setLoadingBees(false);
+          setFetchError(false);
         }
-        await fetchUnstakedBees();
-        await fetchStakedBees();
       } catch (error) {
         console.error("Error initializing data:", error);
         setFetchError(true);
@@ -303,20 +476,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       }
     };
 
-    if (isConnected) {
-      initializeData();
-    } else {
-      // Reset state when not connected
-      setBees([]);
-      setStakedBees([]);
-      setActiveBeeState(null);
-      setImageUrl(null);
-      setLoadingBees(false);
-      setFetchError(false);
-    }
-  }, [isConnected, address, batchBalances, uri, totalMinted, imageUrl]);
+    initializeData();
+  }, [
+    isConnected,
+    address,
+    totalSupply,
+    balanceOf,
+    allStakedNFTsData,
+    imageUrl,
+    buzzkillHatchlingsNftAddress,
+  ]);
 
-  // Function to move a bee from unstaked to staked
+  /**
+   * Stake a Bee
+   */
   const stakeBee = (beeId: number, environmentID: string, hiveID: string) => {
     console.log(`Attempting to stake Bee ID ${beeId}`);
     setBees((prevBees) => {
@@ -352,6 +525,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
+  /**
+   * Unstake a Bee
+   */
   const unstakeBee = (beeId: number) => {
     console.log(`Attempting to unstake Bee ID ${beeId}`);
     setStakedBees((prevStakedBees) => {
@@ -410,8 +586,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         approvalForStaking,
         checkAndPromptApproval,
         refreshBeesData,
-        stakeBee, // Provide stakeBee with updated signature
-        unstakeBee, // Provide unstakeBee
+        stakeBee,
+        unstakeBee,
       }}
     >
       {children}
