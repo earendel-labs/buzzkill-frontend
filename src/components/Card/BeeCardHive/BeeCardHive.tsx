@@ -6,16 +6,16 @@ import { styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
 import HatchlingImage from "../BeeCard/HatchlingImage";
 import { useWriteHiveStakingUnstake } from "@/hooks/HiveStaking";
-import SemiTransparentCard from "../SemiTransaprentCard";
+
 import { useWaitForTransactionReceipt } from "wagmi";
 import { useEnvironment } from "@/context/EnvironmentContext";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 
-import ActionButtons from "../BeeCard/ActionButtons";
+import ActionButtonsHive from "../BeeCard/ActionButtonsHive";
 import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeInfo from "../BeeCard/BeeInfo";
-
+import BeeCardBackground from "../BeeCard/BeeCardBackground";
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -177,10 +177,22 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
         ? "You"
         : bee.ownerAddress
       : undefined;
-
+  /**   bee.rarity === "Common" ||
+          bee.rarity === "Rare" ||
+          bee.rarity === "Ultra Rare"
+            ? bee.rarity
+            : "Common" // Fallback to "common" if the value doesn't match */
   return (
     <StyledBeeCard>
-      <SemiTransparentCard>
+      <BeeCardBackground
+        rarity={
+          bee.rarity === "Common" ||
+          bee.rarity === "Rare" ||
+          bee.rarity === "Ultra-Rare"
+            ? bee.rarity
+            : "Common"
+        }
+      >
         <ImageContainer>
           <HatchlingImage
             imageAddress={bee.imageAddress}
@@ -197,6 +209,16 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           >
             Hatchling ID: {bee.id}
           </Typography>
+
+          {/* Display Rarity */}
+          <Typography
+            variant="body1"
+            color="white"
+            sx={{ fontSize: "1.1rem", marginTop: "8px", marginLeft: 1 }}
+          >
+            <strong>{bee.rarity}</strong>
+          </Typography>
+
           <BeeInfo
             environmentName={
               variant === "myBees" && environment ? environment.name : undefined
@@ -218,7 +240,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             }
             ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
           />
-          <ActionButtons
+          <ActionButtonsHive
             onPlayClick={variant === "myBees" ? onPlayClick : undefined} // Pass onPlayClick only for myBees
             onUnstakeClick={
               variant === "default" && isOwnedByUser
@@ -261,7 +283,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             isConfirmLoading={isPending || isTransactionLoading}
           />
         )}
-      </SemiTransparentCard>
+      </BeeCardBackground>
     </StyledBeeCard>
   );
 };

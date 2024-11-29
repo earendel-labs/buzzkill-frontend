@@ -29,6 +29,7 @@ export const GET_ALL_STAKED_IN_HIVE = gql`
           id
         }
         token {
+          rarity
           tokenURI
         }
       }

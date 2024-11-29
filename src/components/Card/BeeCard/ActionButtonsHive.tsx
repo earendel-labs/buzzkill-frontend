@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, styled } from "@mui/material";
 
-interface ActionButtonsProps {
+interface ActionButtonsHiveProps {
   onPlayClick?: () => void | Promise<void>;
   onUnstakeClick?: () => void;
   isPending?: boolean;
@@ -22,7 +22,7 @@ const PlaceholderBox = styled(Box)(({ theme }) => ({
   display: "block", // Ensures it occupies space
 }));
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
+const ActionButtonsHive: React.FC<ActionButtonsHiveProps> = ({
   onPlayClick,
   onUnstakeClick,
   isPending = false,
@@ -47,7 +47,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           Play
         </StyledActionButton>
       )}
-      {onUnstakeClick && (
+      {onUnstakeClick ? (
         <StyledActionButton
           variant="contained"
           color="secondary"
@@ -56,9 +56,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         >
           {isPending || isTransactionLoading ? "Unstaking..." : "Unstake"}
         </StyledActionButton>
+      ) : (
+        // Render a transparent placeholder to occupy space
+        <PlaceholderBox />
       )}
     </Box>
   );
 };
 
-export default ActionButtons;
+export default ActionButtonsHive;

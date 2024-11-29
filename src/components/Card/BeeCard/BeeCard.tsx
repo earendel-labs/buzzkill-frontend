@@ -209,7 +209,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
             ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
           />
           <ActionButtons
-            status={bee.status} // bee.status is now "Free" | "Staked"
             onPlayClick={
               bee.status === "Free" ? () => onPlayClick(bee.id) : undefined
             } // Zero-arg function

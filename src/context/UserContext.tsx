@@ -116,6 +116,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   const createHatchling = (
     id: number,
+    rarity: string,
     imageAddress: string,
     status: HatchlingStatus,
     environmentID: string | null,
@@ -123,6 +124,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     ownerAddress: string
   ): Hatchling => ({
     id,
+    rarity,
     imageAddress,
     status,
     environmentID,
@@ -300,6 +302,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         setBees((prevBees) => {
           const hatchling = createHatchling(
             beeToUnstake.id,
+            beeToUnstake.rarity,
             beeToUnstake.imageAddress,
             "Free",
             null,

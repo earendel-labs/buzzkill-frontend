@@ -173,6 +173,7 @@ const Forest: React.FC = () => {
 
               return createHatchling(
                 parseInt(nft.tokenIdNum, 10),
+                nft.token.rarity,
                 metadata, // Assuming fetchMetadata returns an object with an 'image' field
                 "Staked",
                 nft.environment?.environmentId || null,
@@ -682,6 +683,7 @@ const Forest: React.FC = () => {
 // Ensure createHatchling is defined or imported
 const createHatchling = (
   id: number,
+  rarity: string,
   imageAddress: string,
   status: "Free" | "Staked",
   environmentID: string | null,
@@ -689,6 +691,7 @@ const createHatchling = (
   ownerAddress: string
 ): Hatchling => ({
   id,
+  rarity,
   imageAddress,
   status,
   environmentID,

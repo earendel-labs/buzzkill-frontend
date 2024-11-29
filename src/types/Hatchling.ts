@@ -4,6 +4,7 @@ export type HatchlingStatus = "Free" | "Staked";
 
 export interface Hatchling {
   id: number;
+  rarity: string;
   imageAddress: string;
   status: HatchlingStatus;
   environmentID: string | null;
@@ -11,6 +12,4 @@ export interface Hatchling {
   ownerAddress: string;
 }
 
-
-
-// 
+//
