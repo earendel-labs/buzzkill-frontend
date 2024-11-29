@@ -1,3 +1,5 @@
+"use client";
+
 import "../styles/globals.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import type { Session } from "next-auth";
@@ -13,8 +15,7 @@ import { EnvironmentProvider } from "@/context/EnvironmentContext";
 import { ProfileProvider } from "@/context/ProfileContext";
 import { OneIDProvider } from "@/context/OneIDContext";
 import { ApolloProvider } from "@apollo/client";
-import client from "./libs/apolloClient";
-import ApolloWrapper from "@/components/Apollo/ApolloWrapper";
+import createApolloClient from "./libs/apolloClient";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -41,6 +42,8 @@ const veraHumana = localFont({
   preload: true,
   display: "swap",
 });
+
+const client = createApolloClient();
 
 export default function RootLayout({
   children,
@@ -73,27 +76,27 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
-        <OneIDProvider>
-          <WalletConfiguration session={session}>
-            <LoadingProvider>
-              <SoundProvider>
-                <UserProvider>
-                  <ProfileProvider>
-                    <CssBaseline />
-                    <GlobalScrollbarStyles />
-                    <EnvironmentProvider>
-                      <ApolloWrapper>
+        <ApolloProvider client={client}>
+          <OneIDProvider>
+            <WalletConfiguration session={session}>
+              <LoadingProvider>
+                <SoundProvider>
+                  <UserProvider>
+                    <ProfileProvider>
+                      <CssBaseline />
+                      <GlobalScrollbarStyles />
+                      <EnvironmentProvider>
                         {children}
 
                         <SpeedInsights />
-                      </ApolloWrapper>
-                    </EnvironmentProvider>
-                  </ProfileProvider>
-                </UserProvider>
-              </SoundProvider>
-            </LoadingProvider>
-          </WalletConfiguration>
-        </OneIDProvider>
+                      </EnvironmentProvider>
+                    </ProfileProvider>
+                  </UserProvider>
+                </SoundProvider>
+              </LoadingProvider>
+            </WalletConfiguration>
+          </OneIDProvider>
+        </ApolloProvider>
       </body>
     </html>
   );

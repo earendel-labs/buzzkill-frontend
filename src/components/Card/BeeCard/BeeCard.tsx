@@ -45,7 +45,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
   variant = "default",
   additionalInfo = {},
 }) => {
-  const { refreshBeesData } = useUserContext();
+  // const { refreshBeesData } = useUserContext();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
@@ -88,6 +88,9 @@ const BeeCard: React.FC<BeeCardProps> = ({
     }
     try {
       console.log("Initiating unstake transaction...");
+      console.log(`BigInt(id): ${BigInt(id)}
+       BigInt(environmentID ${BigInt(environmentID)}):
+      BigInt(hiveID: ${BigInt(hiveID)})`);
       const tx = await writeContractAsync({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
@@ -139,7 +142,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      refreshBeesData();
+      //    refreshBeesData();
       console.log("Called refreshBeesData() after successful transaction.");
     }
     if (isTransactionError) {
@@ -155,7 +158,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
     isTransactionSuccess,
     isTransactionError,
     transactionError,
-    refreshBeesData,
+    //  refreshBeesData,
     isTransactionLoading,
   ]);
 

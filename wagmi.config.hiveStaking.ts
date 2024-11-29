@@ -23,7 +23,7 @@ export default defineConfig({
       name: "HiveStaking",
       abi: HiveStakingABI,
       address: {
-        89: hiveStakingAddress,
+        88: hiveStakingAddress,
       },
     },
   ],

@@ -25,7 +25,7 @@ export default defineConfig({
       name: "BuzzkillHatchlingsNFT",
       abi: BuzzkillHatchlingsNFTABI,
       address: {
-        89: hatchlingsAddress,
+        88: hatchlingsAddress,
       },
     },
   ],

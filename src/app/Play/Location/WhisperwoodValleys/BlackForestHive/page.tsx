@@ -62,7 +62,7 @@ const Forest: React.FC = () => {
     activeBee,
     address,
     checkAndPromptApproval,
-    refreshBeesData,
+    // refreshBeesData,
     setActiveBee,
     stakeBee,
   } = useUserContext();
@@ -138,8 +138,6 @@ const Forest: React.FC = () => {
   const [bees, setBees] = useState<Hatchling[]>([]);
   const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
   const [beesError, setBeesError] = useState<string | null>(null);
-
-  
 
   // Handle staking confirmation
   const handleConfirmStake = async () => {
@@ -279,7 +277,7 @@ const Forest: React.FC = () => {
           "Called stakeBee() with environmentID and hiveID, and reset activeBee after successful transaction."
         );
       }
-      refreshBeesData();
+      // ();
     }
     if (isTransactionError) {
       setAlertSeverity("error");
@@ -293,7 +291,7 @@ const Forest: React.FC = () => {
     isTransactionError,
     transactionError,
     isTransactionLoading,
-    refreshBeesData,
+    //  refreshBeesData,
     setActiveBee,
     activeBee,
     stakeBee,
