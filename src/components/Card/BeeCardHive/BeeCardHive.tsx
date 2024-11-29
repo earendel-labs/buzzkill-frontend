@@ -219,27 +219,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             <strong>{bee.rarity}</strong>
           </Typography>
 
-          <BeeInfo
-            environmentName={
-              variant === "myBees" && environment ? environment.name : undefined
-            }
-            hiveName={variant === "myBees" && hive ? hive.name : undefined}
-            environmentLink={
-              variant === "myBees" && environment && hive
-                ? `/Play/Location/${encodeURIComponent(
-                    environment.name.replace(/\s+/g, "")
-                  )}/${encodeURIComponent(hive.name.replace(/\s+/g, ""))}`
-                : undefined
-            }
-            hiveLink={
-              variant === "myBees" && environment && hive
-                ? `/Play/Location/${encodeURIComponent(
-                    environment.name.replace(/\s+/g, "")
-                  )}/${encodeURIComponent(hive.name.replace(/\s+/g, ""))}`
-                : undefined
-            }
-            ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
-          />
           <ActionButtonsHive
             onPlayClick={variant === "myBees" ? onPlayClick : undefined} // Pass onPlayClick only for myBees
             onUnstakeClick={

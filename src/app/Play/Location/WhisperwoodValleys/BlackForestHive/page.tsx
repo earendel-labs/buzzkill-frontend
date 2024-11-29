@@ -13,14 +13,15 @@ import { Typography, Snackbar, Alert, Button, Modal } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
-import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
+// import HiveStatsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveStatsPanel";
+import HiveHatchlingsPanel from "@/components/ControlPanels/Hive/HiveStatsPanel/HiveHatchlingsPanel/HiveHatchlingsPanel";
 import BeeGrid from "@/components/ControlPanels/Hive/Bees/BeeGrid";
 import {
   useWriteHiveStakingStake,
   useWriteHiveStakingUnstake,
 } from "@/hooks/HiveStaking";
 import Image from "next/image";
-import { HiveInfo } from "@/types/HiveInfo";
+import { HiveInfo, HiveHatchlingInfo } from "@/types/HiveInfo";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useUserContext } from "@/context/UserContext";
 import { useWaitForTransactionReceipt } from "wagmi";
@@ -144,7 +145,7 @@ const Forest: React.FC = () => {
     variables: { environmentId: environmentIdNumber, hiveId: hiveIdNumber },
     fetchPolicy: "cache-and-network",
   });
-  console.log("stakedData", stakedData);
+
   // State variables for Bees data (staked)
   const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
 
@@ -168,7 +169,6 @@ const Forest: React.FC = () => {
           const fetchedStakedBees: Hatchling[] = await Promise.all(
             stakedData.stakedNFTs.nodes.map(async (nft: any) => {
               // Fetch metadata using the tokenURI
-              console.log("nft.tokenURI", nft.token?.tokenURI);
               const metadata = await fetchMetadata(nft.token?.tokenURI); // Adjust if the path is different
 
               return createHatchling(
@@ -325,9 +325,6 @@ const Forest: React.FC = () => {
         console.log(`Confirmed staking of Bee ID ${activeBee}`);
         stakeBee(activeBee, environmentId, hiveId); // Pass environmentID and hiveID
         setActiveBee(null); // Reset activeBee
-        console.log(
-          "Called stakeBee() with environmentID and hiveID, and reset activeBee after successful transaction."
-        );
       }
     }
     if (isTransactionError) {
@@ -359,6 +356,38 @@ const Forest: React.FC = () => {
 
   const handleCancelUnstake = () => {
     setConfirmUnstakeModalOpen(false);
+  };
+
+  const beeCounts = useMemo(() => {
+    // Initialize counts with default values
+    const counts: { [key: string]: number } = {
+      common: 0,
+      rare: 0,
+      UltraRare: 0,
+      Total: 0,
+    };
+
+    // Populate counts based on stakedBees
+    stakedBees.forEach((bee) => {
+      counts[bee.rarity] = (counts[bee.rarity] || 0) + 1;
+    });
+
+    // Update the Total count
+    counts["Total"] = stakedBees.length;
+
+    return counts;
+  }, [stakedBees]);
+
+  // Ensure hiveHatchlingInfo uses the default or calculated values
+  const hiveHatchlingInfo: HiveHatchlingInfo = {
+    productivityValue: 23,
+    CommonBees: beeCounts.Common,
+    RareBees: beeCounts.Rare,
+    UltraRareBees: beeCounts.UltraRare,
+    TotalBees: beeCounts.Total,
+    status: "Active",
+    location: "Black Forest Hive",
+    environment: "Forest",
   };
 
   return (
@@ -457,9 +486,9 @@ const Forest: React.FC = () => {
                   boxSizing: "border-box",
                 }}
               >
-                <HiveStatsPanel
-                  hiveInfo={hiveInfo}
-                  onStake={handleStake} 
+                <HiveHatchlingsPanel
+                  hiveHatchlingInfo={hiveHatchlingInfo}
+                  onStake={handleStake}
                   onRaid={handleRaid}
                 />
               </Box>

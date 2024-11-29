@@ -27,10 +27,10 @@ const MyBeesTab = () => {
   } = useUserContext();
 
   // Debugging: Log the bees and stakedBees on each render
-  useEffect(() => {
-    console.log("MyBeesTab - myBees:", myBees);
-    console.log("MyBeesTab - stakedBees:", stakedBees);
-  }, [myBees, stakedBees]);
+  // useEffect(() => {
+  //   console.log("MyBeesTab - myBees:", myBees);
+  //   console.log("MyBeesTab - stakedBees:", stakedBees);
+  // }, [myBees, stakedBees]);
 
   // Handle 'Play' button click for each bee
   const handlePlayClick = async (beeId: number): Promise<void> => {

@@ -60,12 +60,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
 
   // Define a handler for Play Click (only for 'Your Bees' variant)
   const router = useRouter();
-  const handlePlayClick = (beeId: number) => {
-    // Implement play logic here, e.g., navigate to a play page with the beeId
-    console.log(`Play Bee ID: ${beeId}`);
-    router.push(`/play/${beeId}`);
-  };
-
   return (
     <Box
       sx={{
@@ -148,12 +142,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
               isOwnedByUser={
                 bee.ownerAddress.toLowerCase() === address?.toLowerCase()
               }
-              onPlayClick={
-                selectedTab === "you" && bee.status === "Staked"
-                  ? () => handlePlayClick(bee.id)
-                  : undefined
-              }
-              variant={selectedTab === "you" ? "myBees" : "default"} // Adjust variant based on tab
+              variant={selectedTab === "myBees" ? "myBees" : "default"} // Adjust variant based on tab
               additionalInfo={
                 {
                   // Pass any additional info if needed

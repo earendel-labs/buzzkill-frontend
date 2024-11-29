@@ -51,6 +51,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
           left: {
             xs: "1rem", // Small space from the left on mobile
             md: "2rem", // Larger space from the left on desktop
+            xl: "4.5rem",
           },
           zIndex: 100, // High z-index to keep it above other content
         }}
