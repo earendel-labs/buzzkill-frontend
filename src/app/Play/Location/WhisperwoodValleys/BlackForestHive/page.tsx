@@ -459,7 +459,7 @@ const Forest: React.FC = () => {
               >
                 <HiveStatsPanel
                   hiveInfo={hiveInfo}
-                  onStake={handleStake} // Updated to open confirmation modal
+                  onStake={handleStake} 
                   onRaid={handleRaid}
                 />
               </Box>

@@ -76,9 +76,9 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
-        <ApolloProvider client={client}>
-          <OneIDProvider>
-            <WalletConfiguration session={session}>
+        <OneIDProvider>
+          <WalletConfiguration session={session}>
+            <ApolloProvider client={client}>
               <LoadingProvider>
                 <SoundProvider>
                   <UserProvider>
@@ -94,9 +94,9 @@ export default function RootLayout({
                   </UserProvider>
                 </SoundProvider>
               </LoadingProvider>
-            </WalletConfiguration>
-          </OneIDProvider>
-        </ApolloProvider>
+            </ApolloProvider>
+          </WalletConfiguration>
+        </OneIDProvider>
       </body>
     </html>
   );

@@ -22,7 +22,7 @@ export default async function handler(
 
     // Create the contract instance
     const contract = new ethers.Contract(
-      buzzkillHatchlingsNftAddress[89], // Assuming 89 is the network ID for your contract
+      buzzkillHatchlingsNftAddress[88], // Assuming 89 is the network ID for your contract
       buzzkillHatchlingsNftAbi,
       provider
     );
