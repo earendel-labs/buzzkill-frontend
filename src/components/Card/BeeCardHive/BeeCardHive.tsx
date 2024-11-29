@@ -174,7 +174,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   const ownerAddressToShow =
     variant === "default"
       ? isOwnedByUser
-        ? "Yours"
+        ? "You"
         : bee.ownerAddress
       : undefined;
 

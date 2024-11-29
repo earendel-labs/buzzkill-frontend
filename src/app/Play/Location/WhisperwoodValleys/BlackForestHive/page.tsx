@@ -3,6 +3,8 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
+import { useQuery } from "@apollo/client"; // Import useQuery from Apollo Client
+import { GET_ALL_STAKED_IN_HIVE } from "@/subquery/getAllStakedInHive";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
@@ -21,12 +23,12 @@ import Image from "next/image";
 import { HiveInfo } from "@/types/HiveInfo";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useUserContext } from "@/context/UserContext";
-import { useWaitForTransactionReceipt, useReadContracts } from "wagmi";
+import { useWaitForTransactionReceipt } from "wagmi";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { Hatchling } from "@/types/Hatchling";
-import { useReadHiveStakingGetStakedNfTsInHive } from "@/hooks/HiveStaking";
 import buzzkillHatchlingsNftAbi from "@/app/libs/abi/BuzzkillHatchlingsNFT.json";
 import type { Abi } from "abitype";
+import { fetchMetadata } from "@/app/utils/fetchMetaData";
 
 // Define specific result types
 type OwnerOfResult = string;
@@ -125,19 +127,72 @@ const Forest: React.FC = () => {
       );
   }, []);
 
-  // Fetch staked bees in the hive using WAGMI hook
-  const { data: stakedBeesData, isLoading: isStakedLoading } =
-    useReadHiveStakingGetStakedNfTsInHive({
-      args: [BigInt(2), BigInt(2)], // Replace with dynamic hiveId and environmentId if applicable
-    });
+  // Define environmentId and hiveId (replace with dynamic values if needed)
+  const environmentId = "2"; // Replace with actual environment ID
+  const hiveId = "2"; // Replace with actual hive ID
 
-  // Step 2: Prepare contract calls
-  const tokenIds = stakedBeesData || [];
+  const environmentIdNumber = Number(environmentId);
+  const hiveIdNumber = Number(hiveId);
 
-  // State variables for Bees data
+  // Use Apollo's useQuery to fetch staked NFTs
+  const {
+    data: stakedData,
+    loading: isStakedLoading,
+    error: stakedError,
+    refetch: refetchStaked,
+  } = useQuery(GET_ALL_STAKED_IN_HIVE, {
+    variables: { environmentId: environmentIdNumber, hiveId: hiveIdNumber },
+    fetchPolicy: "cache-and-network",
+  });
+  console.log("stakedData", stakedData);
+  // State variables for Bees data (staked)
+  const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
+
+  // State variables for Bees data (unstaked) - assuming you have a way to fetch them
   const [bees, setBees] = useState<Hatchling[]>([]);
   const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
   const [beesError, setBeesError] = useState<string | null>(null);
+
+  // Effect to handle fetched staked bees data
+  useEffect(() => {
+    if (stakedError) {
+      console.error("Error fetching staked bees:", stakedError);
+      setBeesError("Failed to load staked bees.");
+      setIsBeesLoading(false);
+      return;
+    }
+
+    const fetchBeesWithMetadata = async () => {
+      if (stakedData) {
+        try {
+          const fetchedStakedBees: Hatchling[] = await Promise.all(
+            stakedData.stakedNFTs.nodes.map(async (nft: any) => {
+              // Fetch metadata using the tokenURI
+              console.log("nft.tokenURI", nft.token?.tokenURI);
+              const metadata = await fetchMetadata(nft.token?.tokenURI); // Adjust if the path is different
+
+              return createHatchling(
+                parseInt(nft.tokenIdNum, 10),
+                metadata, // Assuming fetchMetadata returns an object with an 'image' field
+                "Staked",
+                nft.environment?.environmentId || null,
+                nft.hive?.hiveId || null,
+                nft.owner?.id || ""
+              );
+            })
+          );
+          setStakedBees(fetchedStakedBees);
+        } catch (error) {
+          console.error("Error fetching metadata:", error);
+          setBeesError("Failed to load bee metadata.");
+        } finally {
+          setIsBeesLoading(false);
+        }
+      }
+    };
+
+    fetchBeesWithMetadata();
+  }, [stakedData, stakedError]);
 
   // Handle staking confirmation
   const handleConfirmStake = async () => {
@@ -161,8 +216,6 @@ const Forest: React.FC = () => {
         return;
       }
       // Example hiveId and environmentId - you will get these from the environment or UI
-      const hiveId = "2"; // Replace with actual hive ID if dynamic
-      const environmentId = "2"; // Replace with actual environment ID if dynamic
       const tokenId = activeBee; // beeId is a number
       console.log(
         `Staking tokenId: ${tokenId}, environmentId: ${environmentId}, hiveId: ${hiveId}`
@@ -205,7 +258,7 @@ const Forest: React.FC = () => {
   // Handle Unstaking confirmation
   const handleConfirmUnstake = async () => {
     setConfirmUnstakeModalOpen(false);
-    const targetBee = bees.find((bee) => bee.id === activeBee);
+    const targetBee = stakedBees.find((bee) => bee.id === activeBee);
     if (!targetBee || !targetBee.environmentID || !targetBee.hiveID) {
       setAlertSeverity("error");
       setAlertMessage("Invalid bee selected for unstaking.");
@@ -269,15 +322,12 @@ const Forest: React.FC = () => {
       // Manual State Update After Successful Transaction
       if (activeBee !== null) {
         console.log(`Confirmed staking of Bee ID ${activeBee}`);
-        const hiveId = "2"; // Replace with actual value if dynamic
-        const environmentId = "2"; // Replace with actual value if dynamic
         stakeBee(activeBee, environmentId, hiveId); // Pass environmentID and hiveID
         setActiveBee(null); // Reset activeBee
         console.log(
           "Called stakeBee() with environmentID and hiveID, and reset activeBee after successful transaction."
         );
       }
-      // ();
     }
     if (isTransactionError) {
       setAlertSeverity("error");
@@ -291,7 +341,6 @@ const Forest: React.FC = () => {
     isTransactionError,
     transactionError,
     isTransactionLoading,
-    //  refreshBeesData,
     setActiveBee,
     activeBee,
     stakeBee,
@@ -433,7 +482,7 @@ const Forest: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              {isBeesLoading ? (
+              {isBeesLoading || isStakedLoading ? (
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -445,21 +494,23 @@ const Forest: React.FC = () => {
                     Loading Bees...
                   </Typography>
                 </Box>
-              ) : beesError ? (
+              ) : beesError || stakedError ? (
                 <Box textAlign="center" mt={4}>
                   <Typography color="error" variant="h6">
-                    {beesError}
+                    {beesError || stakedError?.message}
                   </Typography>
                   <Button
                     variant="contained"
-                    onClick={() => window.location.reload()}
+                    onClick={() => {
+                      refetchStaked();
+                    }}
                     sx={{ mt: 2 }}
                   >
                     Retry
                   </Button>
                 </Box>
               ) : (
-                <BeeGrid bees={bees} variant="default" /> // Pass variant="default"
+                <BeeGrid bees={stakedBees} variant="default" /> // Pass variant="default"
               )}
             </Grid>
           </Grid>
@@ -627,6 +678,23 @@ const Forest: React.FC = () => {
     </>
   );
 };
+
+// Ensure createHatchling is defined or imported
+const createHatchling = (
+  id: number,
+  imageAddress: string,
+  status: "Free" | "Staked",
+  environmentID: string | null,
+  hiveID: string | null,
+  ownerAddress: string
+): Hatchling => ({
+  id,
+  imageAddress,
+  status,
+  environmentID,
+  hiveID,
+  ownerAddress,
+});
 
 const App: React.FC = () => {
   return <Forest />;

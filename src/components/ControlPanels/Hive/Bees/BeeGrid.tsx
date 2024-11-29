@@ -14,11 +14,11 @@ import BeeCardHive from "@/components/Card/BeeCardHive/BeeCardHive";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { Hatchling } from "@/types/Hatchling";
 import { useUserContext } from "@/context/UserContext";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const beeCategories = [
   { label: "All Bees", filter: "all" },
-  { label: "Your Bees", filter: "yours" },
+  { label: "Your Bees", filter: "you" },
 ];
 
 interface BeeGridProps {
@@ -29,7 +29,7 @@ interface BeeGridProps {
 const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
   const { address } = useUserContext(); // Current user's address
   const [selectedTab, setSelectedTab] = React.useState<string>(
-    variant === "default" ? "all" : "yours"
+    variant === "default" ? "all" : "you"
   );
 
   const theme = useTheme();
@@ -158,9 +158,11 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
                   : undefined
               }
               variant={variant === "default" ? "default" : "myBees"} // Adjust variant
-              additionalInfo={{
-                // Pass any additional info if needed
-              }}
+              additionalInfo={
+                {
+                  // Pass any additional info if needed
+                }
+              }
             />
           ))}
         </Box>

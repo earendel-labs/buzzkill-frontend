@@ -21,6 +21,8 @@ import {
 } from "@/hooks/HiveStaking";
 import { Hatchling, HatchlingStatus } from "@/types/Hatchling";
 
+import { fetchMetadata } from "@/app/utils/fetchMetaData";
+
 import { useQuery } from "@apollo/client";
 import { GET_USER_STAKED_TOKENS } from "@/subquery/getUserStakedTokens";
 import { GET_USER_UNSTAKED_TOKENS } from "@/subquery/getUserUnstakedTokens";
@@ -36,19 +38,13 @@ interface UserContextType {
   isConnected: boolean;
   balance: string | null;
   approvalForStaking: boolean;
+  refreshBeesData: () => void;
   checkAndPromptApproval: () => Promise<boolean>;
   stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
   unstakeBee: (beeId: number) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
-
-const ipfsToHttp = (ipfsUri: string) => {
-  if (ipfsUri.startsWith("ipfs://")) {
-    return ipfsUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
-  }
-  return ipfsUri;
-};
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -82,9 +78,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       hiveStakingAddress ?? "0x0000000000000000000000000000000000000000",
     ],
   });
-  console.log("isApproved", isApproved);
-  console.log("hiveStakingAddress", hiveStakingAddress);
-  console.log("address", address);
   const { writeContractAsync: approveTokens } =
     useWriteBuzzkillHatchlingsNftSetApprovalForAll();
 
@@ -103,6 +96,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     data: stakedData,
     loading: loadingStaked,
     error: errorStaked,
+    refetch: refetchStakedData,
   } = useQuery(GET_USER_STAKED_TOKENS, {
     variables: { userId: lowercaseAddress },
     skip: !isConnected || !lowercaseAddress,
@@ -113,6 +107,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     data: tokensData,
     loading: loadingTokens,
     error: errorTokens,
+    refetch: refetchUnstakedData,
   } = useQuery(GET_USER_UNSTAKED_TOKENS, {
     variables: { userId: lowercaseAddress },
     skip: !isConnected || !lowercaseAddress,
@@ -134,18 +129,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     hiveID,
     ownerAddress,
   });
-
-  // Fetch metadata for NFTs
-  const fetchMetadata = async (metadataUri: string) => {
-    try {
-      const response = await fetch(ipfsToHttp(metadataUri));
-      const metadata = await response.json();
-      return ipfsToHttp(metadata.image);
-    } catch (err) {
-      console.error("Failed to fetch metadata:", err);
-      return "/default-image.png"; // Fallback image
-    }
-  };
 
   useEffect(() => {
     if (errorStaked) {
@@ -261,48 +244,54 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  /**
+  /*
    * Stake a Bee
    */
-  const stakeBee = (beeId: number, environmentID: string, hiveID: string) => {
+  const stakeBee = async (
+    beeId: number,
+    environmentID: string,
+    hiveID: string
+  ) => {
     console.log(`Attempting to stake Bee ID ${beeId}`);
-    setBees((prevBees) => {
-      const beeToStake = prevBees.find((bee) => bee.id === beeId);
-      if (beeToStake) {
-        console.log(`Staking Bee ID ${beeId}:`, beeToStake);
-        setStakedBees((prevStakedBees) => {
-          const hatchling = createHatchling(
-            beeToStake.id,
-            beeToStake.imageAddress,
-            "Staked",
-            environmentID,
-            hiveID,
-            beeToStake.ownerAddress
-          );
-          const updatedStakedBees = [...prevStakedBees, hatchling];
-          console.log(
-            `Added Bee ID ${beeId} to stakedBees:`,
-            updatedStakedBees
-          );
-          return updatedStakedBees;
-        });
-        const updatedBees = prevBees.filter((bee) => bee.id !== beeId);
-        console.log(
-          `Removed Bee ID ${beeId} from bees. Updated bees:`,
-          updatedBees
-        );
-        return updatedBees;
-      } else {
-        console.warn(`Bee ID ${beeId} not found in unstaked bees.`);
-        return prevBees;
-      }
-    });
+    // setBees((prevBees) => {
+    //   const beeToStake = prevBees.find((bee) => bee.id === beeId);
+    //   if (beeToStake) {
+    //     console.log(`Staking Bee ID ${beeId}:`, beeToStake);
+    //     setStakedBees((prevStakedBees) => {
+    //       const hatchling = createHatchling(
+    //         beeToStake.id,
+    //         beeToStake.imageAddress,
+    //         "Staked",
+    //         environmentID,
+    //         hiveID,
+    //         beeToStake.ownerAddress
+    //       );
+    //       const updatedStakedBees = [...prevStakedBees, hatchling];
+    //       console.log(
+    //         `Added Bee ID ${beeId} to stakedBees:`,
+    //         updatedStakedBees
+    //       );
+    //       return updatedStakedBees;
+    //     });
+    //     const updatedBees = prevBees.filter((bee) => bee.id !== beeId);
+    //     console.log(
+    //       `Removed Bee ID ${beeId} from bees. Updated bees:`,
+    //       updatedBees
+    //     );
+
+    //     return updatedBees;
+    //   } else {
+    //     console.warn(`Bee ID ${beeId} not found in unstaked bees.`);
+    //     return prevBees;
+    //   }
+    // });
+    await refreshBeesData();
   };
 
   /**
    * Unstake a Bee
    */
-  const unstakeBee = (beeId: number) => {
+  const unstakeBee = async (beeId: number) => {
     console.log(`Attempting to unstake Bee ID ${beeId}`);
     setStakedBees((prevStakedBees) => {
       const beeToUnstake = prevStakedBees.find((bee) => bee.id === beeId);
@@ -328,12 +317,31 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           `Removed Bee ID ${beeId} from stakedBees. Updated stakedBees:`,
           updatedStakedBees
         );
+
         return updatedStakedBees;
       } else {
         console.warn(`Bee ID ${beeId} not found in staked bees.`);
         return prevStakedBees;
       }
     });
+    await refreshBeesData();
+  };
+
+  // Function to refresh all bees data
+  const refreshBeesData = async () => {
+    if (!isConnected || !lowercaseAddress) {
+      console.log("User not connected or address missing. Skipping refresh.");
+      return;
+    }
+
+    try {
+      console.log("Refreshing staked and unstaked tokens...");
+      await Promise.all([refetchStakedData(), refetchUnstakedData()]);
+      console.log("Refresh complete.");
+    } catch (error) {
+      console.error("Error refreshing bees data:", error);
+      setFetchError(true);
+    }
   };
 
   // Optional: Log bees and stakedBees whenever they change
@@ -359,6 +367,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         balance: balanceData?.formatted ?? null,
         approvalForStaking,
         checkAndPromptApproval,
+        refreshBeesData,
         stakeBee,
         unstakeBee,
       }}

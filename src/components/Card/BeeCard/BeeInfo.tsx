@@ -24,6 +24,11 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
 }) => {
   const router = useRouter();
 
+  const shortenAddress = (ownerAddress: string) => {
+    if (!ownerAddress) return "";
+    return `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`;
+  };
+
   return (
     <>
       {environmentName && environmentLink && (
@@ -103,7 +108,9 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
             }}
           >
             <PersonIcon sx={{ marginRight: 0.5 }} />
-            Owner: {ownerAddress}
+            {ownerAddress === "You"
+              ? ownerAddress
+              : shortenAddress(ownerAddress)}
           </Typography>
         </Box>
       )}
