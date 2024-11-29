@@ -2,7 +2,7 @@ import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import MapHeader from "@/components/MapNavigation/MapHeader/MapHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
-import UserResourceBar from "@/components/User/UserResources/UserResources";
+import UserResourceBar from "@/components/User/UserResources/UserResourcesHatchlings";
 
 interface TopBarProps {
   showWorldMapButton?: boolean;
@@ -22,7 +22,7 @@ const TopBar: React.FC<TopBarProps> = ({
         display: "flex",
         flexDirection: isSmallScreen ? "column" : "row",
         alignItems: "center",
-        padding: "20px 80px 0px 50px",
+        padding: "20px 80px 0px 140px",
         width: "100%",
         height: "auto",
         gap: isSmallScreen ? "20px" : "0px",
@@ -33,7 +33,7 @@ const TopBar: React.FC<TopBarProps> = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "flex-end",
           minWidth: "200px", // Ensure this takes the right amount of space for content
           marginRight: "20px", // Keep the spacing controlled
         }}

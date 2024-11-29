@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import LocationHeader from "@/components/MapNavigation/LocationHeader/LocationHeader";
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
-import UserResourceBar from "@/components/User/UserResources/UserResources";
+import UserResourceBar from "@/components/User/UserResources/UserResourcesHatchlings";
 import HiveMapButton from "@/components/MapNavigation/HiveMapButton/HiveMapButton";
 
 interface HiveTopBarProps {
@@ -21,7 +21,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           sm: "0px 2rem 0px 1rem",
           md: "0px 2.5rem 0px 1.5rem",
           lg: "0px 3.125rem 0px 1.25rem",
-          xl: "0px 4rem 0px 2rem",
+          xl: "0px 4rem 0px 7rem",
         },
         width: "100%",
         height: "8.75rem",
@@ -35,7 +35,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-start",
+          justifyContent: "center",
           alignItems: "center",
           marginRight: "auto",
           height: "100%",

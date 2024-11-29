@@ -62,7 +62,7 @@ const UserResourceBar: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "flex-end", // Ensure all items align to the bottom
           width: "100%",
-          padding: "0 55px 0px 30px",
+          padding: "0 55px 0px 60px",
         }}
       >
         {/* Pollen */}
