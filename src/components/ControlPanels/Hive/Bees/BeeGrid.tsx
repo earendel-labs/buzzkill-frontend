@@ -49,18 +49,16 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
 
   // Filter bees based on selected tab
   const filteredBees =
-    variant === "default"
-      ? selectedTab === "all"
-        ? bees
-        : bees.filter(
-            (bee) => bee.ownerAddress.toLowerCase() === address?.toLowerCase()
-          )
-      : bees; // In 'myBees' variant, all bees are owned by the user
+    selectedTab === "all"
+      ? bees
+      : bees.filter(
+          (bee) => bee.ownerAddress.toLowerCase() === address?.toLowerCase()
+        );
 
   // Determine if there are any bees to display
   const hasBees = filteredBees.length > 0;
 
-  // Define a handler for Play Click (only for 'myBees' variant)
+  // Define a handler for Play Click (only for 'Your Bees' variant)
   const router = useRouter();
   const handlePlayClick = (beeId: number) => {
     // Implement play logic here, e.g., navigate to a play page with the beeId
@@ -148,16 +146,14 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
               key={bee.id}
               bee={bee}
               isOwnedByUser={
-                variant === "default"
-                  ? bee.ownerAddress.toLowerCase() === address?.toLowerCase()
-                  : true
+                bee.ownerAddress.toLowerCase() === address?.toLowerCase()
               }
               onPlayClick={
-                variant === "myBees" && bee.status === "Staked"
+                selectedTab === "you" && bee.status === "Staked"
                   ? () => handlePlayClick(bee.id)
                   : undefined
               }
-              variant={variant === "default" ? "default" : "myBees"} // Adjust variant
+              variant={selectedTab === "you" ? "myBees" : "default"} // Adjust variant based on tab
               additionalInfo={
                 {
                   // Pass any additional info if needed

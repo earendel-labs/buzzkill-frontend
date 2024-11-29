@@ -219,7 +219,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
           />
           <ActionButtons
-            status={bee.status} // bee.status is now "Staked"
             onPlayClick={variant === "myBees" ? onPlayClick : undefined} // Pass onPlayClick only for myBees
             onUnstakeClick={
               variant === "default" && isOwnedByUser

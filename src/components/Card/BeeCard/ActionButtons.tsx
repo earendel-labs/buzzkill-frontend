@@ -1,10 +1,7 @@
-// src/components/Card/ActionButtons.tsx
-
 import React from "react";
 import { Box, Button, styled } from "@mui/material";
 
 interface ActionButtonsProps {
-  status: "Free" | "Staked";
   onPlayClick?: () => void | Promise<void>;
   onUnstakeClick?: () => void;
   isPending?: boolean;
@@ -18,24 +15,29 @@ const StyledActionButton = styled(Button)(({ theme }) => ({
   fontSize: "1.1rem",
 }));
 
+const PlaceholderBox = styled(Box)(({ theme }) => ({
+  width: "95%",
+  margin: "16px auto 0",
+  height: "48px", // Matches the height of the button (including padding)
+  display: "block", // Ensures it occupies space
+}));
+
 const ActionButtons: React.FC<ActionButtonsProps> = ({
-  status,
   onPlayClick,
   onUnstakeClick,
   isPending = false,
   isTransactionLoading = false,
 }) => {
-  if (status === "Free") {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 1,
-          paddingTop: 1,
-        }}
-      >
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        width: "100%",
+      }}
+    >
+      {onPlayClick && (
         <StyledActionButton
           variant="contained"
           color="primary"
@@ -44,32 +46,22 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         >
           Play
         </StyledActionButton>
-      </Box>
-    );
-  } else if (status === "Staked") {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 1,
-          paddingTop: 1,
-        }}
-      >
+      )}
+      {onUnstakeClick ? (
         <StyledActionButton
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={onUnstakeClick}
           disabled={isPending || isTransactionLoading}
         >
           {isPending || isTransactionLoading ? "Unstaking..." : "Unstake"}
         </StyledActionButton>
-      </Box>
-    );
-  } else {
-    return null; // Handle unexpected status if necessary
-  }
+      ) : (
+        // Render a transparent placeholder to occupy space
+        <PlaceholderBox />
+      )}
+    </Box>
+  );
 };
 
 export default ActionButtons;
