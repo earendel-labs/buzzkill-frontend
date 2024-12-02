@@ -87,6 +87,12 @@ const Play: React.FC = () => {
         alignItems="center"
         height="100vh" 
         flexDirection="column"
+        sx={{
+          backgroundImage: (theme) =>
+            theme.palette.customBackgrounds.boxGradient,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         <HexagonSpinner />
         <Typography className="body1" padding="24px 0px">

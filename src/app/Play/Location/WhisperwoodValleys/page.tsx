@@ -1,24 +1,39 @@
-// Forest.tsx
+// src/components/Forest.tsx
+
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
-import { useRouter } from "next/navigation"; // Use next/navigation for Next.js 13
+import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import { useSound } from "@/context/SoundContext";
 import TopBar from "@/components/Layouts/GameLayout/TopBar/TopBar";
-import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker";
+import CombinedHatchlingMarker from "@/components/MapNavigation/CombinedHatchlingMarker/CombinedHatchlingMarker";
+import CombinedResourceMarker from "@/components/MapNavigation/CombinedResourceMarker/CombinedResourceMarker"; // Import CombinedResourceMarker
 import { ResourceType } from "@/types/ResourceType";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
 import { Typography } from "@mui/material";
+import { useHives } from "@/context/HivesContext"; // Ensure correct import path
+import { HiveHatchlingInfo } from "@/types/Environment";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
-  const [music, setMusic] = useState<HTMLAudioElement | null>(null);
+  const [music, setMusic] = React.useState<HTMLAudioElement | null>(null);
   const router = useRouter();
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = React.useState(false);
+
+  const {
+    environments,
+    hivesMap,
+    resources, // Access non-Hive resources
+    stakedNFTs,
+    maxBeesMap,
+    getHiveById,
+    getStakedNFTsByHiveId,
+    getMaxBeesByHiveId,
+  } = useHives();
 
   const handleClick = () => {
     console.log("Button clicked");
@@ -49,6 +64,68 @@ const Forest: React.FC = () => {
     router.push(link);
   };
 
+  // Compute bee counts per hive using useMemo for performance optimization
+  const beeCountsPerHive = useMemo(() => {
+    const countsMap = new Map<
+      number,
+      { common: number; rare: number; ultrarare: number; Total: number }
+    >();
+
+    stakedNFTs.forEach((nft) => {
+      const hiveId = Number(nft.hive.hiveId);
+      if (!countsMap.has(hiveId)) {
+        countsMap.set(hiveId, { common: 0, rare: 0, ultrarare: 0, Total: 0 });
+      }
+      const counts = countsMap.get(hiveId)!;
+      const rarity = nft.token.rarity.toLowerCase();
+      if (rarity === "common") counts.common += 1;
+      else if (rarity === "rare") counts.rare += 1;
+      else if (rarity === "ultrarare") counts.ultrarare += 1;
+      counts.Total += 1;
+    });
+
+    return countsMap;
+  }, [stakedNFTs]);
+
+  // Compute hive hatchling info combining bee counts and max bees
+  const hiveHatchlingData = useMemo(() => {
+    const hatchlingMap = new Map<number, HiveHatchlingInfo>();
+
+    hivesMap.forEach((hive, hiveId) => {
+      const counts = beeCountsPerHive.get(hiveId) || {
+        common: 0,
+        rare: 0,
+        ultrarare: 0,
+        Total: 0,
+      };
+      const maxBees = getMaxBeesByHiveId(hiveId) || 0;
+
+      const status = counts.Total >= maxBees ? "Full" : "Active";
+      const totalBeesString = `${counts.Total} / ${maxBees}`;
+
+      hatchlingMap.set(hiveId, {
+        productivityValue: hive.defenseValue, // Adjust if necessary
+        CommonBees: counts.common,
+        RareBees: counts.rare,
+        UltraRareBees: counts.ultrarare,
+        TotalBees: totalBeesString, // Set as string
+        status,
+        location: hive.name,
+        environment:
+          environments.find((env) => env.id === 2)?.name || "Unknown", // Adjust environment logic as needed
+      });
+    });
+
+    return hatchlingMap;
+  }, [hivesMap, beeCountsPerHive, getMaxBeesByHiveId, environments]);
+
+  // Handle non-Hive resources
+  const nonHiveResources = useMemo(() => {
+    return resources.filter((resource) => resource.type !== "Hive");
+  }, [resources]);
+
+  console.log("Non-Hive Resources:", nonHiveResources); // Debugging
+
   return (
     <GameLayout>
       {/* Conditionally render loading spinner */}
@@ -62,6 +139,12 @@ const Forest: React.FC = () => {
           position="fixed"
           width="100vw"
           zIndex={1300}
+          sx={{
+            backgroundImage: (theme) =>
+              theme.palette.customBackgrounds.boxGradient,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
           <HexagonSpinner />
           <Typography className="body1" padding="24px 0px">
@@ -90,175 +173,73 @@ const Forest: React.FC = () => {
             objectFit: "cover",
             objectPosition: "center",
           }}
-          onLoad={() => setIsImageLoaded(true)} // Updated to use onLoad
+          onLoad={() => setIsImageLoaded(true)}
           priority
         />
       </Box>
 
       <TopBar mapHeaderLabel="Whisperwood Valleys" />
 
-      {/* CombinedResourceMarker Components */}
-      <CombinedResourceMarker
-        left="14%"
-        top="40%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Cedar Hive"
-        HiveDefenceValue="24"
-        QueenBeesValue="2/3"
-        WorkerBeesValue="40/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonClick={handleClick}
-      />
-      <CombinedResourceMarker
-        left="21%"
-        top="21%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Black Forest Hive"
-        HiveDefenceValue="21"
-        QueenBeesValue="1/3"
-        WorkerBeesValue="24/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonLink="/Play/Location/WhisperwoodValleys/BlackForestHive"
-      />
-      <CombinedResourceMarker
-        left="30%"
-        top="22%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Silveroak Hive"
-        HiveDefenceValue="49"
-        QueenBeesValue="3/3"
-        WorkerBeesValue="44/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonClick={handleClick}
-      />
-      <CombinedResourceMarker
-        left="81%"
-        top="24%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Darkroot Hive"
-        HiveDefenceValue="23"
-        QueenBeesValue="1/3"
-        WorkerBeesValue="41/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonClick={handleClick}
-      />
-      <CombinedResourceMarker
-        left="83%"
-        top="44%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Woodlands Hive"
-        HiveDefenceValue="53"
-        QueenBeesValue="3/3"
-        WorkerBeesValue="47/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonClick={handleClick}
-      />
-      <CombinedResourceMarker
-        left="82%"
-        top="70%"
-        link="/resource-link"
-        resourceType={ResourceType.Hive}
-        hiveName="Sequoia Hive"
-        HiveDefenceValue="13"
-        QueenBeesValue="1/3"
-        WorkerBeesValue="24/55"
-        primaryButtonClick={handleClick}
-        secondaryButtonClick={handleClick}
-      />
-      {/* Sap Markers */}
+      {/* Dynamically Render CombinedHatchlingMarker Components */}
+      {Array.from(hivesMap.values()).map((hive) => {
+        const hiveId = hive.hiveId;
+        const hatchlingInfo = hiveHatchlingData.get(hiveId);
 
-      {/* <CombinedResourceMarker
-        left="23%"
-        top="62%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="35%"
-      />
-      <CombinedResourceMarker
-        left="29%"
-        top="49%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="75%"
-      />
-      <CombinedResourceMarker
-        left="41%"
-        top="29%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="92%"
-      />
-      <CombinedResourceMarker
-        left="75%"
-        top="49%"
-        link="/resource-link"
-        resourceType={ResourceType.Sap}
-        contentValue="25%"
-      />
-      {/* Pollen Markers  
-      <CombinedResourceMarker
-        left="17%"
-        top="6%"
-        link="/resource-link"
-        resourceType={ResourceType.Pollen}
-        contentValue="58%"
-      />
-      <CombinedResourceMarker
-        left="39%"
-        top="42.22%"
-        link="/resource-link"
-        resourceType={ResourceType.Pollen}
-        contentValue="12%"
-      />
-      <CombinedResourceMarker
-        left="72%"
-        top="60%"
-        link="/resource-link"
-        resourceType={ResourceType.Pollen}
-        contentValue="37%"
-      />
-      {/* Nectar Markers  
-      <CombinedResourceMarker
-        left="47%"
-        top="42%"
-        link="/resource-link"
-        resourceType={ResourceType.Nectar}
-        contentValue="12%"
-      />
-      <CombinedResourceMarker
-        left="50%"
-        top="53%"
-        link="/resource-link"
-        resourceType={ResourceType.Nectar}
-        contentValue="58%"
-      />
-      <CombinedResourceMarker
-        left="66%"
-        top="72%"
-        link="/resource-link"
-        resourceType={ResourceType.Nectar}
-        contentValue="37%"
-      />
-      <CombinedResourceMarker
-        left="62%"
-        top="64%"
-        link="/resource-link"
-        resourceType={ResourceType.Nectar}
-        contentValue="93%"
-      />
-       */}
+        if (!hatchlingInfo) {
+          // Optionally, render a placeholder or loading state
+          return null;
+        }
+
+        console.log(`Hive ID: ${hiveId}, Resource Link: ${hive.resourceLink}`); // Debugging
+
+        return (
+          <CombinedHatchlingMarker
+            key={hiveId}
+            left={hive.position.left}
+            top={hive.position.top}
+            link={hive.resourceLink}
+            resourceType={ResourceType.Hive}
+            hiveName={hive.name}
+            HiveProductionValue={hatchlingInfo.productivityValue.toString()}
+            RareBeesValue={hatchlingInfo.RareBees.toString()}
+            TotalBeesValue={hatchlingInfo.TotalBees}
+            status={hatchlingInfo.status} // Pass status prop
+            primaryButtonClick={handleClick}
+            secondaryButtonClick={() => navigate(hive.resourceLink)}
+          />
+        );
+      })}
+
+      {/* Dynamically Render CombinedResourceMarker Components */}
+      {nonHiveResources.map((resource) => {
+        const { type, id, position, resourceLink, contentValue } = resource;
+        const left = position.left;
+        const top = position.top;
+        const resourceType = type as ResourceType; // Ensure ResourceType is correctly mapped
+
+        // Validate fields
+        if (!resourceLink || !contentValue) {
+          console.warn(`Resource ID: ${id} is missing link or contentValue.`);
+          return null;
+        }
+
+        console.log(`Resource ID: ${id}, Resource Link: ${resourceLink}`); // Debugging
+
+        return (
+          <CombinedResourceMarker
+            key={id}
+            left={left}
+            top={top}
+            link={resourceLink}
+            resourceType={resourceType}
+            contentValue={contentValue}
+          />
+        );
+      })}
+
       <BottomBar />
     </GameLayout>
   );
 };
 
-const App: React.FC = () => {
-  return <Forest />;
-};
-
-export default App;
+export default Forest;

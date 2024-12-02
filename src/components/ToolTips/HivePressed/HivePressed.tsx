@@ -57,7 +57,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             width: "100%",
           }}
         >
-          <Typography variant="ToolTipLabel">Hive Defence</Typography>
+          <Typography variant="ToolTipLabel">Hive Production</Typography>
           <Typography variant="ToolTipValue">{hiveDefence}</Typography>
         </Box>
         <Box
@@ -67,7 +67,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             width: "100%",
           }}
         >
-          <Typography variant="ToolTipLabel">Queen Bees</Typography>
+          <Typography variant="ToolTipLabel">Rare Bees</Typography>
           <Typography variant="ToolTipValue">{queenBees}</Typography>
         </Box>
         <Box
@@ -77,7 +77,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             width: "100%",
           }}
         >
-          <Typography variant="ToolTipLabel">Worker Bees</Typography>
+          <Typography variant="ToolTipLabel">Total Bees</Typography>
           <Typography variant="ToolTipValue">{workerBees}</Typography>
         </Box>
         <Box
@@ -88,7 +88,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             marginTop: "10px", // Margin above the buttons
           }}
         >
-          <PrimaryButton text="Raid" onClick={onRaidClick} />
+          <PrimaryButton text="Raid" onClick={onRaidClick}  disabled={true}/>
           <PrimaryButton text="Enter" onClick={onEnterClick} />
         </Box>
       </Box>

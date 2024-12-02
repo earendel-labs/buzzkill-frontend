@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     "src/theme/theme.ts",
     "src/types/next-auth.d.ts"
-  ],
+, "src/components/MapNavigation/CombinedHatchlingMarker"  ],
   "exclude": ["node_modules"]
 }

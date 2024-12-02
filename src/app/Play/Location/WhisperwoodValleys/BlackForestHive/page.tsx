@@ -409,7 +409,7 @@ const Forest: React.FC = () => {
             border: "1px solid #000000",
           }}
         >
-          {!isImageLoaded && (
+          {/* {!isImageLoaded && (
             <Box
               display="flex"
               justifyContent="center"
@@ -419,13 +419,19 @@ const Forest: React.FC = () => {
               position="fixed"
               width="100vw"
               zIndex={1300}
+              sx={{
+                backgroundImage: (theme) =>
+                  theme.palette.customBackgrounds.boxGradient,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
             >
               <HexagonSpinner />
               <Typography className="body1" padding="24px 0px">
                 Loading World...
               </Typography>
             </Box>
-          )}
+          )} */}
           <Image
             src={
               environmentData?.environment?.backgroundImage ||

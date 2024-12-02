@@ -21,6 +21,10 @@ declare module "@mui/material/styles" {
     OneIDRed: Palette["primary"];
     DarkBlueFaded: Palette["primary"];
     OneIDRedFaded: Palette["primary"];
+
+    customBackgrounds: {
+      boxGradient: string;
+    };
   }
   interface PaletteOptions {
     NavBarBackground?: PaletteOptions["primary"];
@@ -38,6 +42,10 @@ declare module "@mui/material/styles" {
     OneIDRed?: PaletteOptions["primary"];
     DarkBlueFaded?: PaletteOptions["primary"];
     OneIDRedFaded: PaletteOptions["primary"];
+
+    customBackgrounds?: {
+      boxGradient?: string;
+    };
   }
 
   interface TypographyVariants {
@@ -165,6 +173,12 @@ const getTheme = (): Theme => {
         dark: "rgba(74, 8, 5, 0.4)",
         light: "rgba(136, 25, 20, 0.4)",
       },
+      customBackgrounds: {
+        boxGradient: `
+          linear-gradient(rgba(5, 11, 43, 0.7), rgba(5, 11, 43, 0.1)),
+          conic-gradient(from -23.81deg at 72.82% 162.44%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg);
+        `,
+      },
       background: {
         default: "#2e447a",
         paper: "#a3c8ed",
@@ -253,7 +267,7 @@ const getTheme = (): Theme => {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: "#2E447A",
+            backgroundColor: "#027790",
             backgroundImage: `
             linear-gradient(rgba(5, 11, 43, 0.7), rgba(5, 11, 43, 0.1)),
             conic-gradient(from -23.81deg at 72.82% 162.44%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg);
