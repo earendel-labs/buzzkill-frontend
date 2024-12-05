@@ -57,7 +57,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
 
   // Determine if there are any bees to display
   const hasBees = filteredBees.length > 0;
-
   // Define a handler for Play Click (only for 'Your Bees' variant)
   const router = useRouter();
   return (
@@ -66,7 +65,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         borderRadius: "8px",
         padding: "20px",
-        height: "83vh",
+        height: "80%",
         overflowY: "auto",
         boxSizing: "border-box",
         margin: "0 auto",

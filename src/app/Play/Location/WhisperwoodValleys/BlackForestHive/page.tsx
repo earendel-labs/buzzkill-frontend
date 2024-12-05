@@ -178,7 +178,7 @@ const BlackForestHive: React.FC = () => {
                 "Staked",
                 nft.environmentId?.environmentId || null,
                 nft.hiveId?.hiveId || null,
-                nft.owner?.id || ""
+                nft.ownerId?.id || ""
               );
             })
           );
@@ -242,7 +242,6 @@ const BlackForestHive: React.FC = () => {
   // Handle Stake button click - open confirmation modal
   const handleStake = () => {
     if (activeBee === null) {
-      console.log("No active bee selected to stake.");
       setAlertSeverity("error");
       setAlertMessage("Please select a bee to stake.");
       setSnackbarOpen(true);
@@ -270,12 +269,10 @@ const BlackForestHive: React.FC = () => {
     const { id, environmentID, hiveID } = targetBee;
 
     try {
-      console.log("Initiating unstake transaction...");
       const tx = await unstakeNFT({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
 
-      console.log("Transaction initiated:", tx);
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
         console.log("Transaction hash set:", tx);
@@ -283,13 +280,11 @@ const BlackForestHive: React.FC = () => {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
-        console.error("Transaction failed to initiate.");
       }
     } catch (err) {
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
-      console.error("Error during unstake transaction:", err);
     }
   };
 
@@ -307,14 +302,6 @@ const BlackForestHive: React.FC = () => {
 
   // Handle transaction status changes
   useEffect(() => {
-    console.log(
-      "Transaction Receipt Status - Loading:",
-      isTransactionLoading,
-      "Success:",
-      isTransactionSuccess,
-      "Error:",
-      isTransactionError
-    );
     if (isTransactionSuccess && transactionHash) {
       setAlertSeverity("success");
       setAlertMessage("Transaction successful!");
@@ -322,7 +309,6 @@ const BlackForestHive: React.FC = () => {
       setTransactionHash(undefined);
       // Manual State Update After Successful Transaction
       if (activeBee !== null) {
-        console.log(`Confirmed staking of Bee ID ${activeBee}`);
         stakeBee(activeBee, environmentId, hiveId); // Pass environmentID and hiveID
         setActiveBee(null); // Reset activeBee
       }
@@ -379,9 +365,6 @@ const BlackForestHive: React.FC = () => {
 
     return counts;
   }, [stakedBees]);
-
-  console.log("beeCounts.Rare", beeCounts.Rare);
-  console.log("beeCounts.Ultra-Rare", beeCounts.UltraRare);
 
   // Ensure hiveHatchlingInfo uses the default or calculated values
   const hiveHatchlingInfo: HiveHatchlingInfo = {
