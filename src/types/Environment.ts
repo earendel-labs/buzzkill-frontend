@@ -68,18 +68,18 @@ export interface StakedNFT {
   tokenIdNum: string;
   stakedAt: string;
   lastClaimedAt: string;
-  environment: {
+  environmentId: {
     id: string;
     environmentId: string;
   };
-  hive: {
+  hiveId: {
     id: string;
     hiveId: string;
   };
-  owner: {
+  ownerId: {
     id: string;
   };
-  token: {
+  tokenId: {
     rarity: string;
     tokenURI: string;
   };
@@ -87,9 +87,12 @@ export interface StakedNFT {
 
 export interface StakedNFTsData {
   stakedNFTs: {
-    nodes: StakedNFT[];
+    edges: {
+      node: StakedNFT;
+    }[];
   };
 }
+
 // src/types/HiveInfo.ts
 
 export interface HiveHatchlingInfo {

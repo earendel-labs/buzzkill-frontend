@@ -71,6 +71,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
         boxSizing: "border-box",
         margin: "0 auto",
         display: "flex",
+        width: "100%",
         flexDirection: "column",
         alignItems: "center",
         [theme.breakpoints.up("lg")]: {

@@ -30,39 +30,6 @@
       },
       {
         "type": "Hive",
-        "id": 2,
-        "name": "Silveroak Hive",
-        "defenseValue": 49,
-        "queenBees": "3/3",
-        "workerBees": "44/55",
-        "position": { "left": "30%", "top": "22%" },
-        "resourceLink": "/resource-link",
-        "hiveId": 3
-      },
-      {
-        "type": "Hive",
-        "id": 3,
-        "name": "Darkroot Hive",
-        "defenseValue": 23,
-        "queenBees": "1/3",
-        "workerBees": "41/55",
-        "position": { "left": "81%", "top": "24%" },
-        "resourceLink": "/resource-link",
-        "hiveId": 4
-      },
-      {
-        "type": "Hive",
-        "id": 4,
-        "name": "Woodlands Hive",
-        "defenseValue": 53,
-        "queenBees": "3/3",
-        "workerBees": "47/55",
-        "position": { "left": "83%", "top": "44%" },
-        "resourceLink": "/resource-link",
-        "hiveId": 5
-      },
-      {
-        "type": "Hive",
         "id": 5,
         "name": "Sequoia Hive",
         "defenseValue": 13,
@@ -71,48 +38,6 @@
         "position": { "left": "82%", "top": "70%" },
         "resourceLink": "/resource-link",
         "hiveId": 6
-      },
-      {
-        "type": "Sap",
-        "id": 10,
-        "contentValue": "35%",
-        "position": { "left": "23%", "top": "62%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Sap",
-        "id": 11,
-        "contentValue": "75%",
-        "position": { "left": "29%", "top": "49%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Pollen",
-        "id": 12,
-        "contentValue": "58%",
-        "position": { "left": "17%", "top": "68%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Nectar",
-        "id": 13,
-        "contentValue": "12%",
-        "position": { "left": "47%", "top": "42%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Nectar",
-        "id": 14,
-        "contentValue": "58%",
-        "position": { "left": "50%", "top": "53%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Nectar",
-        "id": 15,
-        "contentValue": "93%",
-        "position": { "left": "66%", "top": "72%" },
-        "resourceLink": "/resource-link"
       }
     ]
   }

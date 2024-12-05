@@ -55,7 +55,7 @@ const hatchlingContract = {
   abi: buzzkillHatchlingsNftAbi,
 } as const;
 
-const Forest: React.FC = () => {
+const BlackForestHive: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
@@ -142,7 +142,7 @@ const Forest: React.FC = () => {
     error: stakedError,
     refetch: refetchStaked,
   } = useQuery(GET_ALL_STAKED_IN_HIVE, {
-    variables: { environmentId: environmentIdNumber, hiveId: hiveIdNumber },
+    variables: { environmentId: environmentId, hiveId: hiveIdNumber },
     fetchPolicy: "cache-and-network",
   });
 
@@ -167,17 +167,17 @@ const Forest: React.FC = () => {
       if (stakedData) {
         try {
           const fetchedStakedBees: Hatchling[] = await Promise.all(
-            stakedData.stakedNFTs.nodes.map(async (nft: any) => {
-              // Fetch metadata using the tokenURI
-              const metadata = await fetchMetadata(nft.token?.tokenURI); // Adjust if the path is different
+            stakedData.stakedNFTs.edges.map(async (edge: any) => {
+              const nft = edge.node;
+              const metadata = await fetchMetadata(nft.tokenId?.tokenURI); // Adjust if the path is different
 
               return createHatchling(
                 parseInt(nft.tokenIdNum, 10),
-                nft.token.rarity,
+                nft.tokenId.rarity,
                 metadata, // Assuming fetchMetadata returns an object with an 'image' field
                 "Staked",
-                nft.environment?.environmentId || null,
-                nft.hive?.hiveId || null,
+                nft.environmentId?.environmentId || null,
+                nft.hiveId?.hiveId || null,
                 nft.owner?.id || ""
               );
             })
@@ -361,15 +361,17 @@ const Forest: React.FC = () => {
   const beeCounts = useMemo(() => {
     // Initialize counts with default values
     const counts: { [key: string]: number } = {
-      common: 0,
-      rare: 0,
+      Common: 0,
+      Rare: 0,
       UltraRare: 0,
       Total: 0,
     };
 
     // Populate counts based on stakedBees
     stakedBees.forEach((bee) => {
-      counts[bee.rarity] = (counts[bee.rarity] || 0) + 1;
+      // Use the exact rarity as keys to avoid mismatch
+      const rarity = bee.rarity; // Assuming rarity is one of "Common", "Rare", "Ultra-Rare"
+      counts[rarity] = (counts[rarity] || 0) + 1;
     });
 
     // Update the Total count
@@ -377,6 +379,9 @@ const Forest: React.FC = () => {
 
     return counts;
   }, [stakedBees]);
+
+  console.log("beeCounts.Rare", beeCounts.Rare);
+  console.log("beeCounts.Ultra-Rare", beeCounts.UltraRare);
 
   // Ensure hiveHatchlingInfo uses the default or calculated values
   const hiveHatchlingInfo: HiveHatchlingInfo = {
@@ -734,8 +739,4 @@ const createHatchling = (
   ownerAddress,
 });
 
-const App: React.FC = () => {
-  return <Forest />;
-};
-
-export default App;
+export default BlackForestHive;

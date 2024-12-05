@@ -75,8 +75,11 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
 
     if (data) {
-      setStakedNFTs(data.stakedNFTs.nodes);
-      console.log("Staked NFTs fetched:", data.stakedNFTs.nodes);
+      const stakedNFTs = data.stakedNFTs.edges.map((edge) => edge.node); // Extract nodes from edges
+
+      setStakedNFTs(stakedNFTs); // Assuming setStakedNFTs is a state setter
+
+      console.log("Staked NFTs fetched:", stakedNFTs);
     }
   }, [data, loading, error]);
 
@@ -171,7 +174,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
   };
 
   const getStakedNFTsByHiveId = (hiveId: number): StakedNFT[] => {
-    return stakedNFTs.filter((nft) => Number(nft.hive.hiveId) === hiveId);
+    return stakedNFTs.filter((nft) => Number(nft.hiveId.hiveId) === hiveId);
   };
 
   const getMaxBeesByHiveId = (hiveId: number): number | undefined => {

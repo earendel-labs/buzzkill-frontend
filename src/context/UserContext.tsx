@@ -144,14 +144,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       if (stakedData) {
         try {
           const fetchedStakedBees: Hatchling[] = await Promise.all(
-            stakedData.stakedNFTs.nodes.map(async (nft: any) => ({
-              id: parseInt(nft.tokenIdNum, 10),
-              imageAddress: await fetchMetadata(nft.token.tokenURI),
-              status: "Staked" as HatchlingStatus,
-              environmentID: nft.environment?.environmentId || null,
-              hiveID: nft.hive?.hiveId || null,
-              ownerAddress: address || "",
-            }))
+            stakedData.stakedNFTs.edges.map(async (edge: any) => {
+              const nft = edge.node; // Access the node inside each edge
+              return {
+                id: parseInt(nft.tokenIdNum, 10),
+                imageAddress: await fetchMetadata(nft.tokenId.tokenURI), // Correct key for tokenURI
+                status: "Staked" as HatchlingStatus,
+                environmentID: nft.environmentId?.environmentId || null, // Access environmentId correctly
+                hiveID: nft.hiveId?.hiveId || null, // Access hiveId correctly
+                ownerAddress: address || "",
+              };
+            })
           );
           setStakedBees(fetchedStakedBees);
         } catch (error) {
@@ -165,15 +168,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       if (tokensData) {
         try {
           const fetchedUnstakedBees: Hatchling[] = await Promise.all(
-            tokensData.tokens.nodes
-              .filter((token: any) => !token.isStaked)
+            tokensData.tokens.edges
+              .map((edge: any) => edge.node) // Extract the node from each edge
+              .filter((token: any) => !token.isStaked) // Filter for unstaked tokens
               .map(async (token: any) => ({
-                id: parseInt(token.tokenIdNum || token.id, 10), // Adjust based on your schema
-                imageAddress: await fetchMetadata(token.tokenURI),
+                id: parseInt(token.id, 10), // Use the correct key for the token ID
+                imageAddress: await fetchMetadata(token.tokenURI), // Fetch metadata using tokenURI
                 status: "Free" as HatchlingStatus,
-                environmentID: null,
-                hiveID: null,
-                ownerAddress: address || "",
+                environmentID: null, // Unstaked tokens won't have an environment
+                hiveID: null, // Unstaked tokens won't have a hive
+                ownerAddress: token.owner || address || "", // Use the owner field from the token
               }))
           );
           setBees(fetchedUnstakedBees);

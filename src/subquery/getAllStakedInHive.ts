@@ -8,29 +8,31 @@ export const GET_ALL_STAKED_IN_HIVE = gql`
   ) {
     stakedNFTs(
       filter: {
-        environment: { environmentId: { equalTo: $environmentId } }
-        hive: { hiveId: { equalTo: $hiveId } }
+        environmentId: { environmentId: { equalTo: $environmentId } }
+        hiveId: { hiveId: { equalTo: $hiveId } }
       }
     ) {
-      nodes {
-        id
-        tokenIdNum
-        stakedAt
-        lastClaimedAt
-        environment {
+      edges {
+        node {
           id
-          environmentId
-        }
-        hive {
-          id
-          hiveId
-        }
-        owner {
-          id
-        }
-        token {
-          rarity
-          tokenURI
+          tokenIdNum
+          stakedAt
+          lastClaimedAt
+          environmentId {
+            id
+            environmentId
+          }
+          hiveId {
+            id
+            hiveId
+          }
+          ownerId {
+            id
+          }
+          tokenId {
+            rarity
+            tokenURI
+          }
         }
       }
     }

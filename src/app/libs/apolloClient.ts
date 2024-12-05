@@ -6,7 +6,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const createApolloClient = () => {
   return new ApolloClient({
-    uri: "https://api.subquery.network/sq/Sahil24-lab/buzzkill-contracts",
+    uri: "https://api.subquery.network/sq/Sahil24-lab/buzzkill-final",
     cache: new InMemoryCache(),
   });
 };

@@ -72,12 +72,12 @@ const Forest: React.FC = () => {
     >();
 
     stakedNFTs.forEach((nft) => {
-      const hiveId = Number(nft.hive.hiveId);
+      const hiveId = Number(nft.hiveId.hiveId);
       if (!countsMap.has(hiveId)) {
         countsMap.set(hiveId, { common: 0, rare: 0, ultrarare: 0, Total: 0 });
       }
       const counts = countsMap.get(hiveId)!;
-      const rarity = nft.token.rarity.toLowerCase();
+      const rarity = nft.tokenId.rarity.toLowerCase();
       if (rarity === "common") counts.common += 1;
       else if (rarity === "rare") counts.rare += 1;
       else if (rarity === "ultrarare") counts.ultrarare += 1;
