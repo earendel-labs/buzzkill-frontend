@@ -3,7 +3,7 @@ import { Box, Typography, Skeleton } from "@mui/material";
 import Image from "next/image";
 import { UserInfo } from "@/types/UserInfo";
 import { formatNumber } from "@/app/utils/formatNumber";
-
+import UserResourcesBackground from "./UserResourcesBackground";
 // Function to fetch user info from the Next.js API
 const fetchUserInfo = async (): Promise<UserInfo> => {
   const response = await fetch("/api/user-info");
@@ -35,27 +35,7 @@ const UserResourceBar: React.FC = () => {
   }, []); // Empty dependency array means this only runs once
 
   return (
-    <Box
-      sx={{
-        width: "305px",
-        height: "56px",
-        backgroundImage: "url(/Frames/UserResources/UserResourceBarBeta.svg)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "flex-end", // Align all contents to the bottom
-        justifyContent: "center",
-        padding: "0px 0px 15px 0px",
-        transform: "scale(1)", // Default scale is 1 (no scaling)
-        transformOrigin: "top left", // Ensures scaling starts from the top left
-        transition: "transform 0.3s ease-in-out", // Smooth transition when resizing
-        "@media (max-width: 1440px)": {
-          transform: "scale(0.8)", // Scale down to 80% on smaller screens
-        },
-      }}
-    >
+    <UserResourcesBackground borderWidth="2px">
       <Box
         sx={{
           display: "flex",
@@ -63,7 +43,7 @@ const UserResourceBar: React.FC = () => {
           alignItems: "flex-end", // Ensure all items align to the bottom
           width: "100%",
           height: "100%",
-          padding: "0 55px 0px 30px",
+          padding: "2px 24px 2px 12px",
         }}
       >
         {/* HoneyToken */}
@@ -74,7 +54,7 @@ const UserResourceBar: React.FC = () => {
             gap: "12px",
           }}
         >
-          <Box sx={{ width: 24, height: 24 }}>
+          <Box sx={{ width: 32, height: 32 }}>
             <Image
               src="/Icons/Resources/HoneyToken.svg"
               alt="HoneyToken"
@@ -90,7 +70,7 @@ const UserResourceBar: React.FC = () => {
               <Typography
                 variant="h6"
                 sx={{
-                  fontSize: "20px",
+                  fontSize: "32px",
                   minWidth: "50px",
                   textAlign: "left",
                   lineHeight: 0.85,
@@ -102,7 +82,7 @@ const UserResourceBar: React.FC = () => {
           </Box>
         </Box>
       </Box>
-    </Box>
+    </UserResourcesBackground>
   );
 };
 

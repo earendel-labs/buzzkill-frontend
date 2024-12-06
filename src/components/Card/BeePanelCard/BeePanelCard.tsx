@@ -71,8 +71,8 @@ const BeePanelCard: React.FC = () => {
           height: "100%",
           borderRadius: "inherit", // Inherit border radius for gradient
           background:
-            "linear-gradient(135deg, #68341B 6%, #915E28 29%, #E9B743 77%, #E9B743 98%)", // Golden gradient
-          padding: "2px", // Border width
+            "linear-gradient(135deg,  #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)", // Golden gradient
+          padding: "3px", // Border width
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor", // Apply the mask to make only the border show gradient
