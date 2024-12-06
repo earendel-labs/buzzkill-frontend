@@ -35,6 +35,8 @@ interface HivesContextProps {
   getHiveById: (hiveId: number) => HiveHatchling | undefined;
   getStakedNFTsByHiveId: (hiveId: number) => StakedNFT[];
   getMaxBeesByHiveId: (hiveId: number) => number | undefined;
+  loading: boolean;
+  error: Error | null;
 }
 
 const HiveStakingABI = HiveStakingAbiJson as Abi;
@@ -234,6 +236,8 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         getHiveById,
         getStakedNFTsByHiveId,
         getMaxBeesByHiveId,
+        loading: loading || maxBeesLoading || productionLoading,
+        error: error || null,
       }}
     >
       {children}

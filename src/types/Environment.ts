@@ -29,6 +29,7 @@ export interface HiveHatchling {
 }
 
 export interface Environment {
+  [x: string]: any;
   id: number;
   name: string;
   type: string;
