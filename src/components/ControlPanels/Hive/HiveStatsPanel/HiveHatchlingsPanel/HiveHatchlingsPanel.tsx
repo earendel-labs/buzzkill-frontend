@@ -68,7 +68,7 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
         padding: {
           xs: "0.5rem", // Extra small devices
           sm: "1rem", // Small devices
-          lg: "2rem 2rem",
+          lg: "1.25rem 2rem",
         },
         width: "100%",
         maxWidth: {
@@ -167,6 +167,52 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
           }}
         >
           {hiveHatchlingInfo.environment}
+        </Typography>
+      </Box>
+
+      {/* Hive Production */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          marginTop: "0.5rem",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
+          },
+          alignItems: { xs: "center", sm: "unset" },
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            color: "#D4AF37",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
+          Production
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+              md: "0.95rem",
+              lg: "1rem",
+              xl: "1.5rem",
+            },
+          }}
+        >
+          {hiveHatchlingInfo.productivityValue}
         </Typography>
       </Box>
 
@@ -363,7 +409,7 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
           },
           marginBottom: {
             xs: "0.5rem",
-            xl: "2rem",
+            xl: "0rem",
           },
           flexDirection: {
             xs: "column", // Stack buttons vertically on small screens

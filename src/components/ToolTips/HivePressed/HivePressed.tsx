@@ -57,7 +57,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             width: "100%",
           }}
         >
-          <Typography variant="ToolTipLabel">Hive Production</Typography>
+          <Typography variant="ToolTipLabel">Production</Typography>
           <Typography variant="ToolTipValue">{hiveDefence}</Typography>
         </Box>
         <Box

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "es2015", // Add or update this line
     "typeRoots": ["./types", "node_modules/@types"],
     "types": ["node"],
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -29,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/theme/theme.ts",
-    "src/types/next-auth.d.ts"
-, "src/components/MapNavigation/CombinedHatchlingMarker"  ],
+    "src/types/next-auth.d.ts",
+    "src/components/MapNavigation/CombinedHatchlingMarker"
+  ],
   "exclude": ["node_modules"]
 }

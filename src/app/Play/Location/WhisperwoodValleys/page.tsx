@@ -104,7 +104,7 @@ const Forest: React.FC = () => {
       const totalBeesString = `${counts.Total} / ${maxBees}`;
 
       hatchlingMap.set(hiveId, {
-        productivityValue: hive.defenseValue, // Adjust if necessary
+        productivityValue: hive.productivityValue,
         CommonBees: counts.common,
         RareBees: counts.rare,
         UltraRareBees: counts.ultrarare,
@@ -123,8 +123,6 @@ const Forest: React.FC = () => {
   const nonHiveResources = useMemo(() => {
     return resources.filter((resource) => resource.type !== "Hive");
   }, [resources]);
-
-  console.log("Non-Hive Resources:", nonHiveResources); // Debugging
 
   return (
     <GameLayout>
@@ -190,8 +188,6 @@ const Forest: React.FC = () => {
           return null;
         }
 
-        console.log(`Hive ID: ${hiveId}, Resource Link: ${hive.resourceLink}`); // Debugging
-
         return (
           <CombinedHatchlingMarker
             key={hiveId}
@@ -223,8 +219,7 @@ const Forest: React.FC = () => {
           return null;
         }
 
-        console.log(`Resource ID: ${id}, Resource Link: ${resourceLink}`); // Debugging
-
+ 
         return (
           <CombinedResourceMarker
             key={id}

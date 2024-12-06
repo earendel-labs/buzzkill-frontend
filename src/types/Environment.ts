@@ -17,7 +17,7 @@ export interface HiveHatchling {
   type: string;
   id: number;
   name: string;
-  productionValue: number;
+  productivityValue: number;
   rareBees: string;
   totalBees: string;
   position: {
@@ -61,6 +61,12 @@ export interface Resource {
 
 export interface EnvironmentsData {
   environments: Environment[];
+}
+
+export interface HiveProductionData {
+  hiveId: number;
+  totalProduction: string;
+  averageProduction: string;
 }
 
 export interface StakedNFT {

@@ -509,9 +509,11 @@ const BlackForestHive: React.FC = () => {
               {isBeesLoading || isStakedLoading ? (
                 <Box
                   display="flex"
+                  flexDirection="column"
                   justifyContent="center"
                   alignItems="center"
                   width="100%"
+                  height="80%"
                 >
                   <HexagonSpinner />
                   <Typography className="body1" padding="24px 0px">
@@ -543,7 +545,7 @@ const BlackForestHive: React.FC = () => {
 
         {/* Confirmation Modal for Staking */}
         <Modal
-          open={confirmModalOpen}
+          open={confirmModalOpen}y
           onClose={handleCancelStake}
           aria-labelledby="confirm-stake-title"
           aria-describedby="confirm-stake-description"
