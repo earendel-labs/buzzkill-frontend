@@ -267,7 +267,7 @@ const getTheme = (): Theme => {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: "#027790",
+            backgroundColor: "#0C2C4C",
             backgroundImage: `
             linear-gradient(rgba(5, 11, 43, 0.7), rgba(5, 11, 43, 0.1)),
             conic-gradient(from -23.81deg at 72.82% 162.44%, #2E447A -44.57deg, #027790 7.76deg, #007991 20.98deg, #195C84 52deg, #2E447A 88.68deg, #2E447A 315.43deg, #027790 367.76deg);

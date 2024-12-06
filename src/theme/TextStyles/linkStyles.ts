@@ -4,6 +4,7 @@ const linkStyles = (theme: Theme) => ({
   MuiLink: {
     styleOverrides: {
       root: {
+        fontFamily: theme.typography.fontFamily,
         "&.linkStyle1": {
           color: "#ffffff",
           textDecoration: "none",

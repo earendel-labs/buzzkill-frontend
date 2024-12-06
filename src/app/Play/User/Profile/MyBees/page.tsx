@@ -63,6 +63,7 @@ const MyBeesTab = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
+              justifyContent="center"
               height="20vh"
             >
               <Typography marginTop="24px" marginBottom="24px">
@@ -96,7 +97,8 @@ const MyBeesTab = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              height="40vh"
+              justifyContent="center"
+              height="20vh"
             >
               <Typography>No Staked Bees Found</Typography>
             </Box>
