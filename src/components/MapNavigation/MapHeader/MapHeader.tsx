@@ -21,7 +21,7 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          padding: "0 10px", // Padding around the text
+          padding: "5px 20px", // Padding around the text
           fontSize: {
             xs: "1rem",
             sm: "1.5rem",

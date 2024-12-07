@@ -48,7 +48,7 @@ const BeePanelCard: React.FC = () => {
       sx={{
         width: "420px",
         height: "220px",
-        padding: "28px",
+        padding: "28px 32px",
         position: "relative", // Needed for the pseudo-element to work
         display: "flex",
         flexDirection: "column",
@@ -85,7 +85,7 @@ const BeePanelCard: React.FC = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", height: "100%" }}
       >
         {/* Left column with bee image or placeholder */}
         <Box
@@ -102,11 +102,12 @@ const BeePanelCard: React.FC = () => {
           <Image
             src={activeBeeImage}
             alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
-            width={300}
-            height={300}
+            width={320}
+            height={320}
             style={{
-              width: "100%",
-              height: "100%",
+              objectFit: "contain", // Maintain aspect ratio while fitting inside the container
+              height: "100%", // Take up the full height of the parent container
+              width: "auto", // Dynamically adjust width to maintain aspect ratio
               borderRadius: "8px", // Ensure the image itself has rounded corners
             }}
           />

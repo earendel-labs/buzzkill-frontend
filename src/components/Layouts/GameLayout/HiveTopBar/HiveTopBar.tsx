@@ -15,12 +15,12 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
       sx={{
         position: "relative",
         display: "flex",
-        alignItems: "center",
+        alignItems: "space-even",
         padding: {
           xs: "0px 1rem 0px 0.5rem",
           sm: "0px 2rem 0px 1rem",
           md: "0px 2.5rem 0px 1.5rem",
-          lg: "0px 3.125rem 0px 1.25rem",
+          lg: "0px 3.125rem 0px 9rem",
           xl: "0px 4rem 0px 7rem",
         },
         width: "100%",

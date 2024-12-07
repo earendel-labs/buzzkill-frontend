@@ -1,10 +1,13 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { UserInfo } from "@/types/UserInfo";
 import { formatNumber } from "@/app/utils/formatNumber";
 import UserResourcesBackground from "./UserResourcesBackground";
-// Function to fetch user info from the Next.js API
+
 const fetchUserInfo = async (): Promise<UserInfo> => {
   const response = await fetch("/api/user-info");
   if (!response.ok) {
@@ -16,9 +19,8 @@ const fetchUserInfo = async (): Promise<UserInfo> => {
 
 const UserResourceBar: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true);
 
-  // Fetch userInfo data from API
   useEffect(() => {
     const getUserInfo = async () => {
       try {
@@ -27,62 +29,100 @@ const UserResourceBar: React.FC = () => {
       } catch (error) {
         console.error("Failed to fetch user info", error);
       } finally {
-        setLoading(false); // Data is either loaded or failed, stop loading
+        setLoading(false);
       }
     };
 
     getUserInfo();
-  }, []); // Empty dependency array means this only runs once
+  }, []);
 
   return (
-    <UserResourcesBackground borderWidth="2px">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end", // Ensure all items align to the bottom
-          width: "100%",
-          height: "100%",
-          padding: "2px 24px 2px 12px",
-        }}
-      >
-        {/* HoneyToken */}
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <UserResourcesBackground>
         <Box
           sx={{
             display: "flex",
-            alignItems: "flex-end",
-            gap: "12px",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 2,
+            px: 2,
+            py: 1.5,
+            minWidth: "120px",
+            height: "48px", // Set a fixed height to match the image
           }}
         >
-          <Box sx={{ width: 32, height: 32 }}>
-            <Image
-              src="/Icons/Resources/HoneyToken.svg"
-              alt="HoneyToken"
-              width={32}
-              height={32}
-              style={{ width: "auto", height: "auto" }}
-            />
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              <Image
+                src="/Icons/Resources/HoneyToken.svg"
+                alt="HoneyToken"
+                width={32}
+                height={32}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             {loading ? (
-              <Skeleton variant="text" width={50} />
+              <Skeleton
+                variant="text"
+                width={80}
+                height={32}
+                sx={{
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transform: "none",
+                }}
+              />
             ) : (
               <Typography
-                variant="h6"
+                variant="h5"
                 sx={{
-                  fontSize: "32px",
-                  minWidth: "50px",
-                  textAlign: "left",
-                  lineHeight: 0.85,
+                  fontWeight: "bold",
+                  color: "#E9B743",
+                  letterSpacing: "0.5px",
+                  fontSize: { xs: "24px", sm: "28px" },
+                  minWidth: "80px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  lineHeight: 1,
+                  height: "100%",
+                  marginTop: "3px", // Push text downward
                 }}
               >
                 {formatNumber(userInfo?.honey || 0)}
               </Typography>
             )}
-          </Box>
+          </motion.div>
         </Box>
-      </Box>
-    </UserResourcesBackground>
+      </UserResourcesBackground>
+    </motion.div>
   );
 };
 
