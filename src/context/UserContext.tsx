@@ -147,7 +147,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         try {
           const fetchedStakedBees: Hatchling[] = await Promise.all(
             stakedData.stakedNFTs.edges.map(async (edge: any) => {
-              const nft = edge.node;
+              const nft = edge.node; 
               const metadata = await fetchMetadata(nft.tokenId.tokenURI);
               return {
                 id: parseInt(nft.tokenIdNum, 10),

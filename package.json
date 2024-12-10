@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.10",
+    "@apollo/client": "^3.12.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hcaptcha/react-hcaptcha": "^1.11.0",
@@ -40,6 +40,7 @@
     "framer-motion": "^11.13.1",
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
+    "graphql-ws": "^5.16.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lodash.merge": "^4.6.2",

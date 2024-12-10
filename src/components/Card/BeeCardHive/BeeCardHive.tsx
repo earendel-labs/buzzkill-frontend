@@ -16,6 +16,7 @@ import ActionButtonsHive from "../BeeCard/ActionButtonsHive";
 import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeInfo from "../BeeCard/BeeInfo";
 import BeeCardBackground from "../BeeCard/BeeCardBackground";
+import { useHives } from "@/context/HivesContext"; // Add this import
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -54,6 +55,8 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   additionalInfo = {},
 }) => {
   const { refreshBeesData } = useUserContext();
+  const { refreshHiveData } = useHives();
+
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
@@ -142,14 +145,34 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       "Error:",
       isTransactionError
     );
+
     if (isTransactionSuccess) {
       setAlertSeverity("success");
       setAlertMessage("Transaction completed successfully!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      refreshBeesData();
+
       console.log("Called refreshBeesData() after successful transaction.");
+
+      // Refresh hive data if action is unstake
+      if (bee.id && variant === "default") {
+        console.log(
+          `Refreshing hive data for bee ID ${bee.id} with action 'unstake'.`
+        );
+        refreshHiveData(bee.id, "unstake")
+          .then(() => {
+            console.log("Hive data refreshed successfully.");
+          })
+          .catch((error) => {
+            console.error("Error refreshing hive data:", error);
+            setAlertSeverity("error");
+            setAlertMessage("Failed to refresh hive data.");
+            setSnackbarOpen(true);
+          });
+        refreshBeesData();
+      }
     }
+
     if (isTransactionError) {
       setAlertSeverity("error");
       setAlertMessage(transactionError?.message || "Transaction failed.");
@@ -162,6 +185,9 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     isTransactionError,
     transactionError,
     refreshBeesData,
+    refreshHiveData,
+    bee.id,
+    variant,
     isTransactionLoading,
   ]);
 

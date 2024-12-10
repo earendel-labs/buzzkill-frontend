@@ -1,6 +1,4 @@
-// src/components/ControlPanels/Hive/Bees/BeeGrid.tsx
-
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   Typography,
@@ -8,13 +6,14 @@ import {
   Tab,
   useMediaQuery,
   useTheme,
+  Fade,
 } from "@mui/material";
 import { SyntheticEvent } from "react";
 import BeeCardHive from "@/components/Card/BeeCardHive/BeeCardHive";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { Hatchling } from "@/types/Hatchling";
 import { useUserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 
 const beeCategories = [
   { label: "All Bees", filter: "all" },
@@ -22,12 +21,17 @@ const beeCategories = [
 ];
 
 interface BeeGridProps {
-  bees: Hatchling[]; // Array of staked bees
-  variant?: "default" | "myBees"; // Context variants
+  bees: Hatchling[];
+  variant?: "default" | "myBees";
+  loading?: boolean;
 }
 
-const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
-  const { address } = useUserContext(); // Current user's address
+const BeeGrid: React.FC<BeeGridProps> = ({
+  bees,
+  variant = "default",
+  loading = false,
+}) => {
+  const { address } = useUserContext();
   const [selectedTab, setSelectedTab] = React.useState<string>(
     variant === "default" ? "all" : "you"
   );
@@ -47,18 +51,16 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
     window.open("/mint", "_blank");
   };
 
-  // Filter bees based on selected tab
-  const filteredBees =
-    selectedTab === "all"
+  const filteredBees = useMemo(() => {
+    return selectedTab === "all"
       ? bees
       : bees.filter(
           (bee) => bee.ownerAddress.toLowerCase() === address?.toLowerCase()
         );
+  }, [bees, selectedTab, address]);
 
-  // Determine if there are any bees to display
   const hasBees = filteredBees.length > 0;
-  // Define a handler for Play Click (only for 'Your Bees' variant)
-  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -89,7 +91,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
         },
       }}
     >
-      {/* Conditionally render Tabs only in 'default' variant */}
       {variant === "default" && (
         <Tabs
           value={selectedTab}
@@ -116,75 +117,84 @@ const BeeGrid: React.FC<BeeGridProps> = ({ bees, variant = "default" }) => {
         </Tabs>
       )}
 
-      {/* Bee Cards Grid */}
-      {hasBees ? (
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(1, 1fr)", // 1 column on extra-small screens
-              sm: "repeat(2, 1fr)", // 2 columns on small screens
-              md: "repeat(3, 1fr)", // 3 columns on medium screens
-              lg: "repeat(3, 1fr)", // 3 columns on large screens
-              xl: "repeat(3, 1fr)", // 3 columns on extra-large screens
-            },
-            justifyItems: "center",
-            gap: "1.5em", // Reduced gap for better fit
-            padding: "0 1em", // Reduced horizontal padding
-            width: "100%",
-            boxSizing: "border-box",
-          }}
-        >
-          {filteredBees.map((bee) => (
-            <BeeCardHive
-              key={bee.id}
-              bee={bee}
-              isOwnedByUser={
-                bee.ownerAddress.toLowerCase() === address?.toLowerCase()
-              }
-              variant={selectedTab === "myBees" ? "myBees" : "default"} // Adjust variant based on tab
-              additionalInfo={
-                {
-                  // Pass any additional info if needed
-                }
-              }
-            />
-          ))}
-        </Box>
-      ) : (
-        // Show message if no bees are available
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            variant="h5"
+      <Fade in={!loading} timeout={500}>
+        {loading ? (
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+          >
+            <HexagonSpinner />
+            <Typography className="body1" padding="24px 0px">
+              Loading Bees...
+            </Typography>
+          </Box>
+        ) : hasBees ? (
+          <Box
             sx={{
-              color: "#D4AF37",
-              mb: 4,
-              fontSize: 24,
-              maxWidth: "100%",
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                lg: "repeat(3, 1fr)",
+                xl: "repeat(3, 1fr)",
+              },
+              justifyItems: "center",
+              gap: "1.5em",
+              padding: "0 1em",
               width: "100%",
+              boxSizing: "border-box",
             }}
           >
-            {variant === "default"
-              ? "No bees found in this category."
-              : "You don't own any bees. Please mint or buy a bee from a secondary market."}
-          </Typography>
-          {variant === "default" && (
-            <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
-              <PrimaryButton text="Mint" onClick={handleMintClick} />
-              <PrimaryButton text="Buy" onClick={handleBuyClick} />
-            </Box>
-          )}
-        </Box>
-      )}
+            {filteredBees.map((bee) => (
+              <BeeCardHive
+                key={bee.id}
+                bee={bee}
+                isOwnedByUser={
+                  bee.ownerAddress.toLowerCase() === address?.toLowerCase()
+                }
+                variant={selectedTab === "myBees" ? "myBees" : "default"}
+              />
+            ))}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                color: "#D4AF37",
+                mb: 4,
+                fontSize: 24,
+                maxWidth: "100%",
+                width: "100%",
+              }}
+            >
+              {variant === "default"
+                ? "No bees found in this category."
+                : "You don't own any bees. Please mint or buy a bee from a secondary market."}
+            </Typography>
+            {variant === "default" && (
+              <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
+                <PrimaryButton text="Mint" onClick={handleMintClick} />
+                <PrimaryButton text="Buy" onClick={handleBuyClick} />
+              </Box>
+            )}
+          </Box>
+        )}
+      </Fade>
     </Box>
   );
 };

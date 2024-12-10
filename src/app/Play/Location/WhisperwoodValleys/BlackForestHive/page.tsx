@@ -1,5 +1,3 @@
-// src/app/Play/Location/WhisperwoodValleys/BlackForestHive/page.tsx
-
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
@@ -25,8 +23,8 @@ import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { Hatchling } from "@/types/Hatchling";
 import { fetchMetadata } from "@/app/utils/fetchMetaData";
 import { useHives } from "@/context/HivesContext";
+import useDebounce from "@/hooks/useDebounce";
 
-// Define specific result types (if needed)
 type HatchlingStatus = "Free" | "Staked";
 
 interface HiveHatchlingInfo {
@@ -46,37 +44,29 @@ const BlackForestHive: React.FC = () => {
   const router = useRouter();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // From UserContext - includes staking and unstaking functions
-  const {
-    activeBee,
-    checkAndPromptApproval,
-    setActiveBee,
-    stakeBee,
-    unstakeBee,
-    refreshBeesData,
-  } = useUserContext();
+  // Track the last action taken by the user (stake or unstake)
+  const [lastAction, setLastAction] = useState<"stake" | "unstake" | null>(
+    null
+  );
 
-  // From HivesContext - includes refreshHiveData
+  const { activeBee, checkAndPromptApproval, setActiveBee } = useUserContext();
+
   const {
     environments,
-    hivesMap,
     stakedNFTs,
-    maxBeesMap,
     getHiveById,
     getStakedNFTsByHiveId,
-    getMaxBeesByHiveId,
     loading: hivesLoading,
     error: hivesError,
     refreshHiveData,
+    isRefreshing,
   } = useHives();
 
-  // Staking hooks
   const { writeContractAsync: stakeNFT, isPending: isStakingPending } =
     useWriteHiveStakingStake();
   const { writeContractAsync: unstakeNFT, isPending: isUnstakingPending } =
     useWriteHiveStakingUnstake();
 
-  // Transaction state and feedback UI states
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
@@ -93,17 +83,13 @@ const BlackForestHive: React.FC = () => {
     isSuccess: isTransactionSuccess,
     isError: isTransactionError,
     error: transactionError,
-  } = useWaitForTransactionReceipt({
-    hash: transactionHash,
-  });
+  } = useWaitForTransactionReceipt({ hash: transactionHash });
 
-  // Hard-coded environment and hive IDs for this example
   const environmentId = "2";
   const hiveId = "2";
   const environmentIdNumber = Number(environmentId);
   const hiveIdNumber = Number(hiveId);
 
-  // Local state for staked bees with metadata
   const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
   const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
   const [beesError, setBeesError] = useState<string | null>(null);
@@ -129,28 +115,18 @@ const BlackForestHive: React.FC = () => {
     }
   }, [isMusicMuted, isMuted, music]);
 
-  const navigate = (link: string) => {
-    router.push(link);
-  };
-
   // Fetch metadata for staked bees whenever stakedNFTs or hive data changes
   useEffect(() => {
-    if (hivesLoading) {
-      setIsBeesLoading(true);
-      return;
-    }
-
-    if (hivesError) {
-      console.error("Error fetching hives data:", hivesError);
-      setBeesError(hivesError.message);
-      setIsBeesLoading(false);
-      return;
-    }
-
     const fetchBeesWithMetadata = async () => {
-      setIsBeesLoading(true);
+      setLoadingBees(true);
       try {
+        if (hivesLoading) {
+          // Optionally, wait for hives to finish loading
+          // await waitForHivesToLoad(); // Implement if necessary
+        }
+
         const filteredStakedNFTs = getStakedNFTsByHiveId(hiveIdNumber);
+
         const fetchedStakedBees: Hatchling[] = await Promise.all(
           filteredStakedNFTs.map(async (nft) => {
             const metadata = await fetchMetadata(nft.tokenId?.tokenURI);
@@ -166,15 +142,21 @@ const BlackForestHive: React.FC = () => {
           })
         );
         setStakedBees(fetchedStakedBees);
+        setBeesError(null);
       } catch (error) {
-        console.error("Error fetching metadata:", error);
+        console.error("Failed to load bee metadata:", error);
         setBeesError("Failed to load bee metadata.");
       } finally {
-        setIsBeesLoading(false);
+        setLoadingBees(false);
       }
     };
 
-    fetchBeesWithMetadata();
+    if (!hivesLoading && !hivesError) {
+      fetchBeesWithMetadata();
+    } else if (hivesError) {
+      setBeesError(hivesError.message);
+      setLoadingBees(false);
+    }
   }, [
     stakedNFTs,
     hiveIdNumber,
@@ -183,31 +165,34 @@ const BlackForestHive: React.FC = () => {
     getStakedNFTsByHiveId,
   ]);
 
+  // Consolidated loading state
+  const [loadingBees, setLoadingBees] = useState<boolean>(false);
+  const debouncedLoadingBees = useDebounce(loadingBees, 300); // 300ms debounce
+
   const handleConfirmStake = async () => {
     setConfirmModalOpen(false);
+
+    if (activeBee === null) {
+      setAlertSeverity("error");
+      setAlertMessage("No active bee selected for staking.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    const isApproved = await checkAndPromptApproval();
+    if (!isApproved) {
+      setAlertSeverity("error");
+      setAlertMessage("You need to approve the staking contract.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    setLastAction("stake");
+    const tokenId = activeBee;
     try {
-      if (activeBee === null) {
-        setAlertSeverity("error");
-        setAlertMessage("No active bee selected for staking.");
-        setSnackbarOpen(true);
-        return;
-      }
-
-      // Check if user has approved staking
-      const isApproved = await checkAndPromptApproval();
-      if (!isApproved) {
-        setAlertSeverity("error");
-        setAlertMessage("You need to approve the staking contract.");
-        setSnackbarOpen(true);
-        return;
-      }
-
-      // Proceed with staking transaction on-chain
-      const tokenId = activeBee;
       const tx = await stakeNFT({
         args: [BigInt(tokenId), BigInt(environmentId), BigInt(hiveId)],
       });
-      console.log("Staking transaction initiated:", tx);
       setTransactionHash(tx as `0x${string}`);
       setAlertSeverity("success");
       setAlertMessage("Staking transaction initiated!");
@@ -227,15 +212,18 @@ const BlackForestHive: React.FC = () => {
       setSnackbarOpen(true);
       return;
     }
+    if (isStakingPending || isTransactionLoading) return; // Prevent multiple transactions
+    setLastAction("stake");
     setConfirmModalOpen(true);
   };
 
   const handleRaid = () => {
-    console.log("Raid button clicked");
+    // Placeholder for raid logic
   };
 
   const handleConfirmUnstake = async () => {
     setConfirmUnstakeModalOpen(false);
+
     const targetBee = stakedBees.find((bee) => bee.id === activeBee);
     if (!targetBee || !targetBee.environmentID || !targetBee.hiveID) {
       setAlertSeverity("error");
@@ -244,17 +232,17 @@ const BlackForestHive: React.FC = () => {
       return;
     }
 
+    setLastAction("unstake");
     const { id, environmentID, hiveID } = targetBee;
-
     try {
-      // Proceed with unstaking transaction on-chain
       const tx = await unstakeNFT({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
-
-      if (tx) {
+      if (tx && typeof tx === "string") {
         setTransactionHash(tx as `0x${string}`);
-        console.log("Unstaking transaction initiated:", tx);
+        setAlertSeverity("success");
+        setAlertMessage("Unstaking transaction initiated!");
+        setSnackbarOpen(true);
       } else {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
@@ -275,41 +263,53 @@ const BlackForestHive: React.FC = () => {
       setSnackbarOpen(true);
       return;
     }
+    if (isUnstakingPending || isTransactionLoading) return; // Prevent multiple transactions
+    setLastAction("unstake");
     setConfirmUnstakeModalOpen(true);
   };
 
-  // Watch for transaction success/failure to refresh data
+  // Handle transaction success/failure to refresh data
   useEffect(() => {
-    if (isTransactionSuccess && transactionHash) {
-      setAlertSeverity("success");
-      setAlertMessage("Transaction successful!");
-      setSnackbarOpen(true);
-      setTransactionHash(undefined);
+    const handleTransactionSuccess = async () => {
+      if (!transactionHash || !lastAction || activeBee === null) return;
 
-      // Refresh both user and hive data to show updated bees and production stats
-      refreshBeesData();
-      refreshHiveData();
+      try {
+        await refreshHiveData(activeBee, lastAction);
+        setAlertSeverity("success");
+        setAlertMessage("Transaction successful!");
+        setSnackbarOpen(true);
+      } catch (error) {
+        console.error("Error refreshing hive data:", error);
+        setAlertSeverity("error");
+        setAlertMessage("Failed to refresh hive data after transaction.");
+        setSnackbarOpen(true);
+      }
+
       setActiveBee(null);
+      setLastAction(null);
+      setTransactionHash(undefined);
+    };
+
+    if (isTransactionSuccess) {
+      handleTransactionSuccess();
     }
+
     if (isTransactionError) {
       setAlertSeverity("error");
       setAlertMessage(transactionError?.message || "Transaction failed.");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      console.error("Transaction Error:", transactionError);
+      setLastAction(null);
     }
   }, [
     isTransactionSuccess,
     isTransactionError,
     transactionError,
-    isTransactionLoading,
-    setActiveBee,
-    activeBee,
-    stakeBee,
-    unstakeBee,
     transactionHash,
-    refreshBeesData,
     refreshHiveData,
+    activeBee,
+    lastAction,
+    setActiveBee,
   ]);
 
   const handleSnackbarClose = () => {
@@ -319,13 +319,14 @@ const BlackForestHive: React.FC = () => {
 
   const handleCancelStake = () => {
     setConfirmModalOpen(false);
+    setLastAction(null);
   };
 
   const handleCancelUnstake = () => {
     setConfirmUnstakeModalOpen(false);
+    setLastAction(null);
   };
 
-  // Compute bee counts for the hive
   const beeCounts = useMemo(() => {
     const counts: { [key: string]: number } = {
       Common: 0,
@@ -334,15 +335,28 @@ const BlackForestHive: React.FC = () => {
       Total: 0,
     };
 
-    stakedBees.forEach((bee) => {
+    for (const bee of stakedBees) {
       const rarity = bee.rarity;
       counts[rarity] = (counts[rarity] || 0) + 1;
-    });
+    }
     counts["Total"] = stakedBees.length;
     return counts;
   }, [stakedBees]);
 
   const hive = getHiveById(hiveIdNumber);
+
+  const hiveHatchlingInfo = useMemo<HiveHatchlingInfo>(() => {
+    return {
+      productivityValue: hive?.productivityValue || 0,
+      CommonBees: beeCounts.Common,
+      RareBees: beeCounts.Rare,
+      UltraRareBees: beeCounts.UltraRare,
+      TotalBees: beeCounts.Total,
+      status: "Active",
+      location: "Whisperwood Valleys",
+      environment: "Forest",
+    };
+  }, [hive, beeCounts]);
 
   if (!hive) {
     return (
@@ -353,25 +367,10 @@ const BlackForestHive: React.FC = () => {
           alignItems="center"
           height="100vh"
           flexDirection="column"
-        >
-          <Typography variant="h6" color="error">
-            Hive data not found.
-          </Typography>
-        </Box>
+        ></Box>
       </GameLayout>
     );
   }
-
-  const hiveHatchlingInfo: HiveHatchlingInfo = {
-    productivityValue: hive.productivityValue,
-    CommonBees: beeCounts.Common,
-    RareBees: beeCounts.Rare,
-    UltraRareBees: beeCounts.UltraRare,
-    TotalBees: beeCounts.Total,
-    status: "Active",
-    location: "Whisperwood Valleys",
-    environment: "Forest",
-  };
 
   return (
     <>
@@ -399,10 +398,7 @@ const BlackForestHive: React.FC = () => {
             }
             alt="Forest map background"
             fill
-            style={{
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
+            style={{ objectFit: "cover", objectPosition: "center" }}
             onLoad={() => setIsImageLoaded(true)}
             priority
           />
@@ -477,38 +473,11 @@ const BlackForestHive: React.FC = () => {
                 overflow: "hidden",
               }}
             >
-              {hivesLoading || isBeesLoading ? (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="100%"
-                  height="80%"
-                >
-                  <HexagonSpinner />
-                  <Typography className="body1" padding="24px 0px">
-                    Loading Bees...
-                  </Typography>
-                </Box>
-              ) : beesError ? (
-                <Box textAlign="center" mt={4}>
-                  <Typography color="error" variant="h6">
-                    {beesError}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      router.refresh();
-                    }}
-                    sx={{ mt: 2 }}
-                  >
-                    Retry
-                  </Button>
-                </Box>
-              ) : (
-                <BeeGrid bees={stakedBees} variant="default" />
-              )}
+              <BeeGrid
+                bees={stakedBees}
+                variant="default"
+                loading={debouncedLoadingBees}
+              />
             </Grid>
           </Grid>
           <BottomBar isAudioPanelVisible={false} />
@@ -536,7 +505,7 @@ const BlackForestHive: React.FC = () => {
             }}
           >
             <SemiTransparentCard
-              transparency={0.8}
+              transparency={1}
               sx={{
                 padding: "30px",
                 display: "flex",
@@ -607,7 +576,7 @@ const BlackForestHive: React.FC = () => {
             }}
           >
             <SemiTransparentCard
-              transparency={0.95}
+              transparency={1}
               sx={{
                 padding: "30px",
                 display: "flex",
@@ -676,7 +645,6 @@ const BlackForestHive: React.FC = () => {
   );
 };
 
-// Helper function to create a Hatchling object
 const createHatchling = (
   id: number,
   rarity: string,
