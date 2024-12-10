@@ -29,7 +29,7 @@ import { Abi } from "abitype";
 interface HivesContextProps {
   environments: Environment[];
   hivesMap: Map<number, HiveHatchling>;
-  resources: Resource[]; // New state for non-Hive resources
+  resources: Resource[];
   stakedNFTs: StakedNFT[];
   maxBeesMap: Map<number, number>;
   getHiveById: (hiveId: number) => HiveHatchling | undefined;
@@ -37,6 +37,7 @@ interface HivesContextProps {
   getMaxBeesByHiveId: (hiveId: number) => number | undefined;
   loading: boolean;
   error: Error | null;
+  refreshHiveData: () => Promise<void>; // CHANGED: Added refresh function
 }
 
 const HiveStakingABI = HiveStakingAbiJson as Abi;
@@ -69,7 +70,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
   const [hivesMap, setHivesMap] = useState<Map<number, HiveHatchling>>(
     new Map()
   );
-  const [resources, setResources] = useState<Resource[]>([]); // New state
+  const [resources, setResources] = useState<Resource[]>([]);
   const [environments, setEnvironments] = useState<Environment[]>([]);
   const [stakedNFTs, setStakedNFTs] = useState<StakedNFT[]>([]);
   const [maxBeesMap, setMaxBeesMap] = useState<Map<number, number>>(new Map());
@@ -77,7 +78,12 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
   const router = useRouter();
 
   // Execute the GetAllHiveData query (assumed to fetch stakedNFTs)
-  const { data, loading, error } = useQuery<StakedNFTsData>(GET_ALL_HIVE_DATA);
+  const {
+    data,
+    loading,
+    error,
+    refetch: refetchAllHiveData, // CHANGED: capturing refetch
+  } = useQuery<StakedNFTsData>(GET_ALL_HIVE_DATA);
 
   // Execute the useReadHiveStakingMaxBeesPerHive hook
   const {
@@ -90,10 +96,10 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
   const contracts = useMemo(() => {
     const hiveIds = Array.from(hivesMap.keys());
     return hiveIds.map((hiveId) => ({
-      address: HIVE_STAKING_ADDRESS, // Contract address from environment
-      abi: HiveStakingABI, // Contract ABI
-      functionName: "getHiveProduction", // Function to call
-      args: [2, hiveId], // Arguments for the function
+      address: HIVE_STAKING_ADDRESS,
+      abi: HiveStakingABI,
+      functionName: "getHiveProduction",
+      args: [2, hiveId],
     }));
   }, [hivesMap, HIVE_STAKING_ADDRESS]);
 
@@ -102,14 +108,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     data: productionData,
     isError: productionError,
     isLoading: productionLoading,
-    refetch: refetchProductionData,
+    refetch: refetchProductionData, // CHANGED: capture refetch
   } = useReadContracts({
-    contracts, // The contracts array defined above
-    // Optional configurations can be added here
-    // For example:
-    // cacheOnBlock: true,
-    // watch: true,
-    // cacheTime: 2000,
+    contracts,
   });
 
   // Handle staked NFTs data
@@ -121,9 +122,8 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
 
     if (data) {
-      const stakedNFTs = data.stakedNFTs.edges.map((edge) => edge.node); // Extract nodes from edges
-
-      setStakedNFTs(stakedNFTs); // Assuming setStakedNFTs is a state setter
+      const stakedNFTsData = data.stakedNFTs.edges.map((edge) => edge.node);
+      setStakedNFTs(stakedNFTsData);
     }
   }, [data, loading, error]);
 
@@ -137,7 +137,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const fetchedData: SpecificEnvironmentData = await response.json();
-          setEnvironments([fetchedData.environment]); // Wrap in array to match Environment[]
+          setEnvironments([fetchedData.environment]);
         }
 
         // Step 2: Update hivesMap and resources
@@ -225,12 +225,20 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     return maxBeesMap.get(hiveId);
   };
 
+  // ADDED: Function to refresh hive data
+  const refreshHiveData = async () => {
+    console.log("Refreshing hive data...");
+    await refetchAllHiveData();
+    await refetchProductionData();
+    console.log("Hive data refresh complete.");
+  };
+
   return (
     <HivesContext.Provider
       value={{
         environments,
         hivesMap,
-        resources, // Provide resources
+        resources,
         stakedNFTs,
         maxBeesMap,
         getHiveById,
@@ -238,6 +246,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         getMaxBeesByHiveId,
         loading: loading || maxBeesLoading || productionLoading,
         error: error || null,
+        refreshHiveData, // CHANGED: provide refresh function
       }}
     >
       {children}

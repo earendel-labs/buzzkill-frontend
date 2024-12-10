@@ -3,7 +3,7 @@ import {
   createUseWriteContract,
   createUseSimulateContract,
   createUseWatchContractEvent,
-} from 'wagmi/codegen'
+} from "wagmi/codegen";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // HiveStaking
@@ -14,648 +14,648 @@ import {
  */
 export const hiveStakingAbi = [
   {
-    type: 'constructor',
+    type: "constructor",
     inputs: [
       {
-        name: '_buzzkillHatchlingsNFT',
-        internalType: 'address',
-        type: 'address',
+        name: "_buzzkillHatchlingsNFT",
+        internalType: "address",
+        type: "address",
       },
-      { name: 'initialOwner', internalType: 'address', type: 'address' },
+      { name: "initialOwner", internalType: "address", type: "address" },
     ],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
       {
-        name: 'newEnvironments',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "newEnvironments",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'newHives',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'EnvironmentsAndHivesUpdated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'hasExternalNFT',
-        internalType: 'bool',
-        type: 'bool',
+        name: "newHives",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'ExternalNFTFlagUpdated',
+    name: "EnvironmentsAndHivesUpdated",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
+      { name: "user", internalType: "address", type: "address", indexed: true },
       {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'totalProduction',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'averageProduction',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "hasExternalNFT",
+        internalType: "bool",
+        type: "bool",
         indexed: false,
       },
     ],
-    name: 'HiveProductionQueried',
+    name: "ExternalNFTFlagUpdated",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
       {
-        name: 'oldMax',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "environmentId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'newMax',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "hiveId",
+        internalType: "uint256",
+        type: "uint256",
+        indexed: false,
+      },
+      {
+        name: "totalProduction",
+        internalType: "uint256",
+        type: "uint256",
+        indexed: false,
+      },
+      {
+        name: "averageProduction",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'MaxBeesPerHiveUpdated',
+    name: "HiveProductionQueried",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
       {
-        name: 'previousOwner',
-        internalType: 'address',
-        type: 'address',
+        name: "oldMax",
+        internalType: "uint256",
+        type: "uint256",
+        indexed: false,
+      },
+      {
+        name: "newMax",
+        internalType: "uint256",
+        type: "uint256",
+        indexed: false,
+      },
+    ],
+    name: "MaxBeesPerHiveUpdated",
+  },
+  {
+    type: "event",
+    anonymous: false,
+    inputs: [
+      {
+        name: "previousOwner",
+        internalType: "address",
+        type: "address",
         indexed: true,
       },
       {
-        name: 'newOwner',
-        internalType: 'address',
-        type: 'address',
+        name: "newOwner",
+        internalType: "address",
+        type: "address",
         indexed: true,
       },
     ],
-    name: 'OwnershipTransferred',
+    name: "OwnershipTransferred",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      { name: "user", internalType: "address", type: "address", indexed: true },
       {
-        name: 'points',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "points",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'timestamp',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "timestamp",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'PointsClaimed',
+    name: "PointsClaimed",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
       {
-        name: 'common',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "common",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'rare',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "rare",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'ultraRare',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "ultraRare",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'RarityMultipliersUpdated',
+    name: "RarityMultipliersUpdated",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
       {
-        name: 'oldRate',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "oldRate",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'newRate',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "newRate",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'RewardRateUpdated',
+    name: "RewardRateUpdated",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      { name: "user", internalType: "address", type: "address", indexed: true },
       {
-        name: 'tokenId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "tokenId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: true,
       },
       {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "environmentId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "hiveId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'timestamp',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "timestamp",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'Staked',
+    name: "Staked",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      { name: "user", internalType: "address", type: "address", indexed: true },
       {
-        name: 'tokenId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "tokenId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: true,
       },
       {
-        name: 'environmentId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "environmentId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'hiveId',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "hiveId",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'timestamp',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "timestamp",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'Unstaked',
+    name: "Unstaked",
   },
   {
-    type: 'event',
+    type: "event",
     anonymous: false,
     inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      { name: "user", internalType: "address", type: "address", indexed: true },
       {
-        name: 'totalProduction',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "totalProduction",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
       {
-        name: 'timestamp',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "timestamp",
+        internalType: "uint256",
+        type: "uint256",
         indexed: false,
       },
     ],
-    name: 'UserProductionUpdated',
+    name: "UserProductionUpdated",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'users', internalType: 'address[]', type: 'address[]' },
-      { name: 'flags', internalType: 'bool[]', type: 'bool[]' },
+      { name: "users", internalType: "address[]", type: "address[]" },
+      { name: "flags", internalType: "bool[]", type: "bool[]" },
     ],
-    name: 'batchSetUserExternalNFTFlag',
+    name: "batchSetUserExternalNFTFlag",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'buzzkillHatchlings',
+    name: "buzzkillHatchlings",
     outputs: [
       {
-        name: '',
-        internalType: 'contract IBuzzkillHatchlings',
-        type: 'address',
+        name: "",
+        internalType: "contract IBuzzkillHatchlings",
+        type: "address",
       },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'buzzkillHatchlingsNFT',
-    outputs: [{ name: '', internalType: 'contract IERC721', type: 'address' }],
-    stateMutability: 'view',
+    name: "buzzkillHatchlingsNFT",
+    outputs: [{ name: "", internalType: "contract IERC721", type: "address" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'claimPoints',
+    name: "claimPoints",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'commonMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "commonMultiplier",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'externalFlagMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "externalFlagMultiplier",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'userAddress', internalType: 'address', type: 'address' }],
-    name: 'getAllStakedNFTsForUser',
+    type: "function",
+    inputs: [{ name: "userAddress", internalType: "address", type: "address" }],
+    name: "getAllStakedNFTsForUser",
     outputs: [
       {
-        name: '',
-        internalType: 'struct HiveStaking.StakedNFT[]',
-        type: 'tuple[]',
+        name: "",
+        internalType: "struct HiveStaking.StakedNFT[]",
+        type: "tuple[]",
         components: [
-          { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-          { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
-          { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-          { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
-          { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
-          { name: 'owner', internalType: 'address', type: 'address' },
+          { name: "tokenId", internalType: "uint256", type: "uint256" },
+          { name: "stakedAt", internalType: "uint256", type: "uint256" },
+          { name: "environmentId", internalType: "uint256", type: "uint256" },
+          { name: "hiveId", internalType: "uint256", type: "uint256" },
+          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
+          { name: "owner", internalType: "address", type: "address" },
           {
-            name: 'rarity',
-            internalType: 'enum IBuzzkillHatchlings.Rarity',
-            type: 'uint8',
+            name: "rarity",
+            internalType: "enum IBuzzkillHatchlings.Rarity",
+            type: "uint8",
           },
-          { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
+          { name: "userMultiplier", internalType: "uint256", type: "uint256" },
         ],
       },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
     ],
-    name: 'getHiveProduction',
+    name: "getHiveProduction",
     outputs: [
-      { name: 'totalProduction', internalType: 'uint256', type: 'uint256' },
-      { name: 'averageProduction', internalType: 'uint256', type: 'uint256' },
+      { name: "totalProduction", internalType: "uint256", type: "uint256" },
+      { name: "averageProduction", internalType: "uint256", type: "uint256" },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
     ],
-    name: 'getStakedNFTsInHive',
+    name: "getStakedNFTsInHive",
     outputs: [
       {
-        name: '',
-        internalType: 'struct HiveStaking.StakedNFT[]',
-        type: 'tuple[]',
+        name: "",
+        internalType: "struct HiveStaking.StakedNFT[]",
+        type: "tuple[]",
         components: [
-          { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-          { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
-          { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-          { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
-          { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
-          { name: 'owner', internalType: 'address', type: 'address' },
+          { name: "tokenId", internalType: "uint256", type: "uint256" },
+          { name: "stakedAt", internalType: "uint256", type: "uint256" },
+          { name: "environmentId", internalType: "uint256", type: "uint256" },
+          { name: "hiveId", internalType: "uint256", type: "uint256" },
+          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
+          { name: "owner", internalType: "address", type: "address" },
           {
-            name: 'rarity',
-            internalType: 'enum IBuzzkillHatchlings.Rarity',
-            type: 'uint8',
+            name: "rarity",
+            internalType: "enum IBuzzkillHatchlings.Rarity",
+            type: "uint8",
           },
-          { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
+          { name: "userMultiplier", internalType: "uint256", type: "uint256" },
         ],
       },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'userAddress', internalType: 'address', type: 'address' }],
-    name: 'getUserPoints',
+    type: "function",
+    inputs: [{ name: "userAddress", internalType: "address", type: "address" }],
+    name: "getUserPoints",
     outputs: [
-      { name: 'totalPoints', internalType: 'uint256', type: 'uint256' },
-      { name: 'claimedPoints', internalType: 'uint256', type: 'uint256' },
+      { name: "totalPoints", internalType: "uint256", type: "uint256" },
+      { name: "claimedPoints", internalType: "uint256", type: "uint256" },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'address', type: 'address' }],
-    name: 'hasExternalNFTFlag',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
+    type: "function",
+    inputs: [{ name: "", internalType: "address", type: "address" }],
+    name: "hasExternalNFTFlag",
+    outputs: [{ name: "", internalType: "bool", type: "bool" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'maxBeesPerHive',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "maxBeesPerHive",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
+      { name: "", internalType: "address", type: "address" },
+      { name: "", internalType: "address", type: "address" },
+      { name: "", internalType: "uint256", type: "uint256" },
+      { name: "", internalType: "bytes", type: "bytes" },
     ],
-    name: 'onERC721Received',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-    stateMutability: 'nonpayable',
+    name: "onERC721Received",
+    outputs: [{ name: "", internalType: "bytes4", type: "bytes4" }],
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'owner',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
+    name: "owner",
+    outputs: [{ name: "", internalType: "address", type: "address" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'rareMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "rareMultiplier",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'renounceOwnership',
+    name: "renounceOwnership",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'rewardRatePerDay',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "rewardRatePerDay",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'newEnvironments', internalType: 'uint256', type: 'uint256' },
-      { name: 'newHives', internalType: 'uint256', type: 'uint256' },
+      { name: "newEnvironments", internalType: "uint256", type: "uint256" },
+      { name: "newHives", internalType: "uint256", type: "uint256" },
     ],
-    name: 'setEnvironmentsAndHives',
+    name: "setEnvironmentsAndHives",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'newMaxBees', internalType: 'uint256', type: 'uint256' }],
-    name: 'setMaxBeesPerHive',
+    type: "function",
+    inputs: [{ name: "newMaxBees", internalType: "uint256", type: "uint256" }],
+    name: "setMaxBeesPerHive",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: '_commonMultiplier', internalType: 'uint256', type: 'uint256' },
-      { name: '_rareMultiplier', internalType: 'uint256', type: 'uint256' },
+      { name: "_commonMultiplier", internalType: "uint256", type: "uint256" },
+      { name: "_rareMultiplier", internalType: "uint256", type: "uint256" },
       {
-        name: '_ultraRareMultiplier',
-        internalType: 'uint256',
-        type: 'uint256',
+        name: "_ultraRareMultiplier",
+        internalType: "uint256",
+        type: "uint256",
       },
     ],
-    name: 'setRarityMultipliers',
+    name: "setRarityMultipliers",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'newRate', internalType: 'uint256', type: 'uint256' }],
-    name: 'setRewardRate',
+    type: "function",
+    inputs: [{ name: "newRate", internalType: "uint256", type: "uint256" }],
+    name: "setRewardRate",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'user', internalType: 'address', type: 'address' },
-      { name: 'hasNFT', internalType: 'bool', type: 'bool' },
+      { name: "user", internalType: "address", type: "address" },
+      { name: "hasNFT", internalType: "bool", type: "bool" },
     ],
-    name: 'setUserExternalNFTFlag',
+    name: "setUserExternalNFTFlag",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: "tokenId", internalType: "uint256", type: "uint256" },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
     ],
-    name: 'stake',
+    name: "stake",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: "", internalType: "address", type: "address" },
+      { name: "", internalType: "uint256", type: "uint256" },
+      { name: "", internalType: "uint256", type: "uint256" },
+      { name: "", internalType: "uint256", type: "uint256" },
     ],
-    name: 'stakedNFTsByUser',
+    name: "stakedNFTsByUser",
     outputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
-      { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
-      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: "tokenId", internalType: "uint256", type: "uint256" },
+      { name: "stakedAt", internalType: "uint256", type: "uint256" },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
+      { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
+      { name: "owner", internalType: "address", type: "address" },
       {
-        name: 'rarity',
-        internalType: 'enum IBuzzkillHatchlings.Rarity',
-        type: 'uint8',
+        name: "rarity",
+        internalType: "enum IBuzzkillHatchlings.Rarity",
+        type: "uint8",
       },
-      { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
+      { name: "userMultiplier", internalType: "uint256", type: "uint256" },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: "", internalType: "uint256", type: "uint256" },
+      { name: "", internalType: "uint256", type: "uint256" },
+      { name: "", internalType: "uint256", type: "uint256" },
     ],
-    name: 'stakedNFTsInHive',
+    name: "stakedNFTsInHive",
     outputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
-      { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
-      { name: 'owner', internalType: 'address', type: 'address' },
+      { name: "tokenId", internalType: "uint256", type: "uint256" },
+      { name: "stakedAt", internalType: "uint256", type: "uint256" },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
+      { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
+      { name: "owner", internalType: "address", type: "address" },
       {
-        name: 'rarity',
-        internalType: 'enum IBuzzkillHatchlings.Rarity',
-        type: 'uint8',
+        name: "rarity",
+        internalType: "enum IBuzzkillHatchlings.Rarity",
+        type: "uint8",
       },
-      { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
+      { name: "userMultiplier", internalType: "uint256", type: "uint256" },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'totalBeesStaked',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "totalBeesStaked",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'totalEnvironments',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "totalEnvironments",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'totalHivesPerEnvironment',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "totalHivesPerEnvironment",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
-    name: 'transferOwnership',
+    type: "function",
+    inputs: [{ name: "newOwner", internalType: "address", type: "address" }],
+    name: "transferOwnership",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [],
-    name: 'ultraRareMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    name: "ultraRareMultiplier",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
+    type: "function",
     inputs: [
-      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
-      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
-      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: "tokenId", internalType: "uint256", type: "uint256" },
+      { name: "environmentId", internalType: "uint256", type: "uint256" },
+      { name: "hiveId", internalType: "uint256", type: "uint256" },
     ],
-    name: 'unstake',
+    name: "unstake",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'address', type: 'address' }],
-    name: 'userInfo',
+    type: "function",
+    inputs: [{ name: "", internalType: "address", type: "address" }],
+    name: "userInfo",
     outputs: [
-      { name: 'totalPoints', internalType: 'uint256', type: 'uint256' },
-      { name: 'claimedPoints', internalType: 'uint256', type: 'uint256' },
-      { name: 'totalProduction', internalType: 'uint256', type: 'uint256' },
+      { name: "totalPoints", internalType: "uint256", type: "uint256" },
+      { name: "claimedPoints", internalType: "uint256", type: "uint256" },
+      { name: "totalProduction", internalType: "uint256", type: "uint256" },
     ],
-    stateMutability: 'view',
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'address', type: 'address' }],
-    name: 'userRewardMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
+    type: "function",
+    inputs: [{ name: "", internalType: "address", type: "address" }],
+    name: "userRewardMultiplier",
+    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
+    stateMutability: "view",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
-    name: 'withdrawERC721',
+    type: "function",
+    inputs: [{ name: "tokenId", internalType: "uint256", type: "uint256" }],
+    name: "withdrawERC721",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
   {
-    type: 'function',
-    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
-    name: 'withdrawEther',
+    type: "function",
+    inputs: [{ name: "amount", internalType: "uint256", type: "uint256" }],
+    name: "withdrawEther",
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: "nonpayable",
   },
-  { type: 'receive', stateMutability: 'payable' },
-] as const
+  { type: "receive", stateMutability: "payable" },
+] as const;
 
 /**
  * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
  */
 export const hiveStakingAddress = {
-  88: '0x9A4CB855295157697958B130d5112E1d3C654A91',
-} as const
+  88: "0x9A4CB855295157697958B130d5112E1d3C654A91",
+} as const;
 
 /**
  * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
@@ -663,7 +663,7 @@ export const hiveStakingAddress = {
 export const hiveStakingConfig = {
   address: hiveStakingAddress,
   abi: hiveStakingAbi,
-} as const
+} as const;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
@@ -677,7 +677,7 @@ export const hiveStakingConfig = {
 export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-})
+});
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlings"`
@@ -688,8 +688,8 @@ export const useReadHiveStakingBuzzkillHatchlings =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'buzzkillHatchlings',
-  })
+    functionName: "buzzkillHatchlings",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlingsNFT"`
@@ -700,8 +700,8 @@ export const useReadHiveStakingBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'buzzkillHatchlingsNFT',
-  })
+    functionName: "buzzkillHatchlingsNFT",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"commonMultiplier"`
@@ -712,8 +712,8 @@ export const useReadHiveStakingCommonMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'commonMultiplier',
-  })
+    functionName: "commonMultiplier",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"externalFlagMultiplier"`
@@ -724,8 +724,8 @@ export const useReadHiveStakingExternalFlagMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'externalFlagMultiplier',
-  })
+    functionName: "externalFlagMultiplier",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getAllStakedNFTsForUser"`
@@ -736,8 +736,8 @@ export const useReadHiveStakingGetAllStakedNfTsForUser =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'getAllStakedNFTsForUser',
-  })
+    functionName: "getAllStakedNFTsForUser",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getHiveProduction"`
@@ -748,8 +748,8 @@ export const useReadHiveStakingGetHiveProduction =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'getHiveProduction',
-  })
+    functionName: "getHiveProduction",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getStakedNFTsInHive"`
@@ -760,8 +760,8 @@ export const useReadHiveStakingGetStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'getStakedNFTsInHive',
-  })
+    functionName: "getStakedNFTsInHive",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getUserPoints"`
@@ -772,8 +772,8 @@ export const useReadHiveStakingGetUserPoints =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'getUserPoints',
-  })
+    functionName: "getUserPoints",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"hasExternalNFTFlag"`
@@ -784,8 +784,8 @@ export const useReadHiveStakingHasExternalNftFlag =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'hasExternalNFTFlag',
-  })
+    functionName: "hasExternalNFTFlag",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"maxBeesPerHive"`
@@ -796,8 +796,8 @@ export const useReadHiveStakingMaxBeesPerHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'maxBeesPerHive',
-  })
+    functionName: "maxBeesPerHive",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"owner"`
@@ -807,8 +807,8 @@ export const useReadHiveStakingMaxBeesPerHive =
 export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: 'owner',
-})
+  functionName: "owner",
+});
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rareMultiplier"`
@@ -819,8 +819,8 @@ export const useReadHiveStakingRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'rareMultiplier',
-  })
+    functionName: "rareMultiplier",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rewardRatePerDay"`
@@ -831,8 +831,8 @@ export const useReadHiveStakingRewardRatePerDay =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'rewardRatePerDay',
-  })
+    functionName: "rewardRatePerDay",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsByUser"`
@@ -843,8 +843,8 @@ export const useReadHiveStakingStakedNfTsByUser =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'stakedNFTsByUser',
-  })
+    functionName: "stakedNFTsByUser",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsInHive"`
@@ -855,8 +855,8 @@ export const useReadHiveStakingStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'stakedNFTsInHive',
-  })
+    functionName: "stakedNFTsInHive",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalBeesStaked"`
@@ -867,8 +867,8 @@ export const useReadHiveStakingTotalBeesStaked =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'totalBeesStaked',
-  })
+    functionName: "totalBeesStaked",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalEnvironments"`
@@ -879,8 +879,8 @@ export const useReadHiveStakingTotalEnvironments =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'totalEnvironments',
-  })
+    functionName: "totalEnvironments",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalHivesPerEnvironment"`
@@ -891,8 +891,8 @@ export const useReadHiveStakingTotalHivesPerEnvironment =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'totalHivesPerEnvironment',
-  })
+    functionName: "totalHivesPerEnvironment",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"ultraRareMultiplier"`
@@ -903,8 +903,8 @@ export const useReadHiveStakingUltraRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'ultraRareMultiplier',
-  })
+    functionName: "ultraRareMultiplier",
+  });
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userInfo"`
@@ -914,8 +914,8 @@ export const useReadHiveStakingUltraRareMultiplier =
 export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: 'userInfo',
-})
+  functionName: "userInfo",
+});
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userRewardMultiplier"`
@@ -926,8 +926,8 @@ export const useReadHiveStakingUserRewardMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'userRewardMultiplier',
-  })
+    functionName: "userRewardMultiplier",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__
@@ -937,7 +937,7 @@ export const useReadHiveStakingUserRewardMultiplier =
 export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-})
+});
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
@@ -948,8 +948,8 @@ export const useWriteHiveStakingBatchSetUserExternalNftFlag =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'batchSetUserExternalNFTFlag',
-  })
+    functionName: "batchSetUserExternalNFTFlag",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
@@ -960,8 +960,8 @@ export const useWriteHiveStakingClaimPoints =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'claimPoints',
-  })
+    functionName: "claimPoints",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
@@ -972,8 +972,8 @@ export const useWriteHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'onERC721Received',
-  })
+    functionName: "onERC721Received",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
@@ -984,8 +984,8 @@ export const useWriteHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'renounceOwnership',
-  })
+    functionName: "renounceOwnership",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
@@ -996,8 +996,8 @@ export const useWriteHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setEnvironmentsAndHives',
-  })
+    functionName: "setEnvironmentsAndHives",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
@@ -1008,8 +1008,8 @@ export const useWriteHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setMaxBeesPerHive',
-  })
+    functionName: "setMaxBeesPerHive",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
@@ -1020,8 +1020,8 @@ export const useWriteHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setRarityMultipliers',
-  })
+    functionName: "setRarityMultipliers",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
@@ -1032,8 +1032,8 @@ export const useWriteHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setRewardRate',
-  })
+    functionName: "setRewardRate",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
@@ -1044,8 +1044,8 @@ export const useWriteHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setUserExternalNFTFlag',
-  })
+    functionName: "setUserExternalNFTFlag",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
@@ -1055,8 +1055,8 @@ export const useWriteHiveStakingSetUserExternalNftFlag =
 export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: 'stake',
-})
+  functionName: "stake",
+});
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
@@ -1067,8 +1067,8 @@ export const useWriteHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'transferOwnership',
-  })
+    functionName: "transferOwnership",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
@@ -1078,8 +1078,8 @@ export const useWriteHiveStakingTransferOwnership =
 export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: 'unstake',
-})
+  functionName: "unstake",
+});
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
@@ -1090,8 +1090,8 @@ export const useWriteHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawERC721',
-  })
+    functionName: "withdrawERC721",
+  });
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
@@ -1102,8 +1102,8 @@ export const useWriteHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawEther',
-  })
+    functionName: "withdrawEther",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__
@@ -1113,7 +1113,7 @@ export const useWriteHiveStakingWithdrawEther =
 export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-})
+});
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
@@ -1124,8 +1124,8 @@ export const useSimulateHiveStakingBatchSetUserExternalNftFlag =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'batchSetUserExternalNFTFlag',
-  })
+    functionName: "batchSetUserExternalNFTFlag",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
@@ -1136,8 +1136,8 @@ export const useSimulateHiveStakingClaimPoints =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'claimPoints',
-  })
+    functionName: "claimPoints",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
@@ -1148,8 +1148,8 @@ export const useSimulateHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'onERC721Received',
-  })
+    functionName: "onERC721Received",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
@@ -1160,8 +1160,8 @@ export const useSimulateHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'renounceOwnership',
-  })
+    functionName: "renounceOwnership",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
@@ -1172,8 +1172,8 @@ export const useSimulateHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setEnvironmentsAndHives',
-  })
+    functionName: "setEnvironmentsAndHives",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
@@ -1184,8 +1184,8 @@ export const useSimulateHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setMaxBeesPerHive',
-  })
+    functionName: "setMaxBeesPerHive",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
@@ -1196,8 +1196,8 @@ export const useSimulateHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setRarityMultipliers',
-  })
+    functionName: "setRarityMultipliers",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
@@ -1208,8 +1208,8 @@ export const useSimulateHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setRewardRate',
-  })
+    functionName: "setRewardRate",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
@@ -1220,8 +1220,8 @@ export const useSimulateHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'setUserExternalNFTFlag',
-  })
+    functionName: "setUserExternalNFTFlag",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
@@ -1232,8 +1232,8 @@ export const useSimulateHiveStakingStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'stake',
-  })
+    functionName: "stake",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
@@ -1244,8 +1244,8 @@ export const useSimulateHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'transferOwnership',
-  })
+    functionName: "transferOwnership",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
@@ -1256,8 +1256,8 @@ export const useSimulateHiveStakingUnstake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'unstake',
-  })
+    functionName: "unstake",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
@@ -1268,8 +1268,8 @@ export const useSimulateHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawERC721',
-  })
+    functionName: "withdrawERC721",
+  });
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
@@ -1280,8 +1280,8 @@ export const useSimulateHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'withdrawEther',
-  })
+    functionName: "withdrawEther",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__
@@ -1292,7 +1292,7 @@ export const useWatchHiveStakingEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-  })
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"EnvironmentsAndHivesUpdated"`
@@ -1303,8 +1303,8 @@ export const useWatchHiveStakingEnvironmentsAndHivesUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'EnvironmentsAndHivesUpdated',
-  })
+    eventName: "EnvironmentsAndHivesUpdated",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"ExternalNFTFlagUpdated"`
@@ -1315,8 +1315,8 @@ export const useWatchHiveStakingExternalNftFlagUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'ExternalNFTFlagUpdated',
-  })
+    eventName: "ExternalNFTFlagUpdated",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"HiveProductionQueried"`
@@ -1327,8 +1327,8 @@ export const useWatchHiveStakingHiveProductionQueriedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'HiveProductionQueried',
-  })
+    eventName: "HiveProductionQueried",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"MaxBeesPerHiveUpdated"`
@@ -1339,8 +1339,8 @@ export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'MaxBeesPerHiveUpdated',
-  })
+    eventName: "MaxBeesPerHiveUpdated",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"OwnershipTransferred"`
@@ -1351,8 +1351,8 @@ export const useWatchHiveStakingOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'OwnershipTransferred',
-  })
+    eventName: "OwnershipTransferred",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"PointsClaimed"`
@@ -1363,8 +1363,8 @@ export const useWatchHiveStakingPointsClaimedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'PointsClaimed',
-  })
+    eventName: "PointsClaimed",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RarityMultipliersUpdated"`
@@ -1375,8 +1375,8 @@ export const useWatchHiveStakingRarityMultipliersUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'RarityMultipliersUpdated',
-  })
+    eventName: "RarityMultipliersUpdated",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RewardRateUpdated"`
@@ -1387,8 +1387,8 @@ export const useWatchHiveStakingRewardRateUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'RewardRateUpdated',
-  })
+    eventName: "RewardRateUpdated",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Staked"`
@@ -1399,8 +1399,8 @@ export const useWatchHiveStakingStakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'Staked',
-  })
+    eventName: "Staked",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Unstaked"`
@@ -1411,8 +1411,8 @@ export const useWatchHiveStakingUnstakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'Unstaked',
-  })
+    eventName: "Unstaked",
+  });
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"UserProductionUpdated"`
@@ -1423,5 +1423,5 @@ export const useWatchHiveStakingUserProductionUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: 'UserProductionUpdated',
-  })
+    eventName: "UserProductionUpdated",
+  });

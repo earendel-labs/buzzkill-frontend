@@ -4,9 +4,11 @@
 
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
+const SubqueryDomain = process.env.NEXT_PUBLIC_SUBQUERY_DOMAIN;
+
 const createApolloClient = () => {
   return new ApolloClient({
-    uri: "https://api.subquery.network/sq/Sahil24-lab/buzzkill-final",
+    uri: SubqueryDomain,
     cache: new InMemoryCache(),
   });
 };

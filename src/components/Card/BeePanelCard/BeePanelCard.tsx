@@ -12,7 +12,7 @@ const PrimaryButton = dynamic(
 );
 
 const BeePanelCard: React.FC = () => {
-  const { activeBee, bees, loadingBees } = useUserContext();
+  const { activeBee, bees, stakedBees, loadingBees } = useUserContext();
   const router = useRouter();
 
   const handleMyBeesClick = () => {
@@ -59,9 +59,9 @@ const BeePanelCard: React.FC = () => {
         backdropFilter: "blur(2px)",
         // Inner Shadows
         boxShadow: `
-      inset 4px 4px 4px rgba(0, 0, 0, 0.25), // First inner shadow (X: 4px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.25))
-      inset 0px 4px 4px rgba(0, 0, 0, 0.12)  // Second inner shadow (X: 0px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.12))
-    `,
+          inset 4px 4px 4px rgba(0, 0, 0, 0.25), // First inner shadow (X: 4px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.25))
+          inset 0px 4px 4px rgba(0, 0, 0, 0.12)  // Second inner shadow (X: 0px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.12))
+        `,
         "&::before": {
           content: '""',
           position: "absolute",
@@ -93,9 +93,9 @@ const BeePanelCard: React.FC = () => {
             width: "40%",
             padding: "0px",
             boxShadow: `
-      0px 4px 4px rgba(0, 0, 0, 0.25), 
-      -2px -2px 4px rgba(0, 0, 0, 0.25)  
-    `,
+              0px 4px 4px rgba(0, 0, 0, 0.25), 
+              -2px -2px 4px rgba(0, 0, 0, 0.25)  
+            `,
             borderRadius: "8px", // Ensure the shadow follows the image's rounded corners
           }}
         >
@@ -154,7 +154,7 @@ const BeePanelCard: React.FC = () => {
                 </Box>
               </Box>
             </>
-          ) : bees.length > 0 ? (
+          ) : bees.length > 0 || stakedBees.length > 0 ? (
             <>
               <Typography
                 sx={{
@@ -168,7 +168,9 @@ const BeePanelCard: React.FC = () => {
                   },
                 }}
               >
-                Select Your Bee
+                {bees.length > 0
+                  ? "Select Your Bee"
+                  : "You have staked Bees. View them here."}
               </Typography>
               <Box display="flex" justifyContent="center">
                 <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
@@ -188,7 +190,7 @@ const BeePanelCard: React.FC = () => {
                   },
                 }}
               >
-                You have no Hatchlings. <br></br>
+                You have no Hatchlings. <br />
                 Mint yours here
               </Typography>
               <Box display="flex" justifyContent="center">

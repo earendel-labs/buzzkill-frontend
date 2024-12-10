@@ -1,3 +1,5 @@
+// src/context/UserContext.tsx
+
 "use client";
 
 import React, {
@@ -145,13 +147,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         try {
           const fetchedStakedBees: Hatchling[] = await Promise.all(
             stakedData.stakedNFTs.edges.map(async (edge: any) => {
-              const nft = edge.node; // Access the node inside each edge
+              const nft = edge.node;
+              const metadata = await fetchMetadata(nft.tokenId.tokenURI);
               return {
                 id: parseInt(nft.tokenIdNum, 10),
-                imageAddress: await fetchMetadata(nft.tokenId.tokenURI), // Correct key for tokenURI
+                rarity: nft.tokenId.rarity,
+                imageAddress: metadata,
                 status: "Staked" as HatchlingStatus,
-                environmentID: nft.environmentId?.environmentId || null, // Access environmentId correctly
-                hiveID: nft.hiveId?.hiveId || null, // Access hiveId correctly
+                environmentID: nft.environmentId?.environmentId || null,
+                hiveID: nft.hiveId?.hiveId || null,
                 ownerAddress: address || "",
               };
             })
@@ -169,16 +173,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         try {
           const fetchedUnstakedBees: Hatchling[] = await Promise.all(
             tokensData.tokens.edges
-              .map((edge: any) => edge.node) // Extract the node from each edge
-              .filter((token: any) => !token.isStaked) // Filter for unstaked tokens
-              .map(async (token: any) => ({
-                id: parseInt(token.id, 10), // Use the correct key for the token ID
-                imageAddress: await fetchMetadata(token.tokenURI), // Fetch metadata using tokenURI
-                status: "Free" as HatchlingStatus,
-                environmentID: null, // Unstaked tokens won't have an environment
-                hiveID: null, // Unstaked tokens won't have a hive
-                ownerAddress: token.owner || address || "", // Use the owner field from the token
-              }))
+              .map((edge: any) => edge.node)
+              .filter((token: any) => !token.isStaked)
+              .map(async (token: any) => {
+                const metadata = await fetchMetadata(token.tokenURI);
+                return {
+                  id: parseInt(token.id, 10),
+                  rarity: token.rarity,
+                  imageAddress: metadata,
+                  status: "Free" as HatchlingStatus,
+                  environmentID: null,
+                  hiveID: null,
+                  ownerAddress: token.owner || address || "",
+                };
+              })
           );
           setBees(fetchedUnstakedBees);
         } catch (error) {
@@ -250,91 +258,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  /*
-   * Stake a Bee
-   */
-  const stakeBee = async (
-    beeId: number,
-    environmentID: string,
-    hiveID: string
-  ) => {
-    console.log(`Attempting to stake Bee ID ${beeId}`);
-    // setBees((prevBees) => {
-    //   const beeToStake = prevBees.find((bee) => bee.id === beeId);
-    //   if (beeToStake) {
-    //     console.log(`Staking Bee ID ${beeId}:`, beeToStake);
-    //     setStakedBees((prevStakedBees) => {
-    //       const hatchling = createHatchling(
-    //         beeToStake.id,
-    //         beeToStake.imageAddress,
-    //         "Staked",
-    //         environmentID,
-    //         hiveID,
-    //         beeToStake.ownerAddress
-    //       );
-    //       const updatedStakedBees = [...prevStakedBees, hatchling];
-    //       console.log(
-    //         `Added Bee ID ${beeId} to stakedBees:`,
-    //         updatedStakedBees
-    //       );
-    //       return updatedStakedBees;
-    //     });
-    //     const updatedBees = prevBees.filter((bee) => bee.id !== beeId);
-    //     console.log(
-    //       `Removed Bee ID ${beeId} from bees. Updated bees:`,
-    //       updatedBees
-    //     );
-
-    //     return updatedBees;
-    //   } else {
-    //     console.warn(`Bee ID ${beeId} not found in unstaked bees.`);
-    //     return prevBees;
-    //   }
-    // });
-    await refreshBeesData();
-  };
-
-  /**
-   * Unstake a Bee
-   */
-  const unstakeBee = async (beeId: number) => {
-    console.log(`Attempting to unstake Bee ID ${beeId}`);
-    setStakedBees((prevStakedBees) => {
-      const beeToUnstake = prevStakedBees.find((bee) => bee.id === beeId);
-      if (beeToUnstake) {
-        console.log(`Unstaking Bee ID ${beeId}:`, beeToUnstake);
-        setBees((prevBees) => {
-          const hatchling = createHatchling(
-            beeToUnstake.id,
-            beeToUnstake.rarity,
-            beeToUnstake.imageAddress,
-            "Free",
-            null,
-            null,
-            beeToUnstake.ownerAddress
-          );
-          const updatedBees = [...prevBees, hatchling];
-          console.log(`Added Bee ID ${beeId} back to bees:`, updatedBees);
-          return updatedBees;
-        });
-        const updatedStakedBees = prevStakedBees.filter(
-          (bee) => bee.id !== beeId
-        );
-        console.log(
-          `Removed Bee ID ${beeId} from stakedBees. Updated stakedBees:`,
-          updatedStakedBees
-        );
-
-        return updatedStakedBees;
-      } else {
-        console.warn(`Bee ID ${beeId} not found in staked bees.`);
-        return prevStakedBees;
-      }
-    });
-    await refreshBeesData();
-  };
-
-  // Function to refresh all bees data
+  // ADDED: Function to refresh all bees data
   const refreshBeesData = async () => {
     if (!isConnected || !lowercaseAddress) {
       console.log("User not connected or address missing. Skipping refresh.");
@@ -351,7 +275,20 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // Optional: Log bees and stakedBees whenever they change
+  const stakeBee = async (
+    beeId: number,
+    environmentID: string,
+    hiveID: string
+  ) => {
+    console.log(`Attempting to stake Bee ID ${beeId}`);
+    // After successful on-chain tx, refreshBeesData will be called externally.
+  };
+
+  const unstakeBee = async (beeId: number) => {
+    console.log(`Attempting to unstake Bee ID ${beeId}`);
+    // After successful on-chain tx, refreshBeesData will be called externally.
+  };
+
   useEffect(() => {
     console.log("Current Unstaked Bees:", bees);
   }, [bees]);

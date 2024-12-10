@@ -126,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 underline="none"
                 className="linkStyle2"
               >
-                Honey Drops
+                Leaderboard
               </Link>
               <Link
                 href="/Play/User/Profile/MyProfile"
@@ -137,12 +137,20 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 My Profile
               </Link>
               <Link
-                href="/Gallery"
+                href="/Play/User/Profile/MyBees"
                 color="inherit"
                 underline="none"
                 className="linkStyle2"
               >
-                Gallery
+                My Bees
+              </Link>
+              <Link
+                href="/Play/User/Profile/MyRewards"
+                color="inherit"
+                underline="none"
+                className="linkStyle2"
+              >
+                Rewards
               </Link>
             </Box>
 

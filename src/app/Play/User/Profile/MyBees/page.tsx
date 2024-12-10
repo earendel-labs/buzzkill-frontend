@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ const MyBeesTab = () => {
   const { address } = useAccount();
   const router = useRouter();
 
-  // Get context values for both unstaked and staked bees
+  // Access userContext values
   const {
     bees: myBees,
     stakedBees,
@@ -26,13 +26,6 @@ const MyBeesTab = () => {
     setActiveBee,
   } = useUserContext();
 
-  // Debugging: Log the bees and stakedBees on each render
-  // useEffect(() => {
-  //   console.log("MyBeesTab - myBees:", myBees);
-  //   console.log("MyBeesTab - stakedBees:", stakedBees);
-  // }, [myBees, stakedBees]);
-
-  // Handle 'Play' button click for each bee
   const handlePlayClick = async (beeId: number): Promise<void> => {
     try {
       const isApproved = await checkAndPromptApproval();
@@ -42,7 +35,6 @@ const MyBeesTab = () => {
       }
     } catch (error) {
       console.error("Error during approval check:", error);
-      // Optionally, display a user-facing error message
     }
   };
 
@@ -52,7 +44,7 @@ const MyBeesTab = () => {
         My Hatchlings
       </Typography>
 
-      {/* Display Unstaked Bees */}
+      {/* Unstaked Bees Section */}
       <Typography variant="h6" color="white" sx={{ mb: 2 }}>
         Unstaked Bees
       </Typography>
@@ -79,14 +71,14 @@ const MyBeesTab = () => {
                 bee={bee}
                 onPlayClick={handlePlayClick}
                 isOwnedByUser={true}
-                variant="myBees" // Changed variant to 'myBees'
+                variant="myBees"
               />
             </Grid>
           ))
         )}
       </Grid>
 
-      {/* Display Staked Bees */}
+      {/* Staked Bees Section */}
       <Typography variant="h6" color="white" sx={{ mt: 4, mb: 2 }}>
         Staked Bees
       </Typography>
@@ -110,7 +102,7 @@ const MyBeesTab = () => {
                 bee={bee}
                 onPlayClick={handlePlayClick}
                 isOwnedByUser={true}
-                variant="myBees" // Changed variant to 'myBees'
+                variant="myBees"
               />
             </Grid>
           ))

@@ -24,7 +24,7 @@ import { useWaitForTransactionReceipt } from "wagmi";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { Hatchling } from "@/types/Hatchling";
 import { fetchMetadata } from "@/app/utils/fetchMetaData";
-import { useHives } from "@/context/HivesContext"; // Import useHives
+import { useHives } from "@/context/HivesContext";
 
 // Define specific result types (if needed)
 type HatchlingStatus = "Free" | "Staked";
@@ -45,16 +45,38 @@ const BlackForestHive: React.FC = () => {
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const { activeBee, checkAndPromptApproval, setActiveBee, stakeBee } =
-    useUserContext();
 
-  // Staking Hooks
+  // From UserContext - includes staking and unstaking functions
+  const {
+    activeBee,
+    checkAndPromptApproval,
+    setActiveBee,
+    stakeBee,
+    unstakeBee,
+    refreshBeesData,
+  } = useUserContext();
+
+  // From HivesContext - includes refreshHiveData
+  const {
+    environments,
+    hivesMap,
+    stakedNFTs,
+    maxBeesMap,
+    getHiveById,
+    getStakedNFTsByHiveId,
+    getMaxBeesByHiveId,
+    loading: hivesLoading,
+    error: hivesError,
+    refreshHiveData,
+  } = useHives();
+
+  // Staking hooks
   const { writeContractAsync: stakeNFT, isPending: isStakingPending } =
     useWriteHiveStakingStake();
   const { writeContractAsync: unstakeNFT, isPending: isUnstakingPending } =
     useWriteHiveStakingUnstake();
 
-  // State variables for transaction tracking and user feedback
+  // Transaction state and feedback UI states
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
@@ -66,7 +88,6 @@ const BlackForestHive: React.FC = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [confirmUnstakeModalOpen, setConfirmUnstakeModalOpen] = useState(false);
 
-  // Track transaction receipt
   const {
     isLoading: isTransactionLoading,
     isSuccess: isTransactionSuccess,
@@ -76,35 +97,43 @@ const BlackForestHive: React.FC = () => {
     hash: transactionHash,
   });
 
-  // Access data from HivesContext
-  const {
-    environments,
-    hivesMap,
-    stakedNFTs,
-    maxBeesMap,
-    getHiveById,
-    getStakedNFTsByHiveId,
-    getMaxBeesByHiveId,
-    loading: hivesLoading,
-    error: hivesError,
-  } = useHives();
-
-  // Define environmentId and hiveId (replace with dynamic values if needed)
-  const environmentId = "2"; // Replace with actual environment ID or derive dynamically
-  const hiveId = "2"; // Replace with actual hive ID or derive dynamically
-
+  // Hard-coded environment and hive IDs for this example
+  const environmentId = "2";
+  const hiveId = "2";
   const environmentIdNumber = Number(environmentId);
   const hiveIdNumber = Number(hiveId);
 
-  // State variables for Bees data (staked)
+  // Local state for staked bees with metadata
   const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
-
-  // State variables for Bees data (unstaked) - assuming you have a way to fetch them
-  const [bees, setBees] = useState<Hatchling[]>([]);
   const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
   const [beesError, setBeesError] = useState<string | null>(null);
 
-  // Effect to handle staked bees data from context
+  useEffect(() => {
+    const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
+    audio.loop = true;
+    audio.volume = 0.8;
+    setMusic(audio);
+
+    return () => {
+      audio.pause();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (music) {
+      if (isMusicMuted || isMuted) {
+        music.pause();
+      } else {
+        music.play();
+      }
+    }
+  }, [isMusicMuted, isMuted, music]);
+
+  const navigate = (link: string) => {
+    router.push(link);
+  };
+
+  // Fetch metadata for staked bees whenever stakedNFTs or hive data changes
   useEffect(() => {
     if (hivesLoading) {
       setIsBeesLoading(true);
@@ -119,35 +148,28 @@ const BlackForestHive: React.FC = () => {
     }
 
     const fetchBeesWithMetadata = async () => {
-      if (stakedNFTs && stakedNFTs.length > 0) {
-        try {
-          const filteredStakedNFTs = getStakedNFTsByHiveId(hiveIdNumber);
-
-          const fetchedStakedBees: Hatchling[] = await Promise.all(
-            filteredStakedNFTs.map(async (nft) => {
-              const metadata = await fetchMetadata(nft.tokenId?.tokenURI); // Adjust if the path is different
-
-              return createHatchling(
-                parseInt(nft.tokenIdNum, 10),
-                nft.tokenId.rarity,
-                metadata,
-                "Staked",
-                nft.environmentId?.environmentId || null,
-                nft.hiveId?.hiveId || null,
-                nft.ownerId?.id || ""
-              );
-            })
-          );
-
-          setStakedBees(fetchedStakedBees);
-        } catch (error) {
-          console.error("Error fetching metadata:", error);
-          setBeesError("Failed to load bee metadata.");
-        } finally {
-          setIsBeesLoading(false);
-        }
-      } else {
-        setStakedBees([]);
+      setIsBeesLoading(true);
+      try {
+        const filteredStakedNFTs = getStakedNFTsByHiveId(hiveIdNumber);
+        const fetchedStakedBees: Hatchling[] = await Promise.all(
+          filteredStakedNFTs.map(async (nft) => {
+            const metadata = await fetchMetadata(nft.tokenId?.tokenURI);
+            return createHatchling(
+              parseInt(nft.tokenIdNum, 10),
+              nft.tokenId.rarity,
+              metadata,
+              "Staked",
+              nft.environmentId?.environmentId || null,
+              nft.hiveId?.hiveId || null,
+              nft.ownerId?.id || ""
+            );
+          })
+        );
+        setStakedBees(fetchedStakedBees);
+      } catch (error) {
+        console.error("Error fetching metadata:", error);
+        setBeesError("Failed to load bee metadata.");
+      } finally {
         setIsBeesLoading(false);
       }
     };
@@ -161,33 +183,27 @@ const BlackForestHive: React.FC = () => {
     getStakedNFTsByHiveId,
   ]);
 
-  // Handle staking confirmation
   const handleConfirmStake = async () => {
     setConfirmModalOpen(false);
     try {
-      // Ensure the user has selected an activeBee
       if (activeBee === null) {
-        console.log("No active bee selected for staking");
         setAlertSeverity("error");
         setAlertMessage("No active bee selected for staking.");
         setSnackbarOpen(true);
         return;
       }
-      // Ensure the user has approved the staking contract
+
+      // Check if user has approved staking
       const isApproved = await checkAndPromptApproval();
       if (!isApproved) {
-        console.log("User did not approve the staking contract.");
         setAlertSeverity("error");
         setAlertMessage("You need to approve the staking contract.");
         setSnackbarOpen(true);
         return;
       }
-      // Example hiveId and environmentId - you will get these from the environment or UI
-      const tokenId = activeBee; // beeId is a number
-      console.log(
-        `Staking tokenId: ${tokenId}, environmentId: ${environmentId}, hiveId: ${hiveId}`
-      );
-      // Call the staking contract function
+
+      // Proceed with staking transaction on-chain
+      const tokenId = activeBee;
       const tx = await stakeNFT({
         args: [BigInt(tokenId), BigInt(environmentId), BigInt(hiveId)],
       });
@@ -196,7 +212,6 @@ const BlackForestHive: React.FC = () => {
       setAlertSeverity("success");
       setAlertMessage("Staking transaction initiated!");
       setSnackbarOpen(true);
-      // Manual State Update will occur after transaction confirmation
     } catch (error) {
       console.error("Failed to stake NFT:", error);
       setAlertSeverity("error");
@@ -205,7 +220,6 @@ const BlackForestHive: React.FC = () => {
     }
   };
 
-  // Handle Stake button click - open confirmation modal
   const handleStake = () => {
     if (activeBee === null) {
       setAlertSeverity("error");
@@ -216,12 +230,10 @@ const BlackForestHive: React.FC = () => {
     setConfirmModalOpen(true);
   };
 
-  // Handle Raid (unchanged)
   const handleRaid = () => {
     console.log("Raid button clicked");
   };
 
-  // Handle Unstaking confirmation
   const handleConfirmUnstake = async () => {
     setConfirmUnstakeModalOpen(false);
     const targetBee = stakedBees.find((bee) => bee.id === activeBee);
@@ -235,29 +247,29 @@ const BlackForestHive: React.FC = () => {
     const { id, environmentID, hiveID } = targetBee;
 
     try {
+      // Proceed with unstaking transaction on-chain
       const tx = await unstakeNFT({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
 
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
-        console.log("Transaction hash set:", tx);
+        console.log("Unstaking transaction initiated:", tx);
       } else {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
       }
     } catch (err) {
+      console.error("Failed to unstake the Hatchling:", err);
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
     }
   };
 
-  // Handle Unstaking - open confirmation modal
   const handleUnstake = () => {
     if (activeBee === null) {
-      console.log("No active bee selected to unstake.");
       setAlertSeverity("error");
       setAlertMessage("Please select a bee to unstake.");
       setSnackbarOpen(true);
@@ -266,19 +278,18 @@ const BlackForestHive: React.FC = () => {
     setConfirmUnstakeModalOpen(true);
   };
 
-  // Handle transaction status changes
+  // Watch for transaction success/failure to refresh data
   useEffect(() => {
     if (isTransactionSuccess && transactionHash) {
       setAlertSeverity("success");
       setAlertMessage("Transaction successful!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      // Manual State Update After Successful Transaction
-      if (activeBee !== null) {
-        stakeBee(activeBee, environmentId, hiveId); // Pass environmentID and hiveID
-        setActiveBee(null); // Reset activeBee
-        // Optionally, refetch data from context if refetch is available
-      }
+
+      // Refresh both user and hive data to show updated bees and production stats
+      refreshBeesData();
+      refreshHiveData();
+      setActiveBee(null);
     }
     if (isTransactionError) {
       setAlertSeverity("error");
@@ -295,7 +306,10 @@ const BlackForestHive: React.FC = () => {
     setActiveBee,
     activeBee,
     stakeBee,
+    unstakeBee,
     transactionHash,
+    refreshBeesData,
+    refreshHiveData,
   ]);
 
   const handleSnackbarClose = () => {
@@ -311,8 +325,8 @@ const BlackForestHive: React.FC = () => {
     setConfirmUnstakeModalOpen(false);
   };
 
+  // Compute bee counts for the hive
   const beeCounts = useMemo(() => {
-    // Initialize counts with default values
     const counts: { [key: string]: number } = {
       Common: 0,
       Rare: 0,
@@ -320,23 +334,16 @@ const BlackForestHive: React.FC = () => {
       Total: 0,
     };
 
-    // Populate counts based on stakedBees
     stakedBees.forEach((bee) => {
-      // Use the exact rarity as keys to avoid mismatch
-      const rarity = bee.rarity; // Assuming rarity is one of "Common", "Rare", "Ultra-Rare"
+      const rarity = bee.rarity;
       counts[rarity] = (counts[rarity] || 0) + 1;
     });
-
-    // Update the Total count
     counts["Total"] = stakedBees.length;
-
     return counts;
   }, [stakedBees]);
 
-  // Retrieve the specific hive's data from context
   const hive = getHiveById(hiveIdNumber);
 
-  // Ensure hive data is available
   if (!hive) {
     return (
       <GameLayout>
@@ -355,9 +362,8 @@ const BlackForestHive: React.FC = () => {
     );
   }
 
-  // Define hiveHatchlingInfo using context data
   const hiveHatchlingInfo: HiveHatchlingInfo = {
-    productivityValue: hive.productivityValue, // Retrieved from context
+    productivityValue: hive.productivityValue,
     CommonBees: beeCounts.Common,
     RareBees: beeCounts.Rare,
     UltraRareBees: beeCounts.UltraRare,
@@ -402,7 +408,6 @@ const BlackForestHive: React.FC = () => {
           />
         </Box>
 
-        {/* Content Layer */}
         <Box
           sx={{
             position: "relative",
@@ -418,7 +423,7 @@ const BlackForestHive: React.FC = () => {
             spacing={1}
             sx={{ marginTop: "0.4rem", marginLeft: "2.5rem", gap: "0px 0px" }}
           >
-            {/* Left Column - Hive Stats */}
+            {/* Left Column - Hive Stats Panel */}
             <Grid
               item
               xs={12}
@@ -454,7 +459,7 @@ const BlackForestHive: React.FC = () => {
               </Box>
             </Grid>
 
-            {/* Second Column - Bee Grid */}
+            {/* Right Column - Staked Bees Grid */}
             <Grid
               item
               xs={12}
@@ -494,8 +499,6 @@ const BlackForestHive: React.FC = () => {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      // Optionally, implement a refetch mechanism in context
-                      // For now, you might need to refresh the page or handle it accordingly
                       router.refresh();
                     }}
                     sx={{ mt: 2 }}
@@ -504,14 +507,14 @@ const BlackForestHive: React.FC = () => {
                   </Button>
                 </Box>
               ) : (
-                <BeeGrid bees={stakedBees} variant="default" /> // Pass variant="default"
+                <BeeGrid bees={stakedBees} variant="default" />
               )}
             </Grid>
           </Grid>
           <BottomBar isAudioPanelVisible={false} />
         </Box>
 
-        {/* Confirmation Modal for Staking */}
+        {/* Staking Confirmation Modal */}
         <Modal
           open={confirmModalOpen}
           onClose={handleCancelStake}
@@ -582,7 +585,7 @@ const BlackForestHive: React.FC = () => {
           </Box>
         </Modal>
 
-        {/* Confirmation Modal for Unstaking */}
+        {/* Unstaking Confirmation Modal */}
         <Modal
           open={confirmUnstakeModalOpen}
           onClose={handleCancelUnstake}
@@ -604,7 +607,7 @@ const BlackForestHive: React.FC = () => {
             }}
           >
             <SemiTransparentCard
-              transparency={0.8}
+              transparency={0.95}
               sx={{
                 padding: "30px",
                 display: "flex",
@@ -653,7 +656,7 @@ const BlackForestHive: React.FC = () => {
           </Box>
         </Modal>
 
-        {/* Success/Error Snackbar */}
+        {/* Snackbar for success/error messages */}
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}
@@ -673,7 +676,7 @@ const BlackForestHive: React.FC = () => {
   );
 };
 
-// Ensure createHatchling is defined or imported
+// Helper function to create a Hatchling object
 const createHatchling = (
   id: number,
   rarity: string,
