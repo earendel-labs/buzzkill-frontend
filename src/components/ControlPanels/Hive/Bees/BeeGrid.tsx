@@ -14,7 +14,7 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { Hatchling } from "@/types/Hatchling";
 import { useUserContext } from "@/context/UserContext";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
-
+import BeeCardHiveSkeleton from "@/components/Loaders/BeeCardHiveSkeleton";
 const beeCategories = [
   { label: "All Bees", filter: "all" },
   { label: "Your Bees", filter: "you" },
@@ -117,7 +117,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         </Tabs>
       )}
 
-      <Fade in={!loading} timeout={500}>
+      <Fade in={!loading} timeout={200}>
         {loading ? (
           <Box
             display="flex"

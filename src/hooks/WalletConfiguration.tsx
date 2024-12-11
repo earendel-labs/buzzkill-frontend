@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
-import { Box, Skeleton } from "@mui/material";
 import { WagmiProvider } from "wagmi";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { vicMainnet, vicTestNet } from "@/app/libs/chains";

@@ -164,13 +164,19 @@ const BeePanelCard: React.FC = () => {
                   fontSize: {
                     xs: "0.9rem", // Smaller font for smaller screens
                     sm: "1rem", // Default font size for small-medium screens
-                    xxl: "1.2rem", // Default font size for small-medium screens
+                    xxl: "1.2rem", // Larger font size for extra extra large screens
                   },
                 }}
               >
-                {bees.length > 0
-                  ? "Select Your Bee"
-                  : "You have staked Bees. View them here."}
+                {bees.length > 0 ? (
+                  "Select Your Bee"
+                ) : (
+                  <>
+                    You have staked Bees
+                    <br />
+                    View them here
+                  </>
+                )}
               </Typography>
               <Box display="flex" justifyContent="center">
                 <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />

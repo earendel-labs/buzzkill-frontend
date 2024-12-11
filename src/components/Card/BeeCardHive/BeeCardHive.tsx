@@ -17,6 +17,7 @@ import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeInfo from "../BeeCard/BeeInfo";
 import BeeCardBackground from "../BeeCard/BeeCardBackground";
 import { useHives } from "@/context/HivesContext"; // Add this import
+
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -54,8 +55,8 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   variant = "default",
   additionalInfo = {},
 }) => {
-  const { refreshBeesData } = useUserContext();
-  const { refreshHiveData } = useHives();
+  const { refreshBeesData } = useUserContext(); // Destructure refreshBeesData
+  const { refreshHiveData } = useHives(); // Destructure refreshHiveData
 
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -169,7 +170,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             setAlertMessage("Failed to refresh hive data.");
             setSnackbarOpen(true);
           });
-        refreshBeesData();
+        refreshBeesData(bee.id, "unstake");
       }
     }
 
@@ -184,7 +185,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     isTransactionSuccess,
     isTransactionError,
     transactionError,
-    refreshBeesData,
+    refreshBeesData, // Ensure refreshBeesData is included in dependencies
     refreshHiveData,
     bee.id,
     variant,
@@ -203,11 +204,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
         ? "You"
         : bee.ownerAddress
       : undefined;
-  /**   bee.rarity === "Common" ||
-          bee.rarity === "Rare" ||
-          bee.rarity === "Ultra Rare"
-            ? bee.rarity
-            : "Common" // Fallback to "common" if the value doesn't match */
+
   return (
     <StyledBeeCard>
       <BeeCardBackground

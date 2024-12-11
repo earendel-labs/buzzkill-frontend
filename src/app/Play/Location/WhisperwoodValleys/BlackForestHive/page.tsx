@@ -1,3 +1,5 @@
+// src/app/Play/Location/WhisperwoodValleys/BlackForestHive/page.tsx
+
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
@@ -17,7 +19,7 @@ import {
 } from "@/hooks/HiveStaking";
 import Image from "next/image";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext"; // Import UserContext
 import { useWaitForTransactionReceipt } from "wagmi";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { Hatchling } from "@/types/Hatchling";
@@ -49,7 +51,8 @@ const BlackForestHive: React.FC = () => {
     null
   );
 
-  const { activeBee, checkAndPromptApproval, setActiveBee } = useUserContext();
+  const { activeBee, checkAndPromptApproval, setActiveBee, refreshBeesData } =
+    useUserContext(); // Destructure refreshBeesData
 
   const {
     environments,
@@ -115,6 +118,10 @@ const BlackForestHive: React.FC = () => {
     }
   }, [isMusicMuted, isMuted, music]);
 
+  // Consolidated loading state
+  const [loadingBees, setLoadingBees] = useState<boolean>(false);
+  const debouncedLoadingBees = useDebounce(loadingBees, 300); // 300ms debounce
+
   // Fetch metadata for staked bees whenever stakedNFTs or hive data changes
   useEffect(() => {
     const fetchBeesWithMetadata = async () => {
@@ -164,10 +171,6 @@ const BlackForestHive: React.FC = () => {
     hivesError,
     getStakedNFTsByHiveId,
   ]);
-
-  // Consolidated loading state
-  const [loadingBees, setLoadingBees] = useState<boolean>(false);
-  const debouncedLoadingBees = useDebounce(loadingBees, 300); // 300ms debounce
 
   const handleConfirmStake = async () => {
     setConfirmModalOpen(false);
@@ -275,13 +278,15 @@ const BlackForestHive: React.FC = () => {
 
       try {
         await refreshHiveData(activeBee, lastAction);
+        await refreshBeesData(activeBee, lastAction); 
+
         setAlertSeverity("success");
         setAlertMessage("Transaction successful!");
         setSnackbarOpen(true);
       } catch (error) {
-        console.error("Error refreshing hive data:", error);
+        console.error("Error refreshing data:", error);
         setAlertSeverity("error");
-        setAlertMessage("Failed to refresh hive data after transaction.");
+        setAlertMessage("Failed to refresh data after transaction.");
         setSnackbarOpen(true);
       }
 
@@ -307,6 +312,7 @@ const BlackForestHive: React.FC = () => {
     transactionError,
     transactionHash,
     refreshHiveData,
+    refreshBeesData, // Ensure refreshBeesData is included in dependencies
     activeBee,
     lastAction,
     setActiveBee,
