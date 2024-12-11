@@ -194,7 +194,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
           sx={{ width: "100%", height: "250px", objectFit: "cover" }} // Set height for square image
         />
         <StatusChip isFree={bee.status === "Free"}>{bee.status}</StatusChip>
-        <Box sx={{ padding: "16px" }}>
+        <Box sx={{ padding: "16px",  marginBottom: "12px" }}>
           <Typography
             variant="h6"
             color="white"

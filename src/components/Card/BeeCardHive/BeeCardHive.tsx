@@ -224,7 +224,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           />
         </ImageContainer>
         {/* StatusChip is no longer needed as all bees are staked in default variant */}
-        <Box sx={{ padding: "16px" }}>
+        <Box sx={{ padding: "16px", marginBottom: "12px" }}>
           <Typography
             variant="h6"
             color="white"
