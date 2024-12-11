@@ -109,6 +109,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [fetchError, setFetchError] = useState(false);
   const [approvalForStaking, setApprovalForStaking] = useState(false);
   const [isCheckingApproval, setIsCheckingApproval] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
@@ -377,6 +378,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         console.log("User not connected or address missing. Skipping refresh.");
         return;
       }
+      setIsRefreshing(true); // Start refreshing
+      setLoadingBees(true); // Set loading state to tru
 
       try {
         console.log("Refreshing staked and unstaked tokens in UserContext...");
@@ -457,6 +460,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       } catch (error) {
         console.error("Error refreshing bees data:", error);
         setFetchError(true);
+      } finally {
+        setLoadingBees(false);
+        setIsRefreshing(false);
       }
     },
     [

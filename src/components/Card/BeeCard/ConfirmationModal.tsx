@@ -47,6 +47,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         }}
       >
         <SemiTransparentCard
+          transparency={1}
           sx={{
             maxWidth: "500px",
             width: "90%",
