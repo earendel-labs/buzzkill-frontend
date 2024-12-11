@@ -272,6 +272,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       onClick={copyInviteLink}
                       startIcon={<EmojiEventsIcon />}
                       aria-label="Claim Daily rewards"
+                      disabled={true}
                       sx={{
                         width: "100%",
                         display: "flex", // Ensure the button uses flexbox
@@ -445,15 +446,40 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         WebkitTextStroke: "0",
                         lineHeight: "1.2",
                         marginTop: "8px",
-                        marginBottom: "8px",
+                        marginBottom: "2px",
                       }}
                     >
-                      150
+                      1000
                       <Typography
                         variant="h5"
                         component="span"
                         sx={{
                           color: theme.palette.Gold.main,
+                          WebkitTextStroke: "0",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        Honey
+                      </Typography>
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      component="p"
+                      fontWeight="bold"
+                      sx={{
+                        color: theme.palette.LightBlue.main,
+                        WebkitTextStroke: "0",
+                        lineHeight: "1.2",
+                        marginTop: "8px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      1000
+                      <Typography
+                        variant="h6"
+                        component="span"
+                        sx={{
+                          color: theme.palette.LightBlue.main,
                           WebkitTextStroke: "0",
                           marginLeft: "8px",
                         }}
@@ -470,7 +496,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           <WhatshotIcon
                             sx={{
                               color: "white",
-                              fontSize: "1.5rem",
+                              fontSize: "1.2rem",
                             }}
                           />
                         }
