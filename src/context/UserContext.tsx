@@ -373,17 +373,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   // Updated: Function to refresh all bees data with polling
   const refreshBeesData = useCallback(
-    async (beeId?: number, action?: "stake" | "unstake") => {
+    async (beeId?: number, action?: "stake" | "unstake" | "mint") => {
       if (!isConnected || !lowercaseAddress) {
         console.log("User not connected or address missing. Skipping refresh.");
         return;
       }
       setIsRefreshing(true); // Start refreshing
-      setLoadingBees(true); // Set loading state to tru
+      setLoadingBees(true); // Set loading state to true
 
       try {
         console.log("Refreshing staked and unstaked tokens in UserContext...");
 
+        // Fetch both staked and unstaked data
         const [stakedResult, unstakedResult] = await Promise.all([
           refetchStakedData(),
           refetchUnstakedData(),
@@ -392,7 +393,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         // Update React state with the latest data
         if (stakedResult.data) {
           const updatedStakedBees = stakedResult.data.stakedNFTs.edges.map(
-            (edge) => ({
+            (edge: any) => ({
               id: parseInt(edge.node.tokenIdNum, 10),
               rarity: edge.node.tokenId.rarity,
               imageAddress: "", // Metadata fetching if necessary
@@ -409,9 +410,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
         if (unstakedResult.data) {
           const updatedUnstakedBees = unstakedResult.data.tokens.edges
-            .map((edge) => edge.node)
-            .filter((node) => !node.isStaked)
-            .map((node) => ({
+            .map((edge: any) => edge.node)
+            .filter((node: any) => !node.isStaked)
+            .map((node: any) => ({
               id: parseInt(node.id, 10),
               rarity: node.rarity,
               imageAddress: "", // Metadata fetching if necessary
@@ -425,37 +426,103 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           console.log("Unstaked bees updated:", updatedUnstakedBees);
         }
 
-        // Modify Apollo Cache
-        if (action === "unstake" && beeId) {
-          client.cache.modify({
-            fields: {
-              stakedNFTs(existingStakedNFTs = { edges: [] }, { readField }) {
-                return {
-                  ...existingStakedNFTs,
-                  edges: existingStakedNFTs.edges.filter(
-                    (edge: any) =>
-                      Number(readField("tokenIdNum", edge.node)) !== beeId
-                  ),
-                };
-              },
-              tokens(existingTokens = { edges: [] }, { readField }) {
-                return {
-                  ...existingTokens,
-                  edges: [
-                    ...existingTokens.edges,
-                    {
-                      __typename: "UnstakedNFTNode",
-                      id: beeId.toString(),
-                      rarity: "Common", // Example, update based on your data
-                      tokenURI: "ipfs://example", // Example, update based on your data
-                      isStaked: false,
-                      owner: address,
-                    },
-                  ],
-                };
-              },
-            },
-          });
+        // Handle specific actions like "stake", "unstake", or "mint"
+        switch (action) {
+          case "unstake":
+            if (beeId) {
+              client.cache.modify({
+                fields: {
+                  stakedNFTs(
+                    existingStakedNFTs = { edges: [] },
+                    { readField }
+                  ) {
+                    return {
+                      ...existingStakedNFTs,
+                      edges: existingStakedNFTs.edges.filter(
+                        (edge: any) =>
+                          Number(readField("tokenIdNum", edge.node)) !== beeId
+                      ),
+                    };
+                  },
+                  tokens(existingTokens = { edges: [] }, { readField }) {
+                    return {
+                      ...existingTokens,
+                      edges: [
+                        ...existingTokens.edges,
+                        {
+                          __typename: "UnstakedNFTNode",
+                          id: beeId.toString(),
+                          rarity: "Common", // Replace with actual rarity
+                          tokenURI: "ipfs://example", // Replace with actual URI
+                          isStaked: false,
+                          owner: address,
+                        },
+                      ],
+                    };
+                  },
+                },
+              });
+            }
+            break;
+          case "stake":
+            if (beeId) {
+              client.cache.modify({
+                fields: {
+                  stakedNFTs(existingStakedNFTs = { edges: [] }) {
+                    return {
+                      ...existingStakedNFTs,
+                      edges: [
+                        ...existingStakedNFTs.edges,
+                        {
+                          __typename: "StakedNFTNode",
+                          tokenIdNum: beeId.toString(),
+                          rarity: "Rare", // Replace with actual rarity
+                          environmentId: null, // Replace with actual environment
+                          hiveId: null, // Replace with actual hive
+                          owner: address,
+                        },
+                      ],
+                    };
+                  },
+                  tokens(existingTokens = { edges: [] }, { readField }) {
+                    return {
+                      ...existingTokens,
+                      edges: existingTokens.edges.filter(
+                        (edge: any) =>
+                          Number(readField("id", edge.node)) !== beeId
+                      ),
+                    };
+                  },
+                },
+              });
+            }
+            break;
+          case "mint":
+            if (beeId) {
+              client.cache.modify({
+                fields: {
+                  tokens(existingTokens = { edges: [] }) {
+                    return {
+                      ...existingTokens,
+                      edges: [
+                        ...existingTokens.edges,
+                        {
+                          __typename: "UnstakedNFTNode",
+                          id: beeId.toString(),
+                          rarity: "Legendary", // Replace with actual rarity
+                          tokenURI: "ipfs://newBeeURI", // Replace with actual URI
+                          isStaked: false,
+                          owner: address,
+                        },
+                      ],
+                    };
+                  },
+                },
+              });
+            }
+            break;
+          default:
+            console.log("General refresh without specific action.");
         }
       } catch (error) {
         console.error("Error refreshing bees data:", error);
