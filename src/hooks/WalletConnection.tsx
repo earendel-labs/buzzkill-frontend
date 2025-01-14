@@ -105,7 +105,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         setPreviousAddress(address);
         setLoading(false);
         setCaptchaToken(null);
-        await signOut({ redirect: false });
+        // await signOut({ redirect: false });
         setIsSiweEnabled(true);
         await checkAccountInSupabase();
       } else if (!isConnected && previousAddress) {
@@ -115,7 +115,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     };
 
     handleWalletChange();
-  }, [isConnected, address]); 
+  }, [isConnected, address]);
 
   const handleCaptchaVerify = async (token: string) => {
     setCaptchaToken(token);
