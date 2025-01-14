@@ -24,15 +24,12 @@ import {
 } from "@/hooks/HiveStaking";
 import { Hatchling, HatchlingStatus } from "@/types/Hatchling";
 import { pollUntilCondition } from "@/app/utils/polling";
-
 import { fetchMetadata } from "@/app/utils/fetchMetaData";
-import { useApolloClient } from "@apollo/client"; // Import hook to access Apollo client
-
-import { useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_USER_STAKED_TOKENS } from "@/subquery/getUserStakedTokens";
 import { GET_USER_UNSTAKED_TOKENS } from "@/subquery/getUserUnstakedTokens";
 
-// Define interfaces for GraphQL query results
+// ----------- GraphQL Interfaces -----------
 interface StakedNFTNode {
   tokenIdNum: string;
   tokenId: {
@@ -75,6 +72,7 @@ interface UnstakedNFTsData {
   };
 }
 
+// ----------- Context Interface -----------
 interface UserContextType {
   activeBee: number | null;
   setActiveBee: (beeId: number | null) => void;
@@ -88,11 +86,14 @@ interface UserContextType {
   approvalForStaking: boolean;
   refreshBeesData: (
     beeId?: number,
-    action?: "stake" | "unstake" | "mint"
+    action?: "stake" | "unstake" | "mint",
+    mintedQuantity?: number
   ) => Promise<void>;
   checkAndPromptApproval: () => Promise<boolean>;
   stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
   unstakeBee: (beeId: number) => void;
+  // Option B: we expose isRefreshing so the UI can hide partial states
+  isRefreshing: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -102,6 +103,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({ address });
+
+  // ----------------------
+  // State & Flags
+  // ----------------------
   const [activeBee, setActiveBeeState] = useState<number | null>(null);
   const [bees, setBees] = useState<Hatchling[]>([]);
   const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
@@ -118,12 +123,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const buzzkillHatchlingsNftAddress = process.env
     .NEXT_PUBLIC_HATCHLINGS_ADDRESS as `0x${string}` | undefined;
 
-  // ERC721 Hooks
+  // ----------------------
+  // Contract Hooks
+  // ----------------------
   const { data: totalSupply } = useReadBuzzkillHatchlingsNftMaxSupply();
   const { data: balanceOf } = useReadBuzzkillHatchlingsNftBalanceOf({
     args: [address || "0x0000000000000000000000000000000000000000"],
   });
-
   const { data: isApproved } = useReadBuzzkillHatchlingsNftIsApprovedForAll({
     args: [
       address ?? "0x0000000000000000000000000000000000000000",
@@ -133,17 +139,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const { writeContractAsync: approveTokens } =
     useWriteBuzzkillHatchlingsNftSetApprovalForAll();
 
-  // Fetch user info data
+  // ----------------------
+  // Additional On-chain Reads
+  // ----------------------
   const { data: userInfoData } = useReadHiveStakingUserInfo({
     args: [address ?? "0x0000000000000000000000000000000000000000"],
   });
-
-  // Fetch total staked bees
   const { data: totalStaked } = useReadHiveStakingTotalBeesStaked();
 
   const lowercaseAddress = address?.toLowerCase();
 
+  // ----------------------
   // GraphQL Queries
+  // ----------------------
   const {
     data: stakedData,
     loading: loadingStaked,
@@ -155,17 +163,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     fetchPolicy: "network-only",
     onCompleted: (data) => {
       if (data) {
-        const stakedBeesData = data.stakedNFTs.edges.map((edge) => ({
+        // Minimal staked list; can preserve old images if desired
+        const stakedBeesData: Hatchling[] = data.stakedNFTs.edges.map((edge) => ({
           id: parseInt(edge.node.tokenIdNum, 10),
           rarity: edge.node.tokenId.rarity,
-          imageAddress: "", // Fetch metadata later if needed
+          imageAddress: "",
           status: "Staked" as HatchlingStatus,
           environmentID: edge.node.environmentId?.environmentId || null,
           hiveID: edge.node.hiveId?.hiveId || null,
           ownerAddress: address || "",
         }));
         setStakedBees(stakedBeesData);
-        console.log("Updated stakedBees in onCompleted:", stakedBeesData);
       }
     },
   });
@@ -181,102 +189,29 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     fetchPolicy: "network-only",
     onCompleted: (data) => {
       if (data) {
-        const unstakedBeesData = data.tokens.edges
+        // Minimal unstaked list
+        const unstakedBeesData: Hatchling[] = data.tokens.edges
           .map((edge) => edge.node)
           .filter((node) => !node.isStaked)
           .map((node) => ({
             id: parseInt(node.id, 10),
             rarity: node.rarity,
-            imageAddress: "", // Fetch metadata later if needed
+            imageAddress: "",
             status: "Free" as HatchlingStatus,
             environmentID: null,
             hiveID: null,
             ownerAddress: node.owner || address || "",
           }));
         setBees(unstakedBeesData);
-        console.log("Updated unstakedBees in onCompleted:", unstakedBeesData);
       }
     },
   });
 
-  const createHatchling = (
-    id: number,
-    rarity: string,
-    imageAddress: string,
-    status: HatchlingStatus,
-    environmentID: string | null,
-    hiveID: string | null,
-    ownerAddress: string
-  ): Hatchling => ({
-    id,
-    rarity,
-    imageAddress,
-    status,
-    environmentID,
-    hiveID,
-    ownerAddress,
-  });
-
   const stakedDataRef = useRef(stakedData);
   const unstakedDataRef = useRef(tokensData);
-  const client = useApolloClient(); // Get Apollo client from ApolloProvider
+  const client = useApolloClient();
 
-  // Function to fetch staked bees
-  const fetchStakedBees = useCallback(async () => {
-    if (stakedData) {
-      try {
-        const fetchedStakedBees: Hatchling[] = await Promise.all(
-          stakedData.stakedNFTs.edges.map(async (edge: StakedNFTEdge) => {
-            const nft = edge.node;
-            const metadata = await fetchMetadata(nft.tokenId.tokenURI);
-            return {
-              id: parseInt(nft.tokenIdNum, 10),
-              rarity: nft.tokenId.rarity,
-              imageAddress: metadata,
-              status: "Staked" as HatchlingStatus,
-              environmentID: nft.environmentId?.environmentId || null,
-              hiveID: nft.hiveId?.hiveId || null,
-              ownerAddress: address || "",
-            };
-          })
-        );
-        setStakedBees(fetchedStakedBees);
-      } catch (error) {
-        console.error("Error fetching staked bees metadata:", error);
-        setFetchError(true);
-      }
-    }
-  }, [stakedData, address]);
-
-  // Function to fetch unstaked bees
-  const fetchUnstakedBees = useCallback(async () => {
-    if (tokensData) {
-      try {
-        const fetchedUnstakedBees: Hatchling[] = await Promise.all(
-          tokensData.tokens.edges
-            .map((edge: UnstakedNFTEdge) => edge.node)
-            .filter((token: UnstakedNFTNode) => !token.isStaked)
-            .map(async (token: UnstakedNFTNode) => {
-              const metadata = await fetchMetadata(token.tokenURI);
-              return {
-                id: parseInt(token.id, 10),
-                rarity: token.rarity,
-                imageAddress: metadata,
-                status: "Free" as HatchlingStatus,
-                environmentID: null,
-                hiveID: null,
-                ownerAddress: token.owner || address || "",
-              };
-            })
-        );
-        setBees(fetchedUnstakedBees);
-      } catch (error) {
-        console.error("Error fetching unstaked bees metadata:", error);
-        setFetchError(true);
-      }
-    }
-  }, [tokensData, address]);
-
+  // Keep stakedDataRef updated
   useEffect(() => {
     stakedDataRef.current = stakedData;
   }, [stakedData]);
@@ -285,8 +220,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     unstakedDataRef.current = tokensData;
   }, [tokensData]);
-  console.log("stakedNFTs", stakedData);
-  // Initial data fetching
+
+  // ----------------------
+  // Initial Data Fetch
+  // ----------------------
   useEffect(() => {
     if (errorStaked) {
       console.error("Error fetching staked tokens:", errorStaked);
@@ -295,6 +232,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       console.error("Error fetching tokens:", errorTokens);
     }
 
+    // Optionally fetch metadata once:
     fetchStakedBees();
     fetchUnstakedBees();
 
@@ -307,20 +245,105 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     loadingTokens,
     errorStaked,
     errorTokens,
-    fetchStakedBees,
-    fetchUnstakedBees,
   ]);
 
+  // ----------------------
+  // Fetch Staked Bees w/ Metadata
+  // ----------------------
+  const fetchStakedBees = useCallback(async () => {
+    if (!stakedData) return;
+    try {
+      const fetchedStakedBees: Hatchling[] = await Promise.all(
+        stakedData.stakedNFTs.edges.map(async (edge: StakedNFTEdge) => {
+          const nft = edge.node;
+          const metadata = await fetchMetadata(nft.tokenId.tokenURI);
+          return {
+            id: parseInt(nft.tokenIdNum, 10),
+            rarity: nft.tokenId.rarity,
+            imageAddress: metadata,
+            status: "Staked" as HatchlingStatus,
+            environmentID: nft.environmentId?.environmentId || null,
+            hiveID: nft.hiveId?.hiveId || null,
+            ownerAddress: address || "",
+          };
+        })
+      );
+      setStakedBees(fetchedStakedBees);
+    } catch (error) {
+      console.error("Error fetching staked bees metadata:", error);
+      setFetchError(true);
+    }
+  }, [stakedData, address]);
+
+  // ----------------------
+  // Fetch Unstaked Bees w/ Metadata
+  // ----------------------
+  const fetchUnstakedBees = useCallback(async () => {
+    if (!tokensData) return;
+    try {
+      const fetchedUnstakedBees: Hatchling[] = await Promise.all(
+        tokensData.tokens.edges
+          .map((edge: UnstakedNFTEdge) => edge.node)
+          .filter((token: UnstakedNFTNode) => !token.isStaked)
+          .map(async (token: UnstakedNFTNode) => {
+            const metadata = await fetchMetadata(token.tokenURI);
+            return {
+              id: parseInt(token.id, 10),
+              rarity: token.rarity,
+              imageAddress: metadata,
+              status: "Free" as HatchlingStatus,
+              environmentID: null,
+              hiveID: null,
+              ownerAddress: token.owner || address || "",
+            };
+          })
+      );
+      setBees(fetchedUnstakedBees);
+    } catch (error) {
+      console.error("Error fetching unstaked bees metadata:", error);
+      setFetchError(true);
+    }
+  }, [tokensData, address]);
+
+  // ----------------------
+  // Optional effect to update stakedBees if stakedData changes
+  // ----------------------
+  useEffect(() => {
+    if (stakedData) {
+      const stakedBeesData: Hatchling[] = stakedData.stakedNFTs.edges.map(
+        (edge) => {
+          const beeId = parseInt(edge.node.tokenIdNum, 10);
+          const existingBee = stakedBees.find((b) => b.id === beeId);
+
+          return {
+            id: beeId,
+            rarity: edge.node.tokenId.rarity,
+            imageAddress: existingBee?.imageAddress || "",
+            status: "Staked" as HatchlingStatus,
+            environmentID: edge.node.environmentId?.environmentId || null,
+            hiveID: edge.node.hiveId?.hiveId || null,
+            ownerAddress: address || "",
+          };
+        }
+      );
+      setStakedBees(stakedBeesData);
+    }
+  }, [stakedData, address]);
+
+  // ----------------------
+  // setActiveBee
+  // ----------------------
   const setActiveBee = (beeId: number | null) => {
     console.log(`Setting activeBee to: ${beeId}`);
     setActiveBeeState(beeId);
   };
 
+  // ----------------------
+  // Approval Logic
+  // ----------------------
   const checkAndPromptApproval = async () => {
     if (!address || !hiveStakingAddress || isApproved === undefined) {
-      console.log(
-        "Address, hive staking, or approval status is not available."
-      );
+      console.log("Address, hive staking, or approval status is not available.");
       return false;
     }
 
@@ -328,15 +351,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     console.log("Checking if approval is already set...");
 
     if (!isApproved) {
-      console.log(
-        "Approval is not set, prompting user to approve staking contract..."
-      );
+      console.log("Prompting user to approve staking contract...");
       try {
         await approveTokens({
           args: [hiveStakingAddress, true],
         });
         setApprovalForStaking(true);
-        console.log("User has approved the staking contract.");
         setIsCheckingApproval(false);
         return true;
       } catch (error) {
@@ -347,88 +367,162 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       }
     } else {
       setApprovalForStaking(true);
-      console.log("User has already approved the staking contract.");
       setIsCheckingApproval(false);
       return true;
     }
   };
 
-  useEffect(() => {
-    if (stakedData) {
-      const stakedBeesData: Hatchling[] = stakedData.stakedNFTs.edges.map(
-        (edge) => ({
-          id: parseInt(edge.node.tokenIdNum, 10),
-          rarity: edge.node.tokenId.rarity,
-          imageAddress: "", // Assume you want to fetch metadata here later
-          status: "Staked" as HatchlingStatus,
-          environmentID: edge.node.environmentId?.environmentId || null,
-          hiveID: edge.node.hiveId?.hiveId || null,
-          ownerAddress: address || "",
-        })
-      );
-      setStakedBees(stakedBeesData);
-      console.log("Staked Bees updated from stakedData:", stakedBeesData);
-    }
-  }, [stakedData, address]);
-
-  // Updated: Function to refresh all bees data with polling
+  // -----------------------------------------------------------------
+  // REFRESH BEES (With Polling & Re-using Old Metadata)
+  // Option B: We'll hide partial states in the UI if isRefreshing = true
+  // -----------------------------------------------------------------
   const refreshBeesData = useCallback(
-    async (beeId?: number, action?: "stake" | "unstake" | "mint") => {
+    async (
+      beeId?: number,
+      action?: "stake" | "unstake" | "mint",
+      mintedQuantity?: number
+    ) => {
       if (!isConnected || !lowercaseAddress) {
         console.log("User not connected or address missing. Skipping refresh.");
         return;
       }
-      setIsRefreshing(true); // Start refreshing
-      setLoadingBees(true); // Set loading state to true
+
+      // Indicate we are refreshing to hide partial states in the UI
+      setIsRefreshing(true);
+      setLoadingBees(true);
+
+      const oldUnstakedCount = bees.length;
 
       try {
-        console.log("Refreshing staked and unstaked tokens in UserContext...");
+        // 1) Define a condition function for polling
+        const isBeesDataUpdated = async (): Promise<boolean> => {
+          const [stakedRes, unstakedRes] = await Promise.all([
+            refetchStakedData({ fetchPolicy: "network-only" }),
+            refetchUnstakedData({ fetchPolicy: "network-only" }),
+          ]);
 
-        // Fetch both staked and unstaked data
-        const [stakedResult, unstakedResult] = await Promise.all([
-          refetchStakedData(),
-          refetchUnstakedData(),
-        ]);
+          const stakedDataResult = stakedRes.data;
+          const unstakedDataResult = unstakedRes.data;
+          if (!stakedDataResult || !unstakedDataResult) {
+            console.warn("Polling: No data returned.");
+            return false;
+          }
 
-        // Update React state with the latest data
-        if (stakedResult.data) {
-          const updatedStakedBees = stakedResult.data.stakedNFTs.edges.map(
+          // Minimal arrays to check presence
+          const updatedStakedBeesShort = stakedDataResult.stakedNFTs.edges.map(
             (edge: any) => ({
               id: parseInt(edge.node.tokenIdNum, 10),
-              rarity: edge.node.tokenId.rarity,
-              imageAddress: "", // Metadata fetching if necessary
-              status: "Staked" as HatchlingStatus,
-              environmentID: edge.node.environmentId?.environmentId || null,
-              hiveID: edge.node.hiveId?.hiveId || null,
-              ownerAddress: address || "",
             })
           );
-          setStakedBees(updatedStakedBees);
-          stakedDataRef.current = stakedResult.data; // Update ref
-          console.log("Staked bees updated:", updatedStakedBees);
-        }
-
-        if (unstakedResult.data) {
-          const updatedUnstakedBees = unstakedResult.data.tokens.edges
+          const updatedUnstakedBeesShort = unstakedDataResult.tokens.edges
             .map((edge: any) => edge.node)
             .filter((node: any) => !node.isStaked)
             .map((node: any) => ({
               id: parseInt(node.id, 10),
-              rarity: node.rarity,
-              imageAddress: "", // Metadata fetching if necessary
-              status: "Free" as HatchlingStatus,
-              environmentID: null,
-              hiveID: null,
-              ownerAddress: node.owner || address || "",
             }));
-          setBees(updatedUnstakedBees);
-          unstakedDataRef.current = unstakedResult.data; // Update ref
-          console.log("Unstaked bees updated:", updatedUnstakedBees);
+
+          const isBeeStaked = beeId
+            ? updatedStakedBeesShort.some((b) => b.id === beeId)
+            : false;
+
+          if (action === "stake") {
+            return isBeeStaked;
+          }
+          if (action === "unstake") {
+            return !isBeeStaked;
+          }
+          if (action === "mint") {
+            const newUnstakedBeesCount = updatedUnstakedBeesShort.length;
+            const expectedCount = oldUnstakedCount + (mintedQuantity ?? 1);
+            return newUnstakedBeesCount >= expectedCount;
+          }
+
+          // If no action, return true
+          return true;
+        };
+
+        // 2) Poll until condition is met
+        const pollingResult = await pollUntilCondition(
+          isBeesDataUpdated,
+          1000,
+          10
+        );
+        console.log("Polling completed. Condition met:", pollingResult);
+
+        // 3) Optional short delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // 4) Final fetch & update state, re-using old metadata
+        const [finalStakedRes, finalUnstakedRes] = await Promise.all([
+          refetchStakedData({ fetchPolicy: "network-only" }),
+          refetchUnstakedData({ fetchPolicy: "network-only" }),
+        ]);
+
+        // ----------------------
+        // Final STAKED
+        // ----------------------
+        if (finalStakedRes.data) {
+          const updatedStaked = finalStakedRes.data.stakedNFTs.edges.map(
+            (edge: any) => {
+              const beeID = parseInt(edge.node.tokenIdNum, 10);
+
+              // 1) Try old staked array
+              let existingBee = stakedBees.find((b) => b.id === beeID);
+              // 2) If not found, check the old unstaked array
+              if (!existingBee) {
+                existingBee = bees.find((b) => b.id === beeID);
+              }
+
+              return {
+                id: beeID,
+                rarity: edge.node.tokenId.rarity,
+                imageAddress: existingBee?.imageAddress || "",
+                status: "Staked" as HatchlingStatus,
+                environmentID: edge.node.environmentId?.environmentId || null,
+                hiveID: edge.node.hiveId?.hiveId || null,
+                ownerAddress: address || "",
+              };
+            }
+          );
+          setStakedBees(updatedStaked);
+          stakedDataRef.current = finalStakedRes.data;
+        }
+
+        // ----------------------
+        // Final UNSTAKED
+        // ----------------------
+        if (finalUnstakedRes.data) {
+          const updatedUnstaked = finalUnstakedRes.data.tokens.edges
+            .map((edge: any) => edge.node)
+            .filter((node: any) => !node.isStaked)
+            .map((node: any) => {
+              const beeID = parseInt(node.id, 10);
+
+              // 1) Try old unstaked array
+              let existingBee = bees.find((b) => b.id === beeID);
+              // 2) If not found, check the old staked array
+              if (!existingBee) {
+                existingBee = stakedBees.find((b) => b.id === beeID);
+              }
+
+              return {
+                id: beeID,
+                rarity: node.rarity,
+                imageAddress: existingBee?.imageAddress || "",
+                status: "Free" as HatchlingStatus,
+                environmentID: null,
+                hiveID: null,
+                ownerAddress: node.owner || address || "",
+              };
+            });
+          setBees(updatedUnstaked);
+          unstakedDataRef.current = finalUnstakedRes.data;
         }
       } catch (error) {
         console.error("Error refreshing bees data:", error);
         setFetchError(true);
       } finally {
+        // We’re done refreshing, so the UI can show final, correct data
         setLoadingBees(false);
         setIsRefreshing(false);
       }
@@ -439,24 +533,31 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       refetchStakedData,
       refetchUnstakedData,
       address,
+      bees,       // old unstaked
+      stakedBees, // old staked
     ]
   );
 
+  // ----------------------
+  // Example stake/un-stake methods
+  // ----------------------
   const stakeBee = async (
     beeId: number,
     environmentID: string,
     hiveID: string
   ) => {
     console.log(`Attempting to stake Bee ID ${beeId}`);
-    // After successful on-chain tx, refreshBeesData will be called externally.
+    // after on-chain TX, call refreshBeesData(beeId, "stake")
   };
 
   const unstakeBee = async (beeId: number) => {
     console.log(`Attempting to unstake Bee ID ${beeId}`);
-    // After successful on-chain tx, refreshBeesData will be called externally.
+    // after on-chain TX, call refreshBeesData(beeId, "unstake")
   };
 
-  // Log current bees for debugging
+  // ----------------------
+  // Debug Logging
+  // ----------------------
   useEffect(() => {
     console.log("Current Unstaked Bees:", bees);
   }, [bees]);
@@ -465,6 +566,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     console.log("Current Staked Bees:", stakedBees);
   }, [stakedBees]);
 
+  // ----------------------
+  // Render Provider
+  // ----------------------
   return (
     <UserContext.Provider
       value={{
@@ -482,6 +586,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         refreshBeesData,
         stakeBee,
         unstakeBee,
+        // Expose isRefreshing so UI can hide partial states
+        isRefreshing,
       }}
     >
       {children}
@@ -495,4 +601,3 @@ export const useUserContext = () => {
     throw new Error("useUserContext must be used within a UserProvider");
   }
   return context;
-};

@@ -278,7 +278,7 @@ const BlackForestHive: React.FC = () => {
 
       try {
         await refreshHiveData(activeBee, lastAction);
-        await refreshBeesData(activeBee, lastAction); 
+        await refreshBeesData(activeBee, lastAction);
 
         setAlertSeverity("success");
         setAlertMessage("Transaction successful!");
@@ -341,9 +341,18 @@ const BlackForestHive: React.FC = () => {
       Total: 0,
     };
 
+    // A mapping to normalize bee rarities to match counts keys
+    const rarityMap: { [key: string]: string } = {
+      Common: "Common",
+      Rare: "Rare",
+      "Ultra-Rare": "UltraRare",
+    };
+
     for (const bee of stakedBees) {
-      const rarity = bee.rarity;
-      counts[rarity] = (counts[rarity] || 0) + 1;
+      const normalizedRarity = rarityMap[bee.rarity] || "Unknown";
+      if (counts[normalizedRarity] !== undefined) {
+        counts[normalizedRarity]++;
+      }
     }
     counts["Total"] = stakedBees.length;
     return counts;

@@ -49,7 +49,10 @@ const MyBeesTab = () => {
         Unstaked Bees
       </Typography>
       <Grid container spacing={3}>
-        {!loadingBees && myBees.length === 0 && !fetchError ? (
+        {!loadingBees &&
+        myBees.length === 0 &&
+        stakedBees.length === 0 &&
+        !fetchError ? (
           <Grid item xs={12}>
             <Box
               display="flex"
@@ -62,6 +65,23 @@ const MyBeesTab = () => {
                 No Bees Found. Mint yours here
               </Typography>
               <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
+            </Box>
+          </Grid>
+        ) : !loadingBees &&
+          myBees.length === 0 &&
+          stakedBees.length > 0 &&
+          !fetchError ? (
+          <Grid item xs={12}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              height="20vh"
+            >
+              <Typography marginTop="24px" marginBottom="24px">
+                No Unstaked Bees
+              </Typography>
             </Box>
           </Grid>
         ) : (

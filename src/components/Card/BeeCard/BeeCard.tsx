@@ -144,9 +144,12 @@ const BeeCard: React.FC<BeeCardProps> = ({
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      refreshBeesData();
 
       console.log("Called refreshBeesData() after successful transaction.");
+      // Refresh hive data if action is unstake
+      if (bee.id && variant === "myBees") {
+        refreshBeesData(bee.id, "unstake");
+      }
     }
     if (isTransactionError) {
       setAlertSeverity("error");

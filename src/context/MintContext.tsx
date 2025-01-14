@@ -162,7 +162,7 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Refetch minted data after success
         await refetchMintedCount();
-        refreshBeesData();
+        refreshBeesData(undefined, "mint", quantity);
 
         setIsMintLoading(false);
 
