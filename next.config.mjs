@@ -54,9 +54,21 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "gateway.pinata.cloud", // Allows loading images from this domain
-        port: "", // No port
-        pathname: "/**", // Allow loading all paths
+        hostname: "gateway.pinata.cloud",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ipfs.io",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "dweb.link",
+        port: "",
+        pathname: "/**",
       },
     ],
   },
