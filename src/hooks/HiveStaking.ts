@@ -3,667 +3,667 @@ import {
   createUseWriteContract,
   createUseSimulateContract,
   createUseWatchContractEvent,
-} from "wagmi/codegen";
+} from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // HiveStaking
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const hiveStakingAbi = [
   {
-    type: "constructor",
+    type: 'function',
     inputs: [
-      {
-        name: "_buzzkillHatchlingsNFT",
-        internalType: "address",
-        type: "address",
-      },
-      { name: "initialOwner", internalType: "address", type: "address" },
+      { name: 'users', internalType: 'address[]', type: 'address[]' },
+      { name: 'flags', internalType: 'bool[]', type: 'bool[]' },
     ],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "newEnvironments",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "newHives",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "EnvironmentsAndHivesUpdated",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      { name: "user", internalType: "address", type: "address", indexed: true },
-      {
-        name: "hasExternalNFT",
-        internalType: "bool",
-        type: "bool",
-        indexed: false,
-      },
-    ],
-    name: "ExternalNFTFlagUpdated",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "environmentId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "hiveId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "totalProduction",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "averageProduction",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "HiveProductionQueried",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "oldMax",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "newMax",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "MaxBeesPerHiveUpdated",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "previousOwner",
-        internalType: "address",
-        type: "address",
-        indexed: true,
-      },
-      {
-        name: "newOwner",
-        internalType: "address",
-        type: "address",
-        indexed: true,
-      },
-    ],
-    name: "OwnershipTransferred",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      { name: "user", internalType: "address", type: "address", indexed: true },
-      {
-        name: "points",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "timestamp",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "PointsClaimed",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "common",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "rare",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "ultraRare",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "RarityMultipliersUpdated",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      {
-        name: "oldRate",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "newRate",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "RewardRateUpdated",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      { name: "user", internalType: "address", type: "address", indexed: true },
-      {
-        name: "tokenId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: true,
-      },
-      {
-        name: "environmentId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "hiveId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "timestamp",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "Staked",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      { name: "user", internalType: "address", type: "address", indexed: true },
-      {
-        name: "tokenId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: true,
-      },
-      {
-        name: "environmentId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "hiveId",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "timestamp",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "Unstaked",
-  },
-  {
-    type: "event",
-    anonymous: false,
-    inputs: [
-      { name: "user", internalType: "address", type: "address", indexed: true },
-      {
-        name: "totalProduction",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-      {
-        name: "timestamp",
-        internalType: "uint256",
-        type: "uint256",
-        indexed: false,
-      },
-    ],
-    name: "UserProductionUpdated",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "users", internalType: "address[]", type: "address[]" },
-      { name: "flags", internalType: "bool[]", type: "bool[]" },
-    ],
-    name: "batchSetUserExternalNFTFlag",
+    name: 'batchSetUserExternalNFTFlag',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "buzzkillHatchlings",
+    name: 'claimPoints',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: '_buzzkillHatchlingsNFT',
+        internalType: 'address',
+        type: 'address',
+      },
+      { name: 'initialOwner', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newEnvironments',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newHives',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'EnvironmentsAndHivesUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'hasExternalNFT',
+        internalType: 'bool',
+        type: 'bool',
+        indexed: false,
+      },
+    ],
+    name: 'ExternalNFTFlagUpdated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'totalProduction',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'averageProduction',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'HiveProductionQueried',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newMax',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MaxBeesPerHiveUpdated',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'onERC721Received',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'points',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PointsClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'common',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'rare',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'ultraRare',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RarityMultipliersUpdated',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldRate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newRate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RewardRateUpdated',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'newEnvironments', internalType: 'uint256', type: 'uint256' },
+      { name: 'newHives', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setEnvironmentsAndHives',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newMaxBees', internalType: 'uint256', type: 'uint256' }],
+    name: 'setMaxBeesPerHive',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_commonMultiplier', internalType: 'uint256', type: 'uint256' },
+      { name: '_rareMultiplier', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_ultraRareMultiplier',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+    ],
+    name: 'setRarityMultipliers',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newRate', internalType: 'uint256', type: 'uint256' }],
+    name: 'setRewardRate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address' },
+      { name: 'hasNFT', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'setUserExternalNFTFlag',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'stake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Staked',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'unstake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'tokenId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'environmentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'hiveId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'Unstaked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'totalProduction',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'timestamp',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'UserProductionUpdated',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
+    name: 'withdrawERC721',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'amount', internalType: 'uint256', type: 'uint256' }],
+    name: 'withdrawEther',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  { type: 'receive', stateMutability: 'payable' },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'buzzkillHatchlings',
     outputs: [
       {
-        name: "",
-        internalType: "contract IBuzzkillHatchlings",
-        type: "address",
+        name: '',
+        internalType: 'contract IBuzzkillHatchlings',
+        type: 'address',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "buzzkillHatchlingsNFT",
-    outputs: [{ name: "", internalType: "contract IERC721", type: "address" }],
-    stateMutability: "view",
+    name: 'buzzkillHatchlingsNFT',
+    outputs: [{ name: '', internalType: 'contract IERC721', type: 'address' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "claimPoints",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: 'commonMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "commonMultiplier",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'externalFlagMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [],
-    name: "externalFlagMultiplier",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "userAddress", internalType: "address", type: "address" }],
-    name: "getAllStakedNFTsForUser",
+    type: 'function',
+    inputs: [{ name: 'userAddress', internalType: 'address', type: 'address' }],
+    name: 'getAllStakedNFTsForUser',
     outputs: [
       {
-        name: "",
-        internalType: "struct HiveStaking.StakedNFT[]",
-        type: "tuple[]",
+        name: '',
+        internalType: 'struct HiveStaking.StakedNFT[]',
+        type: 'tuple[]',
         components: [
-          { name: "tokenId", internalType: "uint256", type: "uint256" },
-          { name: "stakedAt", internalType: "uint256", type: "uint256" },
-          { name: "environmentId", internalType: "uint256", type: "uint256" },
-          { name: "hiveId", internalType: "uint256", type: "uint256" },
-          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
-          { name: "owner", internalType: "address", type: "address" },
+          { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+          { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+          { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+          { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'owner', internalType: 'address', type: 'address' },
           {
-            name: "rarity",
-            internalType: "enum IBuzzkillHatchlings.Rarity",
-            type: "uint8",
+            name: 'rarity',
+            internalType: 'enum IBuzzkillHatchlings.Rarity',
+            type: 'uint8',
           },
-          { name: "userMultiplier", internalType: "uint256", type: "uint256" },
+          { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "getHiveProduction",
+    name: 'getHiveProduction',
     outputs: [
-      { name: "totalProduction", internalType: "uint256", type: "uint256" },
-      { name: "averageProduction", internalType: "uint256", type: "uint256" },
+      { name: 'totalProduction', internalType: 'uint256', type: 'uint256' },
+      { name: 'averageProduction', internalType: 'uint256', type: 'uint256' },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "getStakedNFTsInHive",
+    name: 'getStakedNFTsInHive',
     outputs: [
       {
-        name: "",
-        internalType: "struct HiveStaking.StakedNFT[]",
-        type: "tuple[]",
+        name: '',
+        internalType: 'struct HiveStaking.StakedNFT[]',
+        type: 'tuple[]',
         components: [
-          { name: "tokenId", internalType: "uint256", type: "uint256" },
-          { name: "stakedAt", internalType: "uint256", type: "uint256" },
-          { name: "environmentId", internalType: "uint256", type: "uint256" },
-          { name: "hiveId", internalType: "uint256", type: "uint256" },
-          { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
-          { name: "owner", internalType: "address", type: "address" },
+          { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+          { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+          { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+          { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+          { name: 'owner', internalType: 'address', type: 'address' },
           {
-            name: "rarity",
-            internalType: "enum IBuzzkillHatchlings.Rarity",
-            type: "uint8",
+            name: 'rarity',
+            internalType: 'enum IBuzzkillHatchlings.Rarity',
+            type: 'uint8',
           },
-          { name: "userMultiplier", internalType: "uint256", type: "uint256" },
+          { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "userAddress", internalType: "address", type: "address" }],
-    name: "getUserPoints",
+    type: 'function',
+    inputs: [{ name: 'userAddress', internalType: 'address', type: 'address' }],
+    name: 'getUserPoints',
     outputs: [
-      { name: "totalPoints", internalType: "uint256", type: "uint256" },
-      { name: "claimedPoints", internalType: "uint256", type: "uint256" },
+      { name: 'totalPoints', internalType: 'uint256', type: 'uint256' },
+      { name: 'claimedPoints', internalType: 'uint256', type: 'uint256' },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "", internalType: "address", type: "address" }],
-    name: "hasExternalNFTFlag",
-    outputs: [{ name: "", internalType: "bool", type: "bool" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'hasExternalNFTFlag',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [],
-    name: "maxBeesPerHive",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    name: 'maxBeesPerHive',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    type: "function",
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'rareMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'rewardRatePerDay',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: "", internalType: "address", type: "address" },
-      { name: "", internalType: "address", type: "address" },
-      { name: "", internalType: "uint256", type: "uint256" },
-      { name: "", internalType: "bytes", type: "bytes" },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "onERC721Received",
-    outputs: [{ name: "", internalType: "bytes4", type: "bytes4" }],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "owner",
-    outputs: [{ name: "", internalType: "address", type: "address" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "rareMultiplier",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "rewardRatePerDay",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "newEnvironments", internalType: "uint256", type: "uint256" },
-      { name: "newHives", internalType: "uint256", type: "uint256" },
-    ],
-    name: "setEnvironmentsAndHives",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "newMaxBees", internalType: "uint256", type: "uint256" }],
-    name: "setMaxBeesPerHive",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "_commonMultiplier", internalType: "uint256", type: "uint256" },
-      { name: "_rareMultiplier", internalType: "uint256", type: "uint256" },
+    name: 'stakedNFTsByUser',
+    outputs: [
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
       {
-        name: "_ultraRareMultiplier",
-        internalType: "uint256",
-        type: "uint256",
+        name: 'rarity',
+        internalType: 'enum IBuzzkillHatchlings.Rarity',
+        type: 'uint8',
       },
+      { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "setRarityMultipliers",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [{ name: "newRate", internalType: "uint256", type: "uint256" }],
-    name: "setRewardRate",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "user", internalType: "address", type: "address" },
-      { name: "hasNFT", internalType: "bool", type: "bool" },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
     ],
-    name: "setUserExternalNFTFlag",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "tokenId", internalType: "uint256", type: "uint256" },
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
-    ],
-    name: "stake",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "", internalType: "address", type: "address" },
-      { name: "", internalType: "uint256", type: "uint256" },
-      { name: "", internalType: "uint256", type: "uint256" },
-      { name: "", internalType: "uint256", type: "uint256" },
-    ],
-    name: "stakedNFTsByUser",
+    name: 'stakedNFTsInHive',
     outputs: [
-      { name: "tokenId", internalType: "uint256", type: "uint256" },
-      { name: "stakedAt", internalType: "uint256", type: "uint256" },
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
-      { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
-      { name: "owner", internalType: "address", type: "address" },
+      { name: 'tokenId', internalType: 'uint256', type: 'uint256' },
+      { name: 'stakedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'environmentId', internalType: 'uint256', type: 'uint256' },
+      { name: 'hiveId', internalType: 'uint256', type: 'uint256' },
+      { name: 'lastClaimedAt', internalType: 'uint256', type: 'uint256' },
+      { name: 'owner', internalType: 'address', type: 'address' },
       {
-        name: "rarity",
-        internalType: "enum IBuzzkillHatchlings.Rarity",
-        type: "uint8",
+        name: 'rarity',
+        internalType: 'enum IBuzzkillHatchlings.Rarity',
+        type: 'uint8',
       },
-      { name: "userMultiplier", internalType: "uint256", type: "uint256" },
+      { name: 'userMultiplier', internalType: 'uint256', type: 'uint256' },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [
-      { name: "", internalType: "uint256", type: "uint256" },
-      { name: "", internalType: "uint256", type: "uint256" },
-      { name: "", internalType: "uint256", type: "uint256" },
-    ],
-    name: "stakedNFTsInHive",
+    type: 'function',
+    inputs: [],
+    name: 'totalBeesStaked',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalEnvironments',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'totalHivesPerEnvironment',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'ultraRareMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'userInfo',
     outputs: [
-      { name: "tokenId", internalType: "uint256", type: "uint256" },
-      { name: "stakedAt", internalType: "uint256", type: "uint256" },
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
-      { name: "lastClaimedAt", internalType: "uint256", type: "uint256" },
-      { name: "owner", internalType: "address", type: "address" },
-      {
-        name: "rarity",
-        internalType: "enum IBuzzkillHatchlings.Rarity",
-        type: "uint8",
-      },
-      { name: "userMultiplier", internalType: "uint256", type: "uint256" },
+      { name: 'totalPoints', internalType: 'uint256', type: 'uint256' },
+      { name: 'claimedPoints', internalType: 'uint256', type: 'uint256' },
+      { name: 'totalProduction', internalType: 'uint256', type: 'uint256' },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    inputs: [],
-    name: "totalBeesStaked",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'userRewardMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
-  {
-    type: "function",
-    inputs: [],
-    name: "totalEnvironments",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "totalHivesPerEnvironment",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "newOwner", internalType: "address", type: "address" }],
-    name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [],
-    name: "ultraRareMultiplier",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [
-      { name: "tokenId", internalType: "uint256", type: "uint256" },
-      { name: "environmentId", internalType: "uint256", type: "uint256" },
-      { name: "hiveId", internalType: "uint256", type: "uint256" },
-    ],
-    name: "unstake",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "", internalType: "address", type: "address" }],
-    name: "userInfo",
-    outputs: [
-      { name: "totalPoints", internalType: "uint256", type: "uint256" },
-      { name: "claimedPoints", internalType: "uint256", type: "uint256" },
-      { name: "totalProduction", internalType: "uint256", type: "uint256" },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "", internalType: "address", type: "address" }],
-    name: "userRewardMultiplier",
-    outputs: [{ name: "", internalType: "uint256", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "tokenId", internalType: "uint256", type: "uint256" }],
-    name: "withdrawERC721",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    inputs: [{ name: "amount", internalType: "uint256", type: "uint256" }],
-    name: "withdrawEther",
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  { type: "receive", stateMutability: "payable" },
-] as const;
+] as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const hiveStakingAddress = {
-  88: "0x9A4CB855295157697958B130d5112E1d3C654A91",
-} as const;
+  88: '0xC00D118109064B1e5d1F2924dbB1f0721Ac78681',
+} as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const hiveStakingConfig = {
   address: hiveStakingAddress,
   abi: hiveStakingAbi,
-} as const;
+} as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
@@ -672,756 +672,756 @@ export const hiveStakingConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-});
+})
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlings"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingBuzzkillHatchlings =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "buzzkillHatchlings",
-  });
+    functionName: 'buzzkillHatchlings',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlingsNFT"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "buzzkillHatchlingsNFT",
-  });
+    functionName: 'buzzkillHatchlingsNFT',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"commonMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingCommonMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "commonMultiplier",
-  });
+    functionName: 'commonMultiplier',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"externalFlagMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingExternalFlagMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "externalFlagMultiplier",
-  });
+    functionName: 'externalFlagMultiplier',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getAllStakedNFTsForUser"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingGetAllStakedNfTsForUser =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "getAllStakedNFTsForUser",
-  });
+    functionName: 'getAllStakedNFTsForUser',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getHiveProduction"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingGetHiveProduction =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "getHiveProduction",
-  });
+    functionName: 'getHiveProduction',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getStakedNFTsInHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingGetStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "getStakedNFTsInHive",
-  });
+    functionName: 'getStakedNFTsInHive',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getUserPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingGetUserPoints =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "getUserPoints",
-  });
+    functionName: 'getUserPoints',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"hasExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingHasExternalNftFlag =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "hasExternalNFTFlag",
-  });
+    functionName: 'hasExternalNFTFlag',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"maxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingMaxBeesPerHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "maxBeesPerHive",
-  });
+    functionName: 'maxBeesPerHive',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"owner"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: "owner",
-});
+  functionName: 'owner',
+})
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rareMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "rareMultiplier",
-  });
+    functionName: 'rareMultiplier',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rewardRatePerDay"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingRewardRatePerDay =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "rewardRatePerDay",
-  });
+    functionName: 'rewardRatePerDay',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsByUser"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingStakedNfTsByUser =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "stakedNFTsByUser",
-  });
+    functionName: 'stakedNFTsByUser',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsInHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "stakedNFTsInHive",
-  });
+    functionName: 'stakedNFTsInHive',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalBeesStaked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingTotalBeesStaked =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "totalBeesStaked",
-  });
+    functionName: 'totalBeesStaked',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalEnvironments"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingTotalEnvironments =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "totalEnvironments",
-  });
+    functionName: 'totalEnvironments',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalHivesPerEnvironment"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingTotalHivesPerEnvironment =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "totalHivesPerEnvironment",
-  });
+    functionName: 'totalHivesPerEnvironment',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"ultraRareMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingUltraRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "ultraRareMultiplier",
-  });
+    functionName: 'ultraRareMultiplier',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userInfo"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: "userInfo",
-});
+  functionName: 'userInfo',
+})
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userRewardMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useReadHiveStakingUserRewardMultiplier =
   /*#__PURE__*/ createUseReadContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "userRewardMultiplier",
-  });
+    functionName: 'userRewardMultiplier',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-});
+})
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingBatchSetUserExternalNftFlag =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "batchSetUserExternalNFTFlag",
-  });
+    functionName: 'batchSetUserExternalNFTFlag',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingClaimPoints =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "claimPoints",
-  });
+    functionName: 'claimPoints',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "onERC721Received",
-  });
+    functionName: 'onERC721Received',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "renounceOwnership",
-  });
+    functionName: 'renounceOwnership',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setEnvironmentsAndHives",
-  });
+    functionName: 'setEnvironmentsAndHives',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setMaxBeesPerHive",
-  });
+    functionName: 'setMaxBeesPerHive',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setRarityMultipliers",
-  });
+    functionName: 'setRarityMultipliers',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setRewardRate",
-  });
+    functionName: 'setRewardRate',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setUserExternalNFTFlag",
-  });
+    functionName: 'setUserExternalNFTFlag',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: "stake",
-});
+  functionName: 'stake',
+})
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "transferOwnership",
-  });
+    functionName: 'transferOwnership',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-  functionName: "unstake",
-});
+  functionName: 'unstake',
+})
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "withdrawERC721",
-  });
+    functionName: 'withdrawERC721',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWriteHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "withdrawEther",
-  });
+    functionName: 'withdrawEther',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
   abi: hiveStakingAbi,
   address: hiveStakingAddress,
-});
+})
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingBatchSetUserExternalNftFlag =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "batchSetUserExternalNFTFlag",
-  });
+    functionName: 'batchSetUserExternalNFTFlag',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingClaimPoints =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "claimPoints",
-  });
+    functionName: 'claimPoints',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "onERC721Received",
-  });
+    functionName: 'onERC721Received',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "renounceOwnership",
-  });
+    functionName: 'renounceOwnership',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setEnvironmentsAndHives",
-  });
+    functionName: 'setEnvironmentsAndHives',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setMaxBeesPerHive",
-  });
+    functionName: 'setMaxBeesPerHive',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setRarityMultipliers",
-  });
+    functionName: 'setRarityMultipliers',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setRewardRate",
-  });
+    functionName: 'setRewardRate',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "setUserExternalNFTFlag",
-  });
+    functionName: 'setUserExternalNFTFlag',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "stake",
-  });
+    functionName: 'stake',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "transferOwnership",
-  });
+    functionName: 'transferOwnership',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingUnstake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "unstake",
-  });
+    functionName: 'unstake',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "withdrawERC721",
-  });
+    functionName: 'withdrawERC721',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useSimulateHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: "withdrawEther",
-  });
+    functionName: 'withdrawEther',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-  });
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"EnvironmentsAndHivesUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingEnvironmentsAndHivesUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "EnvironmentsAndHivesUpdated",
-  });
+    eventName: 'EnvironmentsAndHivesUpdated',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"ExternalNFTFlagUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingExternalNftFlagUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "ExternalNFTFlagUpdated",
-  });
+    eventName: 'ExternalNFTFlagUpdated',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"HiveProductionQueried"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingHiveProductionQueriedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "HiveProductionQueried",
-  });
+    eventName: 'HiveProductionQueried',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"MaxBeesPerHiveUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "MaxBeesPerHiveUpdated",
-  });
+    eventName: 'MaxBeesPerHiveUpdated',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "OwnershipTransferred",
-  });
+    eventName: 'OwnershipTransferred',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"PointsClaimed"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingPointsClaimedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "PointsClaimed",
-  });
+    eventName: 'PointsClaimed',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RarityMultipliersUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingRarityMultipliersUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "RarityMultipliersUpdated",
-  });
+    eventName: 'RarityMultipliersUpdated',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RewardRateUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingRewardRateUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "RewardRateUpdated",
-  });
+    eventName: 'RewardRateUpdated',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Staked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingStakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "Staked",
-  });
+    eventName: 'Staked',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Unstaked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingUnstakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "Unstaked",
-  });
+    eventName: 'Unstaked',
+  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"UserProductionUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x9A4CB855295157697958B130d5112E1d3C654A91)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0xC00D118109064B1e5d1F2924dbB1f0721Ac78681)
  */
 export const useWatchHiveStakingUserProductionUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    eventName: "UserProductionUpdated",
-  });
+    eventName: 'UserProductionUpdated',
+  })
