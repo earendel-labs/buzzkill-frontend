@@ -2,14 +2,13 @@
 const ipfsGateways = [
   "https://ipfs.io/ipfs/",
   "https://gateway.pinata.cloud/ipfs/",
-  "https://cloudflare-ipfs.com/ipfs/",
   "https://dweb.link/ipfs/",
 ];
 
 /**
  * Convert IPFS URI to an HTTP URL with gateway fallback.
  */
-const ipfsToHttp = (ipfsUri: string, gatewayIndex: number = 0): string => {
+const ipfsToHttp = (ipfsUri: string, gatewayIndex: number = 0) => {
   if (ipfsUri.startsWith("ipfs://")) {
     const cidAndPath = ipfsUri.replace("ipfs://", "");
     return ipfsGateways[gatewayIndex] + cidAndPath;
@@ -21,25 +20,23 @@ const ipfsToHttp = (ipfsUri: string, gatewayIndex: number = 0): string => {
  * Fetch metadata for NFTs with gateway fallback.
  */
 export async function fetchMetadata(metadataUri: string) {
-  for (let i = 0; i < ipfsGateways.length; i++) {
-    try {
-      // Attempt to fetch metadata from the current gateway
-      const response = await fetch(ipfsToHttp(metadataUri, i));
-      if (response.ok) {
-        const metadata = await response.json();
-        return ipfsToHttp(metadata.image, i); // Resolve image URL
-      } else {
-        console.warn(
-          `Gateway failed: ${ipfsToHttp(metadataUri, i)} (status: ${
-            response.status
-          })`
-        );
+  const fetchPromises = ipfsGateways.map((gateway, index) => {
+    const url = ipfsToHttp(metadataUri, index);
+    return fetch(url).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Gateway error: ${response.status}`);
       }
+      return response.json();
+    });
+  });
+
+  for (let i = 0; i < fetchPromises.length; i++) {
+    try {
+      const metadata = await fetchPromises[i];
+      const imageUrl = ipfsToHttp(metadata.image, i); // Resolve image URL
+      return imageUrl;
     } catch (err) {
-      console.error(
-        `Error fetching metadata from ${ipfsToHttp(metadataUri, i)}:`,
-        err
-      );
+      // Silently handle errors without logging warnings
     }
   }
 

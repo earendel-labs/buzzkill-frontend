@@ -85,7 +85,7 @@ const Play: React.FC = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="100vh" 
+        height="100vh"
         flexDirection="column"
         sx={{
           backgroundImage: (theme) =>
@@ -136,13 +136,13 @@ const Play: React.FC = () => {
 
       {/* Main Game Content */}
       <TopBar mapHeaderLabel="World Map" showWorldMapButton={false} />
-      <CombinedLocationMarker
+      {/* <CombinedLocationMarker
         left="25%"
         top="55%"
         link="Play/Location/Beach"
         text="TidalFlame Beaches"
         navigate={navigate}
-      />
+      /> */}
       <CombinedLocationMarker
         left="55%"
         top="50%"
@@ -151,10 +151,10 @@ const Play: React.FC = () => {
         navigate={navigate}
       />
       <CombinedLocationMarker
-        left="63%"
+        left="75%"
         top="35%"
-        link="Play/Location/Snow"
-        text="Mistcloak Tundra"
+        link="Play/Location/Volcanic"
+        text="Molten Ridge"
         navigate={navigate}
       />
       <BottomBar />

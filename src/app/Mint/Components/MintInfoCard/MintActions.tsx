@@ -5,6 +5,7 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useMintContext } from "@/context/MintContext";
 import { useTheme } from "@mui/material/styles";
+import { useUserContext } from "@/context/UserContext";
 
 const MintActions: React.FC = () => {
   const theme = useTheme();
@@ -19,6 +20,7 @@ const MintActions: React.FC = () => {
     cooldownRemaining,
     handleMint,
   } = useMintContext();
+  const { refreshBeesData } = useUserContext();
 
   const hasRemainingMint = maxQuantity > 0;
 

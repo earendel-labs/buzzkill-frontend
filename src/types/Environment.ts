@@ -17,6 +17,7 @@ export interface HiveHatchling {
   type: string;
   id: number;
   name: string;
+  environmentId: number;
   productivityValue: number;
   rareBees: string;
   totalBees: string;

@@ -18,6 +18,7 @@ export interface MintContextValue {
   maxQuantity: number;
   isMintLoading: boolean;
   isMinted: boolean;
+  mintQuantityRequested: number;
   errorMessage: string | null;
   isCooldown: boolean;
   cooldownRemaining: number;
@@ -72,6 +73,7 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
   const [isCooldown, setIsCooldown] = useState<boolean>(false);
+  const [mintQuantityRequested, setMintQuantityRequested] = useState<number>(0);
 
   // Fetch balance
   const {
@@ -225,6 +227,9 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
     setErrorMessage(null);
     setIsMintLoading(true);
 
+    // Capture the exact quantity for this mint action
+    setMintQuantityRequested(quantity);
+
     if (mintBatch && address) {
       try {
         // Check supply
@@ -292,6 +297,7 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
     maxQuantity,
     isMintLoading,
     isMinted,
+    mintQuantityRequested,
     errorMessage,
     isCooldown,
     cooldownRemaining,

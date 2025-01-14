@@ -40,9 +40,10 @@ const MintPriceDisplay: React.FC = () => {
           },
         }}
       >
-        Awaken a Buzzkill Hatchling from its two-million-year slumber!
-        Mint now to embark on an epic journey to rejuvenate your hive
-        in the thawing world of Nectera.
+        Awaken a Buzzkill Hatchling from its two-million-year slumber! Mint now
+        to embark on an epic journey to rejuvenate your hive in the thawing
+        world of Nectera. <br></br><br></br>
+        NOTE: There is a 1 minute cooldown per mint.
       </Typography>
 
       {/* Free Mint Price */}

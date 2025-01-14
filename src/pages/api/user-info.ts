@@ -6,7 +6,7 @@ const defaultUserInfo: UserInfo = {
   pollen: 75000,
   nectar: 235000,
   sap: 75000,
-  honey: 953000,
+  honey: 1,
   queenBees: 5,
   workerBees: 50,
 };

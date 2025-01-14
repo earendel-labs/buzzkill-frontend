@@ -88,7 +88,7 @@ interface UserContextType {
   approvalForStaking: boolean;
   refreshBeesData: (
     beeId?: number,
-    action?: "stake" | "unstake"
+    action?: "stake" | "unstake" | "mint"
   ) => Promise<void>;
   checkAndPromptApproval: () => Promise<boolean>;
   stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
@@ -424,105 +424,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           setBees(updatedUnstakedBees);
           unstakedDataRef.current = unstakedResult.data; // Update ref
           console.log("Unstaked bees updated:", updatedUnstakedBees);
-        }
-
-        // Handle specific actions like "stake", "unstake", or "mint"
-        switch (action) {
-          case "unstake":
-            if (beeId) {
-              client.cache.modify({
-                fields: {
-                  stakedNFTs(
-                    existingStakedNFTs = { edges: [] },
-                    { readField }
-                  ) {
-                    return {
-                      ...existingStakedNFTs,
-                      edges: existingStakedNFTs.edges.filter(
-                        (edge: any) =>
-                          Number(readField("tokenIdNum", edge.node)) !== beeId
-                      ),
-                    };
-                  },
-                  tokens(existingTokens = { edges: [] }, { readField }) {
-                    return {
-                      ...existingTokens,
-                      edges: [
-                        ...existingTokens.edges,
-                        {
-                          __typename: "UnstakedNFTNode",
-                          id: beeId.toString(),
-                          rarity: "Common", // Replace with actual rarity
-                          tokenURI: "ipfs://example", // Replace with actual URI
-                          isStaked: false,
-                          owner: address,
-                        },
-                      ],
-                    };
-                  },
-                },
-              });
-            }
-            break;
-          case "stake":
-            if (beeId) {
-              client.cache.modify({
-                fields: {
-                  stakedNFTs(existingStakedNFTs = { edges: [] }) {
-                    return {
-                      ...existingStakedNFTs,
-                      edges: [
-                        ...existingStakedNFTs.edges,
-                        {
-                          __typename: "StakedNFTNode",
-                          tokenIdNum: beeId.toString(),
-                          rarity: "Rare", // Replace with actual rarity
-                          environmentId: null, // Replace with actual environment
-                          hiveId: null, // Replace with actual hive
-                          owner: address,
-                        },
-                      ],
-                    };
-                  },
-                  tokens(existingTokens = { edges: [] }, { readField }) {
-                    return {
-                      ...existingTokens,
-                      edges: existingTokens.edges.filter(
-                        (edge: any) =>
-                          Number(readField("id", edge.node)) !== beeId
-                      ),
-                    };
-                  },
-                },
-              });
-            }
-            break;
-          case "mint":
-            if (beeId) {
-              client.cache.modify({
-                fields: {
-                  tokens(existingTokens = { edges: [] }) {
-                    return {
-                      ...existingTokens,
-                      edges: [
-                        ...existingTokens.edges,
-                        {
-                          __typename: "UnstakedNFTNode",
-                          id: beeId.toString(),
-                          rarity: "Legendary", // Replace with actual rarity
-                          tokenURI: "ipfs://newBeeURI", // Replace with actual URI
-                          isStaked: false,
-                          owner: address,
-                        },
-                      ],
-                    };
-                  },
-                },
-              });
-            }
-            break;
-          default:
-            console.log("General refresh without specific action.");
         }
       } catch (error) {
         console.error("Error refreshing bees data:", error);

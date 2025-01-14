@@ -90,10 +90,9 @@ const MintPageContent: React.FC = () => {
         >
           <NFTCard
             isMinted={isMinted}
-            // you could also consume e.g. isTransactionSuccess from the context if needed
-            flipped={false}
+            flipped={isMinted}
             frontImage="/Mint/NFT-Cards.png"
-            backImage="/NFTs/Buzzkill-Hatchlings.png"
+            backImage="/NFTs/Hatchlings.JPEG"
             nftData={nftData}
             mintedNFTs={[]} // or any relevant data
             quantityMinted={1}
