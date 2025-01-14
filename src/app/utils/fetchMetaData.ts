@@ -32,10 +32,11 @@ export async function fetchMetadata(metadataUri: string) {
       const imageUrl = ipfsToHttp(metadata.image, i); // Resolve image URL
       return imageUrl;
     } catch (err) {
-      // Continue to the next gateway on error
+      // Safely handle 'err' of type 'unknown'
+      const errorMessage = err instanceof Error ? err.message : String(err);
       console.warn(
         `Error fetching from gateway ${ipfsGateways[i]}:`,
-        err.message
+        errorMessage
       );
     }
   }
