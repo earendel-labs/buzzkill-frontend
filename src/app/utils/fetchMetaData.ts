@@ -20,23 +20,23 @@ const ipfsToHttp = (ipfsUri: string, gatewayIndex: number = 0) => {
  * Fetch metadata for NFTs with gateway fallback.
  */
 export async function fetchMetadata(metadataUri: string) {
-  const fetchPromises = ipfsGateways.map((gateway, index) => {
-    const url = ipfsToHttp(metadataUri, index);
-    return fetch(url).then((response) => {
+  for (let i = 0; i < ipfsGateways.length; i++) {
+    const url = ipfsToHttp(metadataUri, i);
+    try {
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Gateway error: ${response.status}`);
       }
-      return response.json();
-    });
-  });
 
-  for (let i = 0; i < fetchPromises.length; i++) {
-    try {
-      const metadata = await fetchPromises[i];
+      const metadata = await response.json();
       const imageUrl = ipfsToHttp(metadata.image, i); // Resolve image URL
       return imageUrl;
     } catch (err) {
-      // Silently handle errors without logging warnings
+      // Continue to the next gateway on error
+      console.warn(
+        `Error fetching from gateway ${ipfsGateways[i]}:`,
+        err.message
+      );
     }
   }
 
