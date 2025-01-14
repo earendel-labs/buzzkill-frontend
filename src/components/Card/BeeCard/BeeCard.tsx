@@ -17,6 +17,8 @@ import StatusChip from "./StatusChip";
 import ActionButtons from "./ActionButtons";
 import ConfirmationModal from "./ConfirmationModal";
 import BeeInfo from "./BeeInfo";
+import BeeCardBackground from "./BeeCardBackground";
+import RarityChip from "./RarityChip";
 
 export interface BeeCardProps {
   bee: Hatchling;
@@ -187,14 +189,31 @@ const BeeCard: React.FC<BeeCardProps> = ({
 
   return (
     <StyledBeeCard>
-      <SemiTransparentCard>
+      <BeeCardBackground
+        rarity={
+          bee.rarity === "Common" ||
+          bee.rarity === "Rare" ||
+          bee.rarity === "Ultra-Rare"
+            ? bee.rarity
+            : "Common"
+        }
+      >
         <HatchlingImage
           imageAddress={bee.imageAddress}
           alt={`Hatchling ${bee.id}`}
           sx={{ width: "100%", height: "250px", objectFit: "cover" }} // Set height for square image
         />
         <StatusChip isFree={bee.status === "Free"}>{bee.status}</StatusChip>
-        <Box sx={{ padding: "16px",  marginBottom: "12px" }}>
+        <RarityChip
+          rarity={
+            bee.rarity === "Common" ||
+            bee.rarity === "Rare" ||
+            bee.rarity === "Ultra-Rare"
+              ? bee.rarity
+              : "Common"
+          }
+        ></RarityChip>
+        <Box sx={{ padding: "16px", marginBottom: "12px" }}>
           <Typography
             variant="h6"
             color="white"
@@ -205,6 +224,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
           <BeeInfo
             environmentName={environment ? environment.name : undefined}
             hiveName={hive ? hive.name : undefined}
+            rarity={bee.rarity}
             environmentLink={environmentLink}
             hiveLink={hiveLink}
             ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
@@ -252,7 +272,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
           cancelButtonText="Cancel"
           isConfirmLoading={isPending || isTransactionLoading}
         />
-      </SemiTransparentCard>
+      </BeeCardBackground>
     </StyledBeeCard>
   );
 };

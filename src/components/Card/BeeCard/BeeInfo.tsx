@@ -4,7 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HiveIcon from "@mui/icons-material/Hive";
 import PersonIcon from "@mui/icons-material/Person"; // Icon for owner
 import { useRouter } from "next/navigation";
-
+import StarsIcon from "@mui/icons-material/Stars";
 interface BeeInfoProps {
   environmentName?: string;
   hiveName?: string;
@@ -90,34 +90,7 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
           </Typography>
         </Box>
       )}
-      {rarity && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: 1.5,
-            marginLeft: 1,
-          }}
-        >
-          <Typography
-            variant="body1"
-            fontSize="16px"
-            color="lightblue"
-            sx={{
-              cursor: "pointer",
-              marginLeft: 0.25,
-              display: "flex",
-              alignItems: "center",
-              "&:hover": {
-                textDecoration: "underline",
-              },
-            }}
-          >
-            <HiveIcon sx={{ marginRight: 0.5 }} />
-            {rarity}
-          </Typography>
-        </Box>
-      )}
+
       {ownerAddress && (
         <Box
           sx={{
