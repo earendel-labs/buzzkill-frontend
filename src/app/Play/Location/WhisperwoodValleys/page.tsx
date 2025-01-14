@@ -164,7 +164,7 @@ const Forest: React.FC = () => {
         }}
       >
         <Image
-          src="/Maps/ForestMap.jpg"
+          src="/Maps/Environments/Forest.jpg"
           alt="Forest map background"
           fill
           style={{
@@ -219,7 +219,6 @@ const Forest: React.FC = () => {
           return null;
         }
 
- 
         return (
           <CombinedResourceMarker
             key={id}
