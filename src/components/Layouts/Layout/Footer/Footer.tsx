@@ -68,10 +68,10 @@ const Footer: React.FC = () => {
 
       {/* Links section */}
       <Box sx={{ display: "flex", gap: "24px" }}>
-        <Link href="/" className="linkStyle1">
+        <Link href="/PrivacyPolicy" className="linkStyle1">
           Privacy Policy
         </Link>
-        <Link href="/" className="linkStyle1">
+        <Link href="/TermsOfService" className="linkStyle1">
           Terms of Service
         </Link>
       </Box>

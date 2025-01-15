@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import { WagmiProvider } from "wagmi";
-import { getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, DisclaimerComponent } from "@rainbow-me/rainbowkit";
 import { vicMainnet, vicTestNet } from "@/app/libs/chains";
 import WalletConnection from "@/hooks/WalletConnection";
 import {
@@ -18,6 +18,15 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import type { Session } from "next-auth";
 
+const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting your wallet, you agree to the{" "}
+    <Link href="/TermsOfService">Terms of Service</Link> and acknowledge you
+    have read and understand the protocol{" "}
+    <Link href="/PrivacyPolicy">Privacy Policy</Link>
+  </Text>
+);
+
 // Load environment variables
 const walletConnectProjectId: string =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID ??
@@ -31,7 +40,7 @@ const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
 const config = getDefaultConfig({
   appName: "Buzzkill - Honeycomb Hustle",
   projectId: walletConnectProjectId,
-  chains: [vicTestNet, vicMainnet],
+  chains: [vicMainnet, vicTestNet],
   wallets: [
     {
       groupName: "Recommended",

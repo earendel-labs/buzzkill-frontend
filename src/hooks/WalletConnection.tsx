@@ -10,7 +10,10 @@ import { signIn, signOut } from "next-auth/react";
 import getTheme from "../theme/theme";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  DisclaimerComponent,
+} from "@rainbow-me/rainbowkit";
 import { createWalletTheme } from "@/theme/walletTheme";
 import { ThemeProvider, Box, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
@@ -22,6 +25,15 @@ import React from "react";
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",
 });
+
+const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting your wallet, you agree to the{" "}
+    <Link href="/TermsOfService">Terms of Service</Link> and acknowledge you
+    have read and understand the protocol{" "}
+    <Link href="/PrivacyPolicy">Privacy Policy</Link>
+  </Text>
+);
 
 function WalletConnection({ children }: { children: React.ReactNode }) {
   const theme = useMemo(() => getTheme(), []);
@@ -157,7 +169,13 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
       getSiweMessageOptions={getSiweMessageOptions}
     >
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={walletTheme} avatar={CustomAvatar}>
+        <RainbowKitProvider
+          appInfo={{
+            disclaimer: Disclaimer,
+          }}
+          theme={walletTheme}
+          avatar={CustomAvatar}
+        >
           <ThemeProvider theme={theme}>
             {children}
             {/* hCaptcha Modal */}
