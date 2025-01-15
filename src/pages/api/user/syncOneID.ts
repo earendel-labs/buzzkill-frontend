@@ -1,8 +1,12 @@
-// pages/api/user/syncOneID.ts
-
 import { NextApiRequest, NextApiResponse } from "next";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+
+const rateLimiter = new RateLimiterMemory({
+  points: 5, // Allow 5 requests
+  duration: 60, // Per 60 seconds
+});
 
 export default async function syncOneID(
   req: NextApiRequest,
@@ -10,6 +14,23 @@ export default async function syncOneID(
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+  console.log(`Checking...`);
+  // Extract client IP
+  const ip = (req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress) as string;
+  const clientIp = ip.split(",")[0].trim(); // Ensure the correct IP is used
+  console.log(`Checking rate limit for IP: ${clientIp}`);
+  // Rate Limiting
+  try {
+    console.log(`Checking rate limit for IP: ${clientIp}`);
+    await rateLimiter.consume(clientIp);
+    console.log(`Rate limit passed for IP: ${clientIp}`);
+  } catch (rateLimiterRes) {
+    console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+    return res
+      .status(429)
+      .json({ error: "Too many requests. Please try again later." });
   }
 
   // Retrieve the session token from cookies
@@ -28,17 +49,21 @@ export default async function syncOneID(
 
   const { address, account_name, oneid_name, has_oneid } = req.body;
 
+  // Validate Input
   if (!address || !oneid_name) {
     return res
       .status(400)
       .json({ error: "Address and ONEID name are required" });
   }
 
-  if (!process.env.NEXTAUTH_SECRET) {
-    throw new Error("Error: NEXTAUTH_SECRET not defined");
+  // Validate OneID Name
+  const validOneIDName = /^[a-zA-Z0-9-_]+$/.test(oneid_name);
+  if (!validOneIDName) {
+    return res.status(400).json({
+      error:
+        "Invalid ONEID name. Use alphanumeric characters, hyphens, and underscores only.",
+    });
   }
-
-  console.log("account_name inside syncOneID:", account_name);
 
   try {
     const supabase = getSupabaseClientWithAuth(sessionToken);
@@ -62,7 +87,6 @@ export default async function syncOneID(
 
     if (error) {
       console.error("Error updating ONEID info:", error);
-      // Check if the error is due to no rows found
       if (error.code === "PGRST116") {
         return res.status(404).json({ error: "User not found" });
       }

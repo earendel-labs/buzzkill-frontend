@@ -21,6 +21,7 @@ interface ProfileContextType {
   profileData: ProfileData | null;
   loadingProfile: boolean;
   savingProfile: boolean;
+  syncDelay: boolean;
   isEditable: boolean;
   setIsEditable: (editable: boolean) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -53,7 +54,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
       dedupingInterval: 60000, // 1 minute
     }
   );
-
+  const [syncDelay, setSyncDelay] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [error, setError] = useState(false);
@@ -237,15 +238,20 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     setSavingProfile(true);
 
     try {
+      const requestBody: any = {
+        account_name: data?.account_name,
+      };
+
+      if (data?.email_address) {
+        requestBody.email_address = data.email_address;
+      }
+
       const response = await fetch("/api/user/updateProfile", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          account_name: data?.account_name,
-          email_address: data?.email_address,
-        }),
+        body: JSON.stringify(requestBody),
         credentials: "include",
       });
 
@@ -255,7 +261,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
           errorData.error || "Error updating profile data.",
           "error"
         );
-        return; // Exit the function early since there's an error
+        return;
       }
 
       showSnackbar("Account details updated successfully.", "success");
@@ -277,15 +283,17 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const handleSyncOneID = async () => {
-    if (!oneid || !data?.address) {
+    if (!oneid || !data?.address || syncDelay) {
       showSnackbar("OneID is not initialized or address is missing.", "error");
       return;
     }
 
+    setSyncDelay(true); // Disable the button
+    setSavingProfile(true);
+
     try {
       const primaryName = await oneid.getPrimaryName(data.address);
       if (primaryName) {
-        const has_oneid = true;
         const response = await fetch("/api/user/syncOneID", {
           method: "POST",
           headers: {
@@ -295,7 +303,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
             address: data.address,
             account_name: data.account_name,
             oneid_name: primaryName,
-            has_oneid: has_oneid,
+            has_oneid: true,
           }),
           credentials: "include",
         });
@@ -307,17 +315,13 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         }
 
         showSnackbar("OneID synced successfully!", "success");
-
-        // Revalidate SWR cache
         mutate("/api/user/getProfile");
 
-        // Clear the isNewUser status by calling an API route
         await fetch("/api/user/clearIsNewUser", {
           method: "POST",
           credentials: "include",
         });
 
-        // Update local isNewUser state
         setIsNewUser(false);
       } else {
         showSnackbar("Primary name not found in OneID.", "error");
@@ -325,6 +329,11 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       console.error("Error syncing OneID:", error);
       showSnackbar("An unexpected error occurred.", "error");
+    } finally {
+      setSavingProfile(false);
+
+      // Delay reset to allow the button to be clicked again after 3 seconds
+      setTimeout(() => setSyncDelay(false), 3000);
     }
   };
 
@@ -334,6 +343,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
         profileData: data || null,
         loadingProfile: isValidating && !data,
         savingProfile,
+        syncDelay,
         isEditable,
         setIsEditable,
         handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => {

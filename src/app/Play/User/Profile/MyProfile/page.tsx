@@ -32,6 +32,7 @@ const ProfileTab = () => {
     profileData,
     loadingProfile,
     savingProfile,
+    syncDelay,
     isEditable,
     setIsEditable,
     handleInputChange,
@@ -199,7 +200,7 @@ const ProfileTab = () => {
                           variant="contained"
                           className="oneIDRedButton"
                           onClick={handleSyncOneID}
-                          disabled={savingProfile}
+                          disabled={savingProfile || syncDelay} // Disable during saving or delay
                           startIcon={<LinkIcon />}
                           sx={{
                             textTransform: "none",
@@ -284,7 +285,7 @@ const ProfileTab = () => {
                   >
                     Invite Code
                   </Box>
-                </Typography>
+                </Typography>{" "}
                 <Box
                   onClick={copyInviteLink}
                   sx={{
@@ -299,7 +300,7 @@ const ProfileTab = () => {
                 >
                   <TextField
                     fullWidth
-                    value={profileData.invite_code}
+                    value={`${window.location.origin}/?invite=${profileData.invite_code}`}
                     variant="filled"
                     disabled
                     InputProps={{
@@ -307,6 +308,9 @@ const ProfileTab = () => {
                     }}
                     sx={{
                       input: {
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                         color: "white",
                         fontWeight: "bold",
                         backgroundColor: theme.palette.DarkBlueFaded.dark,

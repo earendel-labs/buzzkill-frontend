@@ -47,6 +47,7 @@
     "next": "^14.2.2",
     "next-sitemap": "^4.2.3",
     "pino-pretty": "^11.2.2",
+    "rate-limiter-flexible": "^5.0.4",
     "react": "^18",
     "react-dom": "^18",
     "react-svg": "^16.1.34",

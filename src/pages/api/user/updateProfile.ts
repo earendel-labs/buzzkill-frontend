@@ -1,5 +1,3 @@
-// pages/api/user/updateProfile.ts
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -9,7 +7,6 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Retrieve the session token from cookies
   const cookies = req.headers.cookie?.split("; ") || [];
   const sessionToken = cookies
     .find(
@@ -37,37 +34,35 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { account_name, email_address } = req.body;
-    if (!account_name || !email_address) {
-      return res
-        .status(400)
-        .json({ error: "Account name and email are required" });
+
+    if (!account_name) {
+      return res.status(400).json({ error: "Account name is required." });
+    }
+
+    const updateData: Record<string, any> = { account_name };
+
+    if (email_address) {
+      updateData.email_address = email_address;
     }
 
     const supabase = getSupabaseClientWithAuth(sessionToken);
     const { data, error } = await supabase
       .from("users")
-      .update({ account_name, email_address })
+      .update(updateData)
       .eq("address", address);
 
     if (error) {
       console.error("Error updating profile:", error);
 
-      // Handle specific Supabase errors
-      if (error.code === "23505") {
-        if (error.message.includes("users_email_key")) {
-          return res
-            .status(409)
-            .json({ error: "Email address is already in use." });
-        }
-        // Add more specific error handlers here if needed
+      if (error.code === "23505" && error.message.includes("users_email_key")) {
+        return res
+          .status(409)
+          .json({ error: "Email address is already in use." });
       }
 
-      // Fallback to generic error message
-      return res
-        .status(500)
-        .json({
-          error: "An unexpected error occurred while updating the profile.",
-        });
+      return res.status(500).json({
+        error: "An unexpected error occurred while updating the profile.",
+      });
     }
 
     return res
@@ -79,4 +74,5 @@ const updateProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// Ensure this default export is present
 export default updateProfile;
