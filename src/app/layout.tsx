@@ -16,6 +16,7 @@ import { ProfileProvider } from "@/context/ProfileContext";
 import { OneIDProvider } from "@/context/OneIDContext";
 import { ApolloProvider } from "@apollo/client";
 import createApolloClient from "./libs/apolloClient";
+import { Analytics } from "@vercel/analytics/react"
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -87,7 +88,7 @@ export default function RootLayout({
                       <GlobalScrollbarStyles />
                       <EnvironmentProvider>
                         {children}
-
+                        <Analytics />
                         <SpeedInsights />
                       </EnvironmentProvider>
                     </ProfileProvider>
