@@ -26,7 +26,7 @@ const BeePanelCard: React.FC = () => {
   // Find the image of the activeBee if it exists
   const activeBeeImage =
     bees.find((bee) => bee.id === activeBee)?.imageAddress ||
-    "/NFTs/WorkerBee.png";
+    "/NFTs/Hatchlings.JPEG";
 
   if (loadingBees) {
     return (
@@ -175,17 +175,14 @@ const BeePanelCard: React.FC = () => {
                   "Select Your Bee"
                 ) : (
                   <>
-                    You have staked Bees
+                    You have staked Hatchlings
                     <br />
                     View them here
                   </>
                 )}
               </Typography>
               <Box display="flex" justifyContent="center">
-                <PrimaryButton
-                  text="Hatchlings"
-                  onClick={handleMyBeesClick}
-                />
+                <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
               </Box>
             </>
           ) : (
