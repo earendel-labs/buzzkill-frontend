@@ -1,3 +1,5 @@
+import { logger } from "@/app/utils/logger";
+
 // List of IPFS gateways for fallback
 const ipfsGateways = [
   "https://gateway.pinata.cloud/ipfs/",
@@ -20,12 +22,12 @@ export async function fetchMetadata(metadataUri: string) {
       const metadata = await response.json();
       // Use the successful gateway URL to resolve the image
       const imageUrl = ipfsGateways[i] + metadata.image.replace("ipfs://", "");
-      console.log(imageUrl);
+      logger.log(imageUrl);
       return imageUrl;
     } catch (err) {
       // Safely handle 'err' of type 'unknown'
       const errorMessage = err instanceof Error ? err.message : String(err);
-      console.warn(
+      logger.warn(
         `Error fetching from gateway ${ipfsGateways[i]}:`,
         errorMessage
       );
@@ -33,6 +35,6 @@ export async function fetchMetadata(metadataUri: string) {
   }
 
   // If all gateways fail, return a fallback image
-  console.error("All IPFS gateways failed. Returning default image.");
+  logger.error("All IPFS gateways failed. Returning default image.");
   return "/default-image.png";
 }

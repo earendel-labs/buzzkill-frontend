@@ -26,7 +26,7 @@ import { useReadContracts } from "wagmi";
 import HiveStakingAbiJson from "@/app/libs/abi/HiveStaking.json";
 import { Abi } from "abitype";
 import { pollUntilCondition } from "@/app/utils/polling";
-
+import { logger } from "@/app/utils/logger";
 interface HivesState {
   environments: Environment[];
   hivesMap: Map<number, HiveHatchling>;
@@ -136,7 +136,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
 
   const contracts = useMemo(() => {
     const hiveIds = Array.from(state.hivesMap.keys());
-    console.log("Preparing contracts for hives:", hiveIds);
+    logger.log("Preparing contracts for hives:", hiveIds);
     return hiveIds.map((hiveId) => ({
       address: HIVE_STAKING_ADDRESS,
       abi: HiveStakingABI,
@@ -156,7 +156,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     if (data) {
       const stakedNFTsData = data.stakedNFTs.edges.map((edge) => edge.node);
       dispatch({ type: "SET_STAKED_NFTS", payload: stakedNFTsData });
-      console.log("Staked NFTs data set:", stakedNFTsData);
+      logger.log("Staked NFTs data set:", stakedNFTsData);
     }
   }, [data, loading, error]);
 
@@ -190,9 +190,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
             }
           });
         });
-        console.log(`Total hives: ${hiveCount}`);
-        console.log("Hives map updated:", newHivesMap);
-        console.log("Resources updated:", newResources);
+        logger.log(`Total hives: ${hiveCount}`);
+        logger.log("Hives map updated:", newHivesMap);
+        logger.log("Resources updated:", newResources);
 
         dispatch({ type: "SET_HIVES_MAP", payload: newHivesMap });
         dispatch({ type: "SET_RESOURCES", payload: newResources });
@@ -203,12 +203,12 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
             const newMaxBeesMap = new Map<number, number>();
             newHivesMap.forEach((_, hiveId) => {
               newMaxBeesMap.set(hiveId, maxBees);
-              console.log(`Max bees set for hive ID ${hiveId}: ${maxBees}`);
+              logger.log(`Max bees set for hive ID ${hiveId}: ${maxBees}`);
             });
             dispatch({ type: "SET_MAX_BEES_MAP", payload: newMaxBeesMap });
-            console.log("MaxBeesMap updated:", newMaxBeesMap);
+            logger.log("MaxBeesMap updated:", newMaxBeesMap);
           } else {
-            console.error("Invalid maxBees value:", maxBeesData);
+            logger.error("Invalid maxBees value:", maxBeesData);
           }
         }
 
@@ -232,7 +232,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
           dispatch({ type: "SET_HIVES_MAP", payload: updatedHivesMap });
         }
       } catch (err) {
-        console.error("Error in combined data fetch:", err);
+        logger.error("Error in combined data fetch:", err);
       }
     };
 
@@ -254,7 +254,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     const filteredNFTs = state.stakedNFTs.filter(
       (nft) => Number(nft.hiveId.hiveId) === hiveId
     );
-    console.log(
+    logger.log(
       `getStakedNFTsByHiveId called for hive ID ${hiveId}:`,
       filteredNFTs
     );
@@ -271,19 +271,19 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     action?: "stake" | "unstake"
   ) => {
     dispatch({ type: "SET_IS_REFRESHING", payload: true });
-    console.log(
+    logger.log(
       `refreshHiveData called with affectedBeeId: ${affectedBeeId}, action: ${action}`
     );
 
     try {
       const isDataUpdated = async (): Promise<boolean> => {
-        console.log("Polling: refetching all hive data...");
+        logger.log("Polling: refetching all hive data...");
         const { data: newData } = await refetchAllHiveData({
           fetchPolicy: "network-only",
         });
-        console.log("Polling: received newData:", newData);
+        logger.log("Polling: received newData:", newData);
         if (!newData) {
-          console.warn("Polling: newData is undefined.");
+          logger.warn("Polling: newData is undefined.");
           return false;
         }
 
@@ -291,17 +291,17 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
           const existsInNewData = newData.stakedNFTs.edges.some(
             (edge) => Number(edge.node.tokenIdNum) === affectedBeeId
           );
-          console.log(
+          logger.log(
             `Polling: Bee ID ${affectedBeeId} exists in newData: ${existsInNewData}`
           );
 
           if (action === "stake") {
-            console.log(
+            logger.log(
               `Condition for 'stake' - existsInNewData: ${existsInNewData}`
             );
             return existsInNewData;
           } else if (action === "unstake") {
-            console.log(
+            logger.log(
               `Condition for 'unstake' - !existsInNewData: ${!existsInNewData}`
             );
             return !existsInNewData;
@@ -312,7 +312,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         const newCount = newData.stakedNFTs.edges.length;
         const countChanged = newCount !== previousCount;
 
-        console.log(
+        logger.log(
           `Polling Check - Previous Count: ${previousCount}, New Count: ${newCount}, Changed: ${countChanged}`
         );
 
@@ -320,38 +320,38 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
       };
 
       const pollingResult = await pollUntilCondition(isDataUpdated, 500, 10);
-      console.log("Polling completed: Condition met:", pollingResult);
+      logger.log("Polling completed: Condition met:", pollingResult);
 
       // Small delay to ensure indexing catches up
       await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log("Added delay after polling.");
+      logger.log("Added delay after polling.");
 
       const { data: finalData } = await refetchAllHiveData({
         fetchPolicy: "network-only",
       });
-      console.log("Final refetch of all hive data:", finalData);
+      logger.log("Final refetch of all hive data:", finalData);
       if (finalData) {
         const updatedStakedNFTs = finalData.stakedNFTs.edges.map(
           (edge) => edge.node
         );
         dispatch({ type: "SET_STAKED_NFTS", payload: updatedStakedNFTs });
-        console.log(
+        logger.log(
           "StakedNFTs updated after final refetch:",
           updatedStakedNFTs
         );
       }
 
       const { data: productionDataFinal } = await refetchProductionData();
-      console.log("Production data refetched.");
+      logger.log("Production data refetched.");
       // Assuming productionDataFinal is processed similarly
       // ...
 
-      console.log("Hive data refresh complete.");
+      logger.log("Hive data refresh complete.");
     } catch (err) {
-      console.error("Error during hive data refresh:", err);
+      logger.error("Error during hive data refresh:", err);
     } finally {
       dispatch({ type: "SET_IS_REFRESHING", payload: false });
-      console.log("isRefreshing set to false.");
+      logger.log("isRefreshing set to false.");
     }
   };
 

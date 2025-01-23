@@ -14,6 +14,7 @@ import {
   SpecificEnvironmentData,
   Hive,
 } from "@/types/Environment";
+import { logger } from "@/app/utils/logger";
 
 interface EnvironmentContextProps {
   environments: Environment[];
@@ -65,7 +66,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     ) {
       const data: EnvironmentsData = JSON.parse(cachedEnv);
       setEnvironments(data.environments);
-      console.log("Loaded environments from cache:", data.environments);
+      logger.log("Loaded environments from cache:", data.environments);
     } else {
       const fetchEnvironments = async () => {
         try {
@@ -77,9 +78,9 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
           setEnvironments(data.environments);
           localStorage.setItem("environments", JSON.stringify(data));
           localStorage.setItem("environments_timestamp", Date.now().toString());
-          console.log("Fetched and cached environments:", data.environments);
+          logger.log("Fetched and cached environments:", data.environments);
         } catch (error) {
-          console.error("Failed to fetch environments data:", error);
+          logger.error("Failed to fetch environments data:", error);
         }
       };
       fetchEnvironments();
@@ -111,7 +112,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
                   newHivesMap.set(env.id, new Map());
                 }
                 newHivesMap.get(env.id)!.set(hive.hiveId, hive);
-                console.log(
+                logger.log(
                   `Loaded Hive from cache: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
                 );
               }
@@ -133,7 +134,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
                   }
 
                   newHivesMap.get(env.id)!.set(hive.hiveId, hive);
-                  console.log(
+                  logger.log(
                     `Fetched and cached Hive: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
                   );
                 }
@@ -145,7 +146,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
                 Date.now().toString()
               );
             } catch (error) {
-              console.error(
+              logger.error(
                 `Failed to fetch data for environment ID ${env.id}:`,
                 error
               );
@@ -155,7 +156,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
       );
 
       setHivesMap(newHivesMap);
-      console.log("HivesMap populated:", newHivesMap);
+      logger.log("HivesMap populated:", newHivesMap);
     };
 
     if (environments.length > 0) {

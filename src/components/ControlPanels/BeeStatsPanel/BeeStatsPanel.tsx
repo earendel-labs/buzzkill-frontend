@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useSound } from "@/context/SoundContext";
 import MyBeesModal from "@/components/Modals/MyBees/MyBees"; // Adjust the import path accordingly
-
+import { logger } from "@/app/utils/logger";
 interface SvgBeeStatsPanelProps extends React.SVGProps<SVGSVGElement> {
   energyValue?: string;
   healthValue?: string;
@@ -90,7 +90,7 @@ const SvgBeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
       );
       hoverSound.currentTime = 0; // Reset audio to the start
       hoverSound.play().catch((error) => {
-        console.log("Hover sound play error:", error);
+        logger.log("Hover sound play error:", error);
       });
     }
   };
@@ -112,7 +112,7 @@ const SvgBeeStatsPanel: React.FC<SvgBeeStatsPanelProps> = ({
       );
       pressedSound.currentTime = 0;
       pressedSound.play().catch((error) => {
-        console.log("Pressed sound play error:", error);
+        logger.log("Pressed sound play error:", error);
       });
     }
     setIsModalOpen(true);

@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
 
       {/* Social icons in the center */}
       <Box sx={{ display: "flex", gap: "32px", justifyContent: "center" }}>
-        {/* Social icons in the center */}
+        
         <SocialIcon
           Component={DiscordIcon}
           href="https://discord.com/invite/3fuc9K4EQK"

@@ -432,7 +432,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           color: theme.palette.LightBlue.main,
                         }}
                       >
-                        Bee Production
+                        Hatchling Yield
                       </Typography>
                     </Box>
 

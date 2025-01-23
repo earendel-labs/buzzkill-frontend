@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";
@@ -710,9 +708,7 @@ const PrivacyPolicy = () => {
         </Typography>
         <ul>
           <li>
-            <Typography variant="body1">
-              through our X account{" "}
-            </Typography>
+            <Typography variant="body1">through our X account </Typography>
             <Link href="https://x.com/BuzzkillNFT" className="linkStyle1">
               https://x.com/BuzzkillNFT
             </Link>

@@ -27,9 +27,9 @@ const WorldMapButton: React.FC = () => {
     const hoverMapImg = new Image();
     const pressedMapImg = new Image();
 
-    mainMapImg.src = "/MapNavigation/MainMap.svg";
-    hoverMapImg.src = "/MapNavigation/MainMap-Hovered.svg";
-    pressedMapImg.src = "/MapNavigation/MainMapPressed.svg";
+    mainMapImg.src = "/MapNavigation/MainMap.png";
+    hoverMapImg.src = "/MapNavigation/MainMapHovered.png";
+    pressedMapImg.src = "/MapNavigation/MainMapPressed.png";
 
     mainMapImg.onload = () => setIsMainMapLoaded(true);
     hoverMapImg.onload = () => setIsHoverMapLoaded(true);
@@ -99,10 +99,10 @@ const WorldMapButton: React.FC = () => {
             width: "100%",
             height: "100%",
             backgroundImage: isPressed
-              ? `url('/MapNavigation/MainMapPressed.svg')`
+              ? `url('/MapNavigation/MainMapPressed.png')`
               : isHovered
-              ? `url('/MapNavigation/MainMap-Hovered.svg')`
-              : `url('/MapNavigation/MainMap.svg')`,
+              ? `url('/MapNavigation/MainMapHovered.png')`
+              : `url('/MapNavigation/MainMap.png')`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",

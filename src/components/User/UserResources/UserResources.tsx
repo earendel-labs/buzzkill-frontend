@@ -174,7 +174,7 @@ const UserResourceBar: React.FC = () => {
         >
           <Box sx={{ width: 32, height: 32 }}>
             <Image
-              src="/Icons/Resources/HoneyToken.svg"
+              src="/Icons/Resources/HoneyToken.png"
               alt="HoneyToken"
               width={32}
               height={32} // Explicitly set both width and height

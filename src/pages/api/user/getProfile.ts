@@ -3,7 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
+import { logger } from "@/app/utils/logger";
 const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = req.headers.cookie?.split("; ") || [];
   const sessionToken = cookies
@@ -25,14 +25,14 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const decodedToken = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET);
     const jwtPayload = decodedToken as JwtPayload;
-    console.log("Manually decoded token:", jwtPayload);
+    logger.log("Manually decoded token:", jwtPayload);
 
     const supabase = getSupabaseClientWithAuth(sessionToken);
     const address = jwtPayload.sub;
     if (!address) {
       throw new Error("error no JWT payload");
     }
-    console.log("address from payload", address);
+    logger.log("address from payload", address);
     const { data: userData, error } = await supabase
       .from("users")
       .select(
@@ -42,7 +42,7 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       .maybeSingle();
 
     if (error) {
-      console.error("Error fetching profile:", error);
+      logger.error("Error fetching profile:", error);
     }
 
     if (!userData) {
@@ -59,10 +59,10 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       oneid_name: userData.oneid_name || null,
       has_oneid: userData.has_oneid,
     };
-    console.log("profileData returned: ", profileData);
+    logger.log("profileData returned: ", profileData);
     return res.status(200).json(profileData);
   } catch (err) {
-    console.error("Error decoding token or fetching profile:", err);
+    logger.error("Error decoding token or fetching profile:", err);
     return res.status(401).json({ error: "Invalid token or unauthorized" });
   }
 };

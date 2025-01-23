@@ -1,6 +1,6 @@
 <svg width="222" height="227" viewBox="0 0 222 227" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_dd_821593_473)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.976 164.953L111.147 216.604L211.317 164.953L211.317 61.651L111.147 10L10.976 61.651L10.976 164.953ZM27.2052 156.523L111.19 199.741L195.175 156.523L195.175 70.0864L111.19 26.8682L27.2052 70.0864L27.2052 156.523Z" fill="url(#paint0_linear_821593_473)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.976 164.953L111.147 216.604L211.317 164.953L211.317 61.6509L111.147 9.99987L10.976 61.6509L10.976 164.953ZM27.2052 156.523L111.19 199.741L195.175 156.523L195.175 70.0863L111.19 26.8681L27.2052 70.0863L27.2052 156.523Z" fill="url(#paint0_linear_821593_473)"/>
 </g>
 <path d="M175.583 145.793L111.137 179.894L47.0544 147.095L47.4175 80.1963L111.863 46.096L175.946 78.8945L175.583 145.793Z" fill="url(#paint1_diamond_821593_473)" fill-opacity="0.72" stroke="url(#paint2_linear_821593_473)" stroke-width="3" stroke-miterlimit="10"/>
 <defs>
@@ -22,6 +22,7 @@
 </filter>
 <linearGradient id="paint0_linear_821593_473" x1="10.9904" y1="113.302" x2="211.317" y2="113.302" gradientUnits="userSpaceOnUse">
 <stop offset="0.065" stop-color="#68341B"/>
+<stop offset="0.29" stop-color="#915E28"/>
 <stop offset="0.77" stop-color="#E9B743"/>
 <stop offset="0.98" stop-color="#E9B743"/>
 </linearGradient>
@@ -32,6 +33,7 @@
 </radialGradient>
 <linearGradient id="paint2_linear_821593_473" x1="47.4267" y1="80.2011" x2="168.018" y2="157.582" gradientUnits="userSpaceOnUse">
 <stop offset="0.065" stop-color="#68341B"/>
+<stop offset="0.29" stop-color="#915E28"/>
 <stop offset="0.77" stop-color="#E9B743"/>
 <stop offset="0.98" stop-color="#E9B743"/>
 </linearGradient>

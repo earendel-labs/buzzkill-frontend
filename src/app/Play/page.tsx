@@ -12,6 +12,7 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import { Typography } from "@mui/material";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
+import { logger } from "../utils/logger";
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
@@ -44,7 +45,7 @@ const Play: React.FC = () => {
         music.pause();
       } else {
         music.play().catch((error) => {
-          console.log("Music play error:", error);
+          logger.log("Music play error:", error);
         });
       }
     }
@@ -54,7 +55,7 @@ const Play: React.FC = () => {
   const handleUserInteraction = () => {
     if (music && !isMusicMuted && !isMuted) {
       music.play().catch((error) => {
-        console.log("Music play error:", error);
+        logger.log("Music play error:", error);
       });
     }
   };

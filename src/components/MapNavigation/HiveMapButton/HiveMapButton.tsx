@@ -31,9 +31,9 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
     const hoverMapImg = new Image();
     const pressedMapImg = new Image();
 
-    mainMapImg.src = "/MapNavigation/Forest/ForestMapMarker.svg";
-    hoverMapImg.src = "/MapNavigation/Forest/ForestMapMarkerHovered.svg";
-    pressedMapImg.src = "/MapNavigation/Forest/ForestMapMarkerPressed.svg";
+    mainMapImg.src = "/MapNavigation/Forest/ForestMapMarker.png";
+    hoverMapImg.src = "/MapNavigation/Forest/ForestMapMarkerHovered.png";
+    pressedMapImg.src = "/MapNavigation/Forest/ForestMapMarkerPressed.png";
 
     mainMapImg.onload = () => setIsMainMapLoaded(true);
     hoverMapImg.onload = () => setIsHoverMapLoaded(true);
@@ -103,10 +103,10 @@ const HiveMapButton: React.FC<HiveMapButtonProps> = () => {
             width: "100%",
             height: "100%",
             backgroundImage: isPressed
-              ? `url('/MapNavigation/Forest/ForestMapMarkerPressed.svg')`
+              ? `url('/MapNavigation/Forest/ForestMapMarkerPressed.png')`
               : isHovered
-              ? `url('/MapNavigation/Forest/ForestMapMarkerHovered.svg')`
-              : `url('/MapNavigation/Forest/ForestMapMarker.svg')`,
+              ? `url('/MapNavigation/Forest/ForestMapMarkerHovered.png')`
+              : `url('/MapNavigation/Forest/ForestMapMarker.png')`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",

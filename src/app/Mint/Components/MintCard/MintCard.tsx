@@ -282,13 +282,7 @@ export default function NFTCard({
                     }}
                   >
                     <PrimaryButton
-                      text="Awaken"
-                      onClick={() => router.push("/Play")}
-                      scale={1.1}
-                    />
-
-                    <PrimaryButton
-                      text="My Bees"
+                      text="My Hatchlings"
                       onClick={() => router.push("/Play/User/Profile/MyBees")}
                       scale={1.1}
                     />
@@ -301,7 +295,7 @@ export default function NFTCard({
                     >
                       View your transaction{" "}
                       <a
-                        href={`https://testnet.vicscan.xyz/tx/${localTransactionHash}`}
+                        href={`https://vicscan.xyz/tx/${localTransactionHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

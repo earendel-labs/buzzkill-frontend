@@ -3,6 +3,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
+import { logger } from "@/app/utils/logger";
 
 const VolumeControlButton: React.FC = () => {
   const { isMuted, toggleMute } = useSound();
@@ -18,7 +19,7 @@ const VolumeControlButton: React.FC = () => {
       // Play sound only if we are unmuting
       clickSound.currentTime = 0;
       clickSound.play().catch((error) => {
-        console.log("Click sound play error:", error);
+        logger.log("Click sound play error:", error);
       });
     }
   };

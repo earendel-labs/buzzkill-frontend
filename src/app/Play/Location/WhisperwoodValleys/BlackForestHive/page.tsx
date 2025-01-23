@@ -409,7 +409,7 @@ const BlackForestHive: React.FC = () => {
           <Image
             src={
               environments.find((env) => env.id === environmentIdNumber)
-                ?.backgroundImage || "/Maps/ForestMap.jpg"
+                ?.backgroundImage || "/Maps/Environment/Forest.jpg"
             }
             alt="Forest map background"
             fill

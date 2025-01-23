@@ -18,6 +18,7 @@
     "@headlessui/tailwindcss": "^0.2.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@next/bundle-analyzer": "^15.1.5",
     "@oneid-xyz/inspect": "^1.1.1",
     "@rainbow-me/rainbowkit": "^2.1.6",
     "@rainbow-me/rainbowkit-siwe-next-auth": "^0.4.1",

@@ -28,6 +28,7 @@ import { fetchMetadata } from "@/app/utils/fetchMetaData";
 import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_USER_STAKED_TOKENS } from "@/subquery/getUserStakedTokens";
 import { GET_USER_UNSTAKED_TOKENS } from "@/subquery/getUserUnstakedTokens";
+import { logger } from "@/app/utils/logger";
 
 // ----------- GraphQL Interfaces -----------
 interface StakedNFTNode {
@@ -226,10 +227,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // ----------------------
   useEffect(() => {
     if (errorStaked) {
-      console.error("Error fetching staked tokens:", errorStaked);
+      logger.error("Error fetching staked tokens:", errorStaked);
     }
     if (errorTokens) {
-      console.error("Error fetching tokens:", errorTokens);
+      logger.error("Error fetching tokens:", errorTokens);
     }
 
     // Optionally fetch metadata once:
@@ -270,7 +271,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       );
       setStakedBees(fetchedStakedBees);
     } catch (error) {
-      console.error("Error fetching staked bees metadata:", error);
+      logger.error("Error fetching staked bees metadata:", error);
       setFetchError(true);
     }
   }, [stakedData, address]);
@@ -300,7 +301,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       );
       setBees(fetchedUnstakedBees);
     } catch (error) {
-      console.error("Error fetching unstaked bees metadata:", error);
+      logger.error("Error fetching unstaked bees metadata:", error);
       setFetchError(true);
     }
   }, [tokensData, address]);
@@ -334,7 +335,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // setActiveBee
   // ----------------------
   const setActiveBee = (beeId: number | null) => {
-    console.log(`Setting activeBee to: ${beeId}`);
+    logger.log(`Setting activeBee to: ${beeId}`);
     setActiveBeeState(beeId);
   };
 
@@ -343,15 +344,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // ----------------------
   const checkAndPromptApproval = async () => {
     if (!address || !hiveStakingAddress || isApproved === undefined) {
-      console.log("Address, hive staking, or approval status is not available.");
+      logger.log("Address, hive staking, or approval status is not available.");
       return false;
     }
 
     setIsCheckingApproval(true);
-    console.log("Checking if approval is already set...");
+    logger.log("Checking if approval is already set...");
 
     if (!isApproved) {
-      console.log("Prompting user to approve staking contract...");
+      logger.log("Prompting user to approve staking contract...");
       try {
         await approveTokens({
           args: [hiveStakingAddress, true],
@@ -360,7 +361,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         setIsCheckingApproval(false);
         return true;
       } catch (error) {
-        console.error("Failed to set approval:", error);
+        logger.error("Failed to set approval:", error);
         setApprovalForStaking(false);
         setIsCheckingApproval(false);
         return false;
@@ -383,7 +384,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       mintedQuantity?: number
     ) => {
       if (!isConnected || !lowercaseAddress) {
-        console.log("User not connected or address missing. Skipping refresh.");
+        logger.log("User not connected or address missing. Skipping refresh.");
         return;
       }
 
@@ -404,7 +405,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           const stakedDataResult = stakedRes.data;
           const unstakedDataResult = unstakedRes.data;
           if (!stakedDataResult || !unstakedDataResult) {
-            console.warn("Polling: No data returned.");
+            logger.warn("Polling: No data returned.");
             return false;
           }
 
@@ -447,7 +448,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           1000,
           10
         );
-        console.log("Polling completed. Condition met:", pollingResult);
+        logger.log("Polling completed. Condition met:", pollingResult);
 
         // 3) Optional short delay
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -519,7 +520,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           unstakedDataRef.current = finalUnstakedRes.data;
         }
       } catch (error) {
-        console.error("Error refreshing bees data:", error);
+        logger.error("Error refreshing bees data:", error);
         setFetchError(true);
       } finally {
         // We’re done refreshing, so the UI can show final, correct data
@@ -546,12 +547,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     environmentID: string,
     hiveID: string
   ) => {
-    console.log(`Attempting to stake Bee ID ${beeId}`);
+    logger.log(`Attempting to stake Bee ID ${beeId}`);
     // after on-chain TX, call refreshBeesData(beeId, "stake")
   };
 
   const unstakeBee = async (beeId: number) => {
-    console.log(`Attempting to unstake Bee ID ${beeId}`);
+    logger.log(`Attempting to unstake Bee ID ${beeId}`);
     // after on-chain TX, call refreshBeesData(beeId, "unstake")
   };
 
@@ -559,11 +560,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // Debug Logging
   // ----------------------
   useEffect(() => {
-    console.log("Current Unstaked Bees:", bees);
+    logger.log("Current Unstaked Bees:", bees);
   }, [bees]);
 
   useEffect(() => {
-    console.log("Current Staked Bees:", stakedBees);
+    logger.log("Current Staked Bees:", stakedBees);
   }, [stakedBees]);
 
   // ----------------------

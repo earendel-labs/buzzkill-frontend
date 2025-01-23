@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 import { signIn, signOut } from "next-auth/react";
 import getTheme from "../theme/theme";
 import "@rainbow-me/rainbowkit/styles.css";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"; // TODO: Don't think we use this anymore
 import {
   RainbowKitProvider,
   DisclaimerComponent,
@@ -19,8 +19,9 @@ import { ThemeProvider, Box, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation";
 import HCaptchaComponent from "@/components/Verification/HCaptchaComponent";
-import { OneIDProvider, useOneID } from "@/context/OneIDContext";
+import {  useOneID } from "@/context/OneIDContext";
 import React from "react";
+import { logger } from "@/app/utils/logger";
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",
@@ -51,17 +52,17 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
   const oneid = useOneID();
 
   useEffect(() => {
-    console.log("WalletConnection mounted or dependencies changed");
+    logger.log("WalletConnection mounted or dependencies changed");
 
     const checkAccountInSupabase = async () => {
       try {
         if (!address) {
-          console.error("Address is undefined. Cannot query Supabase.");
+          logger.error("Address is undefined. Cannot query Supabase.");
           setIsSiweEnabled(true);
           return;
         }
 
-        console.log("Checking Supabase for wallet address:", address);
+        logger.log("Checking Supabase for wallet address:", address);
         setLoading(true);
 
         const checkUserResponse = await fetch("/api/user/checkUser", {
@@ -72,7 +73,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
         const { exists, user } = await checkUserResponse.json();
         if (exists) {
-          console.log("User exists in Supabase. SIWE disabled.", user);
+          logger.log("User exists in Supabase. SIWE disabled.", user);
           setIsSiweEnabled(false);
 
           const result = await signIn("credentials", {
@@ -81,30 +82,30 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           });
 
           if (result?.error) {
-            console.error(
+            logger.error(
               "Failed to sign in via NextAuth credentials:",
               result.error
             );
           } else {
-            console.log(
+            logger.log(
               "Successfully signed in via NextAuth credentials",
               result
             );
             if (result?.ok && result.url) {
               router.push(result.url);
             } else {
-              console.error(
+              logger.error(
                 "Sign-in failed or no URL returned for redirection."
               );
             }
           }
         } else {
-          console.log("User does not exist in Supabase. SIWE enabled.");
+          logger.log("User does not exist in Supabase. SIWE enabled.");
           setIsSiweEnabled(true);
           hCaptchaRef.current?.handleExecute();
         }
       } catch (err) {
-        console.error("Error during Supabase check:", err);
+        logger.error("Error during Supabase check:", err);
         setIsSiweEnabled(true);
       } finally {
         setLoading(false);
@@ -113,7 +114,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
     const handleWalletChange = async () => {
       if (isConnected && address && previousAddress !== address) {
-        console.log("Wallet changed from:", previousAddress, "to:", address);
+        logger.log("Wallet changed from:", previousAddress, "to:", address);
         setPreviousAddress(address);
         setLoading(false);
         setCaptchaToken(null);
@@ -121,7 +122,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
         setIsSiweEnabled(true);
         await checkAccountInSupabase();
       } else if (!isConnected && previousAddress) {
-        console.log("Wallet disconnected");
+        logger.log("Wallet disconnected");
         setPreviousAddress(null);
       }
     };
@@ -134,7 +135,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
     if (token && address) {
       try {
-        console.log("Verifying captcha and triggering SIWE...");
+        logger.log("Verifying captcha and triggering SIWE...");
         const verifyResponse = await fetch("/api/auth/verify-captcha", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -149,12 +150,12 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
 
         const signInResult = await signIn("credentials", { address });
         if (signInResult?.error) {
-          console.error("SIWE sign-in failed:", signInResult.error);
+          logger.error("SIWE sign-in failed:", signInResult.error);
         } else {
-          console.log("SIWE sign-in successful, redirecting...");
+          logger.log("SIWE sign-in successful, redirecting...");
         }
       } catch (err) {
-        console.error(
+        logger.error(
           "Error during captcha verification or SIWE sign-in:",
           err
         );

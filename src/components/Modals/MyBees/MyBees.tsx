@@ -16,7 +16,7 @@ const MyBeesModal: React.FC<MyBeesModalProps> = ({
   size = "extraLarge",
 }) => {
   return (
-    <ModalFrame open={open} onClose={onClose} size={size} title="My Bees">
+    <ModalFrame open={open} onClose={onClose} size={size} title="My Hatchlings">
       <Typography id="modal-description" sx={{ mt: 2 }}>
         This is the content of the Your Bees modal.
       </Typography>

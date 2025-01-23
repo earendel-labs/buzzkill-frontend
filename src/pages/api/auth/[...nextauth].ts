@@ -8,6 +8,7 @@ import { SiweMessage } from "siwe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
 import { parse, serialize } from "cookie";
+import { logger } from "@/app/utils/logger";
 
 export function getAuthOptions(
   req: IncomingMessage,
@@ -17,12 +18,12 @@ export function getAuthOptions(
     CredentialsProvider({
       async authorize(credentials) {
         if (!credentials) {
-          console.log("Credentials are missing");
+          logger.log("Credentials are missing");
           return null;
         }
 
         let address;
-        console.log("credentials are :", credentials);
+        logger.log("credentials are :", credentials);
         // Verify the SIWE message
         const nextAuthUrl =
           process.env.NEXTAUTH_URL ||
@@ -31,8 +32,8 @@ export function getAuthOptions(
         if (credentials.address) {
           // Case 1: User exists and provides an address
           address = credentials.address;
-          console.log("credentials.message are here", credentials.message);
-          console.log("credentials.signature are here", credentials.signature);
+          logger.log("credentials.message are here", credentials.message);
+          logger.log("credentials.signature are here", credentials.signature);
         } else if (credentials.message && credentials.signature) {
           // Case 2: SIWE flow is initiated
           try {
@@ -41,13 +42,13 @@ export function getAuthOptions(
             address = siwe.address;
 
             if (!nextAuthUrl) {
-              console.log("Missing nextAuthUrl");
+              logger.log("Missing nextAuthUrl");
               return null;
             }
 
             const nextAuthHost = new URL(nextAuthUrl).host;
             if (siwe.domain !== nextAuthHost) {
-              console.log("Domain mismatch");
+              logger.log("Domain mismatch");
               return null;
             }
 
@@ -55,22 +56,22 @@ export function getAuthOptions(
             const csrfToken = await getCsrfToken({
               req: { headers: req.headers },
             });
-            console.log("CSRF token:", csrfToken);
+            logger.log("CSRF token:", csrfToken);
 
             if (siwe.nonce !== csrfToken) {
-              console.log("Nonce mismatch");
+              logger.log("Nonce mismatch");
               return null;
             }
 
             // Verify the signature
             await siwe.verify({ signature: credentials.signature });
-            console.log("Signature verified successfully");
+            logger.log("Signature verified successfully");
           } catch (e) {
-            console.error("Error in authorize:", e);
+            logger.error("Error in authorize:", e);
             return null;
           }
         } else {
-          console.log(
+          logger.log(
             "Credentials do not include address or SIWE message/signature"
           );
           return null;
@@ -101,7 +102,7 @@ export function getAuthOptions(
             // Retrieve inviteCode from cookies
             inviteCode = cookieObj["inviteCode"];
 
-            console.log("invitecode inside auth", inviteCode);
+            logger.log("invitecode inside auth", inviteCode);
             // Verify the invite code using the server-side API
             if (inviteCode) {
               const validationResponse = await fetch(
@@ -109,7 +110,7 @@ export function getAuthOptions(
               );
               const { valid } = await validationResponse.json();
               if (!valid) {
-                console.log(
+                logger.log(
                   "Invalid invite code provided, proceeding without it"
                 );
                 inviteCode = null; // Set inviteCode to null if invalid
@@ -152,7 +153,7 @@ export function getAuthOptions(
             return { id: address, address, isNewUser: true };
           }
         } catch (error) {
-          console.error("Authorization error:", error);
+          logger.error("Authorization error:", error);
           return null;
         }
       },
@@ -183,7 +184,7 @@ export function getAuthOptions(
           token.role = "authenticated"; // Ensure role is included
           token.exp = currentTime + 60 * 60; // 1-hour expiration
         }
-        console.log("JWT token:", token);
+        logger.log("JWT token:", token);
         // Ensure that `exp` is defined before performing arithmetic
         if (
           typeof token.exp === "number" &&
@@ -207,11 +208,11 @@ export function getAuthOptions(
         if (typeof token.exp === "number") {
           session.expires = new Date(token.exp * 1000).toISOString(); // Convert expiration to ISO string
         }
-        console.log("session token:", token);
+        logger.log("session token:", token);
         return session;
       },
       async redirect({ url, baseUrl }) {
-        console.log("Redirect callback triggered", { url, baseUrl });
+        logger.log("Redirect callback triggered", { url, baseUrl });
 
         const urlObj = new URL(url);
         const isAuthError = urlObj.searchParams.has("error");
@@ -232,13 +233,13 @@ export function getAuthOptions(
 
         if (isNewUser) {
           // Redirect new users to the profile setup page
-          console.log("New user detected, redirecting to profile setup...");
+          logger.log("New user detected, redirecting to profile setup...");
           return `${baseUrl}/Play/User/Profile/MyProfile`;
         }
 
         if (isAuthError) {
           urlObj.searchParams.delete("error");
-          console.log("Redirecting due to error", urlObj.toString());
+          logger.log("Redirecting due to error", urlObj.toString());
           return urlObj.toString();
         }
 
@@ -246,16 +247,16 @@ export function getAuthOptions(
 
         if (url === baseUrl || (url === `${baseUrl}/` && !isNewUser)) {
           const playUrl = `${baseUrl}/Play`;
-          console.log("Redirecting to Play:", playUrl);
+          logger.log("Redirecting to Play:", playUrl);
           return playUrl;
         }
 
         if (url === "/api/auth/signout") {
-          console.log("Redirecting to home after logout");
+          logger.log("Redirecting to home after logout");
           return baseUrl;
         }
 
-        console.log("Allowing normal redirect", url);
+        logger.log("Allowing normal redirect", url);
         return url;
       },
     },

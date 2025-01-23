@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-
+import { logger } from "../utils/logger";
 // Supabase environment variables
 const supabaseUrl = process.env.SUPABASE_API_DOMAIN!;
 const supabaseAnonKey = process.env.SUPABASE_API_KEY!;
@@ -19,10 +19,10 @@ const customFetch = async (
   const requestUrl = input instanceof URL ? input.toString() : input;
 
   // Log request details
-  console.log("Supabase Request URL:", requestUrl);
-  console.log("Supabase Request Headers:", init?.headers);
-  console.log("Supabase Request Method:", init?.method);
-  console.log("Supabase Request Body:", init?.body);
+  logger.log("Supabase Request URL:", requestUrl);
+  logger.log("Supabase Request Headers:", init?.headers);
+  logger.log("Supabase Request Method:", init?.method);
+  logger.log("Supabase Request Body:", init?.body);
 
   // Perform the actual fetch request
   const response = await fetch(requestUrl, init);
@@ -32,8 +32,8 @@ const customFetch = async (
     .clone()
     .json()
     .catch(() => "Non-JSON response"); // Clone and handle non-JSON response
-  console.log("Supabase Response Status:", response.status);
-  console.log("Supabase Response Body:", responseBody);
+  logger.log("Supabase Response Status:", response.status);
+  logger.log("Supabase Response Body:", responseBody);
 
   return response;
 };

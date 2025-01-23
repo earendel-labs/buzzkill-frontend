@@ -4,7 +4,7 @@ import MusicOffIcon from "@mui/icons-material/MusicOff";
 import CloseIcon from "@mui/icons-material/Close";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
-
+import { logger } from "@/app/utils/logger";
 interface ModalCloseButtonButtonProps {
   isClose?: boolean;
   onClick?: () => void;
@@ -29,7 +29,7 @@ const ModalCloseButton: React.FC<ModalCloseButtonButtonProps> = ({
       if (!isMuted && !isMusicMuted && clickSound) {
         clickSound.currentTime = 0;
         clickSound.play().catch((error) => {
-          console.log("Click sound play error:", error);
+          logger.log("Click sound play error:", error);
         });
       }
     }

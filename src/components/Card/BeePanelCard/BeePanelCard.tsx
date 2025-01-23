@@ -150,7 +150,10 @@ const BeePanelCard: React.FC = () => {
                     mb: 6,
                   }}
                 >
-                  <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
+                  <PrimaryButton
+                    text="Hatchlings"
+                    onClick={handleMyBeesClick}
+                  />
                 </Box>
               </Box>
             </>
@@ -179,7 +182,10 @@ const BeePanelCard: React.FC = () => {
                 )}
               </Typography>
               <Box display="flex" justifyContent="center">
-                <PrimaryButton text="My Bees" onClick={handleMyBeesClick} />
+                <PrimaryButton
+                  text="Hatchlings"
+                  onClick={handleMyBeesClick}
+                />
               </Box>
             </>
           ) : (

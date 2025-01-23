@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-
+import { logger } from "@/app/utils/logger";
 interface SoundContextType {
   isMuted: boolean;
   toggleMute: () => void;
@@ -35,8 +35,8 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const savedIsMuted = localStorage.getItem("isMuted");
     const savedIsMusicMuted = localStorage.getItem("isMusicMuted");
-    console.log("Loaded isMuted from localStorage:", savedIsMuted);
-    console.log("Loaded isMusicMuted from localStorage:", savedIsMusicMuted);
+    logger.log("Loaded isMuted from localStorage:", savedIsMuted);
+    logger.log("Loaded isMusicMuted from localStorage:", savedIsMusicMuted);
     if (savedIsMuted !== null) setIsMuted(JSON.parse(savedIsMuted));
     if (savedIsMusicMuted !== null)
       setIsMusicMuted(JSON.parse(savedIsMusicMuted));
@@ -45,14 +45,14 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     if (isInitialized) {
-      console.log("Saving isMuted to localStorage:", isMuted);
+      logger.log("Saving isMuted to localStorage:", isMuted);
       localStorage.setItem("isMuted", JSON.stringify(isMuted));
     }
   }, [isMuted, isInitialized]);
 
   useEffect(() => {
     if (isInitialized) {
-      console.log("Saving isMusicMuted to localStorage:", isMusicMuted);
+      logger.log("Saving isMusicMuted to localStorage:", isMusicMuted);
       localStorage.setItem("isMusicMuted", JSON.stringify(isMusicMuted));
     }
   }, [isMusicMuted, isInitialized]);

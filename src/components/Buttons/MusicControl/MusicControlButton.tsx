@@ -3,6 +3,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicOffIcon from "@mui/icons-material/MusicOff";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
+import { logger } from "@/app/utils/logger";
 
 const MusicControlButton: React.FC = () => {
   const { isMuted, isMusicMuted, toggleMusicMute } = useSound();
@@ -18,7 +19,7 @@ const MusicControlButton: React.FC = () => {
       // Play sound only if we are unmuting music
       clickSound.currentTime = 0;
       clickSound.play().catch((error) => {
-        console.log("Click sound play error:", error);
+        logger.log("Click sound play error:", error);
       });
     }
   };

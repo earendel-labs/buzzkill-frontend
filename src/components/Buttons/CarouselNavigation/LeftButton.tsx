@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import { useSound } from "@/context/SoundContext";
-
+import { logger } from "@/app/utils/logger";
 // Dynamic import to disable SSR for this component
 const LeftButton = dynamic(() => import("./LeftButton"), { ssr: false });
 
@@ -46,7 +46,7 @@ const LeftButtonComponent: React.FC = () => {
       // Wait for all resources to be preloaded
       Promise.all([...preloadImages, ...preloadSounds])
         .then(() => setIsLoading(false))
-        .catch((err) => console.error("Failed to preload resources", err));
+        .catch((err) => logger.error("Failed to preload resources", err));
     };
 
     preloadResources();
@@ -60,7 +60,7 @@ const LeftButtonComponent: React.FC = () => {
       );
       hoverSound.currentTime = 0;
       hoverSound.play().catch((error) => {
-        console.log("Hover sound play error:", error);
+        logger.log("Hover sound play error:", error);
       });
     }
   };
@@ -81,7 +81,7 @@ const LeftButtonComponent: React.FC = () => {
       );
       pressedSound.currentTime = 0;
       pressedSound.play().catch((error) => {
-        console.log("Pressed sound play error:", error);
+        logger.log("Pressed sound play error:", error);
       });
     }
   };

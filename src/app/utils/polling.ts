@@ -8,6 +8,8 @@
  * @param maxAttempts - The maximum number of polling attempts. Default is 10.
  * @returns A promise that resolves when the condition is met or rejects if the maximum attempts are exceeded.
  */
+import { logger } from "@/app/utils/logger";
+
 export const pollUntilCondition = async (
   conditionFn: () => Promise<boolean>,
   interval: number = 500,
@@ -17,14 +19,14 @@ export const pollUntilCondition = async (
     try {
       const conditionMet = await conditionFn();
       if (conditionMet) {
-        console.log(`Condition met on attempt ${attempt}.`);
+        logger.log(`Condition met on attempt ${attempt}.`);
         return;
       }
-      console.log(
+      logger.log(
         `Polling attempt ${attempt} failed. Retrying in ${interval}ms...`
       );
     } catch (error) {
-      console.error(`Error during polling attempt ${attempt}:`, error);
+      logger.error(`Error during polling attempt ${attempt}:`, error);
     }
     await new Promise((resolve) => setTimeout(resolve, interval));
   }

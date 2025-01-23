@@ -1,5 +1,4 @@
 // src/app/HoneyDrops/page.tsx
-"use client";
 
 import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -10,24 +9,20 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import type { GetServerSideProps, NextPage } from "next";
-import { getServerSession } from "next-auth";
-import { getAuthOptions } from "@/pages/api/auth/[...nextauth]";
-import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-import Typography from "@mui/material/Typography"; // Import Typography
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  return {
-    props: {
-      session: await getServerSession(
-        req,
-        res,
-        getAuthOptions(req, res as any)
-      ),
-    },
-  };
-};
+import { LoginButton } from "@/components/Buttons/LoginButton/Login";
+
+// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+//   return {
+//     props: {
+//       session: await getServerSession(
+//         req,
+//         res,
+//         getAuthOptions(req, res as any)
+//       ),
+//     },
+//   };
+// };
 
 interface HeaderProps {
   isGameLayout?: boolean;
@@ -142,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 underline="none"
                 className="linkStyle2"
               >
-                My Bees
+                My Hatchlings
               </Link>
               <Link
                 href="/Play/User/Profile/MyRewards"
@@ -154,7 +149,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               </Link>
             </Box>
 
-            {/* Connect Button */}
+            {/* Connect Button this takes up 11MB Need to reduce */}
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <LoginButton />
             </Box>

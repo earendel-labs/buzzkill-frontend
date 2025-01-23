@@ -71,7 +71,7 @@ const UserResourceBar: React.FC = () => {
               }}
             >
               <Image
-                src="/Icons/Resources/HoneyToken.svg"
+                src="/Icons/Resources/HoneyToken.png"
                 alt="HoneyToken"
                 width={32}
                 height={32}

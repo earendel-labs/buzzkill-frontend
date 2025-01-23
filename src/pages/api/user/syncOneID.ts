@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt from "jsonwebtoken";
-
+import { logger } from "@/app/utils/logger";
 const rateLimiter = new RateLimiterMemory({
   points: 5, // Allow 5 requests
   duration: 60, // Per 60 seconds
@@ -15,19 +15,19 @@ export default async function syncOneID(
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-  console.log(`Checking...`);
+  logger.log(`Checking...`);
   // Extract client IP
   const ip = (req.headers["x-forwarded-for"] ||
     req.socket.remoteAddress) as string;
   const clientIp = ip.split(",")[0].trim(); // Ensure the correct IP is used
-  console.log(`Checking rate limit for IP: ${clientIp}`);
+  logger.log(`Checking rate limit for IP: ${clientIp}`);
   // Rate Limiting
   try {
-    console.log(`Checking rate limit for IP: ${clientIp}`);
+    logger.log(`Checking rate limit for IP: ${clientIp}`);
     await rateLimiter.consume(clientIp);
-    console.log(`Rate limit passed for IP: ${clientIp}`);
+    logger.log(`Rate limit passed for IP: ${clientIp}`);
   } catch (rateLimiterRes) {
-    console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+    logger.warn(`Rate limit exceeded for IP: ${clientIp}`);
     return res
       .status(429)
       .json({ error: "Too many requests. Please try again later." });
@@ -86,7 +86,7 @@ export default async function syncOneID(
       .single(); // Use .single() to get a single record
 
     if (error) {
-      console.error("Error updating ONEID info:", error);
+      logger.error("Error updating ONEID info:", error);
       if (error.code === "PGRST116") {
         return res.status(404).json({ error: "User not found" });
       }
@@ -97,7 +97,7 @@ export default async function syncOneID(
 
     return res.status(200).json({ user: data });
   } catch (error) {
-    console.error("Error in syncOneID API:", error);
+    logger.error("Error in syncOneID API:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }

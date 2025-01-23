@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
-
+import { logger } from "@/app/utils/logger";
 const RightButton: React.FC = () => {
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
@@ -27,7 +27,7 @@ const RightButton: React.FC = () => {
 
     Promise.all(preloadImages)
       .then(() => setIsLoading(false))
-      .catch((err) => console.log("Error loading images:", err));
+      .catch((err) => logger.log("Error loading images:", err));
   }, []);
 
   const handleMouseEnter = () => {
@@ -38,7 +38,7 @@ const RightButton: React.FC = () => {
       );
       hoverSound.currentTime = 0; // Reset audio to the start
       hoverSound.play().catch((error) => {
-        console.log("Hover sound play error:", error);
+        logger.log("Hover sound play error:", error);
       });
     }
   };
@@ -59,7 +59,7 @@ const RightButton: React.FC = () => {
       );
       pressedSound.currentTime = 0;
       pressedSound.play().catch((error) => {
-        console.log("Pressed sound play error:", error);
+        logger.log("Pressed sound play error:", error);
       });
     }
   };

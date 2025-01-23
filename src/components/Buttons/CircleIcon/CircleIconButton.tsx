@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { SxProps, Theme } from "@mui/system";
 import { Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
-
+import { logger } from "@/app/utils/logger";
 interface CircleIconButtonProps {
   icon: React.ReactNode;
   onClick: () => void;
@@ -61,7 +61,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
         setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
         setIsLoading(false); // Set loading to false when assets are loaded
       })
-      .catch((err) => console.log("Error loading images or sounds:", err));
+      .catch((err) => logger.log("Error loading images or sounds:", err));
   }, []);
 
   const handleMouseEnter = () => {

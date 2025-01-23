@@ -47,7 +47,7 @@ const MintPageContent: React.FC = () => {
       >
         <Box
           component="img"
-          src="/Mint/Background.png"
+          src="/Mint/Background.jpg"
           sx={{
             position: "absolute",
             top: 0,
@@ -133,7 +133,7 @@ const MintPageContent: React.FC = () => {
             <>
               Successfully Minted! Check Transaction Here:{" "}
               <Link
-                href={`https://testnet.vicscan.xyz/tx/${transactionHash}`}
+                href={`https://vicscan.xyz/tx/${transactionHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="inherit"

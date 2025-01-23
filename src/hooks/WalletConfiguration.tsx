@@ -17,7 +17,7 @@ import {
   ramperWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import type { Session } from "next-auth";
-
+import { logger } from "@/app/utils/logger";
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
     By connecting your wallet, you agree to the{" "}
@@ -40,7 +40,7 @@ const infuraApiKey: string | undefined = process.env.NEXT_PUBLIC_INFURA_API_KEY;
 const config = getDefaultConfig({
   appName: "Buzzkill - Honeycomb Hustle",
   projectId: walletConnectProjectId,
-  chains: [vicMainnet, vicTestNet],
+  chains: [vicMainnet],
   wallets: [
     {
       groupName: "Recommended",
@@ -70,7 +70,7 @@ function WalletConfiguration({ session, children }: WalletConfigurationProps) {
 
   // Ensure WagmiProvider is mounted
   useEffect(() => {
-    console.log("WalletConfiguration mounted, WagmiProvider active");
+    logger.log("WalletConfiguration mounted, WagmiProvider active");
     // Simulate provider readiness (you can add real async logic here if needed)
     setIsProviderReady(true);
   }, []);

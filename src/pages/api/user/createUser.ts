@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/app/libs/supabaseClient";
 import { REFERRAL_REWARD_POINTS } from "@/constants/rewards"; // Use default or synced constant
-
+import { logger } from "@/app/utils/logger";
 // Function to generate a unique code
 function generateUniqueCode(): string {
   const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -20,7 +20,7 @@ async function getReferralRewardPoints() {
     .single();
 
   if (error) {
-    console.error("Error fetching referral points:", error);
+    logger.error("Error fetching referral points:", error);
     return REFERRAL_REWARD_POINTS; // Use constant as fallback
   }
 
@@ -37,7 +37,7 @@ export default async function createUser(
 
   const { address } = req.body;
   const referrerCode = req.query.invite as string | undefined;
-  console.log("Incoming referrerCode:", referrerCode);
+  logger.log("Incoming referrerCode:", referrerCode);
 
   if (!address) {
     return res.status(400).json({ error: "Address is required" });
@@ -60,18 +60,18 @@ export default async function createUser(
         .single();
 
       if (error || !data) {
-        console.error(
+        logger.error(
           "Invalid referrer code provided or error fetching referrer:",
           error
         );
       } else {
         invitedBy = referrerCode;
         referrer = data;
-        console.log(
+        logger.log(
           "Valid referrer found. Referrer address:",
           referrer.address
         );
-        console.log(
+        logger.log(
           "Current invited_count for referrer:",
           referrer.invited_count
         );
@@ -80,7 +80,7 @@ export default async function createUser(
 
     // Step 2: Generate a unique invite code for the new user
     const inviteCode = generateUniqueCode();
-    console.log("Generated invite code for new user:", inviteCode);
+    logger.log("Generated invite code for new user:", inviteCode);
 
     // Create a new user entry
     const { data: newUser, error: createUserError } = await supabase
@@ -99,11 +99,11 @@ export default async function createUser(
     if (createUserError) {
       throw createUserError;
     }
-    console.log("New user created successfully:", newUser);
+    logger.log("New user created successfully:", newUser);
 
     // Step 3: If a valid referrer exists, increment their invited_count and update total_rewards
     if (referrer) {
-      console.log(
+      logger.log(
         "Attempting to increment invited_count for referrer with address:",
         referrer.address
       );
@@ -115,12 +115,12 @@ export default async function createUser(
       );
 
       if (rpcError) {
-        console.error(
+        logger.error(
           "Error incrementing invited_count with RPC function:",
           rpcError
         );
       } else {
-        console.log(
+        logger.log(
           "Successfully incremented invited_count. New count:",
           updatedCount
         );
@@ -142,9 +142,9 @@ export default async function createUser(
         .single();
 
       if (rewardError) {
-        console.error("Error inserting entry into rewards_table:", rewardError);
+        logger.error("Error inserting entry into rewards_table:", rewardError);
       } else {
-        console.log(
+        logger.log(
           rewardEntry
         );
       }
@@ -153,7 +153,7 @@ export default async function createUser(
     // Final response with the new user details
     return res.status(201).json({ user: newUser });
   } catch (error) {
-    console.error("Error in createUser function:", error);
+    logger.error("Error in createUser function:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }

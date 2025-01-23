@@ -17,7 +17,7 @@ import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeInfo from "../BeeCard/BeeInfo";
 import BeeCardBackground from "../BeeCard/BeeCardBackground";
 import { useHives } from "@/context/HivesContext"; // Add this import
-
+import { logger } from "@/app/utils/logger";
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -99,25 +99,25 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       return;
     }
     try {
-      console.log("Initiating unstake transaction...");
+      logger.log("Initiating unstake transaction...");
       const tx = await writeContractAsync({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
-      console.log("Transaction initiated:", tx);
+      logger.log("Transaction initiated:", tx);
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
-        console.log("Transaction hash set:", tx);
+        logger.log("Transaction hash set:", tx);
       } else {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
-        console.error("Transaction failed to initiate.");
+        logger.error("Transaction failed to initiate.");
       }
     } catch (err) {
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
-      console.error("Error during unstake transaction:", err);
+      logger.error("Error during unstake transaction:", err);
     }
   };
 
@@ -138,7 +138,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
 
   // Handle transaction success or error
   useEffect(() => {
-    console.log(
+    logger.log(
       "Transaction Receipt Status - Loading:",
       isTransactionLoading,
       "Success:",
@@ -153,19 +153,19 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       setSnackbarOpen(true);
       setTransactionHash(undefined);
 
-      console.log("Called refreshBeesData() after successful transaction.");
+      logger.log("Called refreshBeesData() after successful transaction.");
 
       // Refresh hive data if action is unstake
       if (bee.id && variant === "default") {
-        console.log(
+        logger.log(
           `Refreshing hive data for bee ID ${bee.id} with action 'unstake'.`
         );
         refreshHiveData(bee.id, "unstake")
           .then(() => {
-            console.log("Hive data refreshed successfully.");
+            logger.log("Hive data refreshed successfully.");
           })
           .catch((error) => {
-            console.error("Error refreshing hive data:", error);
+            logger.error("Error refreshing hive data:", error);
             setAlertSeverity("error");
             setAlertMessage("Failed to refresh hive data.");
             setSnackbarOpen(true);
@@ -179,7 +179,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       setAlertMessage(transactionError?.message || "Transaction failed.");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      console.error("Transaction Error:", transactionError);
+      logger.error("Transaction Error:", transactionError);
     }
   }, [
     isTransactionSuccess,

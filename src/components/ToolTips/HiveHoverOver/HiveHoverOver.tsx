@@ -77,7 +77,7 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
               width: "100%",
             }}
           >
-            <Typography variant="ToolTipLabel">Rare Bees</Typography>
+            <Typography variant="ToolTipLabel">Rare Hatchlings</Typography>
             <Typography variant="ToolTipValue">{queenBees}</Typography>
           </Box>
           <Box
@@ -87,7 +87,7 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
               width: "100%",
             }}
           >
-            <Typography variant="ToolTipLabel">Total Bees</Typography>
+            <Typography variant="ToolTipLabel">Total Hatchlings</Typography>
             <Typography variant="ToolTipValue">{workerBees}</Typography>
           </Box>
         </Box>
