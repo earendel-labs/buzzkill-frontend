@@ -46,7 +46,7 @@ const MyBeesTab = () => {
 
       {/* Unstaked Bees Section */}
       <Typography variant="h6" color="white" sx={{ mb: 2 }}>
-        Unstaked Bees
+        Unstaked Hatchlings
       </Typography>
       <Grid container spacing={3}>
         {!loadingBees &&
@@ -62,7 +62,7 @@ const MyBeesTab = () => {
               height="20vh"
             >
               <Typography marginTop="24px" marginBottom="24px">
-                No Bees Found. Mint yours here
+                No Hatchlings Found. Mint yours here
               </Typography>
               <PrimaryButton text="Mint" onClick={() => router.push("/Mint")} />
             </Box>
@@ -80,7 +80,7 @@ const MyBeesTab = () => {
               height="20vh"
             >
               <Typography marginTop="24px" marginBottom="24px">
-                No Unstaked Bees
+                No Unstaked Hatchlings
               </Typography>
             </Box>
           </Grid>
@@ -100,7 +100,7 @@ const MyBeesTab = () => {
 
       {/* Staked Bees Section */}
       <Typography variant="h6" color="white" sx={{ mt: 4, mb: 2 }}>
-        Staked Bees
+        Staked Hatchlings
       </Typography>
       <Grid container spacing={3} marginBottom="5rem">
         {!loadingBees && stakedBees.length === 0 && !fetchError ? (
@@ -136,7 +136,7 @@ const MyBeesTab = () => {
       )}
       {fetchError && (
         <Typography variant="h6" color="error" align="center">
-          Failed to load hatchlings, please try again later.
+          Failed to load Hatchlings, please try again later.
         </Typography>
       )}
     </ProfileLayout>
