@@ -16,8 +16,8 @@ import { useUserContext } from "@/context/UserContext";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import BeeCardHiveSkeleton from "@/components/Loaders/BeeCardHiveSkeleton";
 const beeCategories = [
-  { label: "All Bees", filter: "all" },
-  { label: "Your Bees", filter: "you" },
+  { label: "All Hatchlings", filter: "all" },
+  { label: "Your Hatchlings", filter: "you" },
 ];
 
 interface BeeGridProps {
