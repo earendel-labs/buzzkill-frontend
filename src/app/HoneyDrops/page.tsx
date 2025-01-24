@@ -5,13 +5,18 @@ import { Box, Typography } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useProfileContext } from "@/context/ProfileContext";
-import UserRewardsBento from "@/app/Play/User/Profile/MyRewards/Components/UserRewardsBento";
-import { LeaderboardTable, LeaderboardEntry } from "./Components/leaderboardTable";
+import UserRewardsBento from "@/app/Play/User/Profile/Components/MyRewards/UserRewardsBento";
+import {
+  LeaderboardTable,
+  LeaderboardEntry,
+} from "./Components/leaderboardTable";
 import { useRouter } from "next/navigation";
 
 const HoneyDropsPage = () => {
   const [loading, setLoading] = useState(true);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>(
+    []
+  );
   const [constants, setConstants] = useState<{
     dailyBonus?: number;
     referralReward?: number;
@@ -33,7 +38,9 @@ const HoneyDropsPage = () => {
           }).then(async (res) => {
             if (!res.ok) {
               const errorData = await res.json();
-              throw new Error(errorData.error || "Failed to fetch leaderboard data.");
+              throw new Error(
+                errorData.error || "Failed to fetch leaderboard data."
+              );
             }
             return res.json();
           }),
@@ -43,7 +50,9 @@ const HoneyDropsPage = () => {
           }).then(async (res) => {
             if (!res.ok) {
               const errorData = await res.json();
-              throw new Error(errorData.error || "Failed to fetch reward constants.");
+              throw new Error(
+                errorData.error || "Failed to fetch reward constants."
+              );
             }
             return res.json();
           }),
@@ -140,7 +149,10 @@ const HoneyDropsPage = () => {
             No leaderboard data available.
           </Typography>
         ) : (
-          <LeaderboardTable data={leaderboardData} currentUserAddress={currentUserAddress} />
+          <LeaderboardTable
+            data={leaderboardData}
+            currentUserAddress={currentUserAddress}
+          />
         )}
       </Box>
     </Layout>

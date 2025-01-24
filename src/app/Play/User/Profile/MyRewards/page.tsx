@@ -8,9 +8,12 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
-import UserRewardsBento from "./Components/UserRewardsBento";
-import { RewardsTable, RewardEntry } from "./Components/RewardsTable";
+import ProfileLayout from "../Components/ProfileLayout/ProfileLayout";
+import UserRewardsBento from "../Components/MyRewards/UserRewardsBento";
+import {
+  RewardsTable,
+  RewardEntry,
+} from "../Components/MyRewards/RewardsTable";
 import { useProfileContext } from "@/context/ProfileContext";
 import { useAccount } from "wagmi";
 

@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { RewardEntry } from "@/app/Play/User/Profile/MyRewards/Components/RewardsTable";
+import { RewardEntry } from "@/app/Play/User/Profile/Components/MyRewards/RewardsTable";
 
 const getRewardsData = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = req.headers.cookie?.split("; ") || [];

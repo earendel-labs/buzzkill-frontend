@@ -21,7 +21,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 
 import { useTheme } from "@mui/material/styles";
-import ProfileLayout from "../../../../../components/Layouts/ProfileLayout/ProfileLayout";
+import ProfileLayout from "../Components/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useProfileContext } from "@/context/ProfileContext";
 import { OneID } from "@oneid-xyz/inspect";

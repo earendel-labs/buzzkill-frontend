@@ -6,7 +6,7 @@ import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
-import ProfileLayout from "@/components/Layouts/ProfileLayout/ProfileLayout";
+import ProfileLayout from "@/app/Play/User/Profile/Components/ProfileLayout/ProfileLayout";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useUserContext } from "@/context/UserContext";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
