@@ -1,5 +1,4 @@
 import { Theme as MUITheme } from "@mui/material/styles";
-import merge from "lodash.merge";
 import { darkTheme, Theme as RainbowKitTheme } from "@rainbow-me/rainbowkit";
 
 function deepMerge(target: any, source: any): any {

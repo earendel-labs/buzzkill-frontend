@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo, useState, useCallback } from "react";
 import {
   Box,
@@ -127,7 +129,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        minWidth="100%"
+        width="100%" // Ensures full width
         height="100%"
       >
         <HexagonSpinner />
@@ -183,6 +185,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
           alignItems: "center",
           height: "100%",
           textAlign: "center",
+          width: "100%", // Ensures full width
         }}
       >
         <Typography
@@ -221,7 +224,8 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "stretch", // Changed from "center" to "stretch"
+        width: "100%", // Ensures the parent Box takes full width
         [theme.breakpoints.up("lg")]: {
           maxWidth: "90%",
         },
