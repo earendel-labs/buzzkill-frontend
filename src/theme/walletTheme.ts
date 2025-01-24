@@ -2,49 +2,67 @@ import { Theme as MUITheme } from "@mui/material/styles";
 import merge from "lodash.merge";
 import { darkTheme, Theme as RainbowKitTheme } from "@rainbow-me/rainbowkit";
 
+function deepMerge(target: any, source: any): any {
+  if (typeof target !== 'object' || typeof source !== 'object' || target === null || source === null) {
+    return source;
+  }
+
+  const result = Array.isArray(target) ? [...target] : { ...target };
+
+  for (const key of Object.keys(source)) {
+    if (source[key] && typeof source[key] === 'object') {
+      result[key] = deepMerge(target[key], source[key]);
+    } else {
+      result[key] = source[key];
+    }
+  }
+
+  return result;
+}
+
 export const createWalletTheme = (muiTheme: MUITheme): RainbowKitTheme => {
-  return merge(darkTheme(), {
+  return deepMerge(darkTheme(), {
     colors: {
-      accentColor: muiTheme.palette.Gold.main, // Gold accent color
-      accentColorForeground: muiTheme.palette.text.primary, // Foreground color for accent
-      actionButtonBorder: muiTheme.palette.DarkOrange.main, // Border for action buttons
-      actionButtonBorderMobile: muiTheme.palette.secondary.main, // Border for mobile buttons
-      actionButtonSecondaryBackground: muiTheme.palette.background.default, // Secondary background for buttons
-      closeButton: "#fff", // Close button color
-      closeButtonBackground: muiTheme.palette.DarkBlue.main, // Background for close button
-      connectButtonBackground: muiTheme.palette.Blue.main, // Blue background for the connect button (matching your second screenshot)
-      connectButtonBackgroundError: muiTheme.palette.error.main, // Error background
-      connectButtonInnerBackground: muiTheme.palette.DarkBlue.main, // Inner background for the button
-      connectButtonText: muiTheme.palette.text.primary, // Primary text color for connect button
-      connectButtonTextError: muiTheme.palette.error.contrastText, // Error text color
-      connectionIndicator: muiTheme.palette.success.main, // Success indicator color
-      modalBackground: muiTheme.palette.background.default, // Background for modal
-      modalText: muiTheme.palette.text.primary, // Primary text color in modal
-      modalTextDim: muiTheme.palette.text.secondary, // Dimmed text for secondary text
-      modalTextSecondary: muiTheme.palette.text.primary, // Secondary text (switch to primary for better contrast)
-      profileAction: muiTheme.palette.DarkOrange.main, // Profile action button color
-      profileActionHover: muiTheme.palette.DarkOrange.dark, // Profile action button hover color
-      profileForeground: muiTheme.palette.DarkBlue.main, // Foreground text for profile actions
-      selectedOptionBorder: muiTheme.palette.Gold.main, // Border for selected option
-      standby: muiTheme.palette.GoldFaded.main, // Standby color
+      accentColor: muiTheme.palette.Gold.main,
+      accentColorForeground: muiTheme.palette.text.primary,
+      actionButtonBorder: muiTheme.palette.DarkOrange.main,
+      actionButtonBorderMobile: muiTheme.palette.secondary.main,
+      actionButtonSecondaryBackground: muiTheme.palette.background.default,
+      closeButton: "#fff",
+      closeButtonBackground: muiTheme.palette.DarkBlue.main,
+      connectButtonBackground: muiTheme.palette.Blue.main,
+      connectButtonBackgroundError: muiTheme.palette.error.main,
+      connectButtonInnerBackground: muiTheme.palette.DarkBlue.main,
+      connectButtonText: muiTheme.palette.text.primary,
+      connectButtonTextError: muiTheme.palette.error.contrastText,
+      connectionIndicator: muiTheme.palette.success.main,
+      modalBackground: muiTheme.palette.background.default,
+      modalText: muiTheme.palette.text.primary,
+      modalTextDim: muiTheme.palette.text.secondary,
+      modalTextSecondary: muiTheme.palette.text.primary,
+      profileAction: muiTheme.palette.DarkOrange.main,
+      profileActionHover: muiTheme.palette.DarkOrange.dark,
+      profileForeground: muiTheme.palette.DarkBlue.main,
+      selectedOptionBorder: muiTheme.palette.Gold.main,
+      standby: muiTheme.palette.GoldFaded.main,
     },
     fonts: {
-      body: "Poppins", // Set body font to "Poppins"
+      body: "Poppins",
     },
     radii: {
-      actionButton: "4px", // Action button radius
-      connectButton: "4px", // Connect button radius
-      menuButton: "2px", // Menu button radius
-      modal: "2px", // Modal radius
-      modalMobile: "2px", // Modal radius for mobile
+      actionButton: "4px",
+      connectButton: "4px",
+      menuButton: "2px",
+      modal: "2px",
+      modalMobile: "2px",
     },
     shadows: {
-      connectButton: muiTheme.shadows[2], // Shadow for connect button
-      dialog: muiTheme.shadows[8], // Shadow for dialogs
-      profileDetailsAction: muiTheme.shadows[2], // Profile details action shadow
-      selectedOption: muiTheme.shadows[4], // Selected option shadow
-      selectedWallet: muiTheme.shadows[6], // Selected wallet shadow
-      walletLogo: muiTheme.shadows[1], // Wallet logo shadow
+      connectButton: muiTheme.shadows[2],
+      dialog: muiTheme.shadows[8],
+      profileDetailsAction: muiTheme.shadows[2],
+      selectedOption: muiTheme.shadows[4],
+      selectedWallet: muiTheme.shadows[6],
+      walletLogo: muiTheme.shadows[1],
     },
   });
 };
