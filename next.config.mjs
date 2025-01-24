@@ -2,7 +2,6 @@ import crypto from "crypto"; // ES module import for crypto
 
 const nextConfig = {
   reactStrictMode: true,
-  optimizeFonts: false,
   webpack(config) {
     // Add SVG handling
     config.module.rules.push({
