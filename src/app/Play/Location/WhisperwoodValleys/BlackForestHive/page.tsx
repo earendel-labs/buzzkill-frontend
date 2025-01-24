@@ -7,7 +7,7 @@ import GameLayout from "@/components/Layouts/GameLayout/GameLayout";
 import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Typography, Snackbar, Alert, Button, Modal } from "@mui/material";
+import { Typography, Snackbar, Alert } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 import HiveTopBar from "@/components/Layouts/GameLayout/HiveTopBar/HiveTopBar";
 import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
@@ -17,15 +17,15 @@ import {
   useWriteHiveStakingStake,
   useWriteHiveStakingUnstake,
 } from "@/hooks/HiveStaking";
-import Image from "next/image";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
-import { useUserContext } from "@/context/UserContext"; // Import UserContext
+import { useUserContext } from "@/context/UserContext";
 import { useWaitForTransactionReceipt } from "wagmi";
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { Hatchling } from "@/types/Hatchling";
-import { fetchMetadata } from "@/app/utils/fetchMetaData";
 import { useHives } from "@/context/HivesContext";
-import useDebounce from "@/hooks/useDebounce";
+import EnvironmentBackground from "./Components/EnvironmentBackground";
+import ConfirmModal from "./Components/HiveStakingModals";
+import useFetchStakedBees from "@/hooks/useFetchStakedBees";
+import TransactionInProgressModal from "./Components/TransactionInProgressModal";
 
 type HatchlingStatus = "Free" | "Staked";
 
@@ -44,25 +44,27 @@ const BlackForestHive: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   // Track the last action taken by the user (stake or unstake)
   const [lastAction, setLastAction] = useState<"stake" | "unstake" | null>(
     null
   );
 
+  // We'll use this to prevent multiple refresh calls if the user re-renders
+  const [didRefresh, setDidRefresh] = useState(false);
+
+  // This determines if we show the "Staking in progress" modal
+  const [showTxModal, setShowTxModal] = useState(false);
+
   const { activeBee, checkAndPromptApproval, setActiveBee, refreshBeesData } =
-    useUserContext(); // Destructure refreshBeesData
+    useUserContext();
 
   const {
     environments,
-    stakedNFTs,
     getHiveById,
-    getStakedNFTsByHiveId,
     loading: hivesLoading,
     error: hivesError,
     refreshHiveData,
-    isRefreshing,
   } = useHives();
 
   const { writeContractAsync: stakeNFT, isPending: isStakingPending } =
@@ -78,9 +80,11 @@ const BlackForestHive: React.FC = () => {
     "success"
   );
   const [alertMessage, setAlertMessage] = useState<string>("");
+
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [confirmUnstakeModalOpen, setConfirmUnstakeModalOpen] = useState(false);
 
+  // Wait for the transaction receipt
   const {
     isLoading: isTransactionLoading,
     isSuccess: isTransactionSuccess,
@@ -93,10 +97,14 @@ const BlackForestHive: React.FC = () => {
   const environmentIdNumber = Number(environmentId);
   const hiveIdNumber = Number(hiveId);
 
-  const [stakedBees, setStakedBees] = useState<Hatchling[]>([]);
-  const [isBeesLoading, setIsBeesLoading] = useState<boolean>(true);
-  const [beesError, setBeesError] = useState<string | null>(null);
+  // Use our new custom hook to fetch staked bees
+  const { stakedBees, loadingBees, beesError } = useFetchStakedBees({
+    hiveIdNumber,
+  });
 
+  // -------------------------------------------------------------
+  // MUSIC SETUP
+  // -------------------------------------------------------------
   useEffect(() => {
     const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
     audio.loop = true;
@@ -118,60 +126,9 @@ const BlackForestHive: React.FC = () => {
     }
   }, [isMusicMuted, isMuted, music]);
 
-  // Consolidated loading state
-  const [loadingBees, setLoadingBees] = useState<boolean>(false);
-  const debouncedLoadingBees = useDebounce(loadingBees, 300); // 300ms debounce
-
-  // Fetch metadata for staked bees whenever stakedNFTs or hive data changes
-  useEffect(() => {
-    const fetchBeesWithMetadata = async () => {
-      setLoadingBees(true);
-      try {
-        if (hivesLoading) {
-          // Optionally, wait for hives to finish loading
-          // await waitForHivesToLoad(); // Implement if necessary
-        }
-
-        const filteredStakedNFTs = getStakedNFTsByHiveId(hiveIdNumber);
-
-        const fetchedStakedBees: Hatchling[] = await Promise.all(
-          filteredStakedNFTs.map(async (nft) => {
-            const metadata = await fetchMetadata(nft.tokenId?.tokenURI);
-            return createHatchling(
-              parseInt(nft.tokenIdNum, 10),
-              nft.tokenId.rarity,
-              metadata,
-              "Staked",
-              nft.environmentId?.environmentId || null,
-              nft.hiveId?.hiveId || null,
-              nft.ownerId?.id || ""
-            );
-          })
-        );
-        setStakedBees(fetchedStakedBees);
-        setBeesError(null);
-      } catch (error) {
-        console.error("Failed to load bee metadata:", error);
-        setBeesError("Failed to load bee metadata.");
-      } finally {
-        setLoadingBees(false);
-      }
-    };
-
-    if (!hivesLoading && !hivesError) {
-      fetchBeesWithMetadata();
-    } else if (hivesError) {
-      setBeesError(hivesError.message);
-      setLoadingBees(false);
-    }
-  }, [
-    stakedNFTs,
-    hiveIdNumber,
-    hivesLoading,
-    hivesError,
-    getStakedNFTsByHiveId,
-  ]);
-
+  // -------------------------------------------------------------
+  // STAKE / UNSTAKE LOGIC
+  // -------------------------------------------------------------
   const handleConfirmStake = async () => {
     setConfirmModalOpen(false);
 
@@ -191,6 +148,8 @@ const BlackForestHive: React.FC = () => {
     }
 
     setLastAction("stake");
+    setShowTxModal(true); // show the "staking in progress" modal
+
     const tokenId = activeBee;
     try {
       const tx = await stakeNFT({
@@ -205,6 +164,7 @@ const BlackForestHive: React.FC = () => {
       setAlertSeverity("error");
       setAlertMessage("Failed to initiate staking.");
       setSnackbarOpen(true);
+      setShowTxModal(false); // close the modal if there's an error
     }
   };
 
@@ -236,6 +196,8 @@ const BlackForestHive: React.FC = () => {
     }
 
     setLastAction("unstake");
+    setShowTxModal(true);
+
     const { id, environmentID, hiveID } = targetBee;
     try {
       const tx = await unstakeNFT({
@@ -250,12 +212,14 @@ const BlackForestHive: React.FC = () => {
         setAlertSeverity("error");
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
+        setShowTxModal(false);
       }
     } catch (err) {
       console.error("Failed to unstake the Hatchling:", err);
       setAlertSeverity("error");
       setAlertMessage("Failed to unstake the Hatchling.");
       setSnackbarOpen(true);
+      setShowTxModal(false);
     }
   };
 
@@ -271,11 +235,17 @@ const BlackForestHive: React.FC = () => {
     setConfirmUnstakeModalOpen(true);
   };
 
-  // Handle transaction success/failure to refresh data
+  // -------------------------------------------------------------
+  // TRANSACTION SUCCESS/ERROR EFFECTS
+  // -------------------------------------------------------------
   useEffect(() => {
-    const handleTransactionSuccess = async () => {
-      if (!transactionHash || !lastAction || activeBee === null) return;
+    if (!isTransactionSuccess || didRefresh) return;
+    if (!transactionHash || !lastAction || activeBee === null) return;
 
+    // Only run once
+    setDidRefresh(true);
+
+    const doRefresh = async () => {
       try {
         await refreshHiveData(activeBee, lastAction);
         await refreshBeesData(activeBee, lastAction);
@@ -288,36 +258,48 @@ const BlackForestHive: React.FC = () => {
         setAlertSeverity("error");
         setAlertMessage("Failed to refresh data after transaction.");
         setSnackbarOpen(true);
-      }
+      } finally {
+        setActiveBee(null);
+        setLastAction(null);
+        setTransactionHash(undefined);
 
-      setActiveBee(null);
-      setLastAction(null);
-      setTransactionHash(undefined);
+        // Now that we've loaded new data from the subquery, we can close the modal
+        setShowTxModal(false);
+      }
     };
 
-    if (isTransactionSuccess) {
-      handleTransactionSuccess();
-    }
-
-    if (isTransactionError) {
-      setAlertSeverity("error");
-      setAlertMessage(transactionError?.message || "Transaction failed.");
-      setSnackbarOpen(true);
-      setTransactionHash(undefined);
-      setLastAction(null);
-    }
+    doRefresh();
   }, [
     isTransactionSuccess,
-    isTransactionError,
-    transactionError,
+    didRefresh,
     transactionHash,
-    refreshHiveData,
-    refreshBeesData, // Ensure refreshBeesData is included in dependencies
-    activeBee,
     lastAction,
+    activeBee,
+    refreshHiveData,
+    refreshBeesData,
     setActiveBee,
   ]);
 
+  useEffect(() => {
+    if (!isTransactionError || didRefresh) return;
+    if (!transactionHash) return;
+
+    setDidRefresh(true);
+
+    setAlertSeverity("error");
+    setAlertMessage(transactionError?.message || "Transaction failed.");
+    setSnackbarOpen(true);
+
+    // Close the modal on error
+    setShowTxModal(false);
+
+    setTransactionHash(undefined);
+    setLastAction(null);
+  }, [isTransactionError, transactionError, transactionHash, didRefresh]);
+
+  // -------------------------------------------------------------
+  // HELPERS
+  // -------------------------------------------------------------
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
     setAlertMessage("");
@@ -333,6 +315,9 @@ const BlackForestHive: React.FC = () => {
     setLastAction(null);
   };
 
+  // -------------------------------------------------------------
+  // RENDER
+  // -------------------------------------------------------------
   const beeCounts = useMemo(() => {
     const counts: { [key: string]: number } = {
       Common: 0,
@@ -341,7 +326,7 @@ const BlackForestHive: React.FC = () => {
       Total: 0,
     };
 
-    // A mapping to normalize bee rarities to match counts keys
+    // A mapping to normalize bee rarities
     const rarityMap: { [key: string]: string } = {
       Common: "Common",
       Rare: "Rare",
@@ -382,300 +367,157 @@ const BlackForestHive: React.FC = () => {
           alignItems="center"
           height="100vh"
           flexDirection="column"
-        ></Box>
+        >
+          <HexagonSpinner />
+          <Typography className="body1" padding="24px 0px">
+            Loading Hive Data...
+          </Typography>
+        </Box>
       </GameLayout>
     );
   }
 
   return (
-    <>
-      <GameLayout>
-        {/* Background Layer */}
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            zIndex: -1,
-            overflow: "hidden",
-            background:
-              "radial-gradient(73.87% 73.87% at 50% 50%, rgba(52, 119, 142, 0.2) 0%, rgba(36, 46, 78, 0.2) 100%), radial-gradient(130.26% 136.63% at 50.05% 47.94%, rgba(36, 46, 78, 0.85) 30%, rgba(18, 23, 39, 0.85) 57.5%, rgba(32, 41, 70, 0.85) 76.5%, rgba(33, 42, 72, 0.85) 85.81%)",
-            opacity: 0.2,
-            border: "1px solid #000000",
-          }}
-        >
-          <Image
-            src={
-              environments.find((env) => env.id === environmentIdNumber)
-                ?.backgroundImage || "/Maps/Environment/Forest.jpg"
-            }
-            alt="Forest map background"
-            fill
-            style={{ objectFit: "cover", objectPosition: "center" }}
-            onLoad={() => setIsImageLoaded(true)}
-            priority
-          />
-        </Box>
+    <GameLayout>
+      {/* 1) The environment background */}
+      <EnvironmentBackground
+        backgroundImage={
+          environments.find((env) => env.id === environmentIdNumber)
+            ?.backgroundImage || "/Maps/Environment/Forest.jpg"
+        }
+      />
 
-        <Box
-          sx={{
-            position: "relative",
-            zIndex: 1,
-            padding: "20px",
-            height: "100vh",
-            overflow: "hidden",
-          }}
+      {/* 2) The "Staking in progress" modal */}
+      <TransactionInProgressModal
+        open={showTxModal}
+        onClose={() => setShowTxModal(false)}
+      />
+
+      {/* 3) Main layout */}
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          padding: "20px",
+          height: "100vh",
+          overflow: "hidden",
+        }}
+      >
+        <HiveTopBar mapHeaderLabel={hive.name} />
+
+        <Grid
+          container
+          spacing={1}
+          sx={{ marginTop: "0.4rem", marginLeft: "2.5rem", gap: "0px 0px" }}
         >
-          <HiveTopBar mapHeaderLabel={hive.name} />
+          {/* Left Column - Hive Stats Panel */}
           <Grid
-            container
-            spacing={1}
-            sx={{ marginTop: "0.4rem", marginLeft: "2.5rem", gap: "0px 0px" }}
+            item
+            xs={12}
+            sm={4}
+            md={3}
+            lg={3}
+            xl={3}
+            xxl={3}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+            }}
           >
-            {/* Left Column - Hive Stats Panel */}
-            <Grid
-              item
-              xs={12}
-              sm={4}
-              md={3}
-              lg={3}
-              xl={3}
-              xxl={3}
+            <Box
               sx={{
+                padding: "0.8rem",
+                borderRadius: "8px",
+                backgroundColor: "rgba(0, 0, 0, 0.7)",
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "flex-start",
+                alignItems: "center",
+                width: "100%",
+                boxSizing: "border-box",
               }}
             >
-              <Box
-                sx={{
-                  padding: "0.8rem",
-                  borderRadius: "8px",
-                  backgroundColor: "rgba(0, 0, 0, 0.7)",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  boxSizing: "border-box",
-                }}
-              >
-                <HiveHatchlingsPanel
-                  hiveHatchlingInfo={hiveHatchlingInfo}
-                  onStake={handleStake}
-                  onRaid={handleRaid}
-                />
-              </Box>
-            </Grid>
+              <HiveHatchlingsPanel
+                hiveHatchlingInfo={hiveHatchlingInfo}
+                onStake={handleStake}
+                onRaid={handleRaid}
+              />
+            </Box>
+          </Grid>
 
-            {/* Right Column - Staked Bees Grid */}
-            <Grid
-              item
-              xs={12}
-              sm={8}
-              md={9}
-              lg={9}
-              xl={9}
-              xxl={9}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                paddingLeft: "5px",
-                height: "100vh",
-                overflow: "hidden",
-              }}
-            >
+          {/* Right Column - Staked Bees Grid */}
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={9}
+            lg={9}
+            xl={9}
+            xxl={9}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              paddingLeft: "5px",
+              height: "100vh",
+              overflow: "hidden",
+            }}
+          >
+            {loadingBees ? (
+              <HexagonSpinner />
+            ) : (
               <BeeGrid
                 bees={stakedBees}
                 variant="default"
-                loading={debouncedLoadingBees}
+                loading={loadingBees}
               />
-            </Grid>
+            )}
           </Grid>
-          <BottomBar isAudioPanelVisible={false} />
-        </Box>
+        </Grid>
 
-        {/* Staking Confirmation Modal */}
-        <Modal
-          open={confirmModalOpen}
-          onClose={handleCancelStake}
-          aria-labelledby="confirm-stake-title"
-          aria-describedby="confirm-stake-description"
-        >
-          <Box
-            sx={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1300,
-            }}
-          >
-            <SemiTransparentCard
-              transparency={1}
-              sx={{
-                padding: "30px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "30px",
-                maxWidth: "500px",
-                width: "90%",
-                boxShadow: 24,
-              }}
-            >
-              <Typography
-                id="confirm-stake-title"
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ fontWeight: "bold" }}
-              >
-                Confirm Stake
-              </Typography>
-              <Typography
-                id="confirm-stake-description"
-                variant="body1"
-                align="center"
-                sx={{ fontSize: "1rem" }}
-              >
-                Are you sure you want to stake{" "}
-                <strong>Bee ID {activeBee}</strong> to{" "}
-                <strong>{hive.name}</strong>?
-              </Typography>
-              <Box sx={{ display: "flex", gap: "20px" }}>
-                <Button onClick={handleCancelStake} variant="contained">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleConfirmStake}
-                  variant="contained"
-                  disabled={isStakingPending || isTransactionLoading}
-                >
-                  {isStakingPending || isTransactionLoading
-                    ? "Staking..."
-                    : "Stake"}
-                </Button>
-              </Box>
-            </SemiTransparentCard>
-          </Box>
-        </Modal>
+        <BottomBar isAudioPanelVisible={false} />
+      </Box>
 
-        {/* Unstaking Confirmation Modal */}
-        <Modal
-          open={confirmUnstakeModalOpen}
-          onClose={handleCancelUnstake}
-          aria-labelledby="confirm-unstake-title"
-          aria-describedby="confirm-unstake-description"
-        >
-          <Box
-            sx={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              bgcolor: "rgba(0, 0, 0, 0.5)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1300,
-            }}
-          >
-            <SemiTransparentCard
-              transparency={1}
-              sx={{
-                padding: "30px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "30px",
-                maxWidth: "500px",
-                width: "90%",
-                boxShadow: 24,
-              }}
-            >
-              <Typography
-                id="confirm-unstake-title"
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ fontWeight: "bold" }}
-              >
-                Confirm Unstake
-              </Typography>
-              <Typography
-                id="confirm-unstake-description"
-                variant="body1"
-                align="center"
-                sx={{ fontSize: "1rem" }}
-              >
-                Are you sure you want to unstake{" "}
-                <strong>Bee ID {activeBee}</strong> from{" "}
-                <strong>{hive.name}</strong>?
-              </Typography>
-              <Box sx={{ display: "flex", gap: "20px" }}>
-                <Button onClick={handleCancelUnstake} variant="contained">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleConfirmUnstake}
-                  variant="contained"
-                  disabled={isUnstakingPending || isTransactionLoading}
-                >
-                  {isUnstakingPending || isTransactionLoading
-                    ? "Unstaking..."
-                    : "Unstake"}
-                </Button>
-              </Box>
-            </SemiTransparentCard>
-          </Box>
-        </Modal>
+      {/* Staking Confirmation Modal */}
+      <ConfirmModal
+        open={confirmModalOpen}
+        onClose={handleCancelStake}
+        onConfirm={handleConfirmStake}
+        title="Confirm Stake"
+        description={`Are you sure you want to stake Bee ID ${activeBee} to ${hive.name}?`}
+        confirmLabel="Stake"
+        isLoading={isStakingPending || isTransactionLoading}
+      />
 
-        {/* Snackbar for success/error messages */}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
+      {/* Unstaking Confirmation Modal */}
+      <ConfirmModal
+        open={confirmUnstakeModalOpen}
+        onClose={handleCancelUnstake}
+        onConfirm={handleConfirmUnstake}
+        title="Confirm Unstake"
+        description={`Are you sure you want to unstake Bee ID ${activeBee} from ${hive.name}?`}
+        confirmLabel="Unstake"
+        isLoading={isUnstakingPending || isTransactionLoading}
+      />
+
+      {/* Snackbar for success/error messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
           onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          severity={alertSeverity}
+          sx={{ width: "100%" }}
         >
-          <Alert
-            onClose={handleSnackbarClose}
-            severity={alertSeverity}
-            sx={{ width: "100%" }}
-          >
-            {alertMessage}
-          </Alert>
-        </Snackbar>
-      </GameLayout>
-    </>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
+    </GameLayout>
   );
 };
-
-const createHatchling = (
-  id: number,
-  rarity: string,
-  imageAddress: string,
-  status: HatchlingStatus,
-  environmentID: string | null,
-  hiveID: string | null,
-  ownerAddress: string
-): Hatchling => ({
-  id,
-  rarity,
-  imageAddress,
-  status,
-  environmentID,
-  hiveID,
-  ownerAddress,
-});
 
 export default BlackForestHive;

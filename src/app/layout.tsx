@@ -2,7 +2,7 @@
 
 import "../styles/globals.css";
 import CssBaseline from "@mui/material/CssBaseline";
-import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
@@ -16,7 +16,7 @@ import { ProfileProvider } from "@/context/ProfileContext";
 import { OneIDProvider } from "@/context/OneIDContext";
 import { ApolloProvider } from "@apollo/client";
 import createApolloClient from "./libs/apolloClient";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 // Load Google Poppins font using next/font
 const poppins = Poppins({
@@ -48,8 +48,9 @@ const client = createApolloClient();
 
 export default function RootLayout({
   children,
-  session,
-}: Readonly<{ session: Session; children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={`${veraHumana.variable} ${poppins.variable}`}>
       <head>
@@ -77,27 +78,30 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
-        <OneIDProvider>
-          <WalletConfiguration session={session}>
-            <ApolloProvider client={client}>
-              <LoadingProvider>
-                <SoundProvider>
-                  <UserProvider>
-                    <ProfileProvider>
-                      <CssBaseline />
-                      <GlobalScrollbarStyles />
-                      <EnvironmentProvider>
-                        {children}
-                        <Analytics />
-                        <SpeedInsights />
-                      </EnvironmentProvider>
-                    </ProfileProvider>
-                  </UserProvider>
-                </SoundProvider>
-              </LoadingProvider>
-            </ApolloProvider>
-          </WalletConfiguration>
-        </OneIDProvider>
+        {/* Wrap with SessionProvider */}
+        <SessionProvider>
+          <OneIDProvider>
+            <WalletConfiguration>
+              <ApolloProvider client={client}>
+                <LoadingProvider>
+                  <SoundProvider>
+                    <UserProvider>
+                      <ProfileProvider>
+                        <CssBaseline />
+                        <GlobalScrollbarStyles />
+                        <EnvironmentProvider>
+                          {children}
+                          <Analytics />
+                          <SpeedInsights />
+                        </EnvironmentProvider>
+                      </ProfileProvider>
+                    </UserProvider>
+                  </SoundProvider>
+                </LoadingProvider>
+              </ApolloProvider>
+            </WalletConfiguration>
+          </OneIDProvider>
+        </SessionProvider>
       </body>
     </html>
   );

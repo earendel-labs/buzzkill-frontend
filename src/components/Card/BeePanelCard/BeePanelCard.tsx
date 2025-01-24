@@ -172,7 +172,7 @@ const BeePanelCard: React.FC = () => {
                 }}
               >
                 {bees.length > 0 ? (
-                  "Select Your Bee"
+                  "Select Your Hatchling"
                 ) : (
                   <>
                     You have staked Hatchlings

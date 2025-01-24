@@ -9,6 +9,7 @@ import React, {
   useReducer,
   ReactNode,
   useMemo,
+  useCallback, // <-- Add this import
 } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_HIVE_DATA } from "@/subquery/getAllHiveData";
@@ -27,6 +28,7 @@ import HiveStakingAbiJson from "@/app/libs/abi/HiveStaking.json";
 import { Abi } from "abitype";
 import { pollUntilCondition } from "@/app/utils/polling";
 import { logger } from "@/app/utils/logger";
+
 interface HivesState {
   environments: Environment[];
   hivesMap: Map<number, HiveHatchling>;
@@ -134,6 +136,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     error: maxBeesError,
   } = useReadHiveStakingMaxBeesPerHive();
 
+  // Prepare readContracts call for production data
   const contracts = useMemo(() => {
     const hiveIds = Array.from(state.hivesMap.keys());
     logger.log("Preparing contracts for hives:", hiveIds);
@@ -152,6 +155,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     refetch: refetchProductionData,
   } = useReadContracts({ contracts });
 
+  // ---------------------------------------------------------------------------------
+  // 1) Update stakedNFTs from subquery data
+  // ---------------------------------------------------------------------------------
   useEffect(() => {
     if (data) {
       const stakedNFTsData = data.stakedNFTs.edges.map((edge) => edge.node);
@@ -160,9 +166,13 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   }, [data, loading, error]);
 
+  // ---------------------------------------------------------------------------------
+  // 2) Fetch local environment data (Forest.json), maxBees, production, etc.
+  // ---------------------------------------------------------------------------------
   useEffect(() => {
     const fetchAndCombineData = async () => {
       try {
+        // Load environment data (e.g. /Data/Maps/Forest.json) if not loaded
         if (state.environments.length === 0) {
           const response = await fetch("/Data/Maps/Forest.json");
           if (!response.ok) {
@@ -197,6 +207,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         dispatch({ type: "SET_HIVES_MAP", payload: newHivesMap });
         dispatch({ type: "SET_RESOURCES", payload: newResources });
 
+        // Update maxBees per hive if available
         if (!maxBeesLoading && maxBeesData) {
           const maxBees = Number(maxBeesData);
           if (!isNaN(maxBees)) {
@@ -212,6 +223,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
           }
         }
 
+        // Update each hive's productivityValue with productionData
         if (!productionLoading && productionData && productionData.length > 0) {
           const updatedHivesMap = new Map<number, HiveHatchling>(newHivesMap);
 
@@ -245,20 +257,29 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     productionLoading,
   ]);
 
+  // ---------------------------------------------------------------------------------
+  // 3) Wrap getStakedNFTsByHiveId in useCallback to ensure stable reference
+  // ---------------------------------------------------------------------------------
+  const getStakedNFTsByHiveId = useCallback(
+    (hiveId: number): StakedNFT[] => {
+      const filteredNFTs = state.stakedNFTs.filter(
+        (nft) => Number(nft.hiveId.hiveId) === hiveId
+      );
+      logger.log(
+        `getStakedNFTsByHiveId called for hive ID ${hiveId}:`,
+        filteredNFTs
+      );
+      return filteredNFTs;
+    },
+    [state.stakedNFTs]
+  );
+
+  // ---------------------------------------------------------------------------------
+  // 4) Other getters
+  // ---------------------------------------------------------------------------------
   const getHiveById = (hiveId: number): HiveHatchling | undefined => {
     const hive = state.hivesMap.get(hiveId);
     return hive;
-  };
-
-  const getStakedNFTsByHiveId = (hiveId: number): StakedNFT[] => {
-    const filteredNFTs = state.stakedNFTs.filter(
-      (nft) => Number(nft.hiveId.hiveId) === hiveId
-    );
-    logger.log(
-      `getStakedNFTsByHiveId called for hive ID ${hiveId}:`,
-      filteredNFTs
-    );
-    return filteredNFTs;
   };
 
   const getMaxBeesByHiveId = (hiveId: number): number | undefined => {
@@ -266,6 +287,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     return maxBees;
   };
 
+  // ---------------------------------------------------------------------------------
+  // 5) Refresh hive data function
+  // ---------------------------------------------------------------------------------
   const refreshHiveData = async (
     affectedBeeId?: number,
     action?: "stake" | "unstake"
@@ -287,6 +311,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
           return false;
         }
 
+        // If we staked or unstaked a specific bee, confirm the subquery reflects that
         if (affectedBeeId !== undefined && action) {
           const existsInNewData = newData.stakedNFTs.edges.some(
             (edge) => Number(edge.node.tokenIdNum) === affectedBeeId
@@ -308,6 +333,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
           }
         }
 
+        // Otherwise, just compare stakedNFTs count to detect changes
         const previousCount = state.stakedNFTs.length;
         const newCount = newData.stakedNFTs.edges.length;
         const countChanged = newCount !== previousCount;
@@ -319,11 +345,11 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         return countChanged;
       };
 
-      const pollingResult = await pollUntilCondition(isDataUpdated, 500, 10);
+      const pollingResult = await pollUntilCondition(isDataUpdated, 1000, 20);
       logger.log("Polling completed: Condition met:", pollingResult);
 
       // Small delay to ensure indexing catches up
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       logger.log("Added delay after polling.");
 
       const { data: finalData } = await refetchAllHiveData({
@@ -341,11 +367,6 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         );
       }
 
-      const { data: productionDataFinal } = await refetchProductionData();
-      logger.log("Production data refetched.");
-      // Assuming productionDataFinal is processed similarly
-      // ...
-
       logger.log("Hive data refresh complete.");
     } catch (err) {
       logger.error("Error during hive data refresh:", err);
@@ -355,6 +376,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   };
 
+  // ---------------------------------------------------------------------------------
+  // 6) Memoize everything for our context value
+  // ---------------------------------------------------------------------------------
   const contextValue = useMemo(
     () => ({
       environments: state.environments,
@@ -363,14 +387,28 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
       stakedNFTs: state.stakedNFTs,
       maxBeesMap: state.maxBeesMap,
       getHiveById,
-      getStakedNFTsByHiveId,
+      getStakedNFTsByHiveId, // uses useCallback, stable reference
       getMaxBeesByHiveId,
       loading: loading || maxBeesLoading || productionLoading,
       error: error || null,
       refreshHiveData,
       isRefreshing: state.isRefreshing,
     }),
-    [state, loading, maxBeesLoading, productionLoading, error, refreshHiveData]
+    [
+      state.environments,
+      state.hivesMap,
+      state.resources,
+      state.stakedNFTs,
+      state.maxBeesMap,
+      loading,
+      maxBeesLoading,
+      productionLoading,
+      error,
+      refreshHiveData,
+      getHiveById,
+      getStakedNFTsByHiveId, // Make sure to list this in dependencies
+      getMaxBeesByHiveId,
+    ]
   );
 
   return (
