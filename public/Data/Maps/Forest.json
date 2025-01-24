@@ -3,7 +3,7 @@
     "id": 2,
     "name": "Whisperwood Valleys",
     "type": "Forest",
-    "backgroundImage": "/Maps/ForestMap.jpg",
+    "backgroundImage": "/Maps/Environments/Forest.jpg",
     "audioFile": "/Audio/Soundtrack/WhisperwoodValleys/Forest.wav",
     "resources": [
       {
