@@ -95,7 +95,7 @@ const NavigationDrawer = () => {
               />
               {/* My Bees Tab */}
               <Tab
-                label="My Hatchlingss"
+                label="My Hatchlings"
                 sx={{
                   color:
                     selectedTab === 1

@@ -112,7 +112,7 @@ const MyBeesTab = () => {
               justifyContent="center"
               height="20vh"
             >
-              <Typography>No Staked Bees Found</Typography>
+              <Typography>No Staked Hatchlings Found</Typography>
             </Box>
           </Grid>
         ) : (
