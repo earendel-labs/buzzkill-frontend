@@ -9,19 +9,22 @@ interface HiveTopBarProps {
   mapHeaderLabel: string;
 }
 
+// ... other imports
+
 const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
   return (
     <Box
       sx={{
         position: "relative",
         display: "flex",
-        alignItems: "space-even",
+        alignItems: "center",
+        justifyContent: "space-between",
         padding: {
-          xs: "0px 1rem 0px 0.5rem",
-          sm: "0px 2rem 0px 1rem",
-          md: "0px 2.5rem 0px 1.5rem",
-          lg: "0px 3.125rem 0px 9rem",
-          xl: "0px 4rem 0px 7rem",
+          xs: "0px 1rem",
+          sm: "0px 2rem",
+          md: "0px 2.5rem",
+          lg: "0px 3.125rem",
+          xl: "0px 4rem",
         },
         width: "100%",
         height: "8.75rem",
@@ -31,13 +34,13 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         boxSizing: "border-box",
       }}
     >
-      {/* Left section with User Resources */}
+      {/* Left section with User Resources - Fixed alignment */}
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginRight: "auto",
+          justifyContent: "flex-start",
+          alignItems: "center", // Added vertical centering
+          flex: 1,
           height: "100%",
           boxSizing: "border-box",
         }}
@@ -45,12 +48,13 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         <UserResourceBar />
       </Box>
 
-      {/* Centered LocationHeader */}
+      {/* Centered LocationHeader remains unchanged */}
       <Box
         sx={{
-          position: "relative",
-          left: "10%",
-          transform: "translateX(-50%)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1,
         }}
       >
         <LocationHeader
@@ -60,13 +64,13 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         />
       </Box>
 
-      {/* Right section with Map Buttons */}
+      {/* Right section remains unchanged */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "flex-end",
           gap: 1,
-          marginLeft: "auto",
+          flex: 1,
         }}
       >
         <HiveMapButton />
