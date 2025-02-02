@@ -43,24 +43,21 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   isOwnedByUser,
   variant = "default",
   additionalInfo = {},
-  onUnstakeLoadingChange, // <-- new prop
+  onUnstakeLoadingChange,
 }) => {
   const { refreshBeesData } = useUserContext();
   const { refreshHiveData } = useHives();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
 
-  // local states
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [alertSeverity, setAlertSeverity] = useState<
+    "success" | "error" | "warning"
+  >("success");
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-
-  // local "Unstaking in progress" modal
   const [showTxModal, setShowTxModal] = useState(false);
 
   const { getEnvironmentById, getHiveById } = useEnvironment();
@@ -73,7 +70,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
 
   const router = useRouter();
 
-  // 1) Unstake button -> confirm modal
   const handleUnstakeClick = () => {
     if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
@@ -84,7 +80,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     }
   };
 
-  // 2) On confirm -> call contract
   const handleConfirmUnstake = async () => {
     setConfirmModalOpen(false);
     if (!bee.environmentID || !bee.hiveID) {
@@ -95,7 +90,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     }
     try {
       logger.log("Initiating unstake transaction...");
-      setShowTxModal(true); // local "Unstaking in Progress..." modal
+      setShowTxModal(true);
 
       const tx = await writeContractAsync({
         args: [BigInt(bee.id), BigInt(bee.environmentID), BigInt(bee.hiveID)],
@@ -110,16 +105,24 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
         logger.error("Transaction failed to initiate.");
         setShowTxModal(false);
       }
-    } catch (err) {
-      setAlertSeverity("error");
-      setAlertMessage("Failed to unstake the Hatchling.");
+    } catch (err: any) {
+      if (
+        err?.message.includes("User rejected the request.") ||
+        err?.message.includes("User denied")
+      ) {
+        setAlertSeverity("warning");
+        setAlertMessage("User rejected transaction");
+        // Do not log error to console if the user rejected the transaction.
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage("Failed to unstake the Hatchling.");
+        logger.error("Error during unstake transaction:", err);
+      }
       setSnackbarOpen(true);
-      logger.error("Error during unstake transaction:", err);
       setShowTxModal(false);
     }
   };
 
-  // 3) Wait for TX receipt
   const {
     isLoading: isTransactionLoading,
     isSuccess: isTransactionSuccess,
@@ -137,14 +140,12 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       isTransactionError
     );
 
-    // On success
     if (isTransactionSuccess) {
       setAlertSeverity("success");
       setAlertMessage("Transaction completed successfully!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
 
-      // Refresh hive
       if (bee.id && variant === "default") {
         logger.log(`Refreshing hive data for bee #${bee.id}, unstake action.`);
         refreshHiveData(bee.id, "unstake")
@@ -158,7 +159,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             setSnackbarOpen(true);
           });
 
-        // 4) Show "grid loading" while we re-fetch bees
         onUnstakeLoadingChange?.(true);
 
         refreshBeesData(bee.id, "unstake")
@@ -172,7 +172,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             setSnackbarOpen(true);
           })
           .finally(() => {
-            // Once subquery is done, hide the BeeGrid spinner
             onUnstakeLoadingChange?.(false);
           });
       }
@@ -180,14 +179,20 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       setShowTxModal(false);
     }
 
-    // On error
     if (isTransactionError) {
-      setAlertSeverity("error");
-      setAlertMessage(transactionError?.message || "Transaction failed.");
+      if (
+        transactionError?.message.includes("User rejected") ||
+        transactionError?.message.includes("User denied")
+      ) {
+        setAlertSeverity("warning");
+        setAlertMessage("User rejected transaction");
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage(transactionError?.message || "Transaction failed.");
+      }
       setSnackbarOpen(true);
       setTransactionHash(undefined);
       logger.error("Transaction Error:", transactionError);
-
       setShowTxModal(false);
     }
   }, [
@@ -263,14 +268,12 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           />
         </Box>
 
-        {/* Local "Unstaking in Progress..." modal */}
         <TransactionInProgressModal
           open={showTxModal}
           onClose={() => setShowTxModal(false)}
           title="Unstaking in Progress..."
         />
 
-        {/* Snackbar for success/error */}
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}
@@ -287,7 +290,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           </Alert>
         </Snackbar>
 
-        {/* Confirmation Modal for Unstaking */}
         {variant === "default" && (
           <ConfirmationModal
             open={confirmModalOpen}

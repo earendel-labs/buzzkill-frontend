@@ -1,5 +1,3 @@
-// src/components/Card/BeeCard.tsx
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -20,12 +18,14 @@ import BeeInfo from "./BeeInfo";
 import BeeCardBackground from "./BeeCardBackground";
 import RarityChip from "./RarityChip";
 import { logger } from "@/utils/logger";
+import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+
 export interface BeeCardProps {
   bee: Hatchling;
   onPlayClick: (beeId: number) => void | Promise<void>;
-  isOwnedByUser: boolean; // Determines if "Unstake" button should be shown
-  variant?: "default" | "hive" | "myBees"; // Context variants
-  additionalInfo?: Record<string, any>; // Any extra data required by specific views
+  isOwnedByUser: boolean;
+  variant?: "default" | "hive" | "myBees";
+  additionalInfo?: Record<string, any>;
 }
 
 const StyledBeeCard = styled(Box)(({ theme }) => ({
@@ -50,14 +50,16 @@ const BeeCard: React.FC<BeeCardProps> = ({
   const { refreshBeesData } = useUserContext();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [alertSeverity, setAlertSeverity] = useState<
+    "success" | "error" | "warning"
+  >("success");
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
+  const [showTxModal, setShowTxModal] = useState(false);
+
   const { getEnvironmentById, getHiveById } = useEnvironment();
   const environment = bee.environmentID
     ? getEnvironmentById(Number(bee.environmentID))
@@ -67,7 +69,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
     : null;
   const router = useRouter();
 
-  // Handle Unstake button click
   const handleUnstakeClick = () => {
     if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
@@ -78,7 +79,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
     }
   };
 
-  // Confirm Unstake
   const handleConfirmUnstake = async () => {
     setConfirmModalOpen(false);
     const { id, environmentID, hiveID } = bee;
@@ -90,9 +90,12 @@ const BeeCard: React.FC<BeeCardProps> = ({
     }
     try {
       logger.log("Initiating unstake transaction...");
-      logger.log(`BigInt(id): ${BigInt(id)}
-       BigInt(environmentID ${BigInt(environmentID)}):
-      BigInt(hiveID: ${BigInt(hiveID)})`);
+      setShowTxModal(true);
+      logger.log(
+        `BigInt(id): ${BigInt(id)}; BigInt(environmentID): ${BigInt(
+          environmentID
+        )}; BigInt(hiveID): ${BigInt(hiveID)}`
+      );
       const tx = await writeContractAsync({
         args: [BigInt(id), BigInt(environmentID), BigInt(hiveID)],
       });
@@ -105,21 +108,30 @@ const BeeCard: React.FC<BeeCardProps> = ({
         setAlertMessage("Transaction failed to initiate.");
         setSnackbarOpen(true);
         logger.error("Transaction failed to initiate.");
+        setShowTxModal(false);
       }
-    } catch (err) {
-      setAlertSeverity("error");
-      setAlertMessage("Failed to unstake the Hatchling.");
+    } catch (err: any) {
+      if (
+        err?.message.includes("User rejected") ||
+        err?.message.includes("User denied")
+      ) {
+        setAlertSeverity("warning");
+        setAlertMessage("User rejected transaction");
+        // Do not log rejection error
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage("Failed to unstake the Hatchling.");
+        logger.error("Error during unstake transaction:", err);
+      }
       setSnackbarOpen(true);
-      logger.error("Error during unstake transaction:", err);
+      setShowTxModal(false);
     }
   };
 
-  // Cancel Unstake
   const handleCancelUnstake = () => {
     setConfirmModalOpen(false);
   };
 
-  // Wait for transaction receipt
   const {
     isLoading: isTransactionLoading,
     isSuccess: isTransactionSuccess,
@@ -129,7 +141,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
     hash: transactionHash,
   });
 
-  // Handle transaction success or error
   useEffect(() => {
     logger.log(
       "Transaction Receipt Status - Loading:",
@@ -144,21 +155,29 @@ const BeeCard: React.FC<BeeCardProps> = ({
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-
       logger.log("Called refreshBeesData() after successful transaction.");
-      // Refresh hive data if action is unstake
       if (bee.id && variant === "myBees") {
         refreshBeesData(bee.id, "unstake");
       }
+      setShowTxModal(false);
     }
     if (isTransactionError) {
-      setAlertSeverity("error");
-      setAlertMessage(
-        transactionError?.message || "Failed to unstake the Hatchling."
-      );
+      if (
+        transactionError?.message.includes("User rejected") ||
+        transactionError?.message.includes("User denied")
+      ) {
+        setAlertSeverity("warning");
+        setAlertMessage("User rejected transaction");
+      } else {
+        setAlertSeverity("error");
+        setAlertMessage(
+          transactionError?.message || "Failed to unstake the Hatchling."
+        );
+      }
       setSnackbarOpen(true);
       setTransactionHash(undefined);
       logger.error("Transaction Error:", transactionError);
+      setShowTxModal(false);
     }
   }, [
     isTransactionSuccess,
@@ -166,6 +185,8 @@ const BeeCard: React.FC<BeeCardProps> = ({
     transactionError,
     refreshBeesData,
     isTransactionLoading,
+    bee.id,
+    variant,
   ]);
 
   const handleSnackbarClose = () => {
@@ -173,7 +194,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
     setAlertMessage("");
   };
 
-  // Prepare links based on variant
   const environmentLink = environment
     ? `/Play/Location/${encodeURIComponent(
         environment.name.replace(/\s+/g, "")
@@ -186,7 +206,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
       )}/${encodeURIComponent(hive.name.replace(/\s+/g, ""))}`
     : undefined;
 
-  // Determine ownerAddress based on variant
   const ownerAddressToShow =
     variant !== "myBees" ? (isOwnedByUser ? "You" : "Other") : undefined;
 
@@ -206,7 +225,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
             bee.imageAddress !== "" ? bee.imageAddress : "/NFTs/Hatchlings.JPEG"
           }
           alt={`Hatchling ${bee.id}`}
-          sx={{ width: "100%", height: "250px", objectFit: "cover" }} // Set height for square image
+          sx={{ width: "100%", height: "250px", objectFit: "cover" }}
         />
         <StatusChip isFree={bee.status === "Free"}>{bee.status}</StatusChip>
         <RarityChip
@@ -217,7 +236,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
               ? bee.rarity
               : "Common"
           }
-        ></RarityChip>
+        />
         <Box sx={{ padding: "16px", marginBottom: "12px" }}>
           <Typography
             variant="h6"
@@ -232,12 +251,12 @@ const BeeCard: React.FC<BeeCardProps> = ({
             rarity={bee.rarity}
             environmentLink={environmentLink}
             hiveLink={hiveLink}
-            ownerAddress={ownerAddressToShow} // Conditionally pass ownerAddress
+            ownerAddress={ownerAddressToShow}
           />
           <ActionButtons
             onPlayClick={
               bee.status === "Free" ? () => onPlayClick(bee.id) : undefined
-            } // Zero-arg function
+            }
             onUnstakeClick={
               bee.status === "Staked" && isOwnedByUser
                 ? handleUnstakeClick
@@ -248,7 +267,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
           />
         </Box>
 
-        {/* Success/Error Snackbar */}
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}
@@ -264,7 +282,12 @@ const BeeCard: React.FC<BeeCardProps> = ({
           </Alert>
         </Snackbar>
 
-        {/* Confirmation Modal for Unstaking */}
+        <TransactionInProgressModal
+          open={showTxModal}
+          onClose={() => setShowTxModal(false)}
+          title="Unstaking in Progress..."
+        />
+
         <ConfirmationModal
           open={confirmModalOpen}
           title="Confirm Unstake"

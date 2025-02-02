@@ -199,8 +199,8 @@ const BeeGrid: React.FC<BeeGridProps> = ({
           }}
         >
           {variant === "default"
-            ? "No bees found in this category."
-            : "You don't own any bees. Please mint or buy a bee from a secondary market."}
+            ? "No Hatchlings found in this category."
+            : "You don't own any Hatchlings. Please mint or buy a Hatchling from a secondary market."}
         </Typography>
         {variant === "default" && (
           <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
