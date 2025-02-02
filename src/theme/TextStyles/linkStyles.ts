@@ -9,7 +9,7 @@ const linkStyles = (theme: Theme) => ({
           color: "#ffffff",
           textDecoration: "none",
           fontSize: "16px",
-          fontWeight: "700",
+          fontWeight: "500",
           "&:hover": {
             color: theme.palette.LightBlue.main,
           },
