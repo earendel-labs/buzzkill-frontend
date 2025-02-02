@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 import { useHives } from "@/context/HivesContext";
 import { Hatchling } from "@/types/Hatchling";
-import { fetchMetadata } from "@/app/utils/fetchMetaData";
+import { fetchMetadata } from "@/utils/fetchMetaData";
 import useDebounce from "@/hooks/useDebounce";
 
 interface UseFetchStakedBeesProps {

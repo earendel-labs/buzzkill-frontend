@@ -3,7 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = req.headers.cookie?.split("; ") || [];
   const sessionToken = cookies

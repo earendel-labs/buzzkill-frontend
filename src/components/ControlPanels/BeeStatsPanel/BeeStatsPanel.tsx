@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useSound } from "@/context/SoundContext";
 import MyBeesModal from "@/components/Modals/MyBees/MyBees"; // Adjust the import path accordingly
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 interface SvgBeeStatsPanelProps extends React.SVGProps<SVGSVGElement> {
   energyValue?: string;
   healthValue?: string;

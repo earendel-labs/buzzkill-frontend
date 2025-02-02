@@ -3,7 +3,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 const VolumeControlButton: React.FC = () => {
   const { isMuted, toggleMute } = useSound();

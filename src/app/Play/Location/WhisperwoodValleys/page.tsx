@@ -17,7 +17,7 @@ import Image from "next/image";
 import { Typography } from "@mui/material";
 import { useHives } from "@/context/HivesContext"; // Ensure correct import path
 import { HiveHatchlingInfo } from "@/types/Environment";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();

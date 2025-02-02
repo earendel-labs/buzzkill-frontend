@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
 // Supabase environment variables
 const supabaseUrl = process.env.SUPABASE_API_DOMAIN!;
 const supabaseAnonKey = process.env.SUPABASE_API_KEY!;

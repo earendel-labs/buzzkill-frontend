@@ -21,7 +21,7 @@ import { createWalletTheme } from "@/theme/walletTheme";
 import { useRouter } from "next/navigation";
 import HCaptchaComponent from "@/components/Verification/HCaptchaComponent";
 import { useOneID } from "@/context/OneIDContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to the Buzzkill World",

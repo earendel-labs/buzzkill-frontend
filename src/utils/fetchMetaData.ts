@@ -1,4 +1,4 @@
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 // List of IPFS gateways for fallback
 const ipfsGateways = [

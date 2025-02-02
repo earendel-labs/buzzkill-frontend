@@ -15,7 +15,7 @@ import { AlertColor } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { ProfileData } from "@/types/ProfileData";
 import { useOneID } from "@/context/OneIDContext";
-import { fetcher } from "@/app/utils/fetcher";
+import { fetcher } from "@/utils/fetcher";
 
 interface ProfileContextType {
   profileData: ProfileData | null;

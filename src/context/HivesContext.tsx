@@ -26,8 +26,8 @@ import { useRouter } from "next/navigation";
 import { useReadContracts } from "wagmi";
 import HiveStakingAbiJson from "@/app/libs/abi/HiveStaking.json";
 import { Abi } from "abitype";
-import { pollUntilCondition } from "@/app/utils/polling";
-import { logger } from "@/app/utils/logger";
+import { pollUntilCondition } from "@/utils/polling";
+import { logger } from "@/utils/logger";
 
 interface HivesState {
   environments: Environment[];

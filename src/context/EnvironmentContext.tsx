@@ -14,7 +14,7 @@ import {
   SpecificEnvironmentData,
   Hive,
 } from "@/types/Environment";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 interface EnvironmentContextProps {
   environments: Environment[];

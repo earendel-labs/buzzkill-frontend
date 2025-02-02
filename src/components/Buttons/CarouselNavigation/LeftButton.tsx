@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 // Dynamic import to disable SSR for this component
 const LeftButton = dynamic(() => import("./LeftButton"), { ssr: false });
 
@@ -31,8 +31,8 @@ const LeftButtonComponent: React.FC = () => {
         return new Promise<void>((resolve, reject) => {
           const img = new Image();
           img.src = src;
-          img.onload = () => resolve();  // Call resolve without passing the event
-          img.onerror = () => reject();  // Call reject without passing the event
+          img.onload = () => resolve(); // Call resolve without passing the event
+          img.onerror = () => reject(); // Call reject without passing the event
         });
       });
       const preloadSounds = sounds.map((src) => {

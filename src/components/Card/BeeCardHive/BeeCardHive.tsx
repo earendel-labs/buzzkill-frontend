@@ -14,7 +14,7 @@ import ActionButtonsHive from "../BeeCard/ActionButtonsHive";
 import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeCardBackground from "../BeeCard/BeeCardBackground";
 import { useHives } from "@/context/HivesContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
 
 export interface BeeCardHiveProps {

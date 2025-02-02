@@ -5,7 +5,7 @@ import { Box, Typography, Skeleton } from "@mui/material";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { UserInfo } from "@/types/UserInfo";
-import { formatNumber } from "@/app/utils/formatNumber";
+import { formatNumber } from "@/utils/formatNumber";
 import UserResourcesBackground from "./UserResourcesBackground";
 
 const fetchUserInfo = async (): Promise<UserInfo> => {

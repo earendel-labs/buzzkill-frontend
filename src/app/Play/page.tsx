@@ -12,7 +12,7 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import { Typography } from "@mui/material";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);

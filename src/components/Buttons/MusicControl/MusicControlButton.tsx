@@ -3,7 +3,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicOffIcon from "@mui/icons-material/MusicOff";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 const MusicControlButton: React.FC = () => {
   const { isMuted, isMusicMuted, toggleMusicMute } = useSound();

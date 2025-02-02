@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { getSupabaseClientWithAuth } from "@/app/libs/supabaseClient";
 import jwt from "jsonwebtoken";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 const rateLimiter = new RateLimiterMemory({
   points: 5, // Allow 5 requests
   duration: 60, // Per 60 seconds

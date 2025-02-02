@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 interface SoundContextType {
   isMuted: boolean;
   toggleMute: () => void;

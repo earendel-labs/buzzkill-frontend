@@ -4,7 +4,7 @@ import MusicOffIcon from "@mui/icons-material/MusicOff";
 import CloseIcon from "@mui/icons-material/Close";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 interface ModalCloseButtonButtonProps {
   isClose?: boolean;
   onClick?: () => void;

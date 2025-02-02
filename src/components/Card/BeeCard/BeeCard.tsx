@@ -19,7 +19,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import BeeInfo from "./BeeInfo";
 import BeeCardBackground from "./BeeCardBackground";
 import RarityChip from "./RarityChip";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 export interface BeeCardProps {
   bee: Hatchling;
   onPlayClick: (beeId: number) => void | Promise<void>;
@@ -202,7 +202,9 @@ const BeeCard: React.FC<BeeCardProps> = ({
         }
       >
         <HatchlingImage
-          imageAddress={bee.imageAddress}
+          imageAddress={
+            bee.imageAddress !== "" ? bee.imageAddress : "/NFTs/Hatchlings.JPEG"
+          }
           alt={`Hatchling ${bee.id}`}
           sx={{ width: "100%", height: "250px", objectFit: "cover" }} // Set height for square image
         />

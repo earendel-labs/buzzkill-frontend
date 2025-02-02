@@ -3,7 +3,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { serialize } from "cookie";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 export default async function clearIsNewUser(
   req: NextApiRequest,
   res: NextApiResponse
@@ -24,6 +24,3 @@ export default async function clearIsNewUser(
   res.setHeader("Set-Cookie", clearedCookie);
   return res.status(200).json({ message: "isNewUser cookie cleared" });
 }
-
-
- 

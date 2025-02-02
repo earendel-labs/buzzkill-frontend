@@ -2,7 +2,7 @@
 
 import "../styles/globals.css";
 import CssBaseline from "@mui/material/CssBaseline";
-import { SessionProvider } from "next-auth/react";
+import type { Session } from "next-auth";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
@@ -48,9 +48,8 @@ const client = createApolloClient();
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  session,
+}: Readonly<{ session: Session; children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${veraHumana.variable} ${poppins.variable}`}>
       <head>
@@ -78,30 +77,27 @@ export default function RootLayout({
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
-        {/* Wrap with SessionProvider */}
-        <SessionProvider>
-          <OneIDProvider>
-            <WalletConfiguration>
-              <ApolloProvider client={client}>
-                <LoadingProvider>
-                  <SoundProvider>
-                    <UserProvider>
-                      <ProfileProvider>
-                        <CssBaseline />
-                        <GlobalScrollbarStyles />
-                        <EnvironmentProvider>
-                          {children}
-                          <Analytics />
-                          <SpeedInsights />
-                        </EnvironmentProvider>
-                      </ProfileProvider>
-                    </UserProvider>
-                  </SoundProvider>
-                </LoadingProvider>
-              </ApolloProvider>
-            </WalletConfiguration>
-          </OneIDProvider>
-        </SessionProvider>
+        <OneIDProvider>
+          <WalletConfiguration session={session}>
+            <ApolloProvider client={client}>
+              <LoadingProvider>
+                <SoundProvider>
+                  <UserProvider>
+                    <ProfileProvider>
+                      <CssBaseline />
+                      <GlobalScrollbarStyles />
+                      <EnvironmentProvider>
+                        {children}
+                        <Analytics />
+                        <SpeedInsights />
+                      </EnvironmentProvider>
+                    </ProfileProvider>
+                  </UserProvider>
+                </SoundProvider>
+              </LoadingProvider>
+            </ApolloProvider>
+          </WalletConfiguration>
+        </OneIDProvider>
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ import { SiweMessage } from "siwe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
 import { parse, serialize } from "cookie";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 export function getAuthOptions(
   req: IncomingMessage,

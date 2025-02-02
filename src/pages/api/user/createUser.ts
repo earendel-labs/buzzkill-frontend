@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/app/libs/supabaseClient";
 import { REFERRAL_REWARD_POINTS } from "@/constants/rewards"; // Use default or synced constant
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 // Function to generate a unique code
 function generateUniqueCode(): string {
   const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -67,10 +67,7 @@ export default async function createUser(
       } else {
         invitedBy = referrerCode;
         referrer = data;
-        logger.log(
-          "Valid referrer found. Referrer address:",
-          referrer.address
-        );
+        logger.log("Valid referrer found. Referrer address:", referrer.address);
         logger.log(
           "Current invited_count for referrer:",
           referrer.invited_count
@@ -144,9 +141,7 @@ export default async function createUser(
       if (rewardError) {
         logger.error("Error inserting entry into rewards_table:", rewardError);
       } else {
-        logger.log(
-          rewardEntry
-        );
+        logger.log(rewardEntry);
       }
     }
 

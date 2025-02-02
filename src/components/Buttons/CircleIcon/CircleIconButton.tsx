@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { SxProps, Theme } from "@mui/system";
 import { Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 interface CircleIconButtonProps {
   icon: React.ReactNode;
   onClick: () => void;
@@ -69,7 +69,7 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
       hoverSound.play();
     }
   };
- 
+
   const handleMouseDown = () => {
     if (!isMuted && clickSound && !disableClickSound) {
       clickSound.play();

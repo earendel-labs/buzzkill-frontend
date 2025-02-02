@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import Image from "next/image";
 import { UserInfo } from "@/types/UserInfo";
-import { formatNumber } from "@/app/utils/formatNumber";
+import { formatNumber } from "@/utils/formatNumber";
 
 // Function to fetch user info from the Next.js API
 const fetchUserInfo = async (): Promise<UserInfo> => {

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/app/libs/supabaseClient";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 
 export default async function checkUser(
   req: NextApiRequest,

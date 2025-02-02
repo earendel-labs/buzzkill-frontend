@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
-import { logger } from "@/app/utils/logger";
+import { logger } from "@/utils/logger";
 const RightButton: React.FC = () => {
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
