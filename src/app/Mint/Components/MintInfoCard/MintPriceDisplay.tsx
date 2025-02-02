@@ -9,8 +9,8 @@ const MintPriceDisplay: React.FC = () => {
       <Typography
         variant="h1"
         sx={{
-          mt: 2,
-          mb: 2,
+          mt: 1,
+          mb: 1,
           textAlign: "center",
           fontSize: {
             xs: "1rem",
@@ -40,9 +40,10 @@ const MintPriceDisplay: React.FC = () => {
           },
         }}
       >
-        Awaken a Buzzkill Hatchling from its two-million-year slumber! Mint now
-        to embark on an epic journey to rejuvenate your hive in the thawing
-        world of Nectera. <br></br>
+        In the thawing world of Nectera, the Buzzkill Hatchlings are awakening
+        after millennia of dormancy. Now’s your chance to explore the planet and
+        earn Honey Drop Points. Mint up to 2 free Hatchlings, stake them in
+        hives, and earn points based on their rarity. <br></br>
         <br></br>
         NOTE: There is a 1 minute cooldown between mints.
       </Typography>

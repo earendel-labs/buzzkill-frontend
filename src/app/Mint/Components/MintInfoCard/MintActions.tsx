@@ -86,16 +86,16 @@ const MintActions: React.FC = () => {
         </Typography>
       ) : (
         <>
-          {isCooldown && cooldownRemaining > 0 && (
+          {hasRemainingMint && isCooldown && cooldownRemaining > 0 && (
             <Typography
               variant="body1"
-              fontWeight="bold"
-              sx={{ mb: 2, color: "#FFD700" }}
+              fontSize="20px"
+              fontWeight="900"
+              sx={{ mb: 2, color: theme.palette.Orange.main }}
             >
               Please wait {cooldownRemaining} seconds before minting again.
             </Typography>
           )}
-
           <PrimaryButton
             text="Mint"
             onClick={handleMint}
