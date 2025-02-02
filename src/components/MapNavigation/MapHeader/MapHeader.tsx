@@ -17,7 +17,7 @@ const MapHeader: React.FC<MapHeaderProps> = ({ text }) => {
         component="div"
         sx={{
           color: "white",
-          fontWeight: "760",
+          fontWeight: "700",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",

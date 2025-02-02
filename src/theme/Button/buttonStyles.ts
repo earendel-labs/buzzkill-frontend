@@ -6,7 +6,7 @@ const buttonStyles = (theme: Theme) => ({
       root: {
         fontFamily: '"Vera Humana 95", "Poppins"',
         fontSize: "18px",
-        fontWeight: "900",
+        fontWeight: "700",
         textTransform: "none",
         padding: "10px 20px", // Ensure this is consistent for both buttons
         display: "flex",

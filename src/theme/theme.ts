@@ -243,7 +243,7 @@ const getTheme = (): Theme => {
       ToolTipValue: {
         fontFamily: "var(--font-vera-humana), var(--font-poppins), sans-serif",
         fontSize: "1.125rem",
-        fontWeight: "800",
+        fontWeight: "700",
         lineHeight: "100%",
         WebkitTextStroke: `0.3px ${palette.DarkBlue.main}`,
       },

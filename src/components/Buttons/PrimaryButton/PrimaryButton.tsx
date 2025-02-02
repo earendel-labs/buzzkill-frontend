@@ -146,7 +146,7 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
         component="div"
         sx={{
           whiteSpace: "nowrap",
-          fontWeight: "1000",
+          fontWeight: "700",
           fontSize: `${scale * 1}rem`,
         }}
       >
