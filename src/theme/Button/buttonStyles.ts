@@ -3,18 +3,18 @@ import { Theme } from "@mui/material/styles";
 const buttonStyles = (theme: Theme) => ({
   MuiButton: {
     styleOverrides: {
-      root: { 
+      root: {
         fontSize: "18px",
-        fontWeight: "700",
+        fontWeight: "800",
         textTransform: "none",
-        padding: "10px 20px", // Ensure this is consistent for both buttons
+        padding: "10px 20px", 
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: "6px",
         borderStyle: "solid",
         boxSizing: "border-box",
-        height: "auto", // Ensure height is not fixed but flexible
+        height: "auto",  
 
         "&.blueConnectWallet": {
           backgroundColor: theme.palette.DarkBlue.main,

@@ -2,14 +2,19 @@ import { Theme as MUITheme } from "@mui/material/styles";
 import { darkTheme, Theme as RainbowKitTheme } from "@rainbow-me/rainbowkit";
 
 function deepMerge(target: any, source: any): any {
-  if (typeof target !== 'object' || typeof source !== 'object' || target === null || source === null) {
+  if (
+    typeof target !== "object" ||
+    typeof source !== "object" ||
+    target === null ||
+    source === null
+  ) {
     return source;
   }
 
   const result = Array.isArray(target) ? [...target] : { ...target };
 
   for (const key of Object.keys(source)) {
-    if (source[key] && typeof source[key] === 'object') {
+    if (source[key] && typeof source[key] === "object") {
       result[key] = deepMerge(target[key], source[key]);
     } else {
       result[key] = source[key];
@@ -46,8 +51,9 @@ export const createWalletTheme = (muiTheme: MUITheme): RainbowKitTheme => {
       standby: muiTheme.palette.GoldFaded.main,
     },
     fonts: {
-      body: "Poppins",
+      body: "var(--font-poppins), sans-serif",
     },
+
     radii: {
       actionButton: "4px",
       connectButton: "4px",

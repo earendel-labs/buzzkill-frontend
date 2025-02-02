@@ -12,6 +12,7 @@ const tabStyles = (theme: Theme) => ({
     styleOverrides: {
       root: {
         fontSize: "1.5rem", // Larger font size
+     
         textTransform: "none", // Keep text case as provided
         fontWeight: "normal",
         "&.Mui-selected": {
