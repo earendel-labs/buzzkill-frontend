@@ -3,8 +3,7 @@ import { Theme } from "@mui/material/styles";
 const buttonStyles = (theme: Theme) => ({
   MuiButton: {
     styleOverrides: {
-      root: {
-        fontFamily: '"Vera Humana 95", "Poppins"',
+      root: { 
         fontSize: "18px",
         fontWeight: "700",
         textTransform: "none",

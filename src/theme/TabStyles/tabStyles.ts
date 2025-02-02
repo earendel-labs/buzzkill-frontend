@@ -12,7 +12,6 @@ const tabStyles = (theme: Theme) => ({
     styleOverrides: {
       root: {
         fontSize: "1.5rem", // Larger font size
-        fontFamily: '"Vera Humana 95", "Poppins"',
         textTransform: "none", // Keep text case as provided
         fontWeight: "normal",
         "&.Mui-selected": {
