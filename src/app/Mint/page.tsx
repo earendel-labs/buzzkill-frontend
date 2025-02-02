@@ -5,22 +5,23 @@ import Layout from "@/components/Layouts/Layout/Layout";
 import NFTCard from "@/app/Mint/Components/MintCard/MintCard";
 import { MintProvider, useMintContext } from "@/context/MintContext";
 import MintInfoCard from "./Components/MintInfoCard/MintInfoCard";
+import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
 
 const MintPageContent: React.FC = () => {
-  // We can consume just what we need from the context to display the first column or handle snackbars
   const {
     transactionHash,
     snackbarOpen,
     setSnackbarOpen,
     errorMessage,
     isMinted,
+    isTransactionLoading,
   } = useMintContext();
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  // Some dummy data for NFTCard
+  // Dummy data for NFTCard
   const nftData = {
     id: "17",
     energy: "75/95",
@@ -94,7 +95,7 @@ const MintPageContent: React.FC = () => {
             frontImage="/Mint/NFT-Cards.png"
             backImage="/NFTs/Hatchlings.JPEG"
             nftData={nftData}
-            mintedNFTs={[]} // or any relevant data
+            mintedNFTs={[]} // any relevant data
             quantityMinted={1}
             transactionHash={transactionHash}
           />
@@ -144,6 +145,13 @@ const MintPageContent: React.FC = () => {
           )}
         </Alert>
       </Snackbar>
+
+      {/* Transaction In Progress Modal */}
+      <TransactionInProgressModal
+        open={isTransactionLoading}
+        onClose={() => {}}
+        title="Processing Mint Transaction..."
+      />
     </Layout>
   );
 };

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAccount, useBalance, useWaitForTransactionReceipt } from "wagmi";
 import {
   useReadBuzzkillHatchlingsNftTotalSupply,
-  useReadBuzzkillHatchlingsNftCurrentBatchSize,
+  useReadBuzzkillHatchlingsNftCurrentMaxSupply,
   useWriteBuzzkillHatchlingsNftMint,
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import { formatEther } from "ethers";
@@ -98,7 +98,7 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading: isTotalSupplyLoading,
     isError: isTotalSupplyError,
     error: totalSupplyError,
-  } = useReadBuzzkillHatchlingsNftCurrentBatchSize();
+  } = useReadBuzzkillHatchlingsNftCurrentMaxSupply();
 
   // Write contract
   const { writeContractAsync: mintBatch } = useWriteBuzzkillHatchlingsNftMint();
