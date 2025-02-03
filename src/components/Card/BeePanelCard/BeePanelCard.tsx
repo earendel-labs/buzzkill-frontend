@@ -1,11 +1,12 @@
 import React from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
-import { useUserContext } from "@/context/UserContext"; // Adjust import path
+import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard"; // Ensure correct path
+import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import Image from "next/image";
-// Dynamic import of the PrimaryButton to avoid SSR
+
+// Dynamic import of PrimaryButton to avoid SSR issues
 const PrimaryButton = dynamic(
   () => import("@/components/Buttons/PrimaryButton/PrimaryButton"),
   { ssr: false }
@@ -23,10 +24,19 @@ const BeePanelCard: React.FC = () => {
     router.push("/Mint");
   };
 
-  // Find the image of the activeBee if it exists
+  // Get the image for the active bee or a fallback image
   const activeBeeImage =
     bees.find((bee) => bee.id === activeBee)?.imageAddress ||
     "/NFTs/Hatchlings.JPEG";
+
+  // Media query for resolution 1400x900 to reduce vertical height and adjust spacing
+  const mediaQueryStyles = {
+    "@media (min-width:1400px) and (max-height:900px)": {
+      height: "180px",
+      width: "360px",
+      padding: "20px 24px",
+    },
+  };
 
   if (loadingBees) {
     return (
@@ -36,7 +46,11 @@ const BeePanelCard: React.FC = () => {
           height: "220px",
           padding: "16px",
           backgroundColor: "rgba(34, 46, 80, 0.6)",
-        }} // Adjust transparency
+          "@media (min-width:1400px) and (max-height:900px)": {
+            height: "180px",
+            padding: "12px",
+          },
+        }}
       >
         <Skeleton variant="rectangular" width="100%" height="100%" />
       </SemiTransparentCard>
@@ -49,18 +63,17 @@ const BeePanelCard: React.FC = () => {
         width: "420px",
         height: "220px",
         padding: "28px 32px",
-        position: "relative", // Needed for the pseudo-element to work
+        position: "relative",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: `rgba(34, 46, 80, 0.8)`, // Dynamic transparency
-        borderRadius: "8px", // Rounded corners
-        overflow: "hidden", // Ensure the pseudo-element stays within the box
-        zIndex: 1, // Ensure content is above the pseudo-element
+        backgroundColor: "rgba(34, 46, 80, 0.8)",
+        borderRadius: "8px",
+        overflow: "hidden",
+        zIndex: 1,
         backdropFilter: "blur(2px)",
-        // Inner Shadows
         boxShadow: `
-          inset 4px 4px 4px rgba(0, 0, 0, 0.25), // First inner shadow (X: 4px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.25))
-          inset 0px 4px 4px rgba(0, 0, 0, 0.12)  // Second inner shadow (X: 0px, Y: 4px, Blur: 4px, Color: rgba(0, 0, 0, 0.12))
+          inset 4px 4px 4px rgba(0, 0, 0, 0.25),
+          inset 0px 4px 4px rgba(0, 0, 0, 0.12)
         `,
         "&::before": {
           content: '""',
@@ -69,17 +82,18 @@ const BeePanelCard: React.FC = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          borderRadius: "inherit", // Inherit border radius for gradient
+          borderRadius: "inherit",
           background:
-            "linear-gradient(135deg,  #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)", // Golden gradient
-          padding: "3px", // Border width
+            "linear-gradient(135deg,  #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
+          padding: "3px",
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor", // Apply the mask to make only the border show gradient
+          WebkitMaskComposite: "xor",
           maskComposite: "exclude",
-          zIndex: -1, // Make sure it's behind the content
+          zIndex: -1,
         },
-      }} // Adjust transparency
+        ...mediaQueryStyles,
+      }}
     >
       <Box
         display="flex"
@@ -87,16 +101,19 @@ const BeePanelCard: React.FC = () => {
         alignItems="center"
         sx={{ width: "100%", height: "100%" }}
       >
-        {/* Left column with bee image or placeholder */}
+        {/* Left column with bee image */}
         <Box
           sx={{
             width: "40%",
             padding: "0px",
             boxShadow: `
-              0px 4px 4px rgba(0, 0, 0, 0.25), 
-              -2px -2px 4px rgba(0, 0, 0, 0.25)  
+              0px 4px 4px rgba(0, 0, 0, 0.25),
+              -2px -2px 4px rgba(0, 0, 0, 0.25)
             `,
-            borderRadius: "8px", // Ensure the shadow follows the image's rounded corners
+            borderRadius: "8px",
+            "@media (min-width:1400px) and (max-height:900px)": {
+              width: "35%",
+            },
           }}
         >
           <Image
@@ -105,10 +122,10 @@ const BeePanelCard: React.FC = () => {
             width={320}
             height={320}
             style={{
-              objectFit: "contain", // Maintain aspect ratio while fitting inside the container
-              height: "100%", // Take up the full height of the parent container
-              width: "auto", // Dynamically adjust width to maintain aspect ratio
-              borderRadius: "8px", // Ensure the image itself has rounded corners
+              objectFit: "contain",
+              height: "100%",
+              width: "auto",
+              borderRadius: "8px",
             }}
           />
         </Box>
@@ -116,70 +133,69 @@ const BeePanelCard: React.FC = () => {
         {/* Right column with text and button */}
         <Box sx={{ width: "55%", padding: "4px", textAlign: "center" }}>
           {activeBee ? (
-            <>
-              {/* Container for Typography and Button */}
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-start"
+              alignItems="center"
+              sx={{ height: "100%" }}
+            >
+              {/* Hatchling number */}
               <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="flex-start" // Start the text at the top
-                alignItems="center" // Horizontally center the text and button
                 sx={{
-                  height: "100%", // Full height to distribute content
+                  width: "100%",
+                  textAlign: "center",
+                  mb: 4,
                 }}
               >
-                {/* Typography at the top */}
-                <Box
+                <Typography
+                  variant="h6"
                   sx={{
-                    width: "100%",
-                    textAlign: "center", // Keep text horizontally centered
-                    mb: 4, // Ensure no top margin
+                    "@media (min-width:1400px) and (max-height:900px)": {
+                      fontSize: "1rem",
+                    },
                   }}
                 >
-                  <Typography variant="h6">
-                    {`Hatchling #${activeBee}`}
-                  </Typography>
-                </Box>
-
-                {/* Use flexGrow to push the button towards the center */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexGrow: 1, // Take up the remaining space to push the button down
-                    mb: 6,
-                  }}
-                >
-                  <PrimaryButton
-                    text="Hatchlings"
-                    onClick={handleMyBeesClick}
-                  />
-                </Box>
+                  {`Hatchling #${activeBee}`}
+                </Typography>
               </Box>
-            </>
+
+              {/* Button container */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexGrow: 1,
+                  mb: 6,
+                  "@media (min-width:1400px) and (max-height:900px)": {
+                    mb: 4,
+                  },
+                }}
+              >
+                <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
+              </Box>
+            </Box>
           ) : bees.length > 0 || stakedBees.length > 0 ? (
             <>
               <Typography
                 sx={{
                   mb: 3,
                   textAlign: "center",
-                  maxWidth: "480px", // Set maxWidth for the paragraph
+                  maxWidth: "480px",
                   fontSize: {
-                    xs: "0.9rem", // Smaller font for smaller screens
-                    sm: "1rem", // Default font size for small-medium screens
-                    xxl: "1.2rem", // Larger font size for extra extra large screens
+                    xs: "0.9rem",
+                    sm: "1rem",
+                    xxl: "1.2rem",
+                  },
+                  "@media (min-width:1400px) and (max-height:900px)": {
+                    fontSize: "0.8rem",
                   },
                 }}
               >
-                {bees.length > 0 ? (
-                  "Select Your Hatchling"
-                ) : (
-                  <>
-                    You have staked Hatchlings
-                    <br />
-                    View them here
-                  </>
-                )}
+                {bees.length > 0
+                  ? "Select Your Hatchling"
+                  : "You have staked Hatchlings\nView them here"}
               </Typography>
               <Box display="flex" justifyContent="center">
                 <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
@@ -191,11 +207,14 @@ const BeePanelCard: React.FC = () => {
                 sx={{
                   mb: 3,
                   textAlign: "center",
-                  maxWidth: "480px", // Set maxWidth for the paragraph
+                  maxWidth: "480px",
                   fontSize: {
-                    xs: "0.9rem", // Smaller font for smaller screens
-                    sm: "1rem", // Default font size for small-medium screens
-                    xxl: "1.2rem", // Default font size for small-medium screens
+                    xs: "0.9rem",
+                    sm: "1rem",
+                    xxl: "1.2rem",
+                  },
+                  "@media (min-width:1400px) and (max-height:900px)": {
+                    fontSize: "0.8rem",
                   },
                 }}
               >
