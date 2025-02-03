@@ -48,6 +48,7 @@ const BeePanelCard: React.FC = () => {
           backgroundColor: "rgba(34, 46, 80, 0.6)",
           "@media (min-width:1400px) and (max-height:900px)": {
             height: "180px",
+            width: "360px",
             padding: "12px",
           },
         }}
@@ -189,7 +190,7 @@ const BeePanelCard: React.FC = () => {
                     xxl: "1.2rem",
                   },
                   "@media (min-width:1400px) and (max-height:900px)": {
-                    fontSize: "0.8rem",
+                    fontSize: "1rem",
                   },
                 }}
               >

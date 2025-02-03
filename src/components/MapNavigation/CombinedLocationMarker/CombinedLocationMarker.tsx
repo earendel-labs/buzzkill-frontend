@@ -32,7 +32,7 @@ const CombinedLocationMarker: React.FC<CombinedLocationMarkerProps> = ({
       {isHovered && (
         <LocationHeader
           left={`calc(${left} + 30px)`} // Center the header above the marker
-          top={`calc(${top} + 10px)`} // Adjust the top position to be closer to the marker
+          top={`calc(${top} + 14px)`} // Adjust the top position to be closer to the marker
           text={text}
         />
       )}

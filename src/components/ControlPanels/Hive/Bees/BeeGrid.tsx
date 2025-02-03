@@ -58,11 +58,11 @@ const BeeGrid: React.FC<BeeGridProps> = ({
   };
 
   const handleMintClick = () => {
-    window.open("https://dagora.xyz/launchpad/buzzkill", "_blank");
+    window.open("/Mint", "_blank");
   };
 
-  const handleBuyClick = () => {
-    window.open("/mint", "_blank");
+  const handleHatchlingsClick = () => {
+    window.open("/User/Profile/MyBees", "_blank");
   };
 
   // Filter and sort the bees based on tab and ownership
@@ -205,7 +205,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         {variant === "default" && (
           <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
             <PrimaryButton text="Mint" onClick={handleMintClick} />
-            <PrimaryButton text="Buy" onClick={handleBuyClick} />
+            <PrimaryButton text="Hatchlings" onClick={handleHatchlingsClick} />
           </Box>
         )}
       </Box>
