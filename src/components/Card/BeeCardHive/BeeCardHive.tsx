@@ -1,5 +1,3 @@
-// src/components/Card/BeeCardHive/BeeCardHive.tsx
-
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
 import { styled } from "@mui/system";
@@ -16,6 +14,9 @@ import BeeCardBackground from "../BeeCard/BeeCardBackground";
 import { useHives } from "@/context/HivesContext";
 import { logger } from "@/utils/logger";
 import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import RarityChip from "../BeeCard/RarityChip";
+import { useTheme } from "@mui/material/styles";
+import Person from "@mui/icons-material/Person";
 
 export interface BeeCardHiveProps {
   bee: Hatchling;
@@ -23,18 +24,29 @@ export interface BeeCardHiveProps {
   isOwnedByUser: boolean;
   variant?: "default" | "myBees";
   additionalInfo?: Record<string, any>;
-  /**
-   * Callback from BeeGrid to set "unstakingLoading"
-   */
   onUnstakeLoadingChange?: (loading: boolean) => void;
 }
 
 const StyledBeeCard = styled(Box)(({ theme }) => ({
-  // ...style...
+  position: "relative",
+  borderRadius: "12px",
+  width: "100%",
+  maxWidth: "320px",
+  overflow: "hidden",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    transform: "scale(1.03)",
+    boxShadow: "0px 0px 10px 5px rgba(255, 255, 255, 0.8)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "280px",
+  },
 }));
 
 const ImageContainer = styled(Box)({
-  // ...style...
+  width: "100%",
+  aspectRatio: "1 / 1",
+  position: "relative",
 });
 
 const BeeCardHive: React.FC<BeeCardHiveProps> = ({
@@ -48,7 +60,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   const { refreshBeesData } = useUserContext();
   const { refreshHiveData } = useHives();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
-
+  const theme = useTheme();
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >(undefined);
@@ -112,7 +124,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       ) {
         setAlertSeverity("warning");
         setAlertMessage("User rejected transaction");
-        // Do not log error to console if the user rejected the transaction.
       } else {
         setAlertSeverity("error");
         setAlertMessage("Failed to unstake the Hatchling.");
@@ -238,7 +249,15 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             sx={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </ImageContainer>
-
+        <RarityChip
+          rarity={
+            bee.rarity === "Common" ||
+            bee.rarity === "Rare" ||
+            bee.rarity === "Ultra-Rare"
+              ? bee.rarity
+              : "Common"
+          }
+        />
         <Box sx={{ padding: "16px", marginBottom: "12px" }}>
           <Typography
             variant="h6"
@@ -248,12 +267,42 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             Hatchling ID: {bee.id}
           </Typography>
 
+          {/* Owner section with updated icon alignment */}
           <Typography
             variant="body1"
             color="white"
-            sx={{ fontSize: "1.1rem", marginTop: "8px", marginLeft: 1 }}
+            sx={{
+              fontSize: "1.1rem",
+              marginTop: "8px",
+              marginLeft: 1,
+              display: "inline-flex",
+              gap: "6px",
+              lineHeight: "1.2",
+            }}
           >
-            <strong>{bee.rarity}</strong>
+            <Person
+              sx={{
+                fontSize: "1.1rem",
+                display: "inline-flex",
+                verticalAlign: "bottom",
+                color: theme.palette.LightBlue.main,
+              }}
+            />
+            <Box
+              component="strong"
+              sx={{
+                color: isOwnedByUser ? theme.palette.LightBlue.main : "inherit",
+                fontWeight: isOwnedByUser ? "bold" : "normal",
+                lineHeight: "1.2",
+                display: "inline-block",
+              }}
+            >
+              {isOwnedByUser
+                ? "You"
+                : `${bee.ownerAddress.slice(0, 6)}...${bee.ownerAddress.slice(
+                    -4
+                  )}`}
+            </Box>
           </Typography>
 
           <ActionButtonsHive
