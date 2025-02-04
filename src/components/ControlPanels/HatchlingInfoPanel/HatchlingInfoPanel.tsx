@@ -1,12 +1,35 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Tab, Tabs, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Tab,
+  Tabs,
+  List,
+  ListItem,
+  ListItemText,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { HatchlingTable } from "./HatchlingTable";
 import Link from "next/link";
+import { HatchlingTable } from "./HatchlingTable";
+import MiniLeaderboard from "@/app/Play/User/Profile/Components/MyRewards/MiniLeaderboard";
+
+// Define the shape of a leaderboard entry
+interface LeaderboardEntry {
+  rank: number;
+  address: string;
+  points: number;
+}
 
 const HatchlingInfoPanel: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -15,34 +38,34 @@ const HatchlingInfoPanel: React.FC = () => {
   const [resizeKey, setResizeKey] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // Toggle expand/collapse for the info panel
   const handleToggle = () => {
     if (isExpanded) {
-      // Fade out the content without moving it.
       setShowContent(false);
-      // Collapse container after fade-out completes.
       setTimeout(() => {
         setIsExpanded(false);
       }, 500);
     } else {
-      // Expand container first.
       setIsExpanded(true);
-      // Fade in content shortly after.
       setTimeout(() => {
         setShowContent(true);
       }, 50);
     }
   };
 
+  // Handle tab changes
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
   };
 
+  // Data for the hatchling table (assumed to be defined elsewhere)
   const data = [
     { id: 1, rarity: "Common", mintingPoints: 5000, baseDailyYield: 1000 },
     { id: 2, rarity: "Rare", mintingPoints: 6000, baseDailyYield: 1200 },
     { id: 3, rarity: "Ultra-Rare", mintingPoints: 8000, baseDailyYield: 1500 },
   ];
 
+  // Observe size changes to force a resize of tabs if needed
   useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
       setResizeKey((prevKey) => prevKey + 1);
@@ -114,7 +137,6 @@ const HatchlingInfoPanel: React.FC = () => {
         },
       }}
     >
-      {/* Content wrapper with constant padding to avoid shifting */}
       <Box
         ref={contentRef}
         sx={{
@@ -123,7 +145,7 @@ const HatchlingInfoPanel: React.FC = () => {
           padding: "2rem",
           textAlign: "left",
           color: "white",
-          minHeight: "400px", // Set a fixed height to prevent layout shifts
+          minHeight: "400px",
         }}
       >
         <Typography
@@ -158,14 +180,14 @@ const HatchlingInfoPanel: React.FC = () => {
           <Tab label="Leaderboard" value="leaderboard" />
         </Tabs>
 
-        {/* Tab content with consistent padding */}
         {selectedTab === "campaign" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
             <Typography sx={{ marginBottom: "1rem" }}>
               In the thawing world of Nectera, the Buzzkill Hatchlings are
               awakening after millennia of dormancy. Now’s your chance to
               explore the planet and earn Honey Drop Points.
-              <br /> <br />
+              <br />
+              <br />
               Mint up to 2 free Hatchlings, stake them in hives, and watch as
               they yield points based on their rarity.
             </Typography>
@@ -178,7 +200,6 @@ const HatchlingInfoPanel: React.FC = () => {
               You can{" "}
               <Link
                 href="/mint"
-                className="linkStyle1"
                 style={{
                   textDecoration: "none",
                   fontWeight: "bold",
@@ -202,15 +223,15 @@ const HatchlingInfoPanel: React.FC = () => {
             </Typography>
             <List
               sx={{
-                padding: 0, // Remove padding around the list
-                margin: 0, // Remove margin around the list
-                listStyleType: "none", // Optional for cleaner output
+                padding: 0,
+                margin: 0,
+                listStyleType: "none",
               }}
             >
               <ListItem
                 disableGutters
                 sx={{
-                  padding: "2px 0", // Reduce padding between list items
+                  padding: "2px 0",
                 }}
               >
                 <ListItemText
@@ -219,7 +240,7 @@ const HatchlingInfoPanel: React.FC = () => {
                       href="/Play/Location/WhisperwoodValleys"
                       style={{
                         textDecoration: "none",
-                        color: "inherit", // Inherit color from the parent styling
+                        color: "inherit",
                       }}
                     >
                       Whisperwood Valley (180 spots - open)
@@ -236,7 +257,7 @@ const HatchlingInfoPanel: React.FC = () => {
               <ListItem
                 disableGutters
                 sx={{
-                  padding: "2px 0", // Consistent reduced padding
+                  padding: "2px 0",
                 }}
               >
                 <ListItemText
@@ -252,7 +273,7 @@ const HatchlingInfoPanel: React.FC = () => {
               <ListItem
                 disableGutters
                 sx={{
-                  padding: "2px 0", // Consistent reduced padding
+                  padding: "2px 0",
                 }}
               >
                 <ListItemText
@@ -272,9 +293,18 @@ const HatchlingInfoPanel: React.FC = () => {
         {selectedTab === "leaderboard" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
             <Typography sx={{ marginBottom: "1rem" }}>
-              Claim your points and view your spot on the leaderboard. Check the
-              full leaderboard here.
+              Claim your points and view your spot on the leaderboard. Check the{" "}
+              <Link
+                href="/HoneyDrops"
+                style={{
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                full leaderboard
+              </Link>
             </Typography>
+            <MiniLeaderboard />
           </Box>
         )}
       </Box>
