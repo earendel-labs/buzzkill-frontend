@@ -1,7 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
-import BeePanelCard from "@/components/Card/BeePanelCard/BeePanelCard"; // Import your BeePanelCard
+import BeePanelCard from "@/components/Card/BeePanelCard/BeePanelCard";
+import HatchlingInfoPanel from "@/components/ControlPanels/HatchlingInfoPanel/HatchlingInfoPanel";
 
 type BottomBarProps = {
   isAudioPanelVisible?: boolean;
@@ -11,74 +12,67 @@ const BottomBar: React.FC<BottomBarProps> = ({
   isAudioPanelVisible = true,
 }) => {
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        width: "100%",
-        height: "auto",
-        display: "flex",
-        justifyContent: "space-between",
-        zIndex: 1,
-        padding: {
-          xs: "0.5rem", // Small padding for mobile
-          md: "1rem", // Larger padding for desktop
-        },
-      }}
-    >
-      {/* <BeeStatsPanel
-          healthValue={"35/100"}
-          productivityValue={"250/300"}
-          energyValue={"15/100"}
-          attackValue={"40"}
-          defenceValue={"20"}
-          forageValue={"52"}
-          energyBarLength={15}
-          healthBarLength={50}
-          productivityBarLength={10}
-          activityBarLength={70}
-          beeFrameImage={"/NFTs/WorkerBee.png"}
-        /> */}
-      {/* Bee Panel Card - Positioned with some spacing from the left and bottom */}
+    <>
+      {/* Hatchling Info Panel */}
+      {isAudioPanelVisible && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: {
+              xs: "12rem", // Adjust for small screens
+              md: "14rem", // Adjust for medium screens
+              xl: "17rem",
+            },
+            left: {
+              xs: "1rem",
+              md: "3.7rem",
+              xl: "4.7rem",
+            },
+            zIndex: 102, // Ensure it stays above BeePanelCard
+          }}
+        >
+          <HatchlingInfoPanel />
+        </Box>
+      )}
+      {/* Bee Panel Card */}
       <Box
         sx={{
-          position: "fixed", // Keep it fixed so it remains visible on scroll
+          position: "fixed",
           bottom: {
-            xs: "1rem", // Small space from the bottom on mobile
-            md: "2rem", // Larger space from the bottom on desktop
+            xs: "1rem",
+            md: "2rem",
           },
           left: {
-            xs: "1rem", // Small space from the left on mobile
-            md: "3.7rem", // Larger space from the left on desktop
+            xs: "1rem",
+            md: "3.7rem",
             xl: "4.7rem",
           },
-          zIndex: 100, // High z-index to keep it above other content
+          zIndex: 101, // Below HatchlingInfoPanel
         }}
       >
         <BeePanelCard />
       </Box>
 
-      {/* Audio Panel - Positioned with some spacing from the right and bottom */}
+      {/* Audio Panel */}
       {isAudioPanelVisible && (
         <Box
           sx={{
-            position: "fixed", // Keep it fixed so it remains visible on scroll
+            position: "fixed",
             bottom: {
-              xs: "1rem", // Small space from the bottom on mobile
-              md: "2rem", // Larger space from the bottom on desktop
+              xs: "1rem",
+              md: "2rem",
             },
             right: {
-              xs: "1rem", // Small space from the right on mobile
-              md: "2rem", // Larger space from the right on desktop
+              xs: "1rem",
+              md: "2rem",
             },
-            zIndex: 100, // Same high z-index to keep it above other components
+            zIndex: 100,
           }}
         >
           <AudioPanel />
         </Box>
       )}
-    </Box>
+    </>
   );
 };
 

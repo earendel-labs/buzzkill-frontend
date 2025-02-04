@@ -1,0 +1,309 @@
+import React, { useState, useEffect, useRef } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { Tab, Tabs, List, ListItem, ListItemText } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { HatchlingTable } from "./HatchlingTable";
+import Link from "next/link";
+
+const HatchlingInfoPanel: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("campaign");
+  const [resizeKey, setResizeKey] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    if (isExpanded) {
+      // Fade out the content without moving it.
+      setShowContent(false);
+      // Collapse container after fade-out completes.
+      setTimeout(() => {
+        setIsExpanded(false);
+      }, 500);
+    } else {
+      // Expand container first.
+      setIsExpanded(true);
+      // Fade in content shortly after.
+      setTimeout(() => {
+        setShowContent(true);
+      }, 50);
+    }
+  };
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setSelectedTab(newValue);
+  };
+
+  const data = [
+    { id: 1, rarity: "Common", mintingPoints: 5000, baseDailyYield: 1000 },
+    { id: 2, rarity: "Rare", mintingPoints: 6000, baseDailyYield: 1200 },
+    { id: 3, rarity: "Ultra-Rare", mintingPoints: 8000, baseDailyYield: 1500 },
+  ];
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      setResizeKey((prevKey) => prevKey + 1);
+    });
+
+    if (contentRef.current) {
+      resizeObserver.observe(contentRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isExpanded) {
+      setTimeout(() => {
+        setResizeKey((prev) => prev + 1);
+      }, 600);
+    }
+  }, [isExpanded]);
+
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        width: isExpanded
+          ? "800px"
+          : {
+              xs: "100%",
+              md: "360px",
+              xl: "420px",
+            },
+        height: isExpanded
+          ? {
+              xs: "100%",
+              md: "500px",
+              xl: "800px",
+            }
+          : "4rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        backgroundColor: "rgba(34, 46, 80, 0.95)",
+        borderRadius: "8px",
+        boxShadow: `
+          inset 4px 4px 4px rgba(0, 0, 0, 0.25),
+          inset 0px 4px 4px rgba(0, 0, 0, 0.15)
+        `,
+        transition: "width 0.3s ease, height 0.3s ease",
+        overflow: "hidden",
+        zIndex: 102,
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          borderRadius: "inherit",
+          background:
+            "linear-gradient(135deg, #FFD700 10%, #E9B743 50%, #C88036 90%)",
+          padding: "2px",
+          WebkitMask:
+            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+          zIndex: -1,
+        },
+      }}
+    >
+      {/* Content wrapper with constant padding to avoid shifting */}
+      <Box
+        ref={contentRef}
+        sx={{
+          opacity: showContent ? 1 : 0,
+          transition: "opacity 0.5s ease",
+          padding: "2rem",
+          textAlign: "left",
+          color: "white",
+          minHeight: "400px", // Set a fixed height to prevent layout shifts
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            fontWeight: "bold",
+            fontSize: "2rem",
+            color: "#FFD700",
+            marginBottom: "1.5rem",
+            textAlign: "center",
+          }}
+        >
+          The Hatchling Explorer
+        </Typography>
+
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          key={resizeKey}
+          sx={{
+            "& .MuiTabs-flexContainer": {
+              justifyContent: "center",
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#FFD700",
+            },
+          }}
+        >
+          <Tab label="Campaign" value="campaign" />
+          <Tab label="Hatchlings" value="hatchlings" />
+          <Tab label="Explore Nectera" value="explore" />
+          <Tab label="Leaderboard" value="leaderboard" />
+        </Tabs>
+
+        {/* Tab content with consistent padding */}
+        {selectedTab === "campaign" && (
+          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
+            <Typography sx={{ marginBottom: "1rem" }}>
+              In the thawing world of Nectera, the Buzzkill Hatchlings are
+              awakening after millennia of dormancy. Now’s your chance to
+              explore the planet and earn Honey Drop Points.
+              <br /> <br />
+              Mint up to 2 free Hatchlings, stake them in hives, and watch as
+              they yield points based on their rarity.
+            </Typography>
+          </Box>
+        )}
+
+        {selectedTab === "hatchlings" && (
+          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
+            <Typography sx={{ marginBottom: "1rem" }}>
+              You can{" "}
+              <Link
+                href="/mint"
+                className="linkStyle1"
+                style={{
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                Mint
+              </Link>{" "}
+              up to 2 Hatchlings per wallet. There are 3 rarities. The higher
+              the rarity the more Honey Drop points your hatchling will yield:
+            </Typography>
+            <HatchlingTable data={data} />
+          </Box>
+        )}
+
+        {selectedTab === "explore" && (
+          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
+            <Typography sx={{ marginBottom: "1rem" }}>
+              Stake your hatchling to yield Honey Drop points. Environments will
+              launch throughout the campaign. Below are the status of the
+              current campaigns:
+            </Typography>
+            <List
+              sx={{
+                padding: 0, // Remove padding around the list
+                margin: 0, // Remove margin around the list
+                listStyleType: "none", // Optional for cleaner output
+              }}
+            >
+              <ListItem
+                disableGutters
+                sx={{
+                  padding: "2px 0", // Reduce padding between list items
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <Link
+                      href="/Play/Location/WhisperwoodValleys"
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit", // Inherit color from the parent styling
+                      }}
+                    >
+                      Whisperwood Valley (180 spots - open)
+                    </Link>
+                  }
+                  primaryTypographyProps={{
+                    sx: {
+                      fontWeight: "bold",
+                      color: (theme) => theme.palette.Gold.main,
+                    },
+                  }}
+                />
+              </ListItem>
+              <ListItem
+                disableGutters
+                sx={{
+                  padding: "2px 0", // Consistent reduced padding
+                }}
+              >
+                <ListItemText
+                  primary="Molten Ridge (closed - opening next)"
+                  primaryTypographyProps={{
+                    sx: {
+                      fontWeight: "bold",
+                      color: (theme) => theme.palette.Orange.light,
+                    },
+                  }}
+                />
+              </ListItem>
+              <ListItem
+                disableGutters
+                sx={{
+                  padding: "2px 0", // Consistent reduced padding
+                }}
+              >
+                <ListItemText
+                  primary="Azure Reef (closed)"
+                  primaryTypographyProps={{
+                    sx: {
+                      fontWeight: "bold",
+                      color: (theme) => theme.palette.DarkOrange.light,
+                    },
+                  }}
+                />
+              </ListItem>
+            </List>
+          </Box>
+        )}
+
+        {selectedTab === "leaderboard" && (
+          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
+            <Typography sx={{ marginBottom: "1rem" }}>
+              Claim your points and view your spot on the leaderboard. Check the
+              full leaderboard here.
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      <Button
+        onClick={handleToggle}
+        sx={{
+          color: "#FFD700",
+          textTransform: "none",
+          fontWeight: "bold",
+          borderRadius: "0 0 12px 12px",
+          width: "100%",
+          height: "4rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 2rem",
+          "&:hover": {
+            backgroundColor: "rgba(212, 175, 55, 0.2)",
+          },
+          position: "absolute",
+          bottom: 0,
+        }}
+        endIcon={isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+      >
+        {isExpanded ? "Minimise" : "How to Play"}
+      </Button>
+    </Box>
+  );
+};
+
+export default HatchlingInfoPanel;

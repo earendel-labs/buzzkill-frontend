@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
-import { styled } from "@mui/system";
+import { keyframes, styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
 import HatchlingImage from "../BeeCard/HatchlingImage";
 import { useWriteHiveStakingUnstake } from "@/hooks/HiveStaking";
@@ -27,16 +27,30 @@ export interface BeeCardHiveProps {
   onUnstakeLoadingChange?: (loading: boolean) => void;
 }
 
+// Define a breathing keyframes animation
+// Breathing animation for the glowing background
+const breathShadow = keyframes`
+  0% {
+    box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0px 0px 15px 7px rgba(255, 255, 255, 1);
+  }
+  100% {
+    box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.8);
+  }
+`;
+
 const StyledBeeCard = styled(Box)(({ theme }) => ({
   position: "relative",
   borderRadius: "12px",
   width: "100%",
   maxWidth: "320px",
   overflow: "hidden",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  transition: "transform 0.3s ease",
   "&:hover": {
     transform: "scale(1.03)",
-    boxShadow: "0px 0px 10px 5px rgba(255, 255, 255, 0.8)",
+    animation: `${breathShadow} 2s ease-in-out infinite`,
   },
   [theme.breakpoints.down("sm")]: {
     maxWidth: "280px",
