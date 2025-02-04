@@ -1,28 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {
-  Tab,
-  Tabs,
-  List,
-  ListItem,
-  ListItemText,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { Tab, Tabs, List, ListItem, ListItemText, Paper } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import Link from "next/link";
 import { HatchlingTable } from "./HatchlingTable";
 import MiniLeaderboard from "@/app/Play/User/Profile/Components/MyRewards/MiniLeaderboard";
+import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 // Define the shape of a leaderboard entry
 interface LeaderboardEntry {
@@ -37,6 +25,17 @@ const HatchlingInfoPanel: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("campaign");
   const [resizeKey, setResizeKey] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const { isMuted } = useSound(); // Access the sound context
+
+  // Sound for tab change
+  const [tabSwitchSound, setTabSwitchSound] = useState<HTMLAudioElement | null>(
+    null
+  );
+
+  useEffect(() => {
+    setTabSwitchSound(new Audio("/Audio/Button/WoodenHover.wav")); // Set tab switch sound
+  }, []);
 
   // Toggle expand/collapse for the info panel
   const handleToggle = () => {
@@ -53,9 +52,15 @@ const HatchlingInfoPanel: React.FC = () => {
     }
   };
 
-  // Handle tab changes
+  // Handle tab changes with sound effect
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
+
+    // Play the tab switch sound if not muted
+    if (!isMuted && tabSwitchSound) {
+      tabSwitchSound.currentTime = 0; // Reset sound to start from the beginning
+      tabSwitchSound.play();
+    }
   };
 
   // Data for the hatchling table (assumed to be defined elsewhere)

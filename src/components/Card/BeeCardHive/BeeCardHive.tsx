@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useState, useEffect, useCallback } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
 import { keyframes, styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
@@ -17,6 +19,7 @@ import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/B
 import RarityChip from "../BeeCard/RarityChip";
 import { useTheme } from "@mui/material/styles";
 import Person from "@mui/icons-material/Person";
+import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 export interface BeeCardHiveProps {
   bee: Hatchling;
@@ -27,8 +30,6 @@ export interface BeeCardHiveProps {
   onUnstakeLoadingChange?: (loading: boolean) => void;
 }
 
-// Define a breathing keyframes animation
-// Breathing animation for the glowing background
 const breathShadow = keyframes`
   0% {
     box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.8);
@@ -96,7 +97,32 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
 
   const router = useRouter();
 
+  // Sound management
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [buttonClickSound, setButtonClickSound] =
+    useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
+    setButtonClickSound(
+      new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3")
+    );
+  }, []);
+
+  const handleHover = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Ensure the sound starts fresh each time
+      hoverSound.play();
+    }
+  };
+
   const handleUnstakeClick = () => {
+    if (!isMuted && buttonClickSound) {
+      buttonClickSound.currentTime = 0;
+      buttonClickSound.play(); // Play the button click sound on button press
+    }
+
     if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
     } else {
@@ -242,7 +268,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   };
 
   return (
-    <StyledBeeCard>
+    <StyledBeeCard onMouseEnter={handleHover}>
       <BeeCardBackground
         rarity={
           bee.rarity === "Common" ||
@@ -281,7 +307,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             Hatchling ID: {bee.id}
           </Typography>
 
-          {/* Owner section with updated icon alignment */}
           <Typography
             variant="body1"
             color="white"

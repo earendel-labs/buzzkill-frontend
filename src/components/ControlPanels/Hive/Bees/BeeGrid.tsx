@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -16,6 +16,7 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { Hatchling } from "@/types/Hatchling";
 import { useUserContext } from "@/context/UserContext";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 const beeCategories = [
   { label: "All Hatchlings", filter: "all" },
@@ -35,17 +36,14 @@ const BeeGrid: React.FC<BeeGridProps> = ({
   loading = false,
 }) => {
   const { address } = useUserContext();
+  const { isMuted } = useSound(); // Access the sound context
   const [selectedTab, setSelectedTab] = useState<string>(
     variant === "default" ? "all" : "you"
   );
 
-  // Local “unstaking” loading so we can show a spinner
   const [unstakingLoading, setUnstakingLoading] = useState(false);
-
-  // Combine parent’s loading + local
   const combinedLoading = loading || unstakingLoading;
 
-  // This callback is provided to BeeCardHive so it can set BeeGrid loading
   const handleUnstakeLoadingChange = useCallback((isLoading: boolean) => {
     setUnstakingLoading(isLoading);
   }, []);
@@ -53,15 +51,37 @@ const BeeGrid: React.FC<BeeGridProps> = ({
   const theme = useTheme();
   const is1440pxOrLower = useMediaQuery("(max-width: 1440px)");
 
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
+    setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
+  }, []);
+
   const handleTabChange = (event: SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
+
+    // Play sound if not muted
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Reset sound to start from beginning
+      hoverSound.play();
+    }
   };
 
   const handleMintClick = () => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
     window.open("/Mint", "_blank");
   };
 
   const handleHatchlingsClick = () => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
     window.open("/User/Profile/MyBees", "_blank");
   };
 
@@ -73,19 +93,14 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         (bee) => bee.ownerAddress.toLowerCase() === address?.toLowerCase()
       );
     }
-
-    // Sort user's bees first
     return filtered.sort((a, b) => {
       const isUserBeeA =
         a.ownerAddress.toLowerCase() === address?.toLowerCase();
       const isUserBeeB =
         b.ownerAddress.toLowerCase() === address?.toLowerCase();
 
-      // User-owned bees come first
       if (isUserBeeA && !isUserBeeB) return -1;
       if (!isUserBeeA && isUserBeeB) return 1;
-
-      // Maintain order for bees owned by the same user type
       return 0;
     });
   }, [bees, selectedTab, address]);
@@ -122,14 +137,13 @@ const BeeGrid: React.FC<BeeGridProps> = ({
   // Decide what to show based on combinedLoading + hasBees
   let content;
   if (combinedLoading) {
-    // 1) Show spinner if loading
     content = (
       <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        width="100%" // Ensures full width
+        width="100%"
         height="100%"
       >
         <HexagonSpinner />
@@ -139,7 +153,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({
       </Box>
     );
   } else if (hasBees) {
-    // 2) Show the bees in a Fade
     content = (
       <Fade in={true} timeout={200}>
         <Box
@@ -168,7 +181,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({
                 bee.ownerAddress.toLowerCase() === address?.toLowerCase()
               }
               variant={selectedTab === "myBees" ? "myBees" : "default"}
-              // Provide callback so BeeCardHive can toggle "unstaking" spinner
               onUnstakeLoadingChange={handleUnstakeLoadingChange}
             />
           ))}
@@ -176,7 +188,6 @@ const BeeGrid: React.FC<BeeGridProps> = ({
       </Fade>
     );
   } else {
-    // 3) No bees
     content = (
       <Box
         sx={{
@@ -186,7 +197,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
           alignItems: "center",
           height: "100%",
           textAlign: "center",
-          width: "100%", // Ensures full width
+          width: "100%",
         }}
       >
         <Typography
@@ -225,12 +236,11 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
-        alignItems: "stretch", // Changed from "center" to "stretch"
-        width: "100%", // Ensures the parent Box takes full width
+        alignItems: "stretch",
+        width: "100%",
         [theme.breakpoints.up("lg")]: {
           maxWidth: "90%",
         },
-        // scrollbar styling...
         "&::-webkit-scrollbar": {
           width: "10px",
         },
