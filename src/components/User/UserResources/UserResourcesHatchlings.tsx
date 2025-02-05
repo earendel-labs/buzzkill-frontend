@@ -10,7 +10,9 @@ import { formatNumber } from "@/utils/formatNumber";
 
 const UserResourceBar: React.FC = () => {
   const { profileData, loadingProfile } = useProfileContext();
-  const totalRewards = loadingProfile ? undefined : profileData?.total_rewards || 0;
+  const totalRewards = loadingProfile
+    ? undefined
+    : profileData?.total_rewards || 0;
 
   return (
     <motion.div
@@ -92,7 +94,7 @@ const UserResourceBar: React.FC = () => {
                   marginTop: "3px", // Push text downward
                 }}
               >
-                {formatNumber(totalRewards)}
+                {formatNumber(totalRewards) || 0}
               </Typography>
             )}
           </motion.div>

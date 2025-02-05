@@ -82,7 +82,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
       clickSound.currentTime = 0;
       clickSound.play();
     }
-    window.open("/User/Profile/MyBees", "_blank");
+    window.open("/Play/User/Profile/MyBees", "_blank");
   };
 
   // Filter and sort the bees based on tab and ownership
@@ -211,13 +211,13 @@ const BeeGrid: React.FC<BeeGridProps> = ({
           }}
         >
           {variant === "default"
-            ? "No Hatchlings found in this category."
+            ? "You have no Hatchlings in this Hive"
             : "You don't own any Hatchlings. Please mint or buy a Hatchling from a secondary market."}
         </Typography>
         {variant === "default" && (
           <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
             <PrimaryButton text="Mint" onClick={handleMintClick} />
-            <PrimaryButton text="Hatchlings" onClick={handleHatchlingsClick} />
+            {/* <PrimaryButton text="Hatchlings" onClick={handleHatchlingsClick} /> */}
           </Box>
         )}
       </Box>

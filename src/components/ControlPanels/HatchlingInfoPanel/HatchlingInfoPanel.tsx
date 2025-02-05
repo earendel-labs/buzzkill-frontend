@@ -208,8 +208,11 @@ const HatchlingInfoPanel: React.FC = () => {
               explore the planet and earn Honey Drop Points.
               <br />
               <br />
-              Mint up to 2 free Hatchlings, stake them in hives, and watch as
-              they yield points based on their rarity.
+              1. Mint up to 2 free Hatchlings. <br />
+              2. Select your active Hatchling from the panel below. <br />
+              3. Explore the map and find your hive. <br />
+              4. Stake your Hatchling and earn points based on their rarity.{" "}
+              <br />
             </Typography>
           </Box>
         )}
