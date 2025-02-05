@@ -25,6 +25,7 @@ const HatchlingInfoPanel: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("campaign");
   const [resizeKey, setResizeKey] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null); // Ref for the panel container
 
   const { isMuted } = useSound(); // Access the sound context
 
@@ -43,6 +44,36 @@ const HatchlingInfoPanel: React.FC = () => {
     setExpandSound(new Audio("/Audio/ExpandPages/OpenBox.wav")); // Set expand sound
     setCollapseSound(new Audio("/Audio/ExpandPages/CloseBox.mp3")); // Set collapse sound
   }, []);
+
+  // Handle click outside to collapse the panel
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node)
+      ) {
+        if (isExpanded) {
+          setShowContent(false);
+          setTimeout(() => {
+            setIsExpanded(false);
+            if (!isMuted && collapseSound) {
+              collapseSound.currentTime = 0; // Ensure the sound starts fresh each time
+              collapseSound.play();
+            }
+          }, 500);
+        }
+      }
+    },
+    [isExpanded, collapseSound, isMuted]
+  );
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   // Toggle expand/collapse for the info panel
   const handleToggle = () => {
@@ -110,6 +141,7 @@ const HatchlingInfoPanel: React.FC = () => {
 
   return (
     <Box
+      ref={panelRef} // Add the ref to the panel container
       sx={{
         position: "relative",
         width: isExpanded
