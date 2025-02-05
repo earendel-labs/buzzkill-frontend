@@ -3,6 +3,8 @@ import buttonStyles from "./Button/buttonStyles";
 import linkStyles from "./TextStyles/linkStyles";
 import tabStyles from "./TabStyles/tabStyles";
 import textBoxStyles from "./TextBoxStyles/textBoxStyles";
+import toolTipStyles from "./ToolTipStyles/ToolTipStyles"; // Adjust the path accordingly
+
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {
   interface Palette {
@@ -255,6 +257,7 @@ const getTheme = (): Theme => {
       ...buttonStyles(baseTheme),
       ...linkStyles(baseTheme),
       ...tabStyles(baseTheme),
+      ...toolTipStyles(baseTheme),
       ...textBoxStyles(baseTheme),
       MuiFormHelperText: {
         styleOverrides: {

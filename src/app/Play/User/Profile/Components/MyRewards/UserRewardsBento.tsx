@@ -18,6 +18,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import InfoIcon from "@mui/icons-material/InfoOutlined";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/system";
 import FactoryIcon from "@mui/icons-material/Factory";
@@ -83,7 +84,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
           textAlign: "center",
           maxWidth: "1200px",
           margin: "24px auto",
-          minHeight: "200px", // Reserve space to prevent layout shift
+          minHeight: "200px",
         }}
       >
         <Typography variant="h6" color="white" gutterBottom>
@@ -115,21 +116,21 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "flex-start",
-              textAlign: "left", // Ensure left-aligned text
+              textAlign: "left",
             }}
           >
-            {/* Title with Icon */}
+            {/* Title with Icon + Tooltip */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: "8px", // Spacing between icon and text
+                gap: "8px",
               }}
             >
               <TrendingUpIcon
                 sx={{
                   color: theme.palette.LightBlue.main,
-                  fontSize: "32px", // Icon size
+                  fontSize: "32px",
                 }}
               />
               <Typography
@@ -137,22 +138,39 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 component="p"
                 sx={{
                   fontWeight: "bold",
-                  color: theme.palette.LightBlue.main, // Custom color for Total Earnings text
+                  color: theme.palette.LightBlue.main,
                 }}
               >
                 Total Rewards
               </Typography>
+              <Tooltip
+                title={
+                  <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                    Total rewards earned throughout Buzzkill Campaigns
+                  </Typography>
+                }
+                placement="top"
+                arrow
+              >
+                <InfoIcon
+                  sx={{
+                    color: theme.palette.LightBlue.main,
+                    fontSize: "1.2rem",
+                    cursor: "pointer",
+                  }}
+                />
+              </Tooltip>
             </Box>
 
             {/* Total Rewards Display */}
             <Typography
-              variant="h2" // Larger font size for the number
+              variant="h2"
               component="p"
               fontWeight="bold"
               sx={{
-                color: theme.palette.Gold.main, // Custom orange color for the number
+                color: theme.palette.Gold.main,
                 WebkitTextStroke: "0",
-                lineHeight: "1.2", // Tighten the spacing
+                lineHeight: "1.2",
               }}
             >
               {profileData?.total_rewards !== undefined
@@ -162,9 +180,9 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 variant="h4"
                 component="span"
                 sx={{
-                  color: theme.palette.Gold.main, // Custom reddish color for the word "Honey"
+                  color: theme.palette.Gold.main,
                   WebkitTextStroke: "0",
-                  marginLeft: "8px", // Space between number and "Honey"
+                  marginLeft: "8px",
                 }}
               >
                 Honey Drops
@@ -176,21 +194,22 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center", // Center horizontally
-              alignItems: "flex-end", // Align to the bottom
-              height: "100%", // Ensure it uses the full height of the parent
-              paddingBottom: 0, // Remove unnecessary spacing at the bottom
+              justifyContent: "center",
+              alignItems: "flex-end",
+              height: "100%",
+              paddingBottom: 0,
             }}
           >
             <Grid
               container
               spacing={4}
               sx={{
-                maxWidth: "1200px", // Limit the width to prevent stretching
-                justifyContent: "center", // Center horizontally
-                padding: 0, // Remove extra padding
+                maxWidth: "1200px",
+                justifyContent: "center",
+                padding: 0,
               }}
             >
+              {/* Daily Bonus */}
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <SemiTransparentCard
                   shadowTransparency={0}
@@ -201,8 +220,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "flex-start", // Left-align content
-                      textAlign: "left", // Left-align text
+                      alignItems: "flex-start",
+                      textAlign: "left",
                     }}
                   >
                     <Box
@@ -228,9 +247,25 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       >
                         Daily Bonus
                       </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            Claim daily bonus every 24 hours
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
                     </Box>
 
-                    {/* Bonus Amount Display */}
                     {constants.dailyBonus !== undefined ? (
                       <Typography
                         variant="h4"
@@ -263,7 +298,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         width={80}
                         height={40}
                         animation="wave"
-                        sx={{ marginTop: "12px" }} // Align the skeleton with the number
+                        sx={{ marginTop: "12px" }}
                       />
                     )}
 
@@ -275,13 +310,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       disabled={true}
                       sx={{
                         width: "100%",
-                        display: "flex", // Ensure the button uses flexbox
-                        alignItems: "center", // Align icon and text vertically
-                        justifyContent: "center", // Center content horizontally
-                        textTransform: "none", // Keep text as-is (no uppercase transformation)
-                        fontWeight: "bold", // Ensure bold text
-                        fontSize: "1rem", // Text size
-                        lineHeight: "1.5", // Proper line height for text alignment
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        lineHeight: "1.5",
                       }}
                     >
                       Claim Bonus
@@ -290,6 +325,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 </SemiTransparentCard>
               </Grid>
 
+              {/* Referral Rewards */}
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <SemiTransparentCard
                   shadowTransparency={0}
@@ -300,8 +336,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "flex-start", // Left-align content
-                      textAlign: "left", // Left-align text
+                      alignItems: "flex-start",
+                      textAlign: "left",
                     }}
                   >
                     <Box
@@ -327,9 +363,26 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       >
                         Referral Rewards
                       </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            Invite friends to join and mint. The more you
+                            invite, the more points you can earn
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
                     </Box>
 
-                    {/* Bonus Amount Display */}
                     {constants.referralReward !== undefined ? (
                       <Typography
                         variant="h4"
@@ -362,7 +415,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         width={80}
                         height={40}
                         animation="wave"
-                        sx={{ marginTop: "12px" }} // Align the skeleton with the number
+                        sx={{ marginTop: "12px" }}
                       />
                     )}
 
@@ -374,13 +427,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         aria-label="Copy invite link and invite friends"
                         sx={{
                           width: "100%",
-                          display: "flex", // Ensure the button uses flexbox
-                          alignItems: "center", // Align icon and text vertically
-                          justifyContent: "center", // Center content horizontally
-                          textTransform: "none", // Keep text as-is (no uppercase transformation)
-                          fontWeight: "bold", // Ensure bold text
-                          fontSize: "1rem", // Text size
-                          lineHeight: "1.5", // Proper line height for text alignment
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textTransform: "none",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: "1.5",
                         }}
                       >
                         Invite Friends
@@ -397,6 +450,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 </SemiTransparentCard>
               </Grid>
 
+              {/* Hatchling Yield */}
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <SemiTransparentCard
                   sx={{ height: "100%", p: 3 }}
@@ -407,8 +461,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "flex-start", // Left-align content
-                      textAlign: "left", // Left-align text
+                      alignItems: "flex-start",
+                      textAlign: "left",
                     }}
                   >
                     <Box
@@ -434,9 +488,27 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       >
                         Hatchling Yield
                       </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            This shows the total points you've earned by staking
+                            your Hatchlings in Hives. It also shows your daily
+                            production from Hatchling staking
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
                     </Box>
 
-                    {/* Bonus Amount Display */}
                     <Typography
                       variant="h4"
                       component="p"
@@ -488,7 +560,6 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       </Typography>
                     </Typography>
 
-                    {/* OneID Multiplier Chip */}
                     {profileData?.has_oneid && (
                       <Chip
                         label="1.2x OneID Multiplier"
@@ -502,8 +573,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         }
                         sx={{
                           "& .MuiChip-icon": {
-                            marginRight: "-12px", // Override default margin
-                            color: "white", // Override default color
+                            marginRight: "-12px",
+                            color: "white",
                           },
                           backgroundColor: theme.palette.OneIDRed.main,
                           color: "white",

@@ -146,7 +146,7 @@ export function getAuthOptions(
               secure: process.env.NODE_ENV === "production",
               sameSite: "strict",
               path: "/",
-              maxAge: 60 * 60 * 24 * 30, // 30 days
+              maxAge: 60 * 60 * 24 * 14, // 14 days
             });
             res.setHeader("Set-Cookie", setNewUserCookie);
 
