@@ -11,6 +11,7 @@ const MintPageContent: React.FC = () => {
   const {
     transactionHash,
     snackbarOpen,
+    quantity,
     setSnackbarOpen,
     errorMessage,
     isMinted,
@@ -96,7 +97,7 @@ const MintPageContent: React.FC = () => {
             backImage="/NFTs/Hatchlings.JPEG"
             nftData={nftData}
             mintedNFTs={[]} // any relevant data
-            quantityMinted={1}
+            quantityMinted={quantity}
             transactionHash={transactionHash}
           />
         </Grid>

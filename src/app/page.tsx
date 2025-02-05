@@ -106,7 +106,7 @@ const HomePage: React.FC = () => {
         </Box>
       )}
 
-      {/* Background Image with Updated Next.js 13 Image Props */}
+      {/* Background Image  */}
       <Box
         sx={{
           position: "fixed",
