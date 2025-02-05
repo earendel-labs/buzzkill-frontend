@@ -491,9 +491,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       <Tooltip
                         title={
                           <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-                            This shows the total points you've earned by staking
-                            your Hatchlings in Hives. It also shows your daily
-                            production from Hatchling staking
+                            Points earned by staking your Hatchlings inside a
+                            hive
                           </Typography>
                         }
                         placement="top"
