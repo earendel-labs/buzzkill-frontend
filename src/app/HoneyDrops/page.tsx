@@ -120,7 +120,7 @@ const HoneyDropsPage = () => {
 
   return (
     <Layout>
-      <Box sx={{ maxWidth: "1000px", mx: "auto", px: 2 }}>
+      <Box sx={{ maxWidth: "1200px", width: "100%", px: 2, py: 2 }}>
         <Typography variant="h5" color="white" sx={{ mt: 6, mb: 1 }}>
           Honey Drops Rewards
         </Typography>

@@ -1,40 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { UserInfo } from "@/types/UserInfo";
-import { formatNumber } from "@/utils/formatNumber";
 import UserResourcesBackground from "./UserResourcesBackground";
-
-const fetchUserInfo = async (): Promise<UserInfo> => {
-  const response = await fetch("/api/user-info");
-  if (!response.ok) {
-    throw new Error("Failed to fetch user info");
-  }
-  const data = await response.json();
-  return data;
-};
+import { useProfileContext } from "@/context/ProfileContext";
+import { formatNumber } from "@/utils/formatNumber";
 
 const UserResourceBar: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const data = await fetchUserInfo();
-        setUserInfo(data);
-      } catch (error) {
-        console.error("Failed to fetch user info", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUserInfo();
-  }, []);
+  const { profileData, loadingProfile } = useProfileContext();
+  const totalRewards = loadingProfile ? undefined : profileData?.total_rewards || 0;
 
   return (
     <motion.div
@@ -52,7 +28,7 @@ const UserResourceBar: React.FC = () => {
             px: 2,
             py: 1.5,
             minWidth: "120px",
-            height: "48px", // Set a fixed height to match the image
+            height: "48px", // Fixed height to match the image
           }}
         >
           <motion.div
@@ -89,7 +65,7 @@ const UserResourceBar: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            {loading ? (
+            {loadingProfile || totalRewards === undefined ? (
               <Skeleton
                 variant="text"
                 width={80}
@@ -116,7 +92,7 @@ const UserResourceBar: React.FC = () => {
                   marginTop: "3px", // Push text downward
                 }}
               >
-                {formatNumber(userInfo?.honey || 0)}
+                {formatNumber(totalRewards)}
               </Typography>
             )}
           </motion.div>
