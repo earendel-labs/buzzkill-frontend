@@ -1,5 +1,8 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Box, Button, styled } from "@mui/material";
+import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 interface ActionButtonsProps {
   onPlayClick?: () => void | Promise<void>;
@@ -28,6 +31,46 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   isPending = false,
   isTransactionLoading = false,
 }) => {
+  const { isMuted } = useSound(); // Access the sound context
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [buttonClickSound, setButtonClickSound] =
+    useState<HTMLAudioElement | null>(null);
+  const [playSound, setPlaySound] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Load the sounds
+    setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
+    setButtonClickSound(
+      new Audio("/Audio/MapNavigation/MapNavigationPressed.mp3")
+    );
+    setPlaySound(new Audio("/Audio/MapResources/ResourcePressed.mp3"));
+  }, []);
+
+  // Handle the hover effect sound
+  const handleHover = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Ensure the sound starts fresh each time
+      hoverSound.play();
+    }
+  };
+
+  // Handle the button press sound for Play and Unstake
+  const handlePlayClick = () => {
+    if (!isMuted && playSound) {
+      playSound.currentTime = 0; // Ensure the sound starts fresh each time
+      playSound.play();
+    }
+    if (onPlayClick) onPlayClick();
+  };
+
+  const handleUnstakeClick = () => {
+    if (!isMuted && buttonClickSound) {
+      buttonClickSound.currentTime = 0; // Ensure the sound starts fresh each time
+      buttonClickSound.play();
+    }
+    if (onUnstakeClick) onUnstakeClick();
+  };
+
   return (
     <Box
       sx={{
@@ -41,7 +84,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         <StyledActionButton
           variant="contained"
           color="primary"
-          onClick={onPlayClick}
+          onClick={handlePlayClick}
+          onMouseEnter={handleHover} // Play hover sound on mouse enter
           disabled={isPending || isTransactionLoading}
         >
           Play
@@ -51,7 +95,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         <StyledActionButton
           variant="contained"
           color="secondary"
-          onClick={onUnstakeClick}
+          onClick={handleUnstakeClick}
+          onMouseEnter={handleHover} // Play hover sound on mouse enter
           disabled={isPending || isTransactionLoading}
         >
           {isPending || isTransactionLoading ? "Unstaking..." : "Unstake"}

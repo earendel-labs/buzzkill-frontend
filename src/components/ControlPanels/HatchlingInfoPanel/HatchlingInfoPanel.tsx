@@ -32,9 +32,16 @@ const HatchlingInfoPanel: React.FC = () => {
   const [tabSwitchSound, setTabSwitchSound] = useState<HTMLAudioElement | null>(
     null
   );
+  // Sounds for expanding and collapsing
+  const [expandSound, setExpandSound] = useState<HTMLAudioElement | null>(null);
+  const [collapseSound, setCollapseSound] = useState<HTMLAudioElement | null>(
+    null
+  );
 
   useEffect(() => {
     setTabSwitchSound(new Audio("/Audio/Button/WoodenHover.wav")); // Set tab switch sound
+    setExpandSound(new Audio("/Audio/ExpandPages/OpenBox.wav")); // Set expand sound
+    setCollapseSound(new Audio("/Audio/ExpandPages/CloseBox.mp3")); // Set collapse sound
   }, []);
 
   // Toggle expand/collapse for the info panel
@@ -43,11 +50,19 @@ const HatchlingInfoPanel: React.FC = () => {
       setShowContent(false);
       setTimeout(() => {
         setIsExpanded(false);
+        if (!isMuted && collapseSound) {
+          collapseSound.currentTime = 0; // Ensure the sound starts fresh each time
+          collapseSound.play();
+        }
       }, 500);
     } else {
       setIsExpanded(true);
       setTimeout(() => {
         setShowContent(true);
+        if (!isMuted && expandSound) {
+          expandSound.currentTime = 0; // Ensure the sound starts fresh each time
+          expandSound.play();
+        }
       }, 50);
     }
   };

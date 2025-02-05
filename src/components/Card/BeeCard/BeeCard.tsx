@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Snackbar, Alert } from "@mui/material";
-import { styled } from "@mui/system";
+import { keyframes, styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
 import HatchlingImage from "./HatchlingImage";
 import { useWriteHiveStakingUnstake } from "@/hooks/HiveStaking";
@@ -19,6 +19,7 @@ import BeeCardBackground from "./BeeCardBackground";
 import RarityChip from "./RarityChip";
 import { logger } from "@/utils/logger";
 import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 export interface BeeCardProps {
   bee: Hatchling;
@@ -28,15 +29,27 @@ export interface BeeCardProps {
   additionalInfo?: Record<string, any>;
 }
 
+const breathShadow = keyframes`
+  0% {
+    box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0px 0px 15px 7px rgba(255, 255, 255, 1);
+  }
+  100% {
+    box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.8);
+  }
+`;
+
 const StyledBeeCard = styled(Box)(({ theme }) => ({
   position: "relative",
   borderRadius: "12px",
   width: "350px",
   overflow: "hidden",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  transition: "transform 0.3s ease",
   "&:hover": {
     transform: "scale(1.03)",
-    boxShadow: "0px 0px 10px 5px rgba(255, 255, 255, 0.8)",
+    animation: `${breathShadow} 2s ease-in-out infinite`,
   },
 }));
 
@@ -69,6 +82,23 @@ const BeeCard: React.FC<BeeCardProps> = ({
     : null;
   const router = useRouter();
 
+  // Sound management
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [buttonClickSound, setButtonClickSound] =
+    useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/MapNavigation/MapNavigationHover.mp3"));
+  }, []);
+
+  const handleHover = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0; // Ensure the sound starts fresh each time
+      hoverSound.play();
+    }
+  };
+
   const handleUnstakeClick = () => {
     if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
@@ -84,7 +114,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
     const { id, environmentID, hiveID } = bee;
     if (environmentID === null || hiveID === null) {
       setAlertSeverity("error");
-      setAlertMessage("Invalid environment or hive ID.");
+      +setAlertMessage("Invalid environment or hive ID.");
       setSnackbarOpen(true);
       return;
     }
@@ -210,7 +240,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
     variant !== "myBees" ? (isOwnedByUser ? "You" : "Other") : undefined;
 
   return (
-    <StyledBeeCard>
+    <StyledBeeCard onMouseEnter={handleHover}>
       <BeeCardBackground
         rarity={
           bee.rarity === "Common" ||

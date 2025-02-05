@@ -82,8 +82,8 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
           bValue = b.rank;
           break;
         case "address":
-          aValue = a.address.toLowerCase();
-          bValue = b.address.toLowerCase();
+          aValue = a.account_name?.toLowerCase() || a.address.toLowerCase();
+          bValue = b.account_name?.toLowerCase() || b.address.toLowerCase();
           break;
         case "total_rewards":
           aValue = a.total_rewards;
@@ -181,7 +181,7 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
               }
             >
               <Box display="flex" alignItems="center">
-                <HeaderTypography variant="h6">Address</HeaderTypography>
+                <HeaderTypography variant="h6">Username</HeaderTypography>
                 {sortColumn === "address" &&
                   (sortDirection === "asc" ? (
                     <ArrowDropUpIcon
@@ -238,7 +238,9 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
             sortedData.map((row) => (
               <StyledTableRow key={row.id}>
                 <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
-                <TableCell sx={{ color: "white" }}>{row.address}</TableCell>
+                <TableCell sx={{ color: "white" }}>
+                  {row.account_name ? row.account_name : row.address}
+                </TableCell>
                 <TableCell sx={{ color: "white" }}>
                   {row.total_rewards}
                 </TableCell>

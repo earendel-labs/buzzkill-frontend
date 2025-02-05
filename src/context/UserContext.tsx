@@ -29,6 +29,7 @@ import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_USER_STAKED_TOKENS } from "@/subquery/getUserStakedTokens";
 import { GET_USER_UNSTAKED_TOKENS } from "@/subquery/getUserUnstakedTokens";
 import { logger } from "@/utils/logger";
+import { mutate } from "swr";
 
 // ----------- GraphQL Interfaces -----------
 interface StakedNFTNode {
@@ -411,11 +412,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         return;
       }
 
-      // Indicate we are refreshing to hide partial states in the UI
       setIsRefreshing(true);
       setLoadingBees(true);
 
       const oldUnstakedCount = bees.length;
+      // Track IDs of currently unstaked bees before final fetch
+      const oldUnstakedBeeIds = bees.map((b) => b.id);
 
       try {
         // 1) Define a condition function for polling
@@ -432,12 +434,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             return false;
           }
 
-          // Minimal arrays to check presence
           const updatedStakedBeesShort = stakedDataResult.stakedNFTs.edges.map(
             (edge: any) => ({
               id: parseInt(edge.node.tokenIdNum, 10),
             })
           );
+
           const updatedUnstakedBeesShort = unstakedDataResult.tokens.edges
             .map((edge: any) => edge.node)
             .filter((node: any) => !node.isStaked)
@@ -452,16 +454,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           if (action === "stake") {
             return isBeeStaked;
           }
+
           if (action === "unstake") {
             return !isBeeStaked;
           }
+
           if (action === "mint") {
             const newUnstakedBeesCount = updatedUnstakedBeesShort.length;
             const expectedCount = oldUnstakedCount + (mintedQuantity ?? 1);
             return newUnstakedBeesCount >= expectedCount;
           }
 
-          // If no action, return true
           return true;
         };
 
@@ -489,9 +492,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           const updatedStaked = finalStakedRes.data.stakedNFTs.edges.map(
             (edge: any) => {
               const beeID = parseInt(edge.node.tokenIdNum, 10);
-              let existingBee =
+              const existingBee =
                 stakedBees.find((b) => b.id === beeID) ||
                 bees.find((b) => b.id === beeID);
+
               return {
                 id: beeID,
                 rarity: edge.node.tokenId.rarity,
@@ -503,11 +507,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               };
             }
           );
-          // Deduplicate final staked bees array
+
           const uniqueFinalStaked = Array.from(
-            new Map(
-              updatedStaked.map((bee: Hatchling) => [bee.id, bee])
-            ).values()
+            new Map(updatedStaked.map((bee) => [bee.id, bee])).values()
           );
           setStakedBees(uniqueFinalStaked);
           stakedDataRef.current = finalStakedRes.data;
@@ -522,9 +524,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             .filter((node: any) => !node.isStaked)
             .map((node: any) => {
               const beeID = parseInt(node.id, 10);
-              let existingBee =
+              const existingBee =
                 bees.find((b) => b.id === beeID) ||
                 stakedBees.find((b) => b.id === beeID);
+
               return {
                 id: beeID,
                 rarity: node.rarity,
@@ -535,14 +538,42 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
                 ownerAddress: node.owner || address || "",
               };
             });
-          // Deduplicate final unstaked bees array
+
           const uniqueFinalUnstaked = Array.from(
-            new Map(
-              updatedUnstaked.map((bee: Hatchling) => [bee.id, bee])
-            ).values()
+            new Map(updatedUnstaked.map((bee) => [bee.id, bee])).values()
           );
           setBees(uniqueFinalUnstaked);
           unstakedDataRef.current = finalUnstakedRes.data;
+
+          // Award points for newly minted bees
+          if (action === "mint") {
+            const newMintedBees = uniqueFinalUnstaked.filter(
+              (b) => !oldUnstakedBeeIds.includes(b.id)
+            );
+
+            for (const bee of newMintedBees) {
+              let taskName = "Mint Common Hatchling";
+              if (bee.rarity === "Rare") {
+                taskName = "Mint Rare Hatchling";
+              } else if (bee.rarity === "Ultra-Rare") {
+                taskName = "Mint Ultra-Rare Hatchling";
+              }
+
+              try {
+                await fetch("/api/rewards/awardMintRewards", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ task: taskName }),
+                });
+                logger.log(
+                  `Awarded points for minted NFT ID ${bee.id} with rarity ${bee.rarity}`
+                );
+                mutate("/api/user/getProfile");
+              } catch (err) {
+                logger.error("Error calling awardMintPoints:", err);
+              }
+            }
+          }
         }
       } catch (error) {
         logger.error("Error refreshing bees data:", error);
@@ -560,6 +591,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       address,
       bees,
       stakedBees,
+      setIsRefreshing,
+      setLoadingBees,
+      setFetchError,
+      setBees,
+      setStakedBees,
     ]
   );
 
