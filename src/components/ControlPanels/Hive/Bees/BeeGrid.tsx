@@ -216,7 +216,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         </Typography>
         {variant === "default" && (
           <Box sx={{ display: "flex", justifyContent: "center", gap: 4 }}>
-            <PrimaryButton text="Mint" onClick={handleMintClick} />
+            {/* <PrimaryButton text="Mint" onClick={handleMintClick} /> */}
             {/* <PrimaryButton text="Hatchlings" onClick={handleHatchlingsClick} /> */}
           </Box>
         )}

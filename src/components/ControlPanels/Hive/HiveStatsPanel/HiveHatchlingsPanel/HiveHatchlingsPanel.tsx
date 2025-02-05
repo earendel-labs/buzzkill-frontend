@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { HiveInfo, HiveHatchlingInfo } from "@/types/HiveInfo";
-import { useTheme, useMediaQuery, Skeleton } from "@mui/material";
+import { useTheme, useMediaQuery, Skeleton, Tooltip } from "@mui/material";
 import { useReadHiveStakingMaxBeesPerHive } from "@/hooks/HiveStaking";
 interface HiveHatchlingsPanelProps {
   hiveHatchlingInfo: HiveHatchlingInfo;
@@ -58,6 +58,9 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
     isError: isMaxBeesError,
     error: maxBeesError,
   } = useReadHiveStakingMaxBeesPerHive();
+
+  const isHiveFull =
+    maxBeesData !== undefined && hiveHatchlingInfo.TotalBees >= maxBeesData;
 
   return (
     <Box
@@ -396,6 +399,7 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
       </Box>
 
       {/* Buttons */}
+      {/* Buttons */}
       <Box
         sx={{
           display: "flex",
@@ -418,13 +422,23 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
           width: { xs: "100%", sm: "auto" }, // Full width on small screens
         }}
       >
-        <PrimaryButton text="Stake" onClick={onStake} scale={scale} />
-        <PrimaryButton
-          text="Raid"
-          onClick={onRaid}
-          scale={scale}
-          disabled={true}
-        />
+        {/* Stake Button with Tooltip */}
+        <Tooltip
+          title={isHiveFull ? "Hive is full, please look for other hives." : ""}
+          arrow
+        >
+          <span>
+            <PrimaryButton
+              text={isHiveFull ? "Hive Full" : "Stake"}
+              onClick={onStake}
+              scale={scale}
+              disabled={isHiveFull}
+            />
+          </span>
+        </Tooltip>
+
+        {/* Raid Button */}
+        <PrimaryButton text="Raid" onClick={onRaid} scale={scale} disabled />
       </Box>
     </Box>
   );
