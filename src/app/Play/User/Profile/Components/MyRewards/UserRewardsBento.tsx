@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/system";
 import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
-
+import { useUserContext } from "@/context/UserContext";
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
   profileData: {
@@ -47,6 +47,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const router = useRouter();
   const theme = useTheme();
   const isConnected = !loadingProfile && profileData && profileData.invite_code;
+  const { userRewards } = useUserContext();
 
   if (loadingProfile) {
     return (
@@ -520,7 +521,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         marginBottom: "2px",
                       }}
                     >
-                      1000
+                      {userRewards?.claimedPoints || 0}
                       <Typography
                         variant="h5"
                         component="span"
@@ -545,7 +546,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         marginBottom: "8px",
                       }}
                     >
-                      1000
+                      {userRewards?.totalProduction || 0}
                       <Typography
                         variant="h6"
                         component="span"

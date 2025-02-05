@@ -28,6 +28,7 @@ import { fetchMetadata } from "@/utils/fetchMetaData";
 import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_USER_STAKED_TOKENS } from "@/subquery/getUserStakedTokens";
 import { GET_USER_UNSTAKED_TOKENS } from "@/subquery/getUserUnstakedTokens";
+import { GET_USER_REWARDS_DATA } from "@/subquery/getUserRewardsData";
 import { logger } from "@/utils/logger";
 import { mutate } from "swr";
 
@@ -74,6 +75,19 @@ interface UnstakedNFTsData {
   };
 }
 
+export interface UserRewards {
+  id: string;
+  mintedCount: number;
+  lastMintedTime: string;
+  stakingApproved: boolean;
+  totalPoints: number;
+  claimedPoints: number;
+  totalProduction: number;
+  averageProduction: number;
+  userRewardMultiplier: number;
+  hasExternalNFTFlag: boolean;
+}
+
 // ----------- Context Interface -----------
 interface UserContextType {
   activeBee: number | null;
@@ -81,6 +95,7 @@ interface UserContextType {
   bees: Hatchling[];
   stakedBees: Hatchling[];
   loadingBees: boolean;
+  userRewards: UserRewards | null;
   fetchError: boolean;
   address: string | null;
   isConnected: boolean;
@@ -117,6 +132,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [approvalForStaking, setApprovalForStaking] = useState(false);
   const [isCheckingApproval, setIsCheckingApproval] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [userRewards, setUserRewards] = useState<UserRewards | null>(null); // State for storing user rewards
 
   const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
@@ -185,6 +201,32 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       }
     },
   });
+  const {
+    data: rewardsData,
+    loading: loadingRewards,
+    error: errorRewards,
+  } = useQuery(GET_USER_REWARDS_DATA, {
+    variables: { userId: lowercaseAddress },
+    skip: !isConnected || !lowercaseAddress,
+    fetchPolicy: "network-only",
+    onCompleted: (data) => {
+      if (data) {
+        const rewardInfo: UserRewards = {
+          id: data.users.edges[0].node.id,
+          mintedCount: data.users.edges[0].node.mintedCount,
+          lastMintedTime: data.users.edges[0].node.lastMintedTime,
+          stakingApproved: data.users.edges[0].node.stakingApproved,
+          totalPoints: data.users.edges[0].node.totalPoints,
+          claimedPoints: data.users.edges[0].node.claimedPoints,
+          totalProduction: data.users.edges[0].node.totalProduction,
+          averageProduction: data.users.edges[0].node.averageProduction,
+          userRewardMultiplier: data.users.edges[0].node.userRewardMultiplier,
+          hasExternalNFTFlag: data.users.edges[0].node.hasExternalNFTFlag,
+        };
+        setUserRewards(rewardInfo);
+      }
+    },
+  });
 
   const {
     data: tokensData,
@@ -222,6 +264,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const stakedDataRef = useRef(stakedData);
   const unstakedDataRef = useRef(tokensData);
   const client = useApolloClient();
+
+  useEffect(() => {
+    if (errorRewards) {
+      logger.error("Error fetching user rewards data:", errorRewards);
+    }
+  }, [errorRewards]);
 
   // Keep stakedDataRef updated
   useEffect(() => {
@@ -638,6 +686,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         bees,
         stakedBees,
         loadingBees,
+        userRewards,
         fetchError,
         address: address ?? null,
         isConnected,

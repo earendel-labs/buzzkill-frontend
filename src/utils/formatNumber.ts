@@ -1,6 +1,7 @@
-// utils/formatNumber.ts
+export function formatNumber(value?: number): string {
+  // Return '0' if value is undefined, null, or exactly 0
+  if (!value) return "0";
 
-export function formatNumber(value: number): string {
   // Define suffixes for large numbers
   const suffixes = ["", "K", "M", "B", "T", "P", "E"];
 
@@ -11,7 +12,7 @@ export function formatNumber(value: number): string {
   if (tier === 0) return value.toString();
 
   // Get the appropriate suffix
-  const suffix = suffixes[tier];
+  const suffix = suffixes[tier] || "";
 
   // Scale the number
   const scaled = value / Math.pow(10, tier * 3);
