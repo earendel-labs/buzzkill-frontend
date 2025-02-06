@@ -210,247 +210,6 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 padding: 0,
               }}
             >
-              {/* Daily Bonus */}
-              <Grid item xs={12} sm={6} md={4} lg={4}>
-                <SemiTransparentCard
-                  shadowTransparency={0}
-                  sx={{ height: "100%", p: 3 }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "flex-start",
-                      textAlign: "left",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      <PaymentsIcon
-                        sx={{
-                          color: theme.palette.LightBlue.main,
-                          fontSize: "1.25rem",
-                        }}
-                      />
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        sx={{
-                          fontWeight: "bold",
-                          color: theme.palette.LightBlue.main,
-                        }}
-                      >
-                        Daily Bonus
-                      </Typography>
-                      <Tooltip
-                        title={
-                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-                            Claim daily bonus every 24 hours
-                          </Typography>
-                        }
-                        placement="top"
-                        arrow
-                      >
-                        <InfoIcon
-                          sx={{
-                            color: theme.palette.LightBlue.main,
-                            fontSize: "1.2rem",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Tooltip>
-                    </Box>
-
-                    {constants.dailyBonus !== undefined ? (
-                      <Typography
-                        variant="h4"
-                        component="p"
-                        fontWeight="bold"
-                        sx={{
-                          color: theme.palette.Gold.main,
-                          WebkitTextStroke: "0",
-                          lineHeight: "1.2",
-                          marginTop: "8px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        {constants.dailyBonus.toLocaleString()}
-                        <Typography
-                          variant="h5"
-                          component="span"
-                          sx={{
-                            color: theme.palette.Gold.main,
-                            WebkitTextStroke: "0",
-                            marginLeft: "8px",
-                          }}
-                        >
-                          Honey Drops
-                        </Typography>
-                      </Typography>
-                    ) : (
-                      <Skeleton
-                        variant="text"
-                        width={80}
-                        height={40}
-                        animation="wave"
-                        sx={{ marginTop: "12px" }}
-                      />
-                    )}
-
-                    <Button
-                      className="goldButton"
-                      onClick={copyInviteLink}
-                      startIcon={<EmojiEventsIcon />}
-                      aria-label="Claim Daily rewards"
-                      disabled={true}
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textTransform: "none",
-                        fontWeight: "bold",
-                        fontSize: "1rem",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      Claim Bonus
-                    </Button>
-                  </Box>
-                </SemiTransparentCard>
-              </Grid>
-
-              {/* Referral Rewards */}
-              <Grid item xs={12} sm={6} md={4} lg={4}>
-                <SemiTransparentCard
-                  shadowTransparency={0}
-                  sx={{ height: "100%", p: 3 }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "flex-start",
-                      textAlign: "left",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      <PersonAddAlt1Icon
-                        sx={{
-                          color: theme.palette.LightBlue.main,
-                          fontSize: "1.25rem",
-                        }}
-                      />
-                      <Typography
-                        variant="h6"
-                        component="p"
-                        sx={{
-                          fontWeight: "bold",
-                          color: theme.palette.LightBlue.main,
-                        }}
-                      >
-                        Referral Rewards
-                      </Typography>
-                      <Tooltip
-                        title={
-                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-                            Invite friends to join and mint. The more you
-                            invite, the more points you can earn
-                          </Typography>
-                        }
-                        placement="top"
-                        arrow
-                      >
-                        <InfoIcon
-                          sx={{
-                            color: theme.palette.LightBlue.main,
-                            fontSize: "1.2rem",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Tooltip>
-                    </Box>
-
-                    {constants.referralReward !== undefined ? (
-                      <Typography
-                        variant="h4"
-                        component="p"
-                        fontWeight="bold"
-                        sx={{
-                          color: theme.palette.Gold.main,
-                          WebkitTextStroke: "0",
-                          lineHeight: "1.2",
-                          marginTop: "8px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        {constants.referralReward.toLocaleString()}
-                        <Typography
-                          variant="h5"
-                          component="span"
-                          sx={{
-                            color: theme.palette.Gold.main,
-                            WebkitTextStroke: "0",
-                            marginLeft: "8px",
-                          }}
-                        >
-                          Honey Drops
-                        </Typography>
-                      </Typography>
-                    ) : (
-                      <Skeleton
-                        variant="text"
-                        width={80}
-                        height={40}
-                        animation="wave"
-                        sx={{ marginTop: "12px" }}
-                      />
-                    )}
-
-                    {profileData?.invite_code ? (
-                      <Button
-                        className="blueConnectWallet"
-                        onClick={copyInviteLink}
-                        startIcon={<CopyIcon />}
-                        aria-label="Copy invite link and invite friends"
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          textTransform: "none",
-                          fontWeight: "bold",
-                          fontSize: "1rem",
-                          lineHeight: "1.5",
-                        }}
-                      >
-                        Invite Friends
-                      </Button>
-                    ) : (
-                      <Skeleton
-                        variant="text"
-                        width={120}
-                        height={40}
-                        animation="wave"
-                      />
-                    )}
-                  </Box>
-                </SemiTransparentCard>
-              </Grid>
-
               {/* Hatchling Yield */}
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <SemiTransparentCard
@@ -588,6 +347,248 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           alignItems: "center",
                           gap: "8px",
                         }}
+                      />
+                    )}
+                  </Box>
+                </SemiTransparentCard>
+              </Grid>
+
+              {/* Daily Bonus */}
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <SemiTransparentCard
+                  shadowTransparency={0}
+                  sx={{ height: "100%", p: 3 }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      <PaymentsIcon
+                        sx={{
+                          color: theme.palette.LightBlue.main,
+                          fontSize: "1.25rem",
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        component="p"
+                        sx={{
+                          fontWeight: "bold",
+                          color: theme.palette.LightBlue.main,
+                        }}
+                      >
+                        Unclaimed Yield
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            This is your total Hatchling staking yield that you
+                            haven't claimed yet
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
+
+                    {constants.dailyBonus !== undefined ? (
+                      <Typography
+                        variant="h4"
+                        component="p"
+                        fontWeight="bold"
+                        sx={{
+                          color: theme.palette.Gold.main,
+                          WebkitTextStroke: "0",
+                          lineHeight: "1.2",
+                          marginTop: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {constants.dailyBonus.toLocaleString()}
+                        <Typography
+                          variant="h5"
+                          component="span"
+                          sx={{
+                            color: theme.palette.Gold.main,
+                            WebkitTextStroke: "0",
+                            marginLeft: "8px",
+                          }}
+                        >
+                          Honey Drops
+                        </Typography>
+                      </Typography>
+                    ) : (
+                      <Skeleton
+                        variant="text"
+                        width={80}
+                        height={40}
+                        animation="wave"
+                        sx={{ marginTop: "12px" }}
+                      />
+                    )}
+
+                    <Button
+                      className="goldButton"
+                      onClick={copyInviteLink}
+                      startIcon={<EmojiEventsIcon />}
+                      aria-label="Claim Daily rewards"
+                      disabled={true}
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      Claim Yield
+                    </Button>
+                  </Box>
+                </SemiTransparentCard>
+              </Grid>
+
+              {/* Referral Rewards */}
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <SemiTransparentCard
+                  shadowTransparency={0}
+                  sx={{ height: "100%", p: 3 }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      <PersonAddAlt1Icon
+                        sx={{
+                          color: theme.palette.LightBlue.main,
+                          fontSize: "1.25rem",
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        component="p"
+                        sx={{
+                          fontWeight: "bold",
+                          color: theme.palette.LightBlue.main,
+                        }}
+                      >
+                        Referral Rewards
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            Invite friends to join and mint. The more you
+                            invite, the more points you can earn
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
+
+                    {constants.referralReward !== undefined ? (
+                      <Typography
+                        variant="h4"
+                        component="p"
+                        fontWeight="bold"
+                        sx={{
+                          color: theme.palette.Gold.main,
+                          WebkitTextStroke: "0",
+                          lineHeight: "1.2",
+                          marginTop: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {constants.referralReward.toLocaleString()}
+                        <Typography
+                          variant="h5"
+                          component="span"
+                          sx={{
+                            color: theme.palette.Gold.main,
+                            WebkitTextStroke: "0",
+                            marginLeft: "8px",
+                          }}
+                        >
+                          Honey Drops
+                        </Typography>
+                      </Typography>
+                    ) : (
+                      <Skeleton
+                        variant="text"
+                        width={80}
+                        height={40}
+                        animation="wave"
+                        sx={{ marginTop: "12px" }}
+                      />
+                    )}
+
+                    {profileData?.invite_code ? (
+                      <Button
+                        className="blueConnectWallet"
+                        onClick={copyInviteLink}
+                        startIcon={<CopyIcon />}
+                        aria-label="Copy invite link and invite friends"
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textTransform: "none",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        Invite Friends
+                      </Button>
+                    ) : (
+                      <Skeleton
+                        variant="text"
+                        width={120}
+                        height={40}
+                        animation="wave"
                       />
                     )}
                   </Box>

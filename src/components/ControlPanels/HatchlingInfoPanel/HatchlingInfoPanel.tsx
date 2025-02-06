@@ -155,7 +155,8 @@ const HatchlingInfoPanel: React.FC = () => {
           ? {
               xs: "100%",
               md: "500px",
-              xl: "800px",
+              xl: "600px",
+              xxl: "800px",
             }
           : "4rem",
         display: "flex",
