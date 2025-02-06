@@ -45,6 +45,7 @@ interface StakedNFTNode {
   hiveId?: {
     hiveId: string;
   };
+  lastClaimedAt: string; // Must be returned from your query (in seconds)
 }
 
 interface StakedNFTEdge {
@@ -86,6 +87,7 @@ export interface UserRewards {
   averageProduction: number;
   userRewardMultiplier: number;
   hasExternalNFTFlag: boolean;
+  unclaimedPoints?: number; // New field for computed pending points
 }
 
 // ----------- Context Interface -----------
@@ -106,11 +108,12 @@ interface UserContextType {
     action?: "stake" | "unstake" | "mint",
     mintedQuantity?: number
   ) => Promise<void>;
+  pollForClaimUpdate: (oldTotalPoints: number) => Promise<void>;
   checkAndPromptApproval: () => Promise<boolean>;
   stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
   unstakeBee: (beeId: number) => void;
-  // Expose isRefreshing so the UI can hide partial states
   isRefreshing: boolean;
+  liveUnclaimedPoints: number; // Live counter for unclaimed yield
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -132,7 +135,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [approvalForStaking, setApprovalForStaking] = useState(false);
   const [isCheckingApproval, setIsCheckingApproval] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [userRewards, setUserRewards] = useState<UserRewards | null>(null); // State for storing user rewards
+  const [userRewards, setUserRewards] = useState<UserRewards | null>(null);
+  // New state to trigger recalculation after a claim
+  const [claimTimestamp, setClaimTimestamp] = useState<number>(0);
+  // Live counter for the unclaimed yield (updates minute-by-minute)
+  const [liveUnclaimedPoints, setLiveUnclaimedPoints] = useState<number>(0);
 
   const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
@@ -181,7 +188,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     fetchPolicy: "network-only",
     onCompleted: (data) => {
       if (data) {
-        // Map staked data
         const stakedBeesData: Hatchling[] = data.stakedNFTs.edges.map(
           (edge) => ({
             id: parseInt(edge.node.tokenIdNum, 10),
@@ -193,7 +199,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             ownerAddress: address || "",
           })
         );
-        // Deduplicate staked bees by id
         const uniqueStakedBees = Array.from(
           new Map(stakedBeesData.map((bee) => [bee.id, bee])).values()
         );
@@ -205,6 +210,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     data: rewardsData,
     loading: loadingRewards,
     error: errorRewards,
+    refetch: refetchRewardsData,
   } = useQuery(GET_USER_REWARDS_DATA, {
     variables: { userId: lowercaseAddress },
     skip: !isConnected || !lowercaseAddress,
@@ -227,7 +233,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       }
     },
   });
-
   const {
     data: tokensData,
     loading: loadingTokens,
@@ -239,7 +244,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     fetchPolicy: "network-only",
     onCompleted: (data) => {
       if (data) {
-        // Map unstaked data
         const unstakedBeesData: Hatchling[] = data.tokens.edges
           .map((edge) => edge.node)
           .filter((node) => !node.isStaked)
@@ -252,7 +256,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             hiveID: null,
             ownerAddress: node.owner || address || "",
           }));
-        // Deduplicate unstaked bees by id
         const uniqueUnstakedBees = Array.from(
           new Map(unstakedBeesData.map((bee) => [bee.id, bee])).values()
         );
@@ -291,11 +294,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     if (errorTokens) {
       logger.error("Error fetching tokens:", errorTokens);
     }
-
-    // Optionally fetch metadata once:
     fetchStakedBees();
     fetchUnstakedBees();
-
     setLoadingBees(loadingStaked || loadingTokens);
     setFetchError(!!errorStaked || !!errorTokens);
   }, [
@@ -306,6 +306,121 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     errorStaked,
     errorTokens,
   ]);
+
+  // ----------------------
+  // Calculate Base Unclaimed Points and Initialize Live Counter
+  // Now includes claimTimestamp so that when a claim occurs,
+  // the base calculation is recalculated.
+  // ----------------------
+  useEffect(() => {
+    if (
+      stakedData &&
+      stakedData.stakedNFTs &&
+      stakedData.stakedNFTs.edges &&
+      rewardsData &&
+      rewardsData.users &&
+      rewardsData.users.edges.length > 0
+    ) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      let totalUnclaimed = 0;
+      stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
+        const nft = edge.node;
+        const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
+        const secondsElapsed = currentTime - lastClaimedAt;
+        const daysElapsed = Math.floor(secondsElapsed / 86400);
+        let rarityMultiplier = 1;
+        if (nft.tokenId.rarity === "Rare") {
+          rarityMultiplier = 1.2;
+        } else if (nft.tokenId.rarity === "Ultra-Rare") {
+          rarityMultiplier = 1.5;
+        }
+        totalUnclaimed += daysElapsed * 1000 * rarityMultiplier;
+      });
+      // Apply external NFT flag multiplier if enabled
+      const externalFlag = rewardsData.users.edges[0].node.hasExternalNFTFlag;
+      if (externalFlag) {
+        totalUnclaimed *= 1.5;
+      }
+      // Update rewards and initialize live counter
+      setUserRewards((prevRewards) => {
+        if (prevRewards) {
+          return { ...prevRewards, unclaimedPoints: totalUnclaimed };
+        }
+        return {
+          id: "",
+          mintedCount: 0,
+          lastMintedTime: "",
+          stakingApproved: false,
+          totalPoints: 0,
+          claimedPoints: 0,
+          totalProduction: 0,
+          averageProduction: 0,
+          userRewardMultiplier: 0,
+          hasExternalNFTFlag: externalFlag,
+          unclaimedPoints: totalUnclaimed,
+        };
+      });
+      setLiveUnclaimedPoints(totalUnclaimed);
+    }
+  }, [stakedData, rewardsData, claimTimestamp]);
+
+  // ----------------------
+  // Live Update: Increment Unclaimed Points Minute-by-Minute
+  // ----------------------
+  useEffect(() => {
+    let totalRatePerMinute = 0;
+    if (
+      stakedData &&
+      stakedData.stakedNFTs &&
+      stakedData.stakedNFTs.edges.length > 0
+    ) {
+      stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
+        let rarityMultiplier = 1;
+        if (edge.node.tokenId.rarity === "Rare") {
+          rarityMultiplier = 1.2;
+        } else if (edge.node.tokenId.rarity === "Ultra-Rare") {
+          rarityMultiplier = 1.5;
+        }
+        // Daily reward rate is 1000 points.
+        // Per minute: 1000 / 1440
+        totalRatePerMinute += (1000 / 1440) * rarityMultiplier;
+      });
+      if (userRewards?.hasExternalNFTFlag) {
+        totalRatePerMinute *= 1.5;
+      }
+    }
+    const interval = setInterval(() => {
+      setLiveUnclaimedPoints((prev) => prev + totalRatePerMinute);
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [stakedData, userRewards?.hasExternalNFTFlag]);
+
+  // ----------------------
+  // Polling for Claim Update
+  // ----------------------
+  const pollForClaimUpdate = async (oldTotalPoints: number) => {
+    const maxAttempts = 15;
+    const intervalMs = 2000;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+      const refreshed = await refetchRewardsData({
+        fetchPolicy: "network-only",
+      });
+      const newData = refreshed.data;
+      if (newData && newData.users && newData.users.edges.length > 0) {
+        const newTotalPoints = newData.users.edges[0].node.totalPoints;
+        if (newTotalPoints > oldTotalPoints) {
+          setUserRewards((prev) =>
+            prev ? { ...prev, totalPoints: newTotalPoints } : null
+          );
+          // Reset live counter after claim and update claimTimestamp to force recalculation
+          setLiveUnclaimedPoints(0);
+          setClaimTimestamp(Date.now());
+          break;
+        }
+      }
+    }
+  };
 
   // ----------------------
   // Fetch Staked Bees w/ Metadata
@@ -328,7 +443,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           };
         })
       );
-      // Deduplicate before setting state
       const uniqueStakedBees = Array.from(
         new Map(fetchedStakedBees.map((bee) => [bee.id, bee])).values()
       );
@@ -362,7 +476,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
             };
           })
       );
-      // Deduplicate before setting state
       const uniqueUnstakedBees = Array.from(
         new Map(fetchedUnstakedBees.map((bee) => [bee.id, bee])).values()
       );
@@ -395,7 +508,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           };
         }
       );
-      // Deduplicate before setting state
       const uniqueStakedBees = Array.from(
         new Map(stakedBeesData.map((bee) => [bee.id, bee])).values()
       );
@@ -419,10 +531,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       logger.log("Address, hive staking, or approval status is not available.");
       return false;
     }
-
     setIsCheckingApproval(true);
     logger.log("Checking if approval is already set...");
-
     if (!isApproved) {
       logger.log("Prompting user to approve staking contract...");
       try {
@@ -447,7 +557,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   // -----------------------------------------------------------------
   // REFRESH BEES (With Polling & Re-using Old Metadata)
-  // Option B: We'll hide partial states in the UI if isRefreshing = true
   // -----------------------------------------------------------------
   const refreshBeesData = useCallback(
     async (
@@ -459,83 +568,60 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         logger.log("User not connected or address missing. Skipping refresh.");
         return;
       }
-
       setIsRefreshing(true);
       setLoadingBees(true);
-
       const oldUnstakedCount = bees.length;
-      // Track IDs of currently unstaked bees before final fetch
       const oldUnstakedBeeIds = bees.map((b) => b.id);
-
       try {
-        // 1) Define a condition function for polling
         const isBeesDataUpdated = async (): Promise<boolean> => {
           const [stakedRes, unstakedRes] = await Promise.all([
             refetchStakedData({ fetchPolicy: "network-only" }),
             refetchUnstakedData({ fetchPolicy: "network-only" }),
           ]);
-
           const stakedDataResult = stakedRes.data;
           const unstakedDataResult = unstakedRes.data;
           if (!stakedDataResult || !unstakedDataResult) {
             logger.warn("Polling: No data returned.");
             return false;
           }
-
           const updatedStakedBeesShort = stakedDataResult.stakedNFTs.edges.map(
             (edge: any) => ({
               id: parseInt(edge.node.tokenIdNum, 10),
             })
           );
-
           const updatedUnstakedBeesShort = unstakedDataResult.tokens.edges
             .map((edge: any) => edge.node)
             .filter((node: any) => !node.isStaked)
             .map((node: any) => ({
               id: parseInt(node.id, 10),
             }));
-
           const isBeeStaked = beeId
             ? updatedStakedBeesShort.some((b) => b.id === beeId)
             : false;
-
           if (action === "stake") {
             return isBeeStaked;
           }
-
           if (action === "unstake") {
             return !isBeeStaked;
           }
-
           if (action === "mint") {
             const newUnstakedBeesCount = updatedUnstakedBeesShort.length;
             const expectedCount = oldUnstakedCount + (mintedQuantity ?? 1);
             return newUnstakedBeesCount >= expectedCount;
           }
-
           return true;
         };
-
-        // 2) Poll until condition is met
         const pollingResult = await pollUntilCondition(
           isBeesDataUpdated,
           1000,
           10
         );
         logger.log("Polling completed. Condition met:", pollingResult);
-
-        // 3) Optional short delay
         await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // 4) Final fetch & update state, re-using old metadata
         const [finalStakedRes, finalUnstakedRes] = await Promise.all([
           refetchStakedData({ fetchPolicy: "network-only" }),
           refetchUnstakedData({ fetchPolicy: "network-only" }),
         ]);
-
-        // ----------------------
-        // Final STAKED
-        // ----------------------
         if (finalStakedRes.data) {
           const updatedStaked = finalStakedRes.data.stakedNFTs.edges.map(
             (edge: any) => {
@@ -543,7 +629,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               const existingBee =
                 stakedBees.find((b) => b.id === beeID) ||
                 bees.find((b) => b.id === beeID);
-
               return {
                 id: beeID,
                 rarity: edge.node.tokenId.rarity,
@@ -555,17 +640,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               };
             }
           );
-
           const uniqueFinalStaked = Array.from(
             new Map(updatedStaked.map((bee) => [bee.id, bee])).values()
           );
           setStakedBees(uniqueFinalStaked);
           stakedDataRef.current = finalStakedRes.data;
         }
-
-        // ----------------------
-        // Final UNSTAKED
-        // ----------------------
         if (finalUnstakedRes.data) {
           const updatedUnstaked = finalUnstakedRes.data.tokens.edges
             .map((edge: any) => edge.node)
@@ -575,7 +655,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               const existingBee =
                 bees.find((b) => b.id === beeID) ||
                 stakedBees.find((b) => b.id === beeID);
-
               return {
                 id: beeID,
                 rarity: node.rarity,
@@ -586,19 +665,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
                 ownerAddress: node.owner || address || "",
               };
             });
-
           const uniqueFinalUnstaked = Array.from(
             new Map(updatedUnstaked.map((bee) => [bee.id, bee])).values()
           );
           setBees(uniqueFinalUnstaked);
           unstakedDataRef.current = finalUnstakedRes.data;
-
-          // Award points for newly minted bees
           if (action === "mint") {
             const newMintedBees = uniqueFinalUnstaked.filter(
               (b) => !oldUnstakedBeeIds.includes(b.id)
             );
-
             for (const bee of newMintedBees) {
               let taskName = "Mint Common Hatchling";
               if (bee.rarity === "Rare") {
@@ -606,7 +681,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
               } else if (bee.rarity === "Ultra-Rare") {
                 taskName = "Mint Ultra-Rare Hatchling";
               }
-
               try {
                 await fetch("/api/rewards/awardMintRewards", {
                   method: "POST",
@@ -694,9 +768,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         approvalForStaking,
         checkAndPromptApproval,
         refreshBeesData,
+        pollForClaimUpdate,
         stakeBee,
         unstakeBee,
         isRefreshing,
+        liveUnclaimedPoints,
       }}
     >
       {children}

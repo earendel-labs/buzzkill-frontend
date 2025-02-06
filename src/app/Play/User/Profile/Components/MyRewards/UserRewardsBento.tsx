@@ -24,6 +24,7 @@ import { useTheme } from "@mui/system";
 import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { useUserContext } from "@/context/UserContext";
+import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
   profileData: {
@@ -47,7 +48,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const router = useRouter();
   const theme = useTheme();
   const isConnected = !loadingProfile && profileData && profileData.invite_code;
-  const { userRewards } = useUserContext();
+  const { userRewards, liveUnclaimedPoints } = useUserContext();
 
   if (loadingProfile) {
     return (
@@ -353,7 +354,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 </SemiTransparentCard>
               </Grid>
 
-              {/* Daily Bonus */}
+              {/* Unclaimed Points */}
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <SemiTransparentCard
                   shadowTransparency={0}
@@ -411,7 +412,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       </Tooltip>
                     </Box>
 
-                    {constants.dailyBonus !== undefined ? (
+                    {liveUnclaimedPoints !== undefined ? (
                       <Typography
                         variant="h4"
                         component="p"
@@ -424,7 +425,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           marginBottom: "8px",
                         }}
                       >
-                        {constants.dailyBonus.toLocaleString()}
+                        {liveUnclaimedPoints.toLocaleString()}
                         <Typography
                           variant="h5"
                           component="span"
@@ -447,25 +448,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       />
                     )}
 
-                    <Button
-                      className="goldButton"
-                      onClick={copyInviteLink}
-                      startIcon={<EmojiEventsIcon />}
-                      aria-label="Claim Daily rewards"
-                      disabled={true}
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textTransform: "none",
-                        fontWeight: "bold",
-                        fontSize: "1rem",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      Claim Yield
-                    </Button>
+                    <ClaimButton liveUnclaimedPoints={liveUnclaimedPoints} />
                   </Box>
                 </SemiTransparentCard>
               </Grid>

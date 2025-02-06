@@ -15,7 +15,9 @@ import {
 import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
- 
+import useSWR from 'swr';
+
+
 // Define sort directions and sortable columns for the leaderboard
 type SortDirection = "asc" | "desc";
 type SortableColumn = "rank" | "address" | "total_rewards";
