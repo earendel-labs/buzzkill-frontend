@@ -142,7 +142,7 @@ const UserResourceBar: React.FC = () => {
                   }}
                 >
                   {liveUnclaimedPoints !== undefined ? (
-                    <>{liveUnclaimedPoints.toLocaleString()}</>
+                    <>{Math.floor(liveUnclaimedPoints).toLocaleString()}</>
                   ) : (
                     <Skeleton variant="text" width={120} height={32} />
                   )}

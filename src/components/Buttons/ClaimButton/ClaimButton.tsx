@@ -10,6 +10,7 @@ import { useWriteHiveStakingClaimPoints } from "@/hooks/HiveStaking";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { logger } from "@/utils/logger";
 import { useUserContext } from "@/context/UserContext";
+import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
 
 interface ClaimButtonProps {
   liveUnclaimedPoints: number;
@@ -25,6 +26,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
     "success" | "error" | "warning"
   >("success");
   const [isClaiming, setIsClaiming] = useState(false);
+  const [showClaimModal, setShowClaimModal] = useState(false);
 
   const { isMuted } = useSound();
   const { userRewards, pollForClaimUpdate } = useUserContext();
@@ -63,6 +65,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
     try {
       setIsClaiming(true);
       logger.log("Initiating claim transaction...");
+      setShowClaimModal(true);
 
       const tx = await writeContractAsync({ args: [] });
       if (tx) {
@@ -72,6 +75,8 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
         setAlertMessage("No transaction response received.");
         setSnackbarOpen(true);
         logger.error("No transaction response received.");
+        setShowClaimModal(false);
+
         setIsClaiming(false);
       }
     } catch (err: any) {
@@ -88,6 +93,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
       }
       setSnackbarOpen(true);
       setIsClaiming(false);
+      setShowClaimModal(false);
     }
   };
 
@@ -127,6 +133,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
         const oldTotalPoints = userRewards?.totalPoints || 0;
         await pollForClaimUpdate(oldTotalPoints);
         setIsClaiming(false);
+        setShowClaimModal(false);
       })();
     }
 
@@ -137,6 +144,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
       setSnackbarOpen(true);
       setTransactionHash(undefined);
       setIsClaiming(false);
+      setShowClaimModal(false);
     }
   }, [isSuccess, isError, error, userRewards?.totalPoints, pollForClaimUpdate]);
 
@@ -154,7 +162,10 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
         onMouseDown={handleMouseDown}
         onClick={handleClaimClick}
         disabled={
-          isClaiming || isPending || isTxnLoading || liveUnclaimedPoints === 0
+          isClaiming ||
+          isPending ||
+          isTxnLoading ||
+          Math.floor(liveUnclaimedPoints) === 0
         }
         sx={{
           width: "100%",
@@ -184,6 +195,13 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
           {alertMessage}
         </Alert>
       </Snackbar>
+      <TransactionInProgressModal
+        open={showClaimModal}
+        title={`Claiming Yield: ${Math.floor(
+          liveUnclaimedPoints ?? 0
+        )} Points...`}
+        onClose={() => setShowClaimModal(false)}
+      />
     </>
   );
 };

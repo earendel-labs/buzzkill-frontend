@@ -1,10 +1,10 @@
-"use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAccount, useBalance, useWaitForTransactionReceipt } from "wagmi";
 import {
   useReadBuzzkillHatchlingsNftTotalSupply,
   useReadBuzzkillHatchlingsNftCurrentMaxSupply,
   useWriteBuzzkillHatchlingsNftMint,
+  useReadBuzzkillHatchlingsNftMaxMintPerAddress, // Import the new hook
 } from "@/hooks/BuzzkillHatchlingsNFT";
 import { formatEther } from "ethers";
 import { useUserContext } from "@/context/UserContext";
@@ -58,7 +58,14 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Calculation for how many minted for this user
   const currentMinted = bees.length + stakedBees.length;
-  const maxPerAddress = 2;
+
+  // Fetch max mint per address for the user
+  const { data: maxMintPerAddressData } =
+    useReadBuzzkillHatchlingsNftMaxMintPerAddress();
+
+  const maxPerAddress = maxMintPerAddressData
+    ? Number(maxMintPerAddressData)
+    : 10; // Use the fetched max mint per address value
   const remainingMint = maxPerAddress - currentMinted;
 
   const initialMaxQuantity = remainingMint > 0 ? remainingMint : 0;

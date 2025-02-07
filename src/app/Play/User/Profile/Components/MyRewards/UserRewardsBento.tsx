@@ -1,8 +1,6 @@
-// src/app/Play/User/Profile/MyRewards/Components/UserRewardsBento.tsx
-
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -25,6 +23,7 @@ import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { useUserContext } from "@/context/UserContext";
 import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
+
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
   profileData: {
@@ -48,7 +47,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const router = useRouter();
   const theme = useTheme();
   const isConnected = !loadingProfile && profileData && profileData.invite_code;
-  const { userRewards, liveUnclaimedPoints } = useUserContext();
+  const { userRewards, onChainPoints, liveUnclaimedPoints } = useUserContext();
+
+  // Log context changes for debugging.
+  useEffect(() => {
+    console.log("Updated userRewards:", userRewards);
+    console.log("Updated liveUnclaimedPoints:", liveUnclaimedPoints);
+  }, [userRewards, liveUnclaimedPoints]);
 
   if (loadingProfile) {
     return (
@@ -281,7 +286,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         marginBottom: "2px",
                       }}
                     >
-                      {userRewards?.claimedPoints || 0}
+                      {onChainPoints || 0}
                       <Typography
                         variant="h5"
                         component="span"
@@ -425,7 +430,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           marginBottom: "8px",
                         }}
                       >
-                        {liveUnclaimedPoints.toLocaleString()}
+                        {Math.floor(liveUnclaimedPoints).toLocaleString()}
                         <Typography
                           variant="h5"
                           component="span"

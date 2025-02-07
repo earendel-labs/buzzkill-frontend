@@ -21,6 +21,7 @@ import {
 import {
   useReadHiveStakingUserInfo,
   useReadHiveStakingTotalBeesStaked,
+  useReadHiveStakingGetUserPoints,
 } from "@/hooks/HiveStaking";
 import { Hatchling, HatchlingStatus } from "@/types/Hatchling";
 import { pollUntilCondition } from "@/utils/polling";
@@ -114,6 +115,7 @@ interface UserContextType {
   unstakeBee: (beeId: number) => void;
   isRefreshing: boolean;
   liveUnclaimedPoints: number; // Live counter for unclaimed yield
+  onChainPoints: number | null;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -140,6 +142,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   const [claimTimestamp, setClaimTimestamp] = useState<number>(0);
   // Live counter for the unclaimed yield (updates minute-by-minute)
   const [liveUnclaimedPoints, setLiveUnclaimedPoints] = useState<number>(0);
+  const [onChainPoints, setOnChainPoints] = useState<number | null>(null);
 
   const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
@@ -163,6 +166,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   });
   const { writeContractAsync: approveTokens } =
     useWriteBuzzkillHatchlingsNftSetApprovalForAll();
+
+  const { data: onChainUserPointsData, refetch: refetchUserPoints } =
+    useReadHiveStakingGetUserPoints({
+      args: [address ?? "0x0000000000000000000000000000000000000000"],
+    });
+
+  useEffect(() => {
+    if (onChainUserPointsData) {
+      const parsedPoints = parseFloat(onChainUserPointsData.toString());
+      setOnChainPoints(parsedPoints);
+    }
+  }, [onChainUserPointsData]);
 
   // ----------------------
   // Additional On-chain Reads
@@ -307,6 +322,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     errorTokens,
   ]);
 
+  // Refetch rewards data whenever claimTimestamp updates.
+  useEffect(() => {
+    if (claimTimestamp) {
+      refetchRewardsData();
+    }
+  }, [claimTimestamp, refetchRewardsData]);
+
+  // ----------------------
+  // Calculate Base Unclaimed Points and Initialize Live Counter
+  // Now includes claimTimestamp so that when a claim occurs,
+  // the base calculation is recalculated.
+  // ----------------------
   // ----------------------
   // Calculate Base Unclaimed Points and Initialize Live Counter
   // Now includes claimTimestamp so that when a claim occurs,
@@ -321,13 +348,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       rewardsData.users &&
       rewardsData.users.edges.length > 0
     ) {
-      const currentTime = Math.floor(Date.now() / 1000);
+      const currentTime = Date.now() / 1000;
       let totalUnclaimed = 0;
       stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
         const nft = edge.node;
         const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
         const secondsElapsed = currentTime - lastClaimedAt;
-        const daysElapsed = Math.floor(secondsElapsed / 86400);
+        const daysElapsed = secondsElapsed / 86400;
         let rarityMultiplier = 1;
         if (nft.tokenId.rarity === "Rare") {
           rarityMultiplier = 1.2;
@@ -336,12 +363,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         }
         totalUnclaimed += daysElapsed * 1000 * rarityMultiplier;
       });
-      // Apply external NFT flag multiplier if enabled
       const externalFlag = rewardsData.users.edges[0].node.hasExternalNFTFlag;
       if (externalFlag) {
         totalUnclaimed *= 1.5;
       }
-      // Update rewards and initialize live counter
       setUserRewards((prevRewards) => {
         if (prevRewards) {
           return { ...prevRewards, unclaimedPoints: totalUnclaimed };
@@ -364,9 +389,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [stakedData, rewardsData, claimTimestamp]);
 
-  // ----------------------
-  // Live Update: Increment Unclaimed Points Minute-by-Minute
-  // ----------------------
+  // Live Update: Increment Unclaimed Points Minute-by-Minute.
   useEffect(() => {
     let totalRatePerMinute = 0;
     if (
@@ -381,12 +404,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         } else if (edge.node.tokenId.rarity === "Ultra-Rare") {
           rarityMultiplier = 1.5;
         }
-        // Daily reward rate is 1000 points.
-        // Per minute: 1000 / 1440
         totalRatePerMinute += (1000 / 1440) * rarityMultiplier;
       });
       if (userRewards?.hasExternalNFTFlag) {
-        totalRatePerMinute *= 1.5;
+        totalRatePerMinute = totalRatePerMinute * 1.5;
       }
     }
     const interval = setInterval(() => {
@@ -396,30 +417,42 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   }, [stakedData, userRewards?.hasExternalNFTFlag]);
 
   // ----------------------
-  // Polling for Claim Update
+  // Polling for On-Chain Claim Update.
+  // This function polls the smart contract until the user points (getUserPoints)
+  // are updated, then updates the context state.
   // ----------------------
-  const pollForClaimUpdate = async (oldTotalPoints: number) => {
-    const maxAttempts = 15;
+  const pollForOnChainPoints = async (oldPoints: number) => {
+    const maxAttempts = 30;
     const intervalMs = 2000;
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       await new Promise((resolve) => setTimeout(resolve, intervalMs));
-      const refreshed = await refetchRewardsData({
-        fetchPolicy: "network-only",
-      });
-      const newData = refreshed.data;
-      if (newData && newData.users && newData.users.edges.length > 0) {
-        const newTotalPoints = newData.users.edges[0].node.totalPoints;
-        if (newTotalPoints > oldTotalPoints) {
-          setUserRewards((prev) =>
-            prev ? { ...prev, totalPoints: newTotalPoints } : null
-          );
-          // Reset live counter after claim and update claimTimestamp to force recalculation
-          setLiveUnclaimedPoints(0);
-          setClaimTimestamp(Date.now());
-          break;
+      try {
+        const result = await refetchUserPoints();
+        if (result.data) {
+          const newPoints = parseFloat(result.data.toString());
+          if (newPoints > oldPoints) {
+            setOnChainPoints(newPoints);
+            setUserRewards((prev) =>
+              prev ? { ...prev, totalPoints: newPoints } : null
+            );
+            // Clear live counter when the claim is detected.
+            setLiveUnclaimedPoints(0);
+            break;
+          }
         }
+      } catch (err) {
+        logger.error("Error polling on-chain points:", err);
       }
     }
+  };
+
+  // Modify pollForClaimUpdate to call pollForOnChainPoints, then update both the Apollo and SWR caches.
+  const pollForClaimUpdate = async (oldTotalPoints: number) => {
+    await pollForOnChainPoints(oldTotalPoints);
+    // Refetch subgraph data (Apollo query)
+    refetchRewardsData();
+    // Force revalidation of the profile data in ProfileContext.
+    mutate("/api/user/getProfile");
   };
 
   // ----------------------
@@ -773,6 +806,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         unstakeBee,
         isRefreshing,
         liveUnclaimedPoints,
+        onChainPoints,
       }}
     >
       {children}

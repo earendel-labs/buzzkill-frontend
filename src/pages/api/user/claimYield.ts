@@ -134,13 +134,13 @@ export default async function claimYield(
   const stakedNFTEdges = subgraphData.stakedNFTs.edges;
 
   // Recalculate the unclaimed yield exactly as in your frontend
-  const currentTime = Math.floor(Date.now() / 1000);
+  const currentTime = Date.now() / 1000;
   let totalUnclaimed = 0;
   stakedNFTEdges.forEach((edge: any) => {
     const nft = edge.node;
     const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
     const secondsElapsed = currentTime - lastClaimedAt;
-    const daysElapsed = Math.floor(secondsElapsed / 86400);
+    const daysElapsed = secondsElapsed / 86400;
     let rarityMultiplier = 1;
     if (nft.tokenId.rarity === "Rare") {
       rarityMultiplier = 1.2;
@@ -163,12 +163,31 @@ export default async function claimYield(
   // Now update the user's profile in Supabase using a trusted yield value.
   // (For example, here we update the total_yield field.)
   const supabaseAuth = getSupabaseClientWithAuth(sessionToken);
+
+  const { data: user, error: fetchError } = await supabaseAuth
+    .from("users")
+    .select("total_yield, total_rewards")
+    .eq("address", address)
+    .single();
+
+  if (fetchError || !user) {
+    logger.error("Error fetching current yield:", fetchError);
+    return res.status(500).json({ error: "Error fetching current yield" });
+  }
+
+  // Add new yield to existing values
+  const newTotalYield = Math.floor(user.total_yield + totalUnclaimed);
+  const newTotalRewards = Math.floor(user.total_rewards + totalUnclaimed); // Assuming rewards are cumulative
+
+  // Update the new values
   const { data: updateData, error: updateError } = await supabaseAuth
     .from("users")
     .update({
-      total_yield: totalUnclaimed,
+      total_yield: newTotalYield,
+      total_rewards: newTotalRewards,
     })
-    .eq("address", address.toLowerCase())
+    .eq("address", address)
+    .select("*") // Fetch updated row
     .single();
 
   if (updateError || !updateData) {
