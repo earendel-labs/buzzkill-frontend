@@ -59,9 +59,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   };
 
   const handleClaimClick = async () => {
-    if (isClaiming || isPending || isTxnLoading) {
-      return;
-    }
+    if (isClaiming || isPending || isTxnLoading) return;
     try {
       setIsClaiming(true);
       logger.log("Initiating claim transaction...");
@@ -94,17 +92,42 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   };
 
   useEffect(() => {
+    // When the on-chain claim transaction succeeds, call our API endpoint to update yield.
     if (isSuccess) {
-      logger.log("Claim transaction completed successfully.");
-      setAlertSeverity("success");
-      setAlertMessage("Claim successful!");
-      setSnackbarOpen(true);
-      setTransactionHash(undefined);
+      (async () => {
+        logger.log("Claim transaction completed successfully.");
+        setAlertSeverity("success");
+        setAlertMessage("Claim successful on-chain!");
+        setSnackbarOpen(true);
+        setTransactionHash(undefined);
 
-      const oldTotalPoints = userRewards?.totalPoints || 0;
-      pollForClaimUpdate(oldTotalPoints).finally(() => {
+        try {
+          // Call the backend API endpoint which re-calculates yield using trusted subgraph data.
+          const response = await fetch("/api/user/claimYield", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+          const apiData = await response.json();
+          if (apiData.success) {
+            logger.log("Yield claimed via API:", apiData.totalYield);
+          } else {
+            logger.error("Yield claim API error:", apiData.error);
+            setAlertSeverity("error");
+            setAlertMessage(apiData.error);
+            setSnackbarOpen(true);
+          }
+        } catch (apiErr) {
+          logger.error("Error calling claimYield API:", apiErr);
+          setAlertSeverity("error");
+          setAlertMessage("Failed to claim yield via API.");
+          setSnackbarOpen(true);
+        }
+
+        // Optionally, poll for updated rewards data to update the UI
+        const oldTotalPoints = userRewards?.totalPoints || 0;
+        await pollForClaimUpdate(oldTotalPoints);
         setIsClaiming(false);
-      });
+      })();
     }
 
     if (isError) {
