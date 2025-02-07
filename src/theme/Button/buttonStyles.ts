@@ -7,14 +7,14 @@ const buttonStyles = (theme: Theme) => ({
         fontSize: "18px",
         fontWeight: "800",
         textTransform: "none",
-        padding: "10px 20px", 
+        padding: "10px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: "4px",
         borderStyle: "solid",
         boxSizing: "border-box",
-        height: "auto",  
+        height: "auto",
 
         "&.blueConnectWallet": {
           backgroundColor: theme.palette.DarkBlue.main,
@@ -78,6 +78,26 @@ const buttonStyles = (theme: Theme) => ({
             backgroundColor: theme.palette.DarkBlueFaded.dark,
             color: "#5e9dff",
             borderColor: theme.palette.DarkBlueFaded.dark,
+          },
+        },
+        "&.orangeButton": {
+          backgroundColor: theme.palette.Orange.main,
+          color: "#fff",
+          borderColor: theme.palette.Orange.main,
+          "&:hover": {
+            backgroundColor: theme.palette.Orange.light,
+            color: "#fff",
+            borderColor: theme.palette.Orange.light,
+          },
+          "&:active": {
+            backgroundColor: theme.palette.Orange.dark,
+            color: "#fff",
+            borderColor: theme.palette.Orange.dark,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#692d1e",
+            color: "#9b4322",
+            borderColor: "#692d1e",
           },
         },
 

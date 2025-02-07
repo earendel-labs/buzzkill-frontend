@@ -148,8 +148,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   return (
     <>
       <Button
-        variant="contained"
-        color="warning"
+        className="orangeButton"
         startIcon={<EmojiEventsIcon />}
         onMouseEnter={handleMouseEnter}
         onMouseDown={handleMouseDown}
