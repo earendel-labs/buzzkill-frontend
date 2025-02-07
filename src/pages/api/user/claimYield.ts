@@ -9,7 +9,7 @@ import { RateLimiterMemory } from "rate-limiter-flexible";
 // Rate limit: allow one claim call per 15 seconds per address
 const rateLimiter = new RateLimiterMemory({
   points: 1,
-  duration: 15,
+  duration: 1,
 });
 
 // Ensure your subgraph endpoint is defined (for example, in NEXT_PUBLIC_SUBQUERY_DOMAIN)

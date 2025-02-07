@@ -73,7 +73,7 @@ const RewardsPage = () => {
           const data = await response.json();
           setConstants({
             dailyBonus: data.dailyBonus || 100,
-            referralReward: data.referralReward || 500,
+            referralReward: data.referralReward || 1000,
           });
         } else {
           console.error(
@@ -82,14 +82,14 @@ const RewardsPage = () => {
           );
           setConstants({
             dailyBonus: 100,
-            referralReward: 500,
+            referralReward: 1000,
           });
         }
       } catch (error) {
         console.error("Failed to fetch reward constants:", error);
         setConstants({
           dailyBonus: 100,
-          referralReward: 500,
+          referralReward: 1000,
         });
       }
     };
