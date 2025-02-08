@@ -117,7 +117,7 @@ export default async function awardMintRewards(
 
     // If user has already minted 2 times, block further mints
     const currentTotalMints = userData.total_mints || 0;
-    if (currentTotalMints >= 2) {
+    if (currentTotalMints >= 10) {
       return res.status(400).json({ error: "User has reached max mints (2)." });
     }
 

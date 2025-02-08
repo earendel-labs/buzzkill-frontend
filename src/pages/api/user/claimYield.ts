@@ -115,6 +115,7 @@ export default async function claimYield(
     });
     const json = await response.json();
     subgraphData = json.data;
+    console.log("subgraphData", subgraphData);
   } catch (err) {
     logger.error("Error fetching subgraph data:", err);
     return res.status(500).json({ error: "Error fetching on-chain data" });
@@ -132,6 +133,8 @@ export default async function claimYield(
   // Extract user data and staked NFTs from the subgraph
   const userData = subgraphData.users.edges[0].node;
   const stakedNFTEdges = subgraphData.stakedNFTs.edges;
+  console.log("userDAta", userData);
+  console.log("stakedNFTEdges", stakedNFTEdges);
 
   // Recalculate the unclaimed yield exactly as in your frontend
   const currentTime = Date.now() / 1000;
@@ -139,6 +142,7 @@ export default async function claimYield(
   stakedNFTEdges.forEach((edge: any) => {
     const nft = edge.node;
     const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
+    console.log("lastClaimedAt", lastClaimedAt);
     const secondsElapsed = currentTime - lastClaimedAt;
     const daysElapsed = secondsElapsed / 86400;
     let rarityMultiplier = 1;
@@ -148,6 +152,7 @@ export default async function claimYield(
       rarityMultiplier = 1.5;
     }
     totalUnclaimed += daysElapsed * 1000 * rarityMultiplier;
+    console.log("totalUnclaimed", totalUnclaimed);
   });
 
   // Apply the external NFT flag multiplier if enabled
@@ -157,6 +162,7 @@ export default async function claimYield(
 
   // If no yield is available to claim, return an error
   if (totalUnclaimed <= 0) {
+    console.log("No yield available to claim");
     return res.status(400).json({ error: "No yield available to claim" });
   }
 
@@ -178,7 +184,8 @@ export default async function claimYield(
   // Add new yield to existing values
   const newTotalYield = Math.floor(user.total_yield + totalUnclaimed);
   const newTotalRewards = Math.floor(user.total_rewards + totalUnclaimed); // Assuming rewards are cumulative
-
+  console.log(newTotalYield, "newTotalYield");
+  console.log(newTotalRewards, "newTotalRewards");
   // Update the new values
   const { data: updateData, error: updateError } = await supabaseAuth
     .from("users")

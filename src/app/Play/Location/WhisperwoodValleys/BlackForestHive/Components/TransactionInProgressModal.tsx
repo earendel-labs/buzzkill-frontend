@@ -51,7 +51,7 @@ const TransactionInProgressModal: React.FC<TransactionInProgressModalProps> = ({
             {title}
           </Typography>
           <Typography variant="body2">
-            Please wait while your transaction is confirmed.
+            Please check your wallet to confirm the transaction
           </Typography>
         </SemiTransparentCard>
       </Box>

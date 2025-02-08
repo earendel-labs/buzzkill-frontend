@@ -1,9 +1,7 @@
-// src/components/Buttons/ClaimButton/ClaimButton.tsx
-
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Snackbar, Alert } from "@mui/material";
+import { Button, Snackbar, Alert, Tooltip } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import { useSound } from "@/context/SoundContext";
 import { useWriteHiveStakingClaimPoints } from "@/hooks/HiveStaking";
@@ -61,6 +59,13 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   };
 
   const handleClaimClick = async () => {
+    // Prevent claim if available yield is below minimum threshold of 5 points.
+    if (Math.floor(liveUnclaimedPoints) < 5) {
+      setAlertSeverity("warning");
+      setAlertMessage("Minimum 10 points required to claim yield.");
+      setSnackbarOpen(true);
+      return;
+    }
     if (isClaiming || isPending || isTxnLoading) return;
     try {
       setIsClaiming(true);
@@ -76,7 +81,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
         setSnackbarOpen(true);
         logger.error("No transaction response received.");
         setShowClaimModal(false);
-
         setIsClaiming(false);
       }
     } catch (err: any) {
@@ -155,31 +159,42 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
 
   return (
     <>
-      <Button
-        className="orangeButton"
-        startIcon={<EmojiEventsIcon />}
-        onMouseEnter={handleMouseEnter}
-        onMouseDown={handleMouseDown}
-        onClick={handleClaimClick}
-        disabled={
-          isClaiming ||
-          isPending ||
-          isTxnLoading ||
-          Math.floor(liveUnclaimedPoints) === 0
+      <Tooltip
+        title={
+          Math.floor(liveUnclaimedPoints) < 5
+            ? "Minimum claim is 5 points"
+            : ""
         }
-        sx={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textTransform: "none",
-          fontWeight: "bold",
-          fontSize: "1rem",
-          lineHeight: "1.5",
-        }}
+        disableHoverListener={Math.floor(liveUnclaimedPoints) >= 5}
       >
-        Claim Yield
-      </Button>
+        <span>
+          <Button
+            className="orangeButton"
+            startIcon={<EmojiEventsIcon />}
+            onMouseEnter={handleMouseEnter}
+            onMouseDown={handleMouseDown}
+            onClick={handleClaimClick}
+            disabled={
+              isClaiming ||
+              isPending ||
+              isTxnLoading ||
+              Math.floor(liveUnclaimedPoints) < 5
+            }
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textTransform: "none",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              lineHeight: "1.5",
+            }}
+          >
+            Claim Yield
+          </Button>
+        </span>
+      </Tooltip>
 
       <Snackbar
         open={snackbarOpen}
