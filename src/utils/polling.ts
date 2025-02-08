@@ -13,7 +13,7 @@ import { logger } from "@/utils/logger";
 export const pollUntilCondition = async (
   conditionFn: () => Promise<boolean>,
   interval: number = 500,
-  maxAttempts: number = 10
+  maxAttempts: number = 40
 ): Promise<void> => {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {

@@ -132,9 +132,7 @@ export default async function claimYield(
 
   // Extract user data and staked NFTs from the subgraph
   const userData = subgraphData.users.edges[0].node;
-  const stakedNFTEdges = subgraphData.stakedNFTs.edges;
-  console.log("userDAta", userData);
-  console.log("stakedNFTEdges", stakedNFTEdges);
+  const stakedNFTEdges = subgraphData.stakedNFTs.edges; 
 
   // Recalculate the unclaimed yield exactly as in your frontend
   const currentTime = Date.now() / 1000;

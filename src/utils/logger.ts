@@ -1,7 +1,7 @@
 // utils/logger.js
 export const logger = {
   log: (...args: any) => {
-    if (process.env.c === "development") {
+    if (process.env.NEXT_PUBLIC_NODE_ENV === "development") {
       console.log(...args);
     }
   },
