@@ -647,7 +647,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         const pollingResult = await pollUntilCondition(
           isBeesDataUpdated,
           1000,
-          10
+          30
         );
         logger.log("Polling completed. Condition met:", pollingResult);
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -656,6 +656,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           refetchUnstakedData({ fetchPolicy: "network-only" }),
         ]);
         if (finalStakedRes.data) {
+          logger.log(`inside finalStakedRes.data`, finalStakedRes.data);
           const updatedStaked = finalStakedRes.data.stakedNFTs.edges.map(
             (edge: any) => {
               const beeID = parseInt(edge.node.tokenIdNum, 10);
@@ -680,6 +681,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           stakedDataRef.current = finalStakedRes.data;
         }
         if (finalUnstakedRes.data) {
+          logger.log(`inside finalUnstakedRes`, finalUnstakedRes.data);
           const updatedUnstaked = finalUnstakedRes.data.tokens.edges
             .map((edge: any) => edge.node)
             .filter((node: any) => !node.isStaked)
@@ -704,6 +706,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
           setBees(uniqueFinalUnstaked);
           unstakedDataRef.current = finalUnstakedRes.data;
           if (action === "mint") {
+            logger.log(`inside action === mint`);
             const newMintedBees = uniqueFinalUnstaked.filter(
               (b) => !oldUnstakedBeeIds.includes(b.id)
             );
@@ -715,13 +718,27 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
                 taskName = "Mint Ultra-Rare Hatchling";
               }
               try {
-                await fetch("/api/rewards/awardMintRewards", {
+                logger.log(
+                  `Attempting to award mint reward for task: ${taskName}`
+                );
+                const response = await fetch("/api/rewards/awardMintRewards", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ task: taskName }),
                 });
+
+                // Check the response status and log accordingly
+                if (!response.ok) {
+                  logger.error(
+                    `Failed to award mint points. Status: ${response.status}, Message: ${response.statusText}`
+                  );
+                  return;
+                }
+
+                const data = await response.json();
                 logger.log(
-                  `Awarded points for minted NFT ID ${bee.id} with rarity ${bee.rarity}`
+                  `Successfully awarded points for minted NFT ID ${bee.id} with rarity ${bee.rarity}`,
+                  data
                 );
                 mutate("/api/user/getProfile");
               } catch (err) {

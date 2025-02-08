@@ -345,7 +345,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
         return countChanged;
       };
 
-      const pollingResult = await pollUntilCondition(isDataUpdated, 1000, 20);
+      const pollingResult = await pollUntilCondition(isDataUpdated, 1000, 30);
       logger.log("Polling completed: Condition met:", pollingResult);
 
       // Small delay to ensure indexing catches up

@@ -21,7 +21,9 @@ export default async function awardMintRewards(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  logger.log("Received request for awardMintRewards:", req.body);
   if (req.method !== "POST") {
+    logger.warn(`Received ${req.method} request, expected POST`);
     return res.status(405).json({ error: "Method not allowed" });
   }
 
@@ -35,6 +37,7 @@ export default async function awardMintRewards(
     ?.split("=")[1];
 
   if (!sessionToken) {
+    logger.warn("Session token not found in cookies");
     return res.status(401).json({ error: "Session token not found" });
   }
 
@@ -58,20 +61,26 @@ export default async function awardMintRewards(
 
   // Rate limiting
   try {
+    logger.log(`Attempting to consume rate limits for address: ${address}`);
+
     await minuteRateLimiter.consume(address);
     await totalUsageLimiter.consume(address);
+    logger.log("Rate limit check passed");
   } catch {
+    logger.log("Rate limit exceeded for address:", address);
     return res.status(429).json({ error: "Rate limit exceeded" });
   }
 
   // Check request body
   const { task } = req.body;
   if (!task) {
+    logger.log("Missing task in request body");
     return res.status(400).json({ error: "Missing task." });
   }
 
   // 1) Fetch points for the task
   try {
+    logger.log(`Fetching points for task: ${task}`);
     const { data: taskData, error: taskError } = await supabase
       .from("honey_drop_tasks")
       .select("points")
@@ -118,7 +127,9 @@ export default async function awardMintRewards(
     // If user has already minted 2 times, block further mints
     const currentTotalMints = userData.total_mints || 0;
     if (currentTotalMints >= 10) {
-      return res.status(400).json({ error: "User has reached max mints (2)." });
+      return res
+        .status(400)
+        .json({ error: "User has reached max mints (10)." });
     }
 
     // Increment total_mints by 1
