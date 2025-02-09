@@ -111,9 +111,9 @@ const HatchlingInfoPanel: React.FC = () => {
 
   // Data for the hatchling table (assumed to be defined elsewhere)
   const data = [
-    { id: 1, rarity: "Common", mintingPoints: 5000, baseDailyYield: 1000 },
-    { id: 2, rarity: "Rare", mintingPoints: 6000, baseDailyYield: 1200 },
-    { id: 3, rarity: "Ultra-Rare", mintingPoints: 8000, baseDailyYield: 1500 },
+    { id: 1, rarity: "Common", mintingPoints: 5000, baseDailyYield: 800 },
+    { id: 2, rarity: "Rare", mintingPoints: 6000, baseDailyYield: 960 },
+    { id: 3, rarity: "Ultra-Rare", mintingPoints: 8000, baseDailyYield: 1200 },
   ];
 
   // Observe size changes to force a resize of tabs if needed

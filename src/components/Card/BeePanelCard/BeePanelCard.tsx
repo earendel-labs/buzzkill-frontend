@@ -27,7 +27,7 @@ const BeePanelCard: React.FC = () => {
   // Get the image for the active bee or a fallback image
   const activeBeeImage =
     bees.find((bee) => bee.id === activeBee)?.imageAddress ||
-    "/NFTs/Hatchlings.JPEG";
+    "/NFTs/default-hatchling.png";
 
   // Media query for resolution 1400x900 to reduce vertical height and adjust spacing
   const mediaQueryStyles = {

@@ -47,7 +47,8 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const router = useRouter();
   const theme = useTheme();
   const isConnected = !loadingProfile && profileData && profileData.invite_code;
-  const { userRewards, onChainPoints, liveUnclaimedPoints } = useUserContext();
+  const { userRewards, onChainPoints, liveUnclaimedPoints, stakedBees } =
+    useUserContext();
 
   // Log context changes for debugging.
   useEffect(() => {
@@ -252,7 +253,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           color: theme.palette.LightBlue.main,
                         }}
                       >
-                        Hatchling Yield
+                        Staking Hatchling Yield
                       </Typography>
                       <Tooltip
                         title={
@@ -296,34 +297,39 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           marginLeft: "8px",
                         }}
                       >
-                        Honey
+                        Honey Drops
                       </Typography>
                     </Typography>
-                    <Typography
-                      variant="h5"
-                      component="p"
-                      fontWeight="bold"
-                      sx={{
-                        color: theme.palette.LightBlue.main,
-                        WebkitTextStroke: "0",
-                        lineHeight: "1.2",
-                        marginTop: "8px",
-                        marginBottom: "8px",
-                      }}
+
+                    <Tooltip
+                      title={`from ${stakedBees.length} staked hatchlings`}
                     >
-                      {userRewards?.totalProduction || 0}
                       <Typography
-                        variant="h6"
-                        component="span"
+                        variant="h5"
+                        component="p"
+                        fontWeight="bold"
                         sx={{
                           color: theme.palette.LightBlue.main,
                           WebkitTextStroke: "0",
-                          marginLeft: "8px",
+                          lineHeight: "1.2",
+                          marginTop: "8px",
+                          marginBottom: "8px",
                         }}
                       >
-                        Honey / Day
+                        {userRewards?.totalProduction || 0}
+                        <Typography
+                          variant="h6"
+                          component="span"
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            WebkitTextStroke: "0",
+                            marginLeft: "8px",
+                          }}
+                        >
+                          Honey Drops / Day
+                        </Typography>
                       </Typography>
-                    </Typography>
+                    </Tooltip>
 
                     {profileData?.has_oneid && (
                       <Chip

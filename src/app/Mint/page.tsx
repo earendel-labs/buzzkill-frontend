@@ -130,7 +130,7 @@ const MintPageContent: React.FC = () => {
           sx={{ width: "100%" }}
         >
           {errorMessage ? (
-            <>Transaction failed: {errorMessage}</>
+            <>Transaction failed: {errorMessage} Try minting again</>
           ) : (
             <>
               Successfully Minted! Check Transaction Here:{" "}

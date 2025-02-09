@@ -33,7 +33,7 @@ const StyledRarityChip = styled(Box)<RarityChipProps>(({ rarity }) => {
     display: "flex",  
     alignItems: "bottom",  
     justifyContent: "center", 
-    padding: "4px 12px",
+    padding: "8px 16px",
     borderRadius: "14px",
     fontWeight: "bold",
     fontSize: "16px",

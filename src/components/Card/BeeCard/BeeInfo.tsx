@@ -1,10 +1,13 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HiveIcon from "@mui/icons-material/Hive";
 import PersonIcon from "@mui/icons-material/Person"; // Icon for owner
 import { useRouter } from "next/navigation";
-import StarsIcon from "@mui/icons-material/Stars";
+import StarIcon from "@mui/icons-material/Star";
+import FactoryIcon from "@mui/icons-material/Factory";
+import { RARITY_VALUES } from "@/constants/rarity";
+
 interface BeeInfoProps {
   environmentName?: string;
   hiveName?: string;
@@ -29,9 +32,44 @@ const BeeInfo: React.FC<BeeInfoProps> = ({
     if (!ownerAddress) return "";
     return `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`;
   };
+  const rarityValue = RARITY_VALUES[rarity ?? "Commonn"];
 
   return (
     <>
+      {/* Bee Production */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: 1,
+          marginLeft: 1,
+        }}
+      >
+        {/* Rarity Value Typography */}
+        <Stack alignItems="center" direction="row" gap={0.5}>
+          <Typography
+            variant="h6"
+            fontSize="26px"
+            sx={{
+              color: theme.palette.Gold.main,
+            }}
+          >
+            {rarityValue}
+          </Typography>
+        </Stack>
+        {/* Honey / Day Typography */}
+        <Typography
+          variant="body2"
+          fontSize="22px"
+          sx={{
+            color: theme.palette.Gold.main,
+            marginLeft: 1, // Add spacing between rarity and text
+          }}
+        >
+          Honey Drops / Day
+        </Typography>
+      </Box>
+
       {environmentName && environmentLink && (
         <Box
           sx={{

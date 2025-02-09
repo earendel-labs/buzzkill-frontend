@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Typography, Snackbar, Alert } from "@mui/material";
+import { Box, Typography, Snackbar, Alert, Stack } from "@mui/material";
 import { keyframes, styled } from "@mui/system";
 import { Hatchling } from "@/types/Hatchling";
 import HatchlingImage from "../BeeCard/HatchlingImage";
@@ -19,8 +19,8 @@ import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/B
 import RarityChip from "../BeeCard/RarityChip";
 import { useTheme } from "@mui/material/styles";
 import Person from "@mui/icons-material/Person";
-import { useSound } from "@/context/SoundContext"; // Import useSound context
-
+import { useSound } from "@/context/SoundContext";
+import { RARITY_VALUES } from "@/constants/rarity";
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -96,7 +96,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     : null;
 
   const router = useRouter();
-
+  const rarityValue = RARITY_VALUES[bee.rarity ?? "Commonn"];
   // Sound management
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
@@ -307,6 +307,41 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             Hatchling ID: {bee.id}
           </Typography>
 
+          {/* Hathling production */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: 1,
+              marginLeft: 1,
+            }}
+          >
+            {/* Rarity Value Typography */}
+            <Stack alignItems="center" direction="row" gap={0.5}>
+              <Typography
+                variant="h6"
+                fontSize="24px"
+                sx={{
+                  color: theme.palette.Gold.main,
+                }}
+              >
+                {rarityValue}
+              </Typography>
+            </Stack>
+            {/* Honey / Day Typography */}
+            <Typography
+              variant="body2"
+              fontSize="20px"
+              sx={{
+                color: theme.palette.Gold.main,
+                marginLeft: 1, // Add spacing between rarity and text
+              }}
+            >
+              Honey Drops / Day
+            </Typography>
+          </Box>
+
+          {/* Owner */}
           <Typography
             variant="body1"
             color="white"
