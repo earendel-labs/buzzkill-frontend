@@ -222,7 +222,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
         open={showClaimModal}
         title={`Claiming Yield: ${Math.floor(
           liveUnclaimedPoints ?? 0
-        )} Points...`}
+        ).toLocaleString()} Honey Drops...`}
         onClose={() => setShowClaimModal(false)}
       />
     </>
