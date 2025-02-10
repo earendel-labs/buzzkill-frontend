@@ -6,6 +6,7 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { HiveInfo, HiveHatchlingInfo } from "@/types/HiveInfo";
 import { useTheme, useMediaQuery, Skeleton, Tooltip } from "@mui/material";
 import { useReadHiveStakingMaxBeesPerHive } from "@/hooks/HiveStaking";
+import { formatNumber } from "@/utils/formatNumber";
 interface HiveHatchlingsPanelProps {
   hiveHatchlingInfo: HiveHatchlingInfo;
   onStake: () => void;
@@ -215,7 +216,7 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
             },
           }}
         >
-          {hiveHatchlingInfo.productivityValue}
+          {formatNumber(hiveHatchlingInfo.productivityValue)}
         </Typography>
       </Box>
 

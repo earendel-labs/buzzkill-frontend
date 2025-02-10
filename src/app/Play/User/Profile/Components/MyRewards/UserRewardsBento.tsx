@@ -319,7 +319,6 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         {formatNumber(
                           Number(userRewards?.totalProduction) || 0
                         )}
-
                         <Typography
                           variant="h6"
                           component="span"

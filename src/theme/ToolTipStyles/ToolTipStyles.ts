@@ -4,11 +4,11 @@ const toolTipStyles = (theme: Theme) => ({
   MuiTooltip: {
     styleOverrides: {
       tooltip: {
-        backgroundColor: theme.palette.GoldFaded.dark, // Use GoldFaded for the tooltip background
+        backgroundColor: theme.palette.Gold.main, // Use GoldFaded for the tooltip background
         padding: "8px 16px", // Default padding
         fontFamily: theme.typography.fontFamily,
         fontSize: "0.875rem", // Adjust size as needed
-        color: theme.palette.text.primary, // Default text color from the theme
+        color: theme.palette.DarkBlue.main, // Default text color from the theme
         borderRadius: "4px", // Optional: adjust border radius as needed
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)", // Optional: add shadow for better visibility
       },

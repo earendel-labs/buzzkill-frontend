@@ -20,13 +20,20 @@ const TopBar: React.FC<TopBarProps> = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: isSmallScreen ? "column" : "row",
+          flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "20px 80px 0px 140px",
+          padding: {
+            xs: "10px 20px",
+            sm: "20px 20px 0px 40px",
+            md: "20px 30px 0px 40px",
+            lg: "20px 80px 0px 60px",
+            xl: "30px 100px",
+            xxl: "40px 120px",
+          },
           width: "100%",
           height: "auto",
-          gap: isSmallScreen ? "20px" : "0px",
+          gap: { xs: "20px", md: "0px" },
         }}
       >
         {/* Left section - User Resource Bar */}

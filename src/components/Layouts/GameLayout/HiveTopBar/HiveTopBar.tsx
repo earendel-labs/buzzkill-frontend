@@ -44,7 +44,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           paddingRight: 0, // Remove additional padding
         }}
       >
-        <UserResourceBar />
+        <UserResourceBar  />
       </Box>
 
       {/* Centered LocationHeader */}

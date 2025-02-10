@@ -122,7 +122,6 @@ const BeePanelCard: React.FC = () => {
             alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
             width={320}
             height={320}
-            loading="eager" // Loads the image as soon as possible
             style={{
               objectFit: "contain",
               height: "100%",

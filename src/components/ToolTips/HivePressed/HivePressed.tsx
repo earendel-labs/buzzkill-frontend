@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton"; // Adjust the import path as needed
 import LargeTallToolTip from "@/components/ToolTips/LargeTall/LargeTallToolTip"; // Adjust the import path as needed
-
+import { formatNumber } from "@/utils/formatNumber";
 interface HivePressedProps {
   hiveName: string;
   hiveDefence: number;
@@ -58,7 +58,9 @@ const HivePressed: React.FC<HivePressedProps> = ({
           }}
         >
           <Typography variant="ToolTipLabel">Production</Typography>
-          <Typography variant="ToolTipValue">{hiveDefence}</Typography>
+          <Typography variant="ToolTipValue">
+            {formatNumber(hiveDefence)}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -88,7 +90,7 @@ const HivePressed: React.FC<HivePressedProps> = ({
             marginTop: "10px", // Margin above the buttons
           }}
         >
-          <PrimaryButton text="Raid" onClick={onRaidClick}  disabled={true}/>
+          <PrimaryButton text="Raid" onClick={onRaidClick} disabled={true} />
           <PrimaryButton text="Enter" onClick={onEnterClick} />
         </Box>
       </Box>

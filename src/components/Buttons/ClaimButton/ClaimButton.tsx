@@ -9,12 +9,17 @@ import { useWaitForTransactionReceipt } from "wagmi";
 import { logger } from "@/utils/logger";
 import { useUserContext } from "@/context/UserContext";
 import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import Image from "next/image";
 
 interface ClaimButtonProps {
   liveUnclaimedPoints: number;
+  isUserResource?: boolean; // Optional prop with default value as false
 }
 
-const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
+const ClaimButton: React.FC<ClaimButtonProps> = ({
+  liveUnclaimedPoints,
+  isUserResource = false,
+}) => {
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
   >();
@@ -59,7 +64,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   };
 
   const handleClaimClick = async () => {
-    // Prevent claim if available yield is below minimum threshold of 5 points.
     if (Math.floor(liveUnclaimedPoints) < 5) {
       setAlertSeverity("warning");
       setAlertMessage("Minimum 10 points required to claim yield.");
@@ -102,7 +106,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
   };
 
   useEffect(() => {
-    // When the on-chain claim transaction succeeds, call our API endpoint to update yield.
     if (isSuccess) {
       (async () => {
         logger.log("Claim transaction completed successfully.");
@@ -112,7 +115,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
         setTransactionHash(undefined);
 
         try {
-          // Call the backend API endpoint which re-calculates yield using trusted subgraph data.
           const response = await fetch("/api/user/claimYield", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -133,7 +135,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
           setSnackbarOpen(true);
         }
 
-        // Optionally, poll for updated rewards data to update the UI
         const oldTotalPoints = userRewards?.totalPoints || 0;
         await pollForClaimUpdate(oldTotalPoints);
         setIsClaiming(false);
@@ -161,16 +162,23 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ liveUnclaimedPoints }) => {
     <>
       <Tooltip
         title={
-          Math.floor(liveUnclaimedPoints) < 5
-            ? "Minimum claim is 5 points"
-            : ""
+          Math.floor(liveUnclaimedPoints) < 5 ? "Minimum claim is 5 points" : ""
         }
         disableHoverListener={Math.floor(liveUnclaimedPoints) >= 5}
       >
         <span>
           <Button
             className="orangeButton"
-            startIcon={<EmojiEventsIcon />}
+            startIcon={
+              !isUserResource && (
+                <Image
+                  src="/Icons/Resources/HoneyToken.png"
+                  alt="HoneyToken"
+                  width={32}
+                  height={32} // Explicitly set both width and height
+                />
+              )
+            }
             onMouseEnter={handleMouseEnter}
             onMouseDown={handleMouseDown}
             onClick={handleClaimClick}

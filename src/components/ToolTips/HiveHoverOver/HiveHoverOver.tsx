@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import LargeToolTip from "../Large/LargeToolTip";
-
+import { formatNumber } from "@/utils/formatNumber";
 interface HiveHoverOverProps {
   hiveName?: string;
   hiveDefence?: number;
@@ -68,7 +68,9 @@ const HiveHoverOver: React.FC<HiveHoverOverProps> = ({
             }}
           >
             <Typography variant="ToolTipLabel">Production</Typography>
-            <Typography variant="ToolTipValue">{hiveDefence}</Typography>
+            <Typography variant="ToolTipValue">
+              {formatNumber(hiveDefence)}
+            </Typography>
           </Box>
           <Box
             sx={{

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Skeleton, Tooltip } from "@mui/material";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -19,6 +19,24 @@ const UserResourceBar: React.FC = () => {
     ? undefined
     : profileData?.total_rewards || 0;
 
+  const [displayPoints, setDisplayPoints] = useState<null | number>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (
+        liveUnclaimedPoints === undefined ||
+        liveUnclaimedPoints === null ||
+        isNaN(Number(liveUnclaimedPoints))
+      ) {
+        setDisplayPoints(0);
+      } else {
+        setDisplayPoints(Number(liveUnclaimedPoints));
+      }
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [liveUnclaimedPoints]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -31,11 +49,8 @@ const UserResourceBar: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 2,
-            px: 2,
-            py: 1.5,
             minWidth: "120px",
-            height: "48px", // Fixed height to match the image
+            height: "54px", // Fixed height to match the image
             flexWrap: "nowrap",
           }}
         >
@@ -44,9 +59,8 @@ const UserResourceBar: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-start",
-              gap: 2,
+              gap: 1,
               px: 2,
-              py: 1.5,
               height: "48px", // Fixed height to match the image
             }}
           >
@@ -88,31 +102,33 @@ const UserResourceBar: React.FC = () => {
                 <Skeleton
                   variant="text"
                   width={80}
-                  height={32}
+                  height={34}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                     transform: "none",
                   }}
                 />
               ) : (
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.Gold.main,
-                    letterSpacing: "0.5px",
-                    fontSize: { xs: "24px", sm: "28px" },
-                    minWidth: "80px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "start",
-                    lineHeight: 1,
-                    height: "100%",
-                    marginTop: "3px", // Push text downward
-                  }}
-                >
-                  {formatNumber(totalRewards) || 0}
-                </Typography>
+                <Tooltip title="Total claimed points across your campaign">
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      color: theme.palette.Gold.main,
+                      letterSpacing: "0.5px",
+                      fontSize: { xs: "24px", sm: "28px" },
+
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "start",
+                      lineHeight: 1,
+                      height: "100%",
+                      marginTop: "3px", // Push text downward
+                    }}
+                  >
+                    {formatNumber(totalRewards) || 0}
+                  </Typography>
+                </Tooltip>
               )}
             </motion.div>
           </Box>
@@ -121,7 +137,7 @@ const UserResourceBar: React.FC = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 2,
+              gap: 1,
               px: 2,
               flexWrap: "wrap",
             }}
@@ -136,23 +152,24 @@ const UserResourceBar: React.FC = () => {
                     color: theme.palette.LightBlue.main, // Gold color for total points
                     WebkitTextStroke: "0",
                     lineHeight: "1.2",
-                    marginTop: "8px",
-                    marginBottom: "8px",
-                    fontSize: { xs: "24px", sm: "28px" },
+                    marginTop: "3px",
+                    fontSize: { xs: "20px", sm: "24px" },
                   }}
                 >
-                  {liveUnclaimedPoints !== undefined ? (
-                    <>{Math.floor(liveUnclaimedPoints).toLocaleString()}</>
+                  {displayPoints !== null ? (
+                    formatNumber(Math.floor(displayPoints))
                   ) : (
-                    <Skeleton variant="text" width={120} height={32} />
+                    <Skeleton variant="text" width={40} height={50} />
                   )}
                 </Typography>
               </Tooltip>
             </Box>
-
             <Box sx={{ display: "flex", alignItems: "center" }}>
               {/* Claim Button for Unclaimed Points */}
-              <ClaimButton liveUnclaimedPoints={liveUnclaimedPoints || 0} />
+              <ClaimButton
+                isUserResource={true}
+                liveUnclaimedPoints={displayPoints || 0}
+              />
             </Box>
           </Box>
         </Box>
