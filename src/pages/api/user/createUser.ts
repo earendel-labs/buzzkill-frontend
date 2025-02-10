@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/app/libs/supabaseClient";
 import { REFERRAL_REWARD_POINTS } from "@/constants/rewards"; // Use default or synced constant
 import { logger } from "@/utils/logger";
+import axios from "axios";
+
 // Function to generate a unique code
 function generateUniqueCode(): string {
   const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -51,7 +53,9 @@ export default async function createUser(
       total_rewards: number;
     } | null = null;
 
+    //
     // Step 1: Check if the referrer invite code exists in the database
+    //
     if (referrerCode) {
       const { data, error } = await supabase
         .from("users")
@@ -74,12 +78,13 @@ export default async function createUser(
         );
       }
     }
-
+    //
     // Step 2: Generate a unique invite code for the new user
+    //
     const inviteCode = generateUniqueCode();
     logger.log("Generated invite code for new user:", inviteCode);
 
-    // Create a new user entry
+    // Step 3: Create a new user entry
     const { data: newUser, error: createUserError } = await supabase
       .from("users")
       .insert({
@@ -98,7 +103,17 @@ export default async function createUser(
     }
     logger.log("New user created successfully:", newUser);
 
-    // Step 3: If a valid referrer exists, increment their invited_count and update total_rewards
+    // Step 4: Call RPC to calculate total rewards and update `total_rewards` in the users table
+    const { error: rpcError } = await supabase.rpc(
+      "get_and_update_rewards", // RPC function name
+      { user_address: address } // Argument for the RPC function
+    );
+
+    if (rpcError) {
+      logger.error("Error calculating and updating rewards:", rpcError);
+    }
+
+    // Step 5: If a valid referrer exists, increment their invited_count and update total_rewards
     if (referrer) {
       logger.log(
         "Attempting to increment invited_count for referrer with address:",
@@ -123,10 +138,10 @@ export default async function createUser(
         );
       }
 
-      // Step 4: Get Total Rewards
+      // Step 6: Get Total Rewards
       const referralPoints = await getReferralRewardPoints();
 
-      // Step 5: Insert an entry into rewards_table to log the referral reward
+      // Step 7: Insert an entry into rewards_table to log the referral reward
       const { data: rewardEntry, error: rewardError } = await supabase
         .from("rewards_table")
         .insert({
