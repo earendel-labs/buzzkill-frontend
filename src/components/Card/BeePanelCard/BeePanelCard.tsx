@@ -42,7 +42,7 @@ const BeePanelCard: React.FC = () => {
     return (
       <SemiTransparentCard
         sx={{
-          width: "450px",
+          width: "420px",
           height: "220px",
           padding: "16px",
           backgroundColor: "rgba(34, 46, 80, 0.6)",
@@ -61,7 +61,7 @@ const BeePanelCard: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "420px",
+        width: "430px",
         height: "220px",
         padding: "28px 32px",
         position: "relative",

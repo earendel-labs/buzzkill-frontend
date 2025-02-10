@@ -49,7 +49,10 @@ const UserResourceBar: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            minWidth: "120px",
+            minWidth: {
+              lg: "120px",
+              xl: "420px",
+            },
             height: "54px", // Fixed height to match the image
             flexWrap: "nowrap",
           }}
@@ -137,7 +140,10 @@ const UserResourceBar: React.FC = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1,
+              gap: {
+                lg: 1,
+                xl: 2,
+              },
               px: 2,
               flexWrap: "wrap",
             }}
@@ -152,14 +158,14 @@ const UserResourceBar: React.FC = () => {
                     color: theme.palette.LightBlue.main, // Gold color for total points
                     WebkitTextStroke: "0",
                     lineHeight: "1.2",
-                    marginTop: "3px",
-                    fontSize: { xs: "20px", sm: "24px" },
+                    marginTop: "6px",
+                    fontSize: { xs: "20px", sm: "24px", xl: "28px" },
                   }}
                 >
                   {displayPoints !== null ? (
                     formatNumber(Math.floor(displayPoints))
                   ) : (
-                    <Skeleton variant="text" width={40} height={50} />
+                    <Skeleton variant="text" width={40} height={60} />
                   )}
                 </Typography>
               </Tooltip>

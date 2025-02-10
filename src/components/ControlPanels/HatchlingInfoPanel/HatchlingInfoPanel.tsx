@@ -149,7 +149,7 @@ const HatchlingInfoPanel: React.FC = () => {
           : {
               xs: "100%",
               md: "360px",
-              xl: "420px",
+              xl: "430px",
             },
         height: isExpanded
           ? {

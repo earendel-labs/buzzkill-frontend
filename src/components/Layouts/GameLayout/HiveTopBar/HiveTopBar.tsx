@@ -21,13 +21,16 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           xs: "0rem 1rem",
           sm: "0rem 2rem",
           md: "0rem 2.5rem",
-          lg: "0rem 3.125rem",
+          lg: "0rem 3rem",
           xl: "0rem, 4rem",
+          xxl: "0rem, 12rem",
         },
         width: "100%",
         height: {
-          xs: "6rem", // Use consistent height for breakpoints
-          md: "8.75rem",
+          xs: "6rem",
+          md: "7rem",
+          xl: "8.8rem",
+          xxl: "12rem",
         },
         boxSizing: "border-box",
       }}
@@ -44,7 +47,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           paddingRight: 0, // Remove additional padding
         }}
       >
-        <UserResourceBar  />
+        <UserResourceBar />
       </Box>
 
       {/* Centered LocationHeader */}
