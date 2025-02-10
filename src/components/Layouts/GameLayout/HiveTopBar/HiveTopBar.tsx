@@ -9,8 +9,6 @@ interface HiveTopBarProps {
   mapHeaderLabel: string;
 }
 
-// ... other imports
-
 const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
   return (
     <Box
@@ -20,35 +18,36 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: {
-          xs: "0px 1rem",
-          sm: "0px 2rem",
-          md: "0px 2.5rem",
-          lg: "0px 3.125rem",
-          xl: "0px 4rem",
+          xs: "0rem 1rem",
+          sm: "0rem 2rem",
+          md: "0rem 2.5rem",
+          lg: "0rem 3.125rem",
+          xl: "0rem, 4rem",
         },
         width: "100%",
-        height: "8.75rem",
-        "@media (max-width: 1440px)": {
-          height: "6.25rem",
+        height: {
+          xs: "6rem", // Use consistent height for breakpoints
+          md: "8.75rem",
         },
         boxSizing: "border-box",
       }}
     >
-      {/* Left section with User Resources - Fixed alignment */}
+      {/* Left section with User Resources */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "flex-start",
-          alignItems: "center", // Added vertical centering
+          alignItems: "center",
           flex: 1,
           height: "100%",
           boxSizing: "border-box",
+          paddingRight: 0, // Remove additional padding
         }}
       >
         <UserResourceBar />
       </Box>
 
-      {/* Centered LocationHeader remains unchanged */}
+      {/* Centered LocationHeader */}
       <Box
         sx={{
           display: "flex",
@@ -64,7 +63,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         />
       </Box>
 
-      {/* Right section remains unchanged */}
+      {/* Right section */}
       <Box
         sx={{
           display: "flex",

@@ -136,7 +136,7 @@ const MyBeesTab = () => {
       )}
       {fetchError && (
         <Typography variant="h6" color="error" align="center">
-          Failed to load Hatchlings, please try again later.
+          Failed to load Hatchlings, please try again in a few minutes.
         </Typography>
       )}
     </ProfileLayout>

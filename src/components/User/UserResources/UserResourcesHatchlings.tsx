@@ -71,8 +71,8 @@ const UserResourceBar: React.FC = () => {
                   width={32}
                   height={32}
                   style={{
-                    width: "auto",
-                    height: "auto",
+                    width: "100%",
+                    height: "100%",
                     objectFit: "contain",
                   }}
                 />

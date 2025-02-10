@@ -23,6 +23,7 @@ import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { useUserContext } from "@/context/UserContext";
 import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
+import { formatNumber } from "@/utils/formatNumber";
 
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
@@ -50,11 +51,12 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const { userRewards, onChainPoints, liveUnclaimedPoints, stakedBees } =
     useUserContext();
 
-  // Log context changes for debugging.
-  useEffect(() => {
-    console.log("Updated userRewards:", userRewards);
-    console.log("Updated liveUnclaimedPoints:", liveUnclaimedPoints);
-  }, [userRewards, liveUnclaimedPoints]);
+  console.log("Total Production Type:", typeof userRewards?.totalProduction);
+  console.log("Total Production Value:", userRewards?.totalProduction);
+  console.log(
+    "Formatted Output:",
+    formatNumber(userRewards?.totalProduction || 0)
+  );
 
   if (loadingProfile) {
     return (
@@ -253,7 +255,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           color: theme.palette.LightBlue.main,
                         }}
                       >
-                        Staking Hatchling Yield
+                        Staked Hatchling Yield
                       </Typography>
                       <Tooltip
                         title={
@@ -287,7 +289,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         marginBottom: "2px",
                       }}
                     >
-                      {onChainPoints || 0}
+                      {formatNumber(onChainPoints || 0)}
                       <Typography
                         variant="h5"
                         component="span"
@@ -302,21 +304,22 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     </Typography>
 
                     <Tooltip
-                      title={`from ${stakedBees.length} staked hatchlings`}
+                      title={`From ${stakedBees.length} staked hatchlings`}
                     >
                       <Typography
                         variant="h5"
-                        component="p"
                         fontWeight="bold"
                         sx={{
                           color: theme.palette.LightBlue.main,
-                          WebkitTextStroke: "0",
                           lineHeight: "1.2",
                           marginTop: "8px",
                           marginBottom: "8px",
                         }}
                       >
-                        {userRewards?.totalProduction || 0}
+                        {formatNumber(
+                          Number(userRewards?.totalProduction) || 0
+                        )}
+
                         <Typography
                           variant="h6"
                           component="span"
@@ -436,7 +439,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           marginBottom: "8px",
                         }}
                       >
-                        {Math.floor(liveUnclaimedPoints).toLocaleString()}
+                        {formatNumber(Math.floor(liveUnclaimedPoints))}
                         <Typography
                           variant="h5"
                           component="span"
@@ -458,8 +461,9 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         sx={{ marginTop: "12px" }}
                       />
                     )}
-
-                    <ClaimButton liveUnclaimedPoints={liveUnclaimedPoints} />
+                    <Box sx={{ width: "100%" }}>
+                      <ClaimButton liveUnclaimedPoints={liveUnclaimedPoints} />
+                    </Box>
                   </Box>
                 </SemiTransparentCard>
               </Grid>

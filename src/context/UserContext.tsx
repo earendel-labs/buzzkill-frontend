@@ -646,8 +646,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         };
         const pollingResult = await pollUntilCondition(
           isBeesDataUpdated,
-          1000,
-          30
+          1500,
+          120
         );
         logger.log("Polling completed. Condition met:", pollingResult);
         await new Promise((resolve) => setTimeout(resolve, 500));

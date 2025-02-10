@@ -178,7 +178,6 @@ const UserResourceBar: React.FC = () => {
               alt="HoneyToken"
               width={32}
               height={32} // Explicitly set both width and height
-              style={{ width: "auto", height: "auto" }} // Ensure aspect ratio is maintained
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
