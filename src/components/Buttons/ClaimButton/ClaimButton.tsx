@@ -174,8 +174,8 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
                 <Image
                   src="/Icons/Resources/HoneyToken.png"
                   alt="HoneyToken"
-                  width={32}
-                  height={32} // Explicitly set both width and height
+                  width={20}
+                  height={20} // Explicitly set both width and height
                 />
               )
             }
