@@ -8,12 +8,12 @@ import { RateLimiterMemory } from "rate-limiter-flexible";
 // One request per minute (per address)
 const minuteRateLimiter = new RateLimiterMemory({
   points: 1,
-  duration: 60,
+  duration: 25,
 });
 
 // Two calls total (per address). In-memory for demonstration.
 const totalUsageLimiter = new RateLimiterMemory({
-  points: 10,
+  points: 2,
   duration: 365 * 24 * 60 * 60,
 });
 
@@ -126,10 +126,8 @@ export default async function awardMintRewards(
 
     // If user has already minted 2 times, block further mints
     const currentTotalMints = userData.total_mints || 0;
-    if (currentTotalMints >= 10) {
-      return res
-        .status(400)
-        .json({ error: "User has reached max mints (10)." });
+    if (currentTotalMints >= 2) {
+      return res.status(400).json({ error: "User has reached max mints (2)." });
     }
 
     // Increment total_mints by 1
