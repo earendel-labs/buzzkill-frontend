@@ -14,8 +14,12 @@ const SelectQuantityPanel: React.FC = () => {
     decrementQuantity,
   } = useMintContext();
 
-  // The max # user can still mint
-  const remainingMint = maxQuantity; // we repurpose maxQuantity from context
+  // The max # user can still mint (from context)
+  const remainingMint = maxQuantity;
+
+  // For now, we want to restrict the user to only mint 1 at a time.
+  // We keep the remaining logic intact but force disable the increment button.
+  const disableIncrement = true;
 
   if (!isConnected) {
     return null;
@@ -30,10 +34,7 @@ const SelectQuantityPanel: React.FC = () => {
           justifyContent: "space-between",
           maxWidth: "480px",
           width: "100%",
-          flexDirection: {
-            xs: "column",
-            sm: "row",
-          },
+          flexDirection: { xs: "column", sm: "row" },
           alignItems: { xs: "center", sm: "unset" },
         }}
       >
@@ -161,19 +162,27 @@ const SelectQuantityPanel: React.FC = () => {
           {/* Increment Button */}
           <Button
             onClick={incrementQuantity}
-            disabled={quantity === remainingMint || remainingMint <= 0}
+            disabled={
+              disableIncrement ||
+              quantity === remainingMint ||
+              remainingMint <= 0
+            }
             disableRipple
             disableElevation
             variant="text"
             sx={{
               fontSize: "1.5rem",
               color:
-                quantity === remainingMint || remainingMint <= 0
+                disableIncrement ||
+                quantity === remainingMint ||
+                remainingMint <= 0
                   ? "#b8ab67"
                   : "#FFD700",
               opacity: 1,
               cursor:
-                quantity === remainingMint || remainingMint <= 0
+                disableIncrement ||
+                quantity === remainingMint ||
+                remainingMint <= 0
                   ? "not-allowed"
                   : "pointer",
               minWidth: "20px",

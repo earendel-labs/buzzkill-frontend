@@ -10,16 +10,13 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const hiveStakingAbi = [
   {
     type: 'function',
-    inputs: [
-      { name: 'users', internalType: 'address[]', type: 'address[]' },
-      { name: 'flags', internalType: 'bool[]', type: 'bool[]' },
-    ],
-    name: 'batchSetUserExternalNFTFlag',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'applyNewMultiplier',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -27,6 +24,13 @@ export const hiveStakingAbi = [
     type: 'function',
     inputs: [],
     name: 'claimPoints',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'user', internalType: 'address', type: 'address' }],
+    name: 'claimPointsForUser',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -230,6 +234,15 @@ export const hiveStakingAbi = [
   {
     type: 'function',
     inputs: [
+      { name: '_delegatedAccount', internalType: 'address', type: 'address' },
+    ],
+    name: 'setDelegatedAccount',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
       { name: 'newEnvironments', internalType: 'uint256', type: 'uint256' },
       { name: 'newHives', internalType: 'uint256', type: 'uint256' },
     ],
@@ -429,6 +442,13 @@ export const hiveStakingAbi = [
     inputs: [],
     name: 'commonMultiplier',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'delegatedAccount',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -651,14 +671,14 @@ export const hiveStakingAbi = [
 ] as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const hiveStakingAddress = {
-  88: '0x578d60683870FA85b466CF564AcE187c62c3d008',
+  88: '0x965F9391b5114Aba90177D40a86324dA781C3309',
 } as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const hiveStakingConfig = {
   address: hiveStakingAddress,
@@ -672,7 +692,7 @@ export const hiveStakingConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -682,7 +702,7 @@ export const useReadHiveStaking = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlings"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingBuzzkillHatchlings =
   /*#__PURE__*/ createUseReadContract({
@@ -694,7 +714,7 @@ export const useReadHiveStakingBuzzkillHatchlings =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"buzzkillHatchlingsNFT"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseReadContract({
@@ -706,7 +726,7 @@ export const useReadHiveStakingBuzzkillHatchlingsNft =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"commonMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingCommonMultiplier =
   /*#__PURE__*/ createUseReadContract({
@@ -716,9 +736,21 @@ export const useReadHiveStakingCommonMultiplier =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"delegatedAccount"`
+ *
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
+ */
+export const useReadHiveStakingDelegatedAccount =
+  /*#__PURE__*/ createUseReadContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'delegatedAccount',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"externalFlagMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingExternalFlagMultiplier =
   /*#__PURE__*/ createUseReadContract({
@@ -730,7 +762,7 @@ export const useReadHiveStakingExternalFlagMultiplier =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getAllStakedNFTsForUser"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingGetAllStakedNfTsForUser =
   /*#__PURE__*/ createUseReadContract({
@@ -742,7 +774,7 @@ export const useReadHiveStakingGetAllStakedNfTsForUser =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getHiveProduction"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingGetHiveProduction =
   /*#__PURE__*/ createUseReadContract({
@@ -754,7 +786,7 @@ export const useReadHiveStakingGetHiveProduction =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getStakedNFTsInHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingGetStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
@@ -766,7 +798,7 @@ export const useReadHiveStakingGetStakedNfTsInHive =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"getUserPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingGetUserPoints =
   /*#__PURE__*/ createUseReadContract({
@@ -778,7 +810,7 @@ export const useReadHiveStakingGetUserPoints =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"hasExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingHasExternalNftFlag =
   /*#__PURE__*/ createUseReadContract({
@@ -790,7 +822,7 @@ export const useReadHiveStakingHasExternalNftFlag =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"maxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingMaxBeesPerHive =
   /*#__PURE__*/ createUseReadContract({
@@ -802,7 +834,7 @@ export const useReadHiveStakingMaxBeesPerHive =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"owner"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -813,7 +845,7 @@ export const useReadHiveStakingOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rareMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
@@ -825,7 +857,7 @@ export const useReadHiveStakingRareMultiplier =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"rewardRatePerDay"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingRewardRatePerDay =
   /*#__PURE__*/ createUseReadContract({
@@ -837,7 +869,7 @@ export const useReadHiveStakingRewardRatePerDay =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsByUser"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingStakedNfTsByUser =
   /*#__PURE__*/ createUseReadContract({
@@ -849,7 +881,7 @@ export const useReadHiveStakingStakedNfTsByUser =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stakedNFTsInHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingStakedNfTsInHive =
   /*#__PURE__*/ createUseReadContract({
@@ -861,7 +893,7 @@ export const useReadHiveStakingStakedNfTsInHive =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalBeesStaked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingTotalBeesStaked =
   /*#__PURE__*/ createUseReadContract({
@@ -873,7 +905,7 @@ export const useReadHiveStakingTotalBeesStaked =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalEnvironments"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingTotalEnvironments =
   /*#__PURE__*/ createUseReadContract({
@@ -885,7 +917,7 @@ export const useReadHiveStakingTotalEnvironments =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"totalHivesPerEnvironment"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingTotalHivesPerEnvironment =
   /*#__PURE__*/ createUseReadContract({
@@ -897,7 +929,7 @@ export const useReadHiveStakingTotalHivesPerEnvironment =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"ultraRareMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingUltraRareMultiplier =
   /*#__PURE__*/ createUseReadContract({
@@ -909,7 +941,7 @@ export const useReadHiveStakingUltraRareMultiplier =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userInfo"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
   abi: hiveStakingAbi,
@@ -920,7 +952,7 @@ export const useReadHiveStakingUserInfo = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"userRewardMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useReadHiveStakingUserRewardMultiplier =
   /*#__PURE__*/ createUseReadContract({
@@ -932,7 +964,7 @@ export const useReadHiveStakingUserRewardMultiplier =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -940,21 +972,21 @@ export const useWriteHiveStaking = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"applyNewMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
-export const useWriteHiveStakingBatchSetUserExternalNftFlag =
+export const useWriteHiveStakingApplyNewMultiplier =
   /*#__PURE__*/ createUseWriteContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'batchSetUserExternalNFTFlag',
+    functionName: 'applyNewMultiplier',
   })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingClaimPoints =
   /*#__PURE__*/ createUseWriteContract({
@@ -964,9 +996,21 @@ export const useWriteHiveStakingClaimPoints =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPointsForUser"`
+ *
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
+ */
+export const useWriteHiveStakingClaimPointsForUser =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'claimPointsForUser',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseWriteContract({
@@ -978,7 +1022,7 @@ export const useWriteHiveStakingOnErc721Received =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -988,9 +1032,21 @@ export const useWriteHiveStakingRenounceOwnership =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setDelegatedAccount"`
+ *
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
+ */
+export const useWriteHiveStakingSetDelegatedAccount =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setDelegatedAccount',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseWriteContract({
@@ -1002,7 +1058,7 @@ export const useWriteHiveStakingSetEnvironmentsAndHives =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseWriteContract({
@@ -1014,7 +1070,7 @@ export const useWriteHiveStakingSetMaxBeesPerHive =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseWriteContract({
@@ -1026,7 +1082,7 @@ export const useWriteHiveStakingSetRarityMultipliers =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseWriteContract({
@@ -1038,7 +1094,7 @@ export const useWriteHiveStakingSetRewardRate =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseWriteContract({
@@ -1050,7 +1106,7 @@ export const useWriteHiveStakingSetUserExternalNftFlag =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -1061,7 +1117,7 @@ export const useWriteHiveStakingStake = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -1073,7 +1129,7 @@ export const useWriteHiveStakingTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
   abi: hiveStakingAbi,
@@ -1084,7 +1140,7 @@ export const useWriteHiveStakingUnstake = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseWriteContract({
@@ -1096,7 +1152,7 @@ export const useWriteHiveStakingWithdrawErc721 =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWriteHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseWriteContract({
@@ -1108,7 +1164,7 @@ export const useWriteHiveStakingWithdrawEther =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
   abi: hiveStakingAbi,
@@ -1116,21 +1172,21 @@ export const useSimulateHiveStaking = /*#__PURE__*/ createUseSimulateContract({
 })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"batchSetUserExternalNFTFlag"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"applyNewMultiplier"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
-export const useSimulateHiveStakingBatchSetUserExternalNftFlag =
+export const useSimulateHiveStakingApplyNewMultiplier =
   /*#__PURE__*/ createUseSimulateContract({
     abi: hiveStakingAbi,
     address: hiveStakingAddress,
-    functionName: 'batchSetUserExternalNFTFlag',
+    functionName: 'applyNewMultiplier',
   })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPoints"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingClaimPoints =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1140,9 +1196,21 @@ export const useSimulateHiveStakingClaimPoints =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"claimPointsForUser"`
+ *
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
+ */
+export const useSimulateHiveStakingClaimPointsForUser =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'claimPointsForUser',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"onERC721Received"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingOnErc721Received =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1154,7 +1222,7 @@ export const useSimulateHiveStakingOnErc721Received =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1164,9 +1232,21 @@ export const useSimulateHiveStakingRenounceOwnership =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setDelegatedAccount"`
+ *
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
+ */
+export const useSimulateHiveStakingSetDelegatedAccount =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: hiveStakingAbi,
+    address: hiveStakingAddress,
+    functionName: 'setDelegatedAccount',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setEnvironmentsAndHives"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingSetEnvironmentsAndHives =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1178,7 +1258,7 @@ export const useSimulateHiveStakingSetEnvironmentsAndHives =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setMaxBeesPerHive"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingSetMaxBeesPerHive =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1190,7 +1270,7 @@ export const useSimulateHiveStakingSetMaxBeesPerHive =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRarityMultipliers"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingSetRarityMultipliers =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1202,7 +1282,7 @@ export const useSimulateHiveStakingSetRarityMultipliers =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setRewardRate"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingSetRewardRate =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1214,7 +1294,7 @@ export const useSimulateHiveStakingSetRewardRate =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"setUserExternalNFTFlag"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingSetUserExternalNftFlag =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1226,7 +1306,7 @@ export const useSimulateHiveStakingSetUserExternalNftFlag =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"stake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingStake =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1238,7 +1318,7 @@ export const useSimulateHiveStakingStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1250,7 +1330,7 @@ export const useSimulateHiveStakingTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"unstake"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingUnstake =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1262,7 +1342,7 @@ export const useSimulateHiveStakingUnstake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawERC721"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingWithdrawErc721 =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1274,7 +1354,7 @@ export const useSimulateHiveStakingWithdrawErc721 =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link hiveStakingAbi}__ and `functionName` set to `"withdrawEther"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useSimulateHiveStakingWithdrawEther =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1286,7 +1366,7 @@ export const useSimulateHiveStakingWithdrawEther =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1297,7 +1377,7 @@ export const useWatchHiveStakingEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"EnvironmentsAndHivesUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingEnvironmentsAndHivesUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1309,7 +1389,7 @@ export const useWatchHiveStakingEnvironmentsAndHivesUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"ExternalNFTFlagUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingExternalNftFlagUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1321,7 +1401,7 @@ export const useWatchHiveStakingExternalNftFlagUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"HiveProductionQueried"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingHiveProductionQueriedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1333,7 +1413,7 @@ export const useWatchHiveStakingHiveProductionQueriedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"MaxBeesPerHiveUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1345,7 +1425,7 @@ export const useWatchHiveStakingMaxBeesPerHiveUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1357,7 +1437,7 @@ export const useWatchHiveStakingOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"PointsClaimed"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingPointsClaimedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1369,7 +1449,7 @@ export const useWatchHiveStakingPointsClaimedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RarityMultipliersUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingRarityMultipliersUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1381,7 +1461,7 @@ export const useWatchHiveStakingRarityMultipliersUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"RewardRateUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingRewardRateUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1393,7 +1473,7 @@ export const useWatchHiveStakingRewardRateUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Staked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingStakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1405,7 +1485,7 @@ export const useWatchHiveStakingStakedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"Unstaked"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingUnstakedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1417,7 +1497,7 @@ export const useWatchHiveStakingUnstakedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link hiveStakingAbi}__ and `eventName` set to `"UserProductionUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x578d60683870FA85b466CF564AcE187c62c3d008)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x965F9391b5114Aba90177D40a86324dA781C3309)
  */
 export const useWatchHiveStakingUserProductionUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

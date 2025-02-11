@@ -174,7 +174,7 @@ export const MintProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsMintLoading(false);
 
         // Start cooldown
-        setCooldownRemaining(60);
+        setCooldownRemaining(20);
         setIsCooldown(true);
       }
       if (transactionError) {

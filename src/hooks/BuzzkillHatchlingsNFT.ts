@@ -10,7 +10,7 @@ import {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const buzzkillHatchlingsNftAbi = [
   {
@@ -529,14 +529,14 @@ export const buzzkillHatchlingsNftAbi = [
 ] as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const buzzkillHatchlingsNftAddress = {
-  88: '0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8',
+  88: '0x425A8e5965bb30091BdEFfa482fC1A348042Be34',
 } as const
 
 /**
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const buzzkillHatchlingsNftConfig = {
   address: buzzkillHatchlingsNftAddress,
@@ -550,7 +550,7 @@ export const buzzkillHatchlingsNftConfig = {
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNft = /*#__PURE__*/ createUseReadContract(
   { abi: buzzkillHatchlingsNftAbi, address: buzzkillHatchlingsNftAddress },
@@ -559,7 +559,7 @@ export const useReadBuzzkillHatchlingsNft = /*#__PURE__*/ createUseReadContract(
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"addressMintedCount"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftAddressMintedCount =
   /*#__PURE__*/ createUseReadContract({
@@ -571,7 +571,7 @@ export const useReadBuzzkillHatchlingsNftAddressMintedCount =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"balanceOf"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftBalanceOf =
   /*#__PURE__*/ createUseReadContract({
@@ -583,7 +583,7 @@ export const useReadBuzzkillHatchlingsNftBalanceOf =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"cooldownTime"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftCooldownTime =
   /*#__PURE__*/ createUseReadContract({
@@ -595,7 +595,7 @@ export const useReadBuzzkillHatchlingsNftCooldownTime =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"currentBatchSize"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftCurrentBatchSize =
   /*#__PURE__*/ createUseReadContract({
@@ -607,7 +607,7 @@ export const useReadBuzzkillHatchlingsNftCurrentBatchSize =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"currentMaxSupply"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftCurrentMaxSupply =
   /*#__PURE__*/ createUseReadContract({
@@ -619,7 +619,7 @@ export const useReadBuzzkillHatchlingsNftCurrentMaxSupply =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"getApproved"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftGetApproved =
   /*#__PURE__*/ createUseReadContract({
@@ -631,7 +631,7 @@ export const useReadBuzzkillHatchlingsNftGetApproved =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"isApprovedForAll"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
   /*#__PURE__*/ createUseReadContract({
@@ -643,7 +643,7 @@ export const useReadBuzzkillHatchlingsNftIsApprovedForAll =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"lastMintedTime"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftLastMintedTime =
   /*#__PURE__*/ createUseReadContract({
@@ -655,7 +655,7 @@ export const useReadBuzzkillHatchlingsNftLastMintedTime =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"maxMintPerAddress"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftMaxMintPerAddress =
   /*#__PURE__*/ createUseReadContract({
@@ -667,7 +667,7 @@ export const useReadBuzzkillHatchlingsNftMaxMintPerAddress =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"maxSupply"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftMaxSupply =
   /*#__PURE__*/ createUseReadContract({
@@ -679,7 +679,7 @@ export const useReadBuzzkillHatchlingsNftMaxSupply =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"name"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftName =
   /*#__PURE__*/ createUseReadContract({
@@ -691,7 +691,7 @@ export const useReadBuzzkillHatchlingsNftName =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"owner"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftOwner =
   /*#__PURE__*/ createUseReadContract({
@@ -703,7 +703,7 @@ export const useReadBuzzkillHatchlingsNftOwner =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"ownerOf"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftOwnerOf =
   /*#__PURE__*/ createUseReadContract({
@@ -715,7 +715,7 @@ export const useReadBuzzkillHatchlingsNftOwnerOf =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"paused"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftPaused =
   /*#__PURE__*/ createUseReadContract({
@@ -727,7 +727,7 @@ export const useReadBuzzkillHatchlingsNftPaused =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setMaxSupply"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftSetMaxSupply =
   /*#__PURE__*/ createUseReadContract({
@@ -739,7 +739,7 @@ export const useReadBuzzkillHatchlingsNftSetMaxSupply =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"supportsInterface"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftSupportsInterface =
   /*#__PURE__*/ createUseReadContract({
@@ -751,7 +751,7 @@ export const useReadBuzzkillHatchlingsNftSupportsInterface =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"symbol"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftSymbol =
   /*#__PURE__*/ createUseReadContract({
@@ -763,7 +763,7 @@ export const useReadBuzzkillHatchlingsNftSymbol =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenByIndex"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftTokenByIndex =
   /*#__PURE__*/ createUseReadContract({
@@ -775,7 +775,7 @@ export const useReadBuzzkillHatchlingsNftTokenByIndex =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenOfOwnerByIndex"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftTokenOfOwnerByIndex =
   /*#__PURE__*/ createUseReadContract({
@@ -787,7 +787,7 @@ export const useReadBuzzkillHatchlingsNftTokenOfOwnerByIndex =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenRarity"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftTokenRarity =
   /*#__PURE__*/ createUseReadContract({
@@ -799,7 +799,7 @@ export const useReadBuzzkillHatchlingsNftTokenRarity =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"tokenURI"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftTokenUri =
   /*#__PURE__*/ createUseReadContract({
@@ -811,7 +811,7 @@ export const useReadBuzzkillHatchlingsNftTokenUri =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"totalSupply"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useReadBuzzkillHatchlingsNftTotalSupply =
   /*#__PURE__*/ createUseReadContract({
@@ -823,7 +823,7 @@ export const useReadBuzzkillHatchlingsNftTotalSupply =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseWriteContract({
@@ -834,7 +834,7 @@ export const useWriteBuzzkillHatchlingsNft =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"adminMint"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftAdminMint =
   /*#__PURE__*/ createUseWriteContract({
@@ -846,7 +846,7 @@ export const useWriteBuzzkillHatchlingsNftAdminMint =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"approve"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftApprove =
   /*#__PURE__*/ createUseWriteContract({
@@ -858,7 +858,7 @@ export const useWriteBuzzkillHatchlingsNftApprove =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseWriteContract({
@@ -870,7 +870,7 @@ export const useWriteBuzzkillHatchlingsNftMint =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"pause"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftPause =
   /*#__PURE__*/ createUseWriteContract({
@@ -882,7 +882,7 @@ export const useWriteBuzzkillHatchlingsNftPause =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"releaseNextBatch"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftReleaseNextBatch =
   /*#__PURE__*/ createUseWriteContract({
@@ -894,7 +894,7 @@ export const useWriteBuzzkillHatchlingsNftReleaseNextBatch =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -906,7 +906,7 @@ export const useWriteBuzzkillHatchlingsNftRenounceOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
@@ -918,7 +918,7 @@ export const useWriteBuzzkillHatchlingsNftSafeTransferFrom =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseWriteContract({
@@ -930,7 +930,7 @@ export const useWriteBuzzkillHatchlingsNftSetApprovalForAll =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setBatchSize"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftSetBatchSize =
   /*#__PURE__*/ createUseWriteContract({
@@ -942,7 +942,7 @@ export const useWriteBuzzkillHatchlingsNftSetBatchSize =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
   /*#__PURE__*/ createUseWriteContract({
@@ -954,7 +954,7 @@ export const useWriteBuzzkillHatchlingsNftSetCooldownTime =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setMaxMintPerAddress"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftSetMaxMintPerAddress =
   /*#__PURE__*/ createUseWriteContract({
@@ -966,7 +966,7 @@ export const useWriteBuzzkillHatchlingsNftSetMaxMintPerAddress =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferFrom"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftTransferFrom =
   /*#__PURE__*/ createUseWriteContract({
@@ -978,7 +978,7 @@ export const useWriteBuzzkillHatchlingsNftTransferFrom =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
@@ -990,7 +990,7 @@ export const useWriteBuzzkillHatchlingsNftTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"unpause"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWriteBuzzkillHatchlingsNftUnpause =
   /*#__PURE__*/ createUseWriteContract({
@@ -1002,7 +1002,7 @@ export const useWriteBuzzkillHatchlingsNftUnpause =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNft =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1013,7 +1013,7 @@ export const useSimulateBuzzkillHatchlingsNft =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"adminMint"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftAdminMint =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1025,7 +1025,7 @@ export const useSimulateBuzzkillHatchlingsNftAdminMint =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"approve"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftApprove =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1037,7 +1037,7 @@ export const useSimulateBuzzkillHatchlingsNftApprove =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"mint"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftMint =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1049,7 +1049,7 @@ export const useSimulateBuzzkillHatchlingsNftMint =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"pause"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftPause =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1061,7 +1061,7 @@ export const useSimulateBuzzkillHatchlingsNftPause =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"releaseNextBatch"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftReleaseNextBatch =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1073,7 +1073,7 @@ export const useSimulateBuzzkillHatchlingsNftReleaseNextBatch =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"renounceOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1085,7 +1085,7 @@ export const useSimulateBuzzkillHatchlingsNftRenounceOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"safeTransferFrom"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1097,7 +1097,7 @@ export const useSimulateBuzzkillHatchlingsNftSafeTransferFrom =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setApprovalForAll"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1109,7 +1109,7 @@ export const useSimulateBuzzkillHatchlingsNftSetApprovalForAll =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setBatchSize"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftSetBatchSize =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1121,7 +1121,7 @@ export const useSimulateBuzzkillHatchlingsNftSetBatchSize =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setCooldownTime"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1133,7 +1133,7 @@ export const useSimulateBuzzkillHatchlingsNftSetCooldownTime =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"setMaxMintPerAddress"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftSetMaxMintPerAddress =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1145,7 +1145,7 @@ export const useSimulateBuzzkillHatchlingsNftSetMaxMintPerAddress =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferFrom"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftTransferFrom =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1157,7 +1157,7 @@ export const useSimulateBuzzkillHatchlingsNftTransferFrom =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"transferOwnership"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1169,7 +1169,7 @@ export const useSimulateBuzzkillHatchlingsNftTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `functionName` set to `"unpause"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useSimulateBuzzkillHatchlingsNftUnpause =
   /*#__PURE__*/ createUseSimulateContract({
@@ -1181,7 +1181,7 @@ export const useSimulateBuzzkillHatchlingsNftUnpause =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1192,7 +1192,7 @@ export const useWatchBuzzkillHatchlingsNftEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Approval"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftApprovalEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1204,7 +1204,7 @@ export const useWatchBuzzkillHatchlingsNftApprovalEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"ApprovalForAll"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1216,7 +1216,7 @@ export const useWatchBuzzkillHatchlingsNftApprovalForAllEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"BatchReleased"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftBatchReleasedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1228,7 +1228,7 @@ export const useWatchBuzzkillHatchlingsNftBatchReleasedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"MintingParametersUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftMintingParametersUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1240,7 +1240,7 @@ export const useWatchBuzzkillHatchlingsNftMintingParametersUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1252,7 +1252,7 @@ export const useWatchBuzzkillHatchlingsNftOwnershipTransferredEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Paused"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftPausedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1264,7 +1264,7 @@ export const useWatchBuzzkillHatchlingsNftPausedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"RarityURIsUpdated"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftRarityUrIsUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1276,7 +1276,7 @@ export const useWatchBuzzkillHatchlingsNftRarityUrIsUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"TokensMinted"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftTokensMintedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1288,7 +1288,7 @@ export const useWatchBuzzkillHatchlingsNftTokensMintedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Transfer"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftTransferEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
@@ -1300,7 +1300,7 @@ export const useWatchBuzzkillHatchlingsNftTransferEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link buzzkillHatchlingsNftAbi}__ and `eventName` set to `"Unpaused"`
  *
- * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x25db8A5Ac88115e5ce07C0c3F1C75885999906e8)
+ * [__View Contract on Viction Vic Scan__](https://vicscan.xyz/address/0x425A8e5965bb30091BdEFfa482fC1A348042Be34)
  */
 export const useWatchBuzzkillHatchlingsNftUnpausedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({

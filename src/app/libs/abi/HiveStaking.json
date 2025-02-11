@@ -2,17 +2,12 @@
   {
     "inputs": [
       {
-        "internalType": "address[]",
-        "name": "users",
-        "type": "address[]"
-      },
-      {
-        "internalType": "bool[]",
-        "name": "flags",
-        "type": "bool[]"
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       }
     ],
-    "name": "batchSetUserExternalNFTFlag",
+    "name": "applyNewMultiplier",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -20,6 +15,19 @@
   {
     "inputs": [],
     "name": "claimPoints",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "claimPointsForUser",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -256,6 +264,19 @@
     ],
     "name": "RewardRateUpdated",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_delegatedAccount",
+        "type": "address"
+      }
+    ],
+    "name": "setDelegatedAccount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -564,6 +585,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delegatedAccount",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

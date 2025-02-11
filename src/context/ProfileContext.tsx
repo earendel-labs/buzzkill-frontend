@@ -125,8 +125,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
             });
 
             if (!response.ok) {
-              const errorData = await response.json();
-
+              const errorData = await response.json(); 
               return;
             }
 
