@@ -34,12 +34,11 @@ const Footer: React.FC = () => {
     >
       {/* Copyright section */}
       <Typography variant="body2" color={Gold}>
-        © 2024 Erandel Labs. All rights reserved.
+        © 2024 buzzkill Studios Inc. All rights reserved.
       </Typography>
 
       {/* Social icons in the center */}
       <Box sx={{ display: "flex", gap: "32px", justifyContent: "center" }}>
-        
         <SocialIcon
           Component={DiscordIcon}
           href="https://discord.com/invite/3fuc9K4EQK"

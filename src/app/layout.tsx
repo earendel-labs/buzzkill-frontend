@@ -58,22 +58,20 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta
           name="description"
-          content="Buzzkill - HoneyComb Hustle created by the Earendal Labs Team"
+          content="Buzzkill - HoneyComb Hustle created by Buzzkill Studio Inc."
         />
         <meta name="keywords" content="Buzzkill Web3 Gaming" />
         <meta property="og:title" content="Buzzkill - Honeycomb Hustle" />
         <meta
           property="og:description"
-          content="Buzzkill - HoneyComb Hustle created by the Earendal Labs Team"
+          content="Buzzkill - HoneyComb Hustle created by Buzzkill Studio Inc. "
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://buzzkill.world/" />
-        <meta
-          property="og:image"
-          content="https://buzzkill.world/images/og-image.jpg"
-        />
+        <meta property="og:url" content="https://play.buzzkill.world/" />
+        <meta property="og:image" content="/thumbnail/buzzkill-thumbnail.png" />
+
         <link rel="icon" href="/favicon.ico" />
-        <link rel="canonical" href="https://buzzkill.world/" />
+        <link rel="canonical" href="https://play.buzzkill.world/" />
         <title>Buzzkill - Play Game</title>
       </head>
       <body className={`${veraHumana.className} ${poppins.className}`}>
