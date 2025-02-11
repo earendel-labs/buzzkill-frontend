@@ -45,7 +45,7 @@ const MintPriceDisplay: React.FC = () => {
         earn Honey Drop Points. Mint up to 2 free Hatchlings, stake them in
         hives, and earn points based on their rarity. <br></br>
         <br></br>
-        NOTE: There is a 1 minute cooldown between mints.
+        NOTE: There is a 30 second cooldown between mints.
       </Typography>
 
       {/* Free Mint Price */}

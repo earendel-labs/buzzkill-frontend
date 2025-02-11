@@ -41,7 +41,7 @@ const MintInfoCard: React.FC = () => {
         <MintedCountDisplay />
 
         {/* Quantity Panel */}
-        <SelectQuantityPanel />
+        {/* <SelectQuantityPanel /> */}
 
         {/* Mint / Error / Success Handling */}
         <MintActions />
