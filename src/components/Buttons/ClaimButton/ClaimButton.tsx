@@ -8,7 +8,7 @@ import { useWriteHiveStakingClaimPoints } from "@/hooks/HiveStaking";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { logger } from "@/utils/logger";
 import { useUserContext } from "@/context/UserContext";
-import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
 import Image from "next/image";
 
 interface ClaimButtonProps {

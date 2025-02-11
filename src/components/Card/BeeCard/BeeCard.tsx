@@ -18,7 +18,7 @@ import BeeInfo from "./BeeInfo";
 import BeeCardBackground from "./BeeCardBackground";
 import RarityChip from "./RarityChip";
 import { logger } from "@/utils/logger";
-import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
 import { useSound } from "@/context/SoundContext"; // Import useSound context
 
 export interface BeeCardProps {

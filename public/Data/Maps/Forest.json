@@ -8,18 +8,18 @@
     "resources": [
       {
         "type": "Hive",
-        "id": 0,
+        "id": 1,
         "name": "Cedar Hive",
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
         "position": { "left": "14%", "top": "40%" },
-        "resourceLink": "/resource-link",
+        "resourceLink": "/Play/Location/WhisperwoodValleys/CedarHive",
         "hiveId": 1
       },
       {
         "type": "Hive",
-        "id": 1,
+        "id": 2,
         "name": "Black Forest Hive",
         "productivityValue": 21,
         "queenBees": "1/3",
@@ -30,13 +30,13 @@
       },
       {
         "type": "Hive",
-        "id": 5,
+        "id": 6,
         "name": "Sequoia Hive",
         "productivityValue": 13,
         "queenBees": "1/3",
         "workerBees": "24/55",
         "position": { "left": "82%", "top": "70%" },
-        "resourceLink": "/resource-link",
+        "resourceLink": "/Play/Location/WhisperwoodValleys/SequoiaHive",
         "hiveId": 6
       }
     ]

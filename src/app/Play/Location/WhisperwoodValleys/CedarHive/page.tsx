@@ -1,4 +1,4 @@
-// src/app/Play/Location/WhisperwoodValleys/BlackForestHive/page.tsx
+// src/app/Play/Location/WhisperwoodValleys/CedarHive/page.tsx
 
 "use client";
 
@@ -27,7 +27,7 @@ import ConfirmModal from "../Components/HiveStakingModals";
 import useFetchStakedBees from "@/hooks/useFetchStakedBees";
 import TransactionInProgressModal from "../../../../../components/Modals/TransactionProgressModal/TransactionInProgressModal";
 
- 
+type HatchlingStatus = "Free" | "Staked";
 
 interface HiveHatchlingInfo {
   productivityValue: number;
@@ -40,7 +40,7 @@ interface HiveHatchlingInfo {
   environment: string;
 }
 
-const BlackForestHive: React.FC = () => {
+const CedarHive: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
   const router = useRouter();
@@ -93,7 +93,7 @@ const BlackForestHive: React.FC = () => {
   } = useWaitForTransactionReceipt({ hash: transactionHash });
 
   const environmentId = "2";
-  const hiveId = "2";
+  const hiveId = "1";
   const environmentIdNumber = Number(environmentId);
   const hiveIdNumber = Number(hiveId);
 
@@ -520,4 +520,4 @@ const BlackForestHive: React.FC = () => {
   );
 };
 
-export default BlackForestHive;
+export default CedarHive;

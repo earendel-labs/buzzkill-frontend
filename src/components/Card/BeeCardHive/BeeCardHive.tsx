@@ -15,7 +15,7 @@ import ConfirmationModal from "../BeeCard/ConfirmationModal";
 import BeeCardBackground from "../BeeCard/BeeCardBackground";
 import { useHives } from "@/context/HivesContext";
 import { logger } from "@/utils/logger";
-import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
 import RarityChip from "../BeeCard/RarityChip";
 import { useTheme } from "@mui/material/styles";
 import Person from "@mui/icons-material/Person";

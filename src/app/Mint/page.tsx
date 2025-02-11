@@ -5,7 +5,7 @@ import Layout from "@/components/Layouts/Layout/Layout";
 import NFTCard from "@/app/Mint/Components/MintCard/MintCard";
 import { MintProvider, useMintContext } from "@/context/MintContext";
 import MintInfoCard from "./Components/MintInfoCard/MintInfoCard";
-import TransactionInProgressModal from "@/app/Play/Location/WhisperwoodValleys/BlackForestHive/Components/TransactionInProgressModal";
+import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
 
 const MintPageContent: React.FC = () => {
   const {
