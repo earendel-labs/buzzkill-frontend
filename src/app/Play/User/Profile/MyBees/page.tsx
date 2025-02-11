@@ -77,7 +77,7 @@ const MyBeesTab = () => {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              height="20vh"
+              height="5vh"
             >
               <Typography marginTop="24px" marginBottom="24px">
                 No Unstaked Hatchlings
@@ -110,7 +110,7 @@ const MyBeesTab = () => {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
-              height="20vh"
+              height="5vh"
             >
               <Typography>No Staked Hatchlings Found</Typography>
             </Box>

@@ -57,7 +57,7 @@ export default async function syncOneID(
   }
 
   // Validate OneID Name
-  const validOneIDName = /^[a-zA-Z0-9-_]+$/.test(oneid_name);
+  const validOneIDName = /^[a-zA-Z0-9-_.]+$/.test(oneid_name);
   if (!validOneIDName) {
     return res.status(400).json({
       error:
