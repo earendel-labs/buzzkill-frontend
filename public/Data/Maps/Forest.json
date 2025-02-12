@@ -31,34 +31,34 @@
       {
         "type": "Hive",
         "id": 3,
-        "name": "Black Forest Hive",
+        "name": "Thornroot Hive",
         "productivityValue": 21,
         "queenBees": "1/3",
         "workerBees": "24/55",
-        "position": { "left": "21%", "top": "21%" },
-        "resourceLink": "/Play/Location/WhisperwoodValleys/BlackForestHive",
+        "position": { "left": "31%", "top": "21%" },
+        "resourceLink": "/Play/Location/WhisperwoodValleys/ThornrootHive",
         "hiveId": 3
       },
       {
         "type": "Hive",
         "id": 4,
-        "name": "Black Forest Hive",
+        "name": "Amberglass Hive",
         "productivityValue": 21,
         "queenBees": "1/3",
         "workerBees": "24/55",
-        "position": { "left": "21%", "top": "21%" },
-        "resourceLink": "/Play/Location/WhisperwoodValleys/BlackForestHive",
+        "position": { "left": "81%", "top": "21%" },
+        "resourceLink": "/Play/Location/WhisperwoodValleys/AmberglassHive",
         "hiveId": 4
       },
       {
         "type": "Hive",
         "id": 5,
-        "name": "Black Forest Hive",
+        "name": "Bramble Hive",
         "productivityValue": 21,
         "queenBees": "1/3",
         "workerBees": "24/55",
-        "position": { "left": "21%", "top": "21%" },
-        "resourceLink": "/Play/Location/WhisperwoodValleys/BlackForestHive",
+        "position": { "left": "83%", "top": "41%" },
+        "resourceLink": "/Play/Location/WhisperwoodValleys/BrambleHive",
         "hiveId": 5
       },
       {
