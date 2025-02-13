@@ -65,7 +65,7 @@ const HoneyDropsPage = () => {
           // Handle constants data
           setConstants({
             dailyBonus: constantsResponse.dailyBonus ?? 100,
-            referralReward: constantsResponse.referralReward ?? 1000,
+            referralReward: constantsResponse.referralReward ?? 500,
           });
 
           setError(null); // Clear any previous errors
@@ -76,7 +76,7 @@ const HoneyDropsPage = () => {
           setError(err.message || "Failed to fetch leaderboard data.");
           setConstants({
             dailyBonus: 100,
-            referralReward:1000,
+            referralReward: 500,
           });
         }
       } finally {
