@@ -95,9 +95,14 @@ export interface StakedNFT {
 
 export interface StakedNFTsData {
   stakedNFTs: {
-    edges: {
+    edges: Array<{
+      cursor: string;
       node: StakedNFT;
-    }[];
+    }>;
+    pageInfo: {
+      endCursor: string | null;
+      hasNextPage: boolean;
+    };
   };
 }
 

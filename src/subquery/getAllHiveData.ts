@@ -1,9 +1,11 @@
+ 
 import { gql } from "@apollo/client";
 
 export const GET_ALL_HIVE_DATA = gql`
-  query GetAllStakedNFTs {
-    stakedNFTs {
+  query GetAllStakedNFTs($after: Cursor) {
+    stakedNFTs(first: 100, after: $after) {
       edges {
+        cursor
         node {
           id
           tokenIdNum
@@ -25,6 +27,10 @@ export const GET_ALL_HIVE_DATA = gql`
             tokenURI
           }
         }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
   }
