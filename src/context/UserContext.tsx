@@ -348,7 +348,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
       rewardsData.users &&
       rewardsData.users.edges.length > 0
     ) {
-      const currentTime = Date.now() / 1000;
+      const currentTime = Date.now() / 800;
       let totalUnclaimed = 0;
       stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
         const nft = edge.node;
@@ -361,11 +361,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         } else if (nft.tokenId.rarity === "Ultra-Rare") {
           rarityMultiplier = 1.5;
         }
-        totalUnclaimed += daysElapsed * 1000 * rarityMultiplier;
+        totalUnclaimed += daysElapsed * 800 * rarityMultiplier;
       });
       const externalFlag = rewardsData.users.edges[0].node.hasExternalNFTFlag;
       if (externalFlag) {
-        totalUnclaimed *= 1.5;
+        totalUnclaimed *= 1.2;
       }
       setUserRewards((prevRewards) => {
         if (prevRewards) {
@@ -404,10 +404,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         } else if (edge.node.tokenId.rarity === "Ultra-Rare") {
           rarityMultiplier = 1.5;
         }
-        totalRatePerMinute += (1000 / 1440) * rarityMultiplier;
+        totalRatePerMinute += (800 / 1440) * rarityMultiplier;
       });
       if (userRewards?.hasExternalNFTFlag) {
-        totalRatePerMinute = totalRatePerMinute * 1.5;
+        totalRatePerMinute = totalRatePerMinute * 1.2;
       }
     }
     const interval = setInterval(() => {

@@ -135,7 +135,7 @@ export default async function claimYield(
   const stakedNFTEdges = subgraphData.stakedNFTs.edges; 
 
   // Recalculate the unclaimed yield exactly as in your frontend
-  const currentTime = Date.now() / 1000;
+  const currentTime = Date.now() / 800;
   let totalUnclaimed = 0;
   stakedNFTEdges.forEach((edge: any) => {
     const nft = edge.node;
@@ -149,13 +149,13 @@ export default async function claimYield(
     } else if (nft.tokenId.rarity === "Ultra-Rare") {
       rarityMultiplier = 1.5;
     }
-    totalUnclaimed += daysElapsed * 1000 * rarityMultiplier;
+    totalUnclaimed += daysElapsed * 800 * rarityMultiplier;
     console.log("totalUnclaimed", totalUnclaimed);
   });
 
   // Apply the external NFT flag multiplier if enabled
   if (userData.hasExternalNFTFlag) {
-    totalUnclaimed *= 1.5;
+    totalUnclaimed *= 1.2;
   }
 
   // If no yield is available to claim, return an error
