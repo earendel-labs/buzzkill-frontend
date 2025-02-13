@@ -10,6 +10,8 @@ import { useUserContext } from "@/context/UserContext";
 const MintActions: React.FC = () => {
   const theme = useTheme();
   const {
+    mintedCount,
+    totalSupply,
     isConnected,
     maxQuantity,
     errorMessage,
@@ -97,10 +99,11 @@ const MintActions: React.FC = () => {
             </Typography>
           )}
           <PrimaryButton
-            text="Mint"
+            text={mintedCount === totalSupply ? "Fully Minted" : "Mint"}
             onClick={handleMint}
             scale={1.4}
             disabled={
+              mintedCount === totalSupply ||
               !hasRemainingMint ||
               isMintLoading ||
               (isCooldown && cooldownRemaining > 0)
