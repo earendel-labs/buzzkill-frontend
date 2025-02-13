@@ -44,6 +44,7 @@ const MintPriceDisplay: React.FC = () => {
         after millennia of dormancy. Now’s your chance to explore the planet and
         earn Honey Drop Points. Mint up to 2 free Hatchlings, stake them in
         hives, and earn points based on their rarity. <br></br>
+        <br></br>
         Total Mints 10,000. Join our Discord find out when we release the next
         batch.
         <br></br>
