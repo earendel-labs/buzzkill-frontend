@@ -6,10 +6,10 @@ import { logger } from "@/utils/logger";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 
-// Rate limit: allow one claim call per 15 seconds per address
+// Rate limit: allow one claim call per 60  seconds per address
 const rateLimiter = new RateLimiterMemory({
   points: 1,
-  duration: 60,
+  duration: 300,
 });
 
 // Ensure your subgraph endpoint is defined (for example, in NEXT_PUBLIC_SUBQUERY_DOMAIN)
