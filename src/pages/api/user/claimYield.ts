@@ -9,7 +9,7 @@ import { RateLimiterMemory } from "rate-limiter-flexible";
 // Rate limit: allow one claim call per 15 seconds per address
 const rateLimiter = new RateLimiterMemory({
   points: 1,
-  duration: 1,
+  duration: 60,
 });
 
 // Ensure your subgraph endpoint is defined (for example, in NEXT_PUBLIC_SUBQUERY_DOMAIN)
@@ -132,7 +132,7 @@ export default async function claimYield(
 
   // Extract user data and staked NFTs from the subgraph
   const userData = subgraphData.users.edges[0].node;
-  const stakedNFTEdges = subgraphData.stakedNFTs.edges; 
+  const stakedNFTEdges = subgraphData.stakedNFTs.edges;
 
   // Recalculate the unclaimed yield exactly as in your frontend
   const currentTime = Date.now() / 800;
@@ -140,7 +140,6 @@ export default async function claimYield(
   stakedNFTEdges.forEach((edge: any) => {
     const nft = edge.node;
     const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
-    console.log("lastClaimedAt", lastClaimedAt);
     const secondsElapsed = currentTime - lastClaimedAt;
     const daysElapsed = secondsElapsed / 86400;
     let rarityMultiplier = 1;
@@ -150,7 +149,6 @@ export default async function claimYield(
       rarityMultiplier = 1.5;
     }
     totalUnclaimed += daysElapsed * 800 * rarityMultiplier;
-    console.log("totalUnclaimed", totalUnclaimed);
   });
 
   // Apply the external NFT flag multiplier if enabled
@@ -160,7 +158,6 @@ export default async function claimYield(
 
   // If no yield is available to claim, return an error
   if (totalUnclaimed <= 0) {
-    console.log("No yield available to claim");
     return res.status(400).json({ error: "No yield available to claim" });
   }
 
