@@ -349,7 +349,7 @@ const HatchlingInfoPanel: React.FC = () => {
         {selectedTab === "leaderboard" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
             <Typography sx={{ marginBottom: "1rem" }}>
-              Claim your points and view your spot on the leaderboard. Check the{" "}
+              Claim your points and view your spot on the leaderboard. Checkout the{" "}
               <Link
                 href="/HoneyDrops"
                 style={{
@@ -357,7 +357,7 @@ const HatchlingInfoPanel: React.FC = () => {
                   fontWeight: "bold",
                 }}
               >
-                full leaderboard
+                full leaderboard.  
               </Link>
             </Typography>
             <MiniLeaderboard />
