@@ -22,19 +22,15 @@ const UserResourceBar: React.FC = () => {
   const [displayPoints, setDisplayPoints] = useState<null | number>(null);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (
-        liveUnclaimedPoints === undefined ||
-        liveUnclaimedPoints === null ||
-        isNaN(Number(liveUnclaimedPoints))
-      ) {
-        setDisplayPoints(0);
-      } else {
-        setDisplayPoints(Number(liveUnclaimedPoints));
-      }
-    }, 5000);
-
-    return () => clearTimeout(timeout);
+    if (
+      liveUnclaimedPoints === undefined ||
+      liveUnclaimedPoints === null ||
+      isNaN(Number(liveUnclaimedPoints))
+    ) {
+      setDisplayPoints(0);
+    } else {
+      setDisplayPoints(Number(liveUnclaimedPoints));
+    }
   }, [liveUnclaimedPoints]);
 
   return (
