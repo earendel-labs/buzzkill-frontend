@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://app.buzzkill.world
+Host: https://play.buzzkill.world
 
 # Sitemaps
-Sitemap: https://app.buzzkill.world/sitemap.xml
+Sitemap: https://play.buzzkill.world/sitemap.xml

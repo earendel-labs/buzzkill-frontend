@@ -2,18 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import { Button, Snackbar, Alert, Tooltip } from "@mui/material";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import Image from "next/image";
 import { useSound } from "@/context/SoundContext";
 import { useWriteHiveStakingClaimPoints } from "@/hooks/HiveStaking";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { logger } from "@/utils/logger";
 import { useUserContext } from "@/context/UserContext";
 import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
-import Image from "next/image";
 
 interface ClaimButtonProps {
   liveUnclaimedPoints: number;
-  isUserResource?: boolean; // Optional prop with default value as false
+  isUserResource?: boolean;
 }
 
 const ClaimButton: React.FC<ClaimButtonProps> = ({
@@ -29,6 +28,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
     "success" | "error" | "warning"
   >("success");
   const [isClaiming, setIsClaiming] = useState(false);
+  const [claimStep, setClaimStep] = useState("Awaiting Claim Transaction...");
   const [showClaimModal, setShowClaimModal] = useState(false);
 
   const { isMuted } = useSound();
@@ -64,21 +64,56 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   };
 
   const handleClaimClick = async () => {
-    if (Math.floor(liveUnclaimedPoints) < 5) {
+    if (Math.floor(liveUnclaimedPoints) < 10) {
       setAlertSeverity("warning");
       setAlertMessage("Minimum 10 points required to claim yield.");
       setSnackbarOpen(true);
       return;
     }
     if (isClaiming || isPending || isTxnLoading) return;
-    try {
-      setIsClaiming(true);
-      logger.log("Initiating claim transaction...");
-      setShowClaimModal(true);
 
+    try {
+      // Step 1: Call setPendingYield to store current yield
+      setIsClaiming(true);
+      setShowClaimModal(true);
+      setClaimStep("Calculating Pending Yield...");
+      logger.log("Calling setPendingYield...");
+
+      const pendingRes = await fetch("/api/user/rewards/setPendingYield", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!pendingRes.ok) {
+        const msg = await pendingRes.text();
+        logger.error("Failed to set pending yield:", msg);
+        setAlertSeverity("error");
+        setAlertMessage("Error calculating pending yield.");
+        setSnackbarOpen(true);
+        setIsClaiming(false);
+        setShowClaimModal(false);
+        return;
+      }
+
+      const pendingData = await pendingRes.json();
+      if (!pendingData.success) {
+        logger.error("setPendingYield error:", pendingData.error);
+        setAlertSeverity("error");
+        setAlertMessage(pendingData.error || "Error setting pending yield.");
+        setSnackbarOpen(true);
+        setIsClaiming(false);
+        setShowClaimModal(false);
+        return;
+      }
+
+      logger.log("Pending yield set. Proceeding with on-chain claim...");
+
+      // Step 2: Execute on-chain transaction
+      setClaimStep("Creating On-Chain Transaction...");
       const tx = await writeContractAsync({ args: [] });
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
+        setClaimStep("Waiting for Transaction Receipt...");
       } else {
         setAlertSeverity("error");
         setAlertMessage("No transaction response received.");
@@ -89,8 +124,8 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
       }
     } catch (err: any) {
       if (
-        err?.message.includes("User rejected") ||
-        err?.message.includes("User denied")
+        err?.message?.includes("User rejected") ||
+        err?.message?.includes("User denied")
       ) {
         setAlertSeverity("warning");
         setAlertMessage("User rejected transaction.");
@@ -108,42 +143,41 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
   useEffect(() => {
     if (isSuccess) {
       (async () => {
-        logger.log("Claim transaction completed successfully.");
-        setAlertSeverity("success");
-        setAlertMessage("Claim successful on-chain!");
-        setSnackbarOpen(true);
-        setTransactionHash(undefined);
+        logger.log("On-chain claim succeeded.");
+        setClaimStep("Transaction Confirmed! Finalizing Off-Chain...");
 
+        // Step 3: Finalize claim in DB
         try {
-          const response = await fetch("/api/user/claimYield", {
+          const response = await fetch("/api/user/rewards/claimYield", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
           });
           const apiData = await response.json();
           if (apiData.success) {
-            logger.log("Yield claimed via API:", apiData.totalYield);
+            logger.log("Yield claimed off-chain:", apiData.finalizedAmount);
+            setAlertSeverity("success");
+            setAlertMessage(`Yield claimed: ${apiData.finalizedAmount}`);
           } else {
-            logger.error("Yield claim API error:", apiData.error);
+            logger.error("Off-chain claim error:", apiData.error);
             setAlertSeverity("error");
-            setAlertMessage(apiData.error);
-            setSnackbarOpen(true);
+            setAlertMessage(apiData.error || "Error finalizing claim.");
           }
         } catch (apiErr) {
           logger.error("Error calling claimYield API:", apiErr);
           setAlertSeverity("error");
-          setAlertMessage("Failed to claim yield via API.");
-          setSnackbarOpen(true);
+          setAlertMessage("Failed to finalize yield claim.");
         }
 
-        const oldTotalPoints = userRewards?.totalPoints || 0;
-        await pollForClaimUpdate(oldTotalPoints);
+        setSnackbarOpen(true);
+        setTransactionHash(undefined);
+        await pollForClaimUpdate(userRewards?.totalPoints || 0);
         setIsClaiming(false);
         setShowClaimModal(false);
       })();
     }
 
     if (isError) {
-      logger.error("Claim transaction error:", error);
+      logger.error("Transaction failed or was rejected:", error);
       setAlertSeverity("error");
       setAlertMessage(error?.message || "Transaction failed.");
       setSnackbarOpen(true);
@@ -162,9 +196,11 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
     <>
       <Tooltip
         title={
-          Math.floor(liveUnclaimedPoints) < 5 ? "Minimum claim is 5 points" : ""
+          Math.floor(liveUnclaimedPoints) < 10
+            ? "Minimum claim is 10 points"
+            : ""
         }
-        disableHoverListener={Math.floor(liveUnclaimedPoints) >= 5}
+        disableHoverListener={Math.floor(liveUnclaimedPoints) >= 10}
       >
         <span>
           <Button
@@ -175,7 +211,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
                   src="/Icons/Resources/HoneyToken.png"
                   alt="HoneyToken"
                   width={20}
-                  height={20} // Explicitly set both width and height
+                  height={20}
                 />
               )
             }
@@ -186,7 +222,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               isClaiming ||
               isPending ||
               isTxnLoading ||
-              Math.floor(liveUnclaimedPoints) < 5
+              Math.floor(liveUnclaimedPoints) < 10
             }
             sx={{
               width: "100%",
@@ -218,11 +254,10 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
           {alertMessage}
         </Alert>
       </Snackbar>
+
       <TransactionInProgressModal
         open={showClaimModal}
-        title={`Claiming Yield: ${Math.floor(
-          liveUnclaimedPoints ?? 0
-        ).toLocaleString()} Honey Drops...`}
+        title={claimStep}
         onClose={() => setShowClaimModal(false)}
       />
     </>

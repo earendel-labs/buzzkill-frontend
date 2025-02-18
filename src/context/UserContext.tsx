@@ -143,6 +143,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // Live counter for the unclaimed yield (updates minute-by-minute)
   const [liveUnclaimedPoints, setLiveUnclaimedPoints] = useState<number>(0);
   const [onChainPoints, setOnChainPoints] = useState<number | null>(null);
+  const [pointsPerSecond, setPointsPerSecond] = useState(0);
 
   const hiveStakingAddress = process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as
     | `0x${string}`
@@ -329,92 +330,45 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [claimTimestamp, refetchRewardsData]);
 
-  // ----------------------
-  // Calculate Base Unclaimed Points and Initialize Live Counter
-  // Now includes claimTimestamp so that when a claim occurs,
-  // the base calculation is recalculated.
-  // ----------------------
-  // ----------------------
-  // Calculate Base Unclaimed Points and Initialize Live Counter
-  // Now includes claimTimestamp so that when a claim occurs,
-  // the base calculation is recalculated.
-  // ----------------------
-  useEffect(() => {
-    if (
-      stakedData &&
-      stakedData.stakedNFTs &&
-      stakedData.stakedNFTs.edges &&
-      rewardsData &&
-      rewardsData.users &&
-      rewardsData.users.edges.length > 0
-    ) {
-      const currentTime = Date.now() / 800;
-      let totalUnclaimed = 0;
-      stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
-        const nft = edge.node;
-        const lastClaimedAt = parseInt(nft.lastClaimedAt, 10);
-        const secondsElapsed = currentTime - lastClaimedAt;
-        const daysElapsed = secondsElapsed / 86400;
-        let rarityMultiplier = 1;
-        if (nft.tokenId.rarity === "Rare") {
-          rarityMultiplier = 1.2;
-        } else if (nft.tokenId.rarity === "Ultra-Rare") {
-          rarityMultiplier = 1.5;
-        }
-        totalUnclaimed += daysElapsed * 800 * rarityMultiplier;
-      });
-      const externalFlag = rewardsData.users.edges[0].node.hasExternalNFTFlag;
-      if (externalFlag) {
-        totalUnclaimed *= 1.2;
+  // --------------------------------------------------------
+  // SERVER-SIDE CALCULATION (Using getStakingData)
+  // --------------------------------------------------------
+  // 1. Fetch from your Next.js API once, store the result as the base
+  // 2. Increment the result locally
+  const fetchServerCalculatedRewards = useCallback(async () => {
+    if (!address) return;
+    try {
+      const res = await fetch(
+        `/api/user/rewards/getStakingData?address=${address}`
+      );
+      if (!res.ok) {
+        logger.error("Failed to fetch server staking data.");
+        return;
       }
-      setUserRewards((prevRewards) => {
-        if (prevRewards) {
-          return { ...prevRewards, unclaimedPoints: totalUnclaimed };
-        }
-        return {
-          id: "",
-          mintedCount: 0,
-          lastMintedTime: "",
-          stakingApproved: false,
-          totalPoints: 0,
-          claimedPoints: 0,
-          totalProduction: 0,
-          averageProduction: 0,
-          userRewardMultiplier: 0,
-          hasExternalNFTFlag: externalFlag,
-          unclaimedPoints: totalUnclaimed,
-        };
-      });
-      setLiveUnclaimedPoints(totalUnclaimed);
+      const data = await res.json();
+      logger.log("Server unclaimed base:", data.totalUnclaimed);
+      logger.log("Points per second:", data.pointsPerSecond);
+      setLiveUnclaimedPoints(data.totalUnclaimed || 0);
+      setPointsPerSecond(data.pointsPerSecond || 0);
+    } catch (err) {
+      logger.error("Error in fetchServerCalculatedRewards:", err);
     }
-  }, [stakedData, rewardsData, claimTimestamp]);
+  }, [address]);
 
-  // Live Update: Increment Unclaimed Points Minute-by-Minute.
+  // Call the fetch once on mount (or when connection changes)
   useEffect(() => {
-    let totalRatePerMinute = 0;
-    if (
-      stakedData &&
-      stakedData.stakedNFTs &&
-      stakedData.stakedNFTs.edges.length > 0
-    ) {
-      stakedData.stakedNFTs.edges.forEach((edge: StakedNFTEdge) => {
-        let rarityMultiplier = 1;
-        if (edge.node.tokenId.rarity === "Rare") {
-          rarityMultiplier = 1.2;
-        } else if (edge.node.tokenId.rarity === "Ultra-Rare") {
-          rarityMultiplier = 1.5;
-        }
-        totalRatePerMinute += (800 / 1440) * rarityMultiplier;
-      });
-      if (userRewards?.hasExternalNFTFlag) {
-        totalRatePerMinute = totalRatePerMinute * 1.2;
-      }
+    if (isConnected) {
+      fetchServerCalculatedRewards();
     }
+  }, [isConnected, fetchServerCalculatedRewards]);
+
+  // Timer: update live yield every second using the fetched rate
+  useEffect(() => {
     const interval = setInterval(() => {
-      setLiveUnclaimedPoints((prev) => prev + totalRatePerMinute);
-    }, 60000);
+      setLiveUnclaimedPoints((prev) => prev + pointsPerSecond);
+    }, 1000);
     return () => clearInterval(interval);
-  }, [stakedData, userRewards?.hasExternalNFTFlag]);
+  }, [pointsPerSecond]);
 
   // ----------------------
   // Polling for On-Chain Claim Update.

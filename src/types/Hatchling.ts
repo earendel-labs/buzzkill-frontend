@@ -12,4 +12,14 @@ export interface Hatchling {
   ownerAddress: string;
 }
 
-//
+// Interface matching the ABI struct
+export interface StakedNFT {
+  tokenId: number;
+  stakedAt: number;
+  environmentId: number;
+  hiveId: number;
+  lastClaimedAt: number;
+  owner: string;
+  rarity: string;
+  userMultiplier: number;
+}

@@ -51,13 +51,6 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
   const { userRewards, onChainPoints, liveUnclaimedPoints, stakedBees } =
     useUserContext();
 
-  console.log("Total Production Type:", typeof userRewards?.totalProduction);
-  console.log("Total Production Value:", userRewards?.totalProduction);
-  console.log(
-    "Formatted Output:",
-    formatNumber(userRewards?.totalProduction || 0)
-  );
-
   if (loadingProfile) {
     return (
       <Grid container spacing={3} marginBottom={6}>
