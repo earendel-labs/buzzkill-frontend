@@ -38,9 +38,9 @@
     },
     {
       "id": 6,
-      "name": "Volcanic",
+      "name": "Molten Ridge",
       "environmentType": "Volcanic",
-      "jsonUrl": "/Data/Maps/volcanic.json"
+      "jsonUrl": "/Data/Maps/Volcanic.json"
     }
   ]
 }

@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 const MoltenRidgeLayout: React.FC<LayoutProps> = ({ children }) => {
-  return <HivesProvider>{children}</HivesProvider>;
+  return <HivesProvider environmentId={6}>{children}</HivesProvider>;
 };
 
 export default MoltenRidgeLayout;

@@ -28,6 +28,7 @@ const MoltenRidge: React.FC = () => {
     hivesMap,
     resources, // Access non-Hive resources
     stakedNFTs,
+    filteredStakedNFTs,
     maxBeesMap,
     getHiveById,
     getStakedNFTsByHiveId,
@@ -40,7 +41,7 @@ const MoltenRidge: React.FC = () => {
 
   useEffect(() => {
     // For now, re-using the "Forest.wav" just as placeholder audio
-    const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
+    const audio = new Audio("/Audio/Soundtrack/MoltenRidge/Volcanic.mp3");
     audio.loop = true;
     audio.volume = 0.8;
     setMusic(audio);
@@ -71,7 +72,7 @@ const MoltenRidge: React.FC = () => {
       { common: number; rare: number; ultrarare: number; Total: number }
     >();
 
-    stakedNFTs.forEach((nft) => {
+    filteredStakedNFTs.forEach((nft) => {
       const hiveId = Number(nft.hiveId.hiveId);
       if (!countsMap.has(hiveId)) {
         countsMap.set(hiveId, { common: 0, rare: 0, ultrarare: 0, Total: 0 });
@@ -85,7 +86,7 @@ const MoltenRidge: React.FC = () => {
     });
 
     return countsMap;
-  }, [stakedNFTs]);
+  }, [filteredStakedNFTs]);
 
   // Compute hive hatchling info combining bee counts and max bees
   const hiveHatchlingData = useMemo(() => {
@@ -112,7 +113,7 @@ const MoltenRidge: React.FC = () => {
         status,
         location: hive.name,
         environment:
-          environments.find((env) => env.id === 2)?.name || "Unknown",
+          environments.find((env) => env.id === 6)?.name || "Unknown",
       });
     });
 
@@ -180,7 +181,7 @@ const MoltenRidge: React.FC = () => {
       <TopBar mapHeaderLabel="Molten Ridge" />
 
       {/* Dynamically Render CombinedHatchlingMarker (for Hives) */}
-      {/* {Array.from(hivesMap.values()).map((hive) => {
+      {Array.from(hivesMap.values()).map((hive) => {
         const hiveId = hive.hiveId;
         const hatchlingInfo = hiveHatchlingData.get(hiveId);
 
@@ -205,7 +206,7 @@ const MoltenRidge: React.FC = () => {
             secondaryButtonClick={() => navigate(hive.resourceLink)}
           />
         );
-      })} */}
+      })}
 
       {/* 
         Dynamically Render CombinedResourceMarker (non-Hive) 
@@ -236,3 +237,6 @@ const MoltenRidge: React.FC = () => {
 };
 
 export default MoltenRidge;
+
+
+ 
