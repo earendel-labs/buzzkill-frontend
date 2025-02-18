@@ -113,7 +113,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
       const tx = await writeContractAsync({ args: [] });
       if (tx) {
         setTransactionHash(tx as `0x${string}`);
-        setClaimStep("Waiting for Transaction Receipt...");
+        setClaimStep(`Yield claiming: ${liveUnclaimedPoints} Honey Drops`);
       } else {
         setAlertSeverity("error");
         setAlertMessage("No transaction response received.");

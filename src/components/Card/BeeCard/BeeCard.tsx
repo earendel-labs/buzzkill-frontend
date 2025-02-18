@@ -315,7 +315,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
         <TransactionInProgressModal
           open={showTxModal}
           onClose={() => setShowTxModal(false)}
-          title="Unstaking in Progress..."
+          title="Unstaking & Claiming NFT points in Progress..."
         />
 
         <ConfirmationModal
