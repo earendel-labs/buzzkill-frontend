@@ -105,7 +105,7 @@ const EmberglowHive: React.FC = () => {
   // MUSIC SETUP
   // -------------------------------------------------------------
   useEffect(() => {
-    const audio = new Audio("/Audio/Soundtrack/MoltenRidge/Volcanic.wav");
+    const audio = new Audio("/Audio/Soundtrack/MoltenRidge/Volcanic.mp3");
     audio.loop = true;
     audio.volume = 0.8;
     setMusic(audio);
