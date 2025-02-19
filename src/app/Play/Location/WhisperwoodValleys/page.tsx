@@ -122,7 +122,7 @@ const Forest: React.FC = () => {
 
   // Handle non-Hive resources
   const nonHiveResources = useMemo(() => {
-    return resources.filter((resource) => resource.type !== "Hive");
+    return resources.filter((resource) => resource.resourceType !== "Hive");
   }, [resources]);
 
   return (
@@ -209,10 +209,16 @@ const Forest: React.FC = () => {
 
       {/* Dynamically Render CombinedResourceMarker Components */}
       {nonHiveResources.map((resource) => {
-        const { type, id, position, resourceLink, contentValue } = resource;
+        const {
+          resourceType: resType,
+          id,
+          position,
+          resourceLink,
+          contentValue,
+        } = resource;
         const left = position.left;
         const top = position.top;
-        const resourceType = type as ResourceType; // Ensure ResourceType is correctly mapped
+        const castedResourceType = resType as ResourceType; // renamed to avoid duplicate
 
         // Validate fields
         if (!resourceLink || !contentValue) {
@@ -226,7 +232,7 @@ const Forest: React.FC = () => {
             left={left}
             top={top}
             link={resourceLink}
-            resourceType={resourceType}
+            resourceType={castedResourceType}
             contentValue={contentValue}
           />
         );

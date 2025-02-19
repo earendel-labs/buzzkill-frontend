@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 const WhisperwoodValleysLayout: React.FC<LayoutProps> = ({ children }) => {
-  return <HivesProvider>{children}</HivesProvider>;
+  return <HivesProvider environmentId={2}>{children}</HivesProvider>;
 };
 
 export default WhisperwoodValleysLayout;

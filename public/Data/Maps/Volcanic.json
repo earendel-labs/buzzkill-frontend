@@ -1,0 +1,99 @@
+{
+  "environment": {
+    "id": 6,
+    "name": "Molten Ridge",
+    "environmentType": "Volcanic",
+    "backgroundImage": "/Maps/Environments/Volcanic.jpg",
+    "audioFile": "/Audio/Soundtrack/MoltenRidge/Volcanic.mp3",
+    "resources": [
+      {
+        "resourceType": "Hive",
+        "id": 1,
+        "name": "Emberglow Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "9%", "top": "33%" },
+        "resourceLink": "/Play/Location/MoltenRidge/EmberglowHive",
+        "hiveId": 1
+      },
+      {
+        "resourceType": "Hive",
+        "id": 2,
+        "name": "Ashenspire Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "7%", "top": "43%" },
+        "resourceLink": "/Play/Location/MoltenRidge/AshenspireHive",
+        "hiveId": 2
+      },
+      {
+        "resourceType": "Hive",
+        "id": 3,
+        "name": "Furnace Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "19%", "top": "65%" },
+        "resourceLink": "/Play/Location/MoltenRidge/FurnaceHive",
+        "hiveId": 3
+      },
+      {
+        "resourceType": "Hive",
+        "id": 4,
+        "name": "Smolder Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "26%", "top": "63%" },
+        "resourceLink": "/Play/Location/MoltenRidge/SmolderHive",
+        "hiveId": 4
+      },
+      {
+        "resourceType": "Hive",
+        "id": 5,
+        "name": "Obsidian Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "42%", "top": "77%" },
+        "resourceLink": "/Play/Location/MoltenRidge/ObsidianHive",
+        "hiveId": 5
+      },
+      {
+        "resourceType": "Hive",
+        "id": 6,
+        "name": "Brimstone Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "85%", "top": "65%" },
+        "resourceLink": "/Play/Location/MoltenRidge/BrimstoneHive",
+        "hiveId": 6
+      },
+      {
+        "resourceType": "Hive",
+        "id": 7,
+        "name": "Inferno Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "85%", "top": "40%" },
+        "resourceLink": "/Play/Location/MoltenRidge/InfernoHive",
+        "hiveId": 7
+      },
+      {
+        "resourceType": "Hive",
+        "id": 8,
+        "name": "Lavaflow Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "73%", "top": "32%" },
+        "resourceLink": "/Play/Location/MoltenRidge/LavaflowHive",
+        "hiveId": 8
+      }
+    ]
+  }
+}

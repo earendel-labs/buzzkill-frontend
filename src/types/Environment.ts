@@ -1,5 +1,5 @@
 export interface Hive {
-  type: string;
+  resourceType: string;
   id: number;
   name: string;
   defenseValue: number;
@@ -14,7 +14,7 @@ export interface Hive {
 }
 
 export interface HiveHatchling {
-  type: string;
+  resourceType: string;
   id: number;
   name: string;
   environmentId: number;
@@ -30,20 +30,23 @@ export interface HiveHatchling {
 }
 
 export interface Environment {
-  [x: string]: any;
   id: number;
   name: string;
-  type: string;
-  backgroundImage: string;
-  audioFile: string;
+  environmentType: string;
+  jsonUrl: string;
+  environmentURL?: string;
+  backgroundImage?: string;
+  audioFile?: string;
+  MapMarker?: string;
+  MapMarkerHovered?: string;
+  MapMarkerPressed?: string;
   resources: (Hive | Resource)[];
 }
-
 export interface SpecificEnvironmentData {
   environment: {
     id: number;
     name: string;
-    type: string;
+    environmentType: string;
     backgroundImage: string;
     audioFile: string;
     resources: (Hive | Resource)[];
@@ -51,7 +54,7 @@ export interface SpecificEnvironmentData {
 }
 
 export interface Resource {
-  type: string;
+  resourceType: string;
   id: number;
   contentValue?: string;
   position: {

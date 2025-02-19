@@ -1,5 +1,3 @@
-// src/context/HivesContext.tsx
-
 "use client";
 
 import React, {
@@ -30,8 +28,11 @@ import { Abi } from "abitype";
 import { pollUntilCondition } from "@/utils/polling";
 import { logger } from "@/utils/logger";
 
+// --------------------------------------------------------------------------
+// 1) Define your context interface
+// --------------------------------------------------------------------------
 interface HivesState {
-  environments: Environment[];
+  environments: Environment[]; // the loaded environment(s)
   hivesMap: Map<number, HiveHatchling>;
   resources: Resource[];
   stakedNFTs: StakedNFT[];
@@ -52,6 +53,7 @@ interface HivesContextProps {
   hivesMap: Map<number, HiveHatchling>;
   resources: Resource[];
   stakedNFTs: StakedNFT[];
+  filteredStakedNFTs: StakedNFT[];
   maxBeesMap: Map<number, number>;
   getHiveById: (hiveId: number) => HiveHatchling | undefined;
   getStakedNFTsByHiveId: (hiveId: number) => StakedNFT[];
@@ -65,18 +67,9 @@ interface HivesContextProps {
   isRefreshing: boolean;
 }
 
-const HiveStakingABI = HiveStakingAbiJson as Abi;
-
-const HIVE_STAKING_ADDRESS =
-  (process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as `0x${string}`) ||
-  ("" as `0x${string}`);
-
-if (!HIVE_STAKING_ADDRESS) {
-  throw new Error(
-    "NEXT_PUBLIC_HIVE_STAKING_ADDRESS is not defined in the environment variables."
-  );
-}
-
+// --------------------------------------------------------------------------
+// 2) Create the context
+// --------------------------------------------------------------------------
 const HivesContext = createContext<HivesContextProps | undefined>(undefined);
 
 export const useHives = (): HivesContextProps => {
@@ -87,10 +80,28 @@ export const useHives = (): HivesContextProps => {
   return context;
 };
 
-interface HivesProviderProps {
-  children: ReactNode;
+const HiveStakingABI = HiveStakingAbiJson as Abi;
+const HIVE_STAKING_ADDRESS =
+  (process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS as `0x${string}`) ||
+  ("" as `0x${string}`);
+
+if (!HIVE_STAKING_ADDRESS) {
+  throw new Error(
+    "NEXT_PUBLIC_HIVE_STAKING_ADDRESS is not defined in the environment variables."
+  );
 }
 
+// --------------------------------------------------------------------------
+// 3) The Provider's Props (accept environmentId or environmentName, etc.)
+// --------------------------------------------------------------------------
+interface HivesProviderProps {
+  children: ReactNode;
+  environmentId: number; // or environmentName, depending on your approach
+}
+
+// --------------------------------------------------------------------------
+// 4) The reducer
+// --------------------------------------------------------------------------
 const hivesReducer = (state: HivesState, action: HivesAction): HivesState => {
   switch (action.type) {
     case "SET_ENVIRONMENTS":
@@ -110,7 +121,13 @@ const hivesReducer = (state: HivesState, action: HivesAction): HivesState => {
   }
 };
 
-export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
+// --------------------------------------------------------------------------
+// 5) The Provider
+// --------------------------------------------------------------------------
+export const HivesProvider: React.FC<HivesProviderProps> = ({
+  children,
+  environmentId, // passed in from the layout
+}) => {
   const [state, dispatch] = useReducer(hivesReducer, {
     environments: [],
     hivesMap: new Map(),
@@ -124,7 +141,10 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
   // Local state to hold combined staked NFTs across pages
   const [allStakedNFTs, setAllStakedNFTs] = useState<StakedNFT[]>([]);
 
-  // Apollo query with pagination
+  // We'll also track which single environment object we loaded
+  const [selectedEnvironment, setSelectedEnvironment] = useState<Environment>();
+
+  // 5.1) Apollo queries
   const {
     data,
     loading,
@@ -136,12 +156,14 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     variables: { after: null },
   });
 
+  // 5.2) read on-chain data
   const {
     data: maxBeesData,
     isLoading: maxBeesLoading,
     error: maxBeesError,
   } = useReadHiveStakingMaxBeesPerHive();
 
+  // We'll read production data for each hive
   const contracts = useMemo(() => {
     const hiveIds = Array.from(state.hivesMap.keys());
     logger.log("Preparing contracts for hives:", hiveIds);
@@ -149,7 +171,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
       address: HIVE_STAKING_ADDRESS,
       abi: HiveStakingABI,
       functionName: "getHiveProduction",
-      args: [2, hiveId],
+      args: [environmentId, hiveId],
     }));
   }, [state.hivesMap]);
 
@@ -160,7 +182,151 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     refetch: refetchProductionData,
   } = useReadContracts({ contracts });
 
-  // Function to gather all pages of staked NFTs
+  // ------------------------------------------------------------------------
+  // 6) Fetch environment JSON from environment.json => find the matched env
+  //    Then fetch the actual environment data (e.g. /Data/Maps/volcanic.json)
+  // ------------------------------------------------------------------------
+  useEffect(() => {
+    const fetchEnvData = async () => {
+      try {
+        // 1) load the array of environment definitions from environment.json
+        const envListRes = await fetch("/Data/environment.json");
+        if (!envListRes.ok) {
+          throw new Error(`Failed to load environment.json`);
+        }
+        const envListData = await envListRes.json();
+
+        // envListData should have an array like envListData.environments
+        const environmentsList: Environment[] = envListData.environments;
+        // find the environment matching the environmentId
+        const foundEnv = environmentsList.find(
+          (env) => env.id === environmentId
+        );
+        if (!foundEnv) {
+          logger.error(`No environment found for ID=${environmentId}`);
+          return;
+        }
+
+        // store this environment object (the "shallow" info from environment.json)
+        setSelectedEnvironment(foundEnv);
+
+        // 2) Now fetch the environment’s actual JSON data (like /Data/Maps/volcanic.json)
+        const specificEnvRes = await fetch(foundEnv.jsonUrl);
+        if (!specificEnvRes.ok) {
+          throw new Error(
+            `Failed to load environment details from ${foundEnv.jsonUrl}`
+          );
+        }
+        const fetchedData: SpecificEnvironmentData =
+          await specificEnvRes.json();
+
+        // Because the user might want to store the environment data in state
+        // (the original code uses dispatch to store in state.environments)
+        dispatch({
+          type: "SET_ENVIRONMENTS",
+          payload: [fetchedData.environment as Environment],
+        });
+      } catch (err) {
+        logger.error("Error in fetchEnvData:", err);
+      }
+    };
+
+    fetchEnvData();
+  }, [environmentId]);
+
+  useEffect(() => {
+    console.log("Environments array in the provider:", state.environments);
+  }, [state.environments]);
+  // ------------------------------------------------------------------------
+  // 7) Once we have environment data in state, gather hives / resources, etc.
+  // ------------------------------------------------------------------------
+  useEffect(() => {
+    const fetchAndCombineData = async () => {
+      try {
+        // If no environment data is loaded yet, skip
+        if (state.environments.length === 0) {
+          return;
+        }
+
+        const newHivesMap = new Map<number, HiveHatchling>();
+        const newResources: Resource[] = [];
+        let hiveCount = 0;
+
+        // We might only have 1 environment in state (the one we fetched),
+        // but let's do a forEach anyway, in case you expand later
+        state.environments.forEach((env) => {
+          env.resources?.forEach((resource) => {
+            if (resource.resourceType === "Hive") {
+              const hive = resource as HiveHatchling;
+              newHivesMap.set(hive.hiveId, hive);
+              hiveCount++;
+            } else {
+              newResources.push(resource as Resource);
+            }
+          });
+        });
+
+        logger.log(`Total hives: ${hiveCount}`);
+        logger.log("Hives map updated:", newHivesMap);
+        logger.log("Resources updated:", newResources);
+
+        dispatch({ type: "SET_HIVES_MAP", payload: newHivesMap });
+        dispatch({ type: "SET_RESOURCES", payload: newResources });
+
+        // Update maxBees per hive
+        if (!maxBeesLoading && maxBeesData) {
+          const maxBees = Number(maxBeesData);
+          if (!isNaN(maxBees)) {
+            const newMaxBeesMap = new Map<number, number>();
+            newHivesMap.forEach((_, hiveId) => {
+              newMaxBeesMap.set(hiveId, maxBees);
+              logger.log(`Max bees set for hive ID ${hiveId}: ${maxBees}`);
+            });
+            dispatch({ type: "SET_MAX_BEES_MAP", payload: newMaxBeesMap });
+          } else {
+            logger.error("Invalid maxBeees value:", maxBeesData);
+          }
+        }
+
+        // Update each hive's productivityValue
+        if (!productionLoading && productionData && productionData.length > 0) {
+          const updatedHivesMap = new Map<number, HiveHatchling>(newHivesMap);
+
+          productionData.forEach((result, index) => {
+            const hiveId = Array.from(newHivesMap.keys())[index];
+            if (result && !result.error && result.result) {
+              // result.result is [bigint, bigint], etc.
+              const [totalProduction] = result.result as [bigint, bigint];
+              const hive = updatedHivesMap.get(hiveId);
+              if (hive) {
+                updatedHivesMap.set(hiveId, {
+                  ...hive,
+                  productivityValue: Number(totalProduction),
+                });
+              }
+            }
+          });
+
+          dispatch({ type: "SET_HIVES_MAP", payload: updatedHivesMap });
+        }
+      } catch (err) {
+        logger.error("Error in combined data fetch:", err);
+      }
+    };
+
+    fetchAndCombineData();
+  }, [
+    state.environments,
+    maxBeesData,
+    maxBeesLoading,
+    productionData,
+    productionLoading,
+  ]);
+
+  // ------------------------------------------------------------------------
+  // 8) Gather all staked NFTs data
+  // ------------------------------------------------------------------------
+  // 8.1) recursively fetch edges from subquery
   const fetchAllEdges = async (
     cursor: string | null,
     existingEdges: StakedNFT[]
@@ -189,7 +355,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   };
 
-  // Load all staked NFTs when initial data arrives
+  // 8.2) load the data when initial subquery result arrives
   useEffect(() => {
     if (data && data.stakedNFTs && data.stakedNFTs.edges.length > 0) {
       const firstEdges = data.stakedNFTs.edges.map((e) => e.node);
@@ -203,7 +369,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   }, [data]);
 
-  // Store allStakedNFTs in our reducer once loaded
+  // 8.3) store in the reducer
   useEffect(() => {
     if (allStakedNFTs.length > 0) {
       dispatch({ type: "SET_STAKED_NFTS", payload: allStakedNFTs });
@@ -211,102 +377,26 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   }, [allStakedNFTs]);
 
-  // Load environment data, maxBees, production, etc.
-  useEffect(() => {
-    const fetchAndCombineData = async () => {
-      try {
-        // Load environment data if not yet loaded
-        if (state.environments.length === 0) {
-          const response = await fetch("/Data/Maps/Forest.json");
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const fetchedData: SpecificEnvironmentData = await response.json();
-          dispatch({
-            type: "SET_ENVIRONMENTS",
-            payload: [fetchedData.environment],
-          });
-        }
+  // ------------------------------------------------------------------------
+  // 9) Utility functions
+  // ------------------------------------------------------------------------
 
-        const newHivesMap = new Map<number, HiveHatchling>();
-        const newResources: Resource[] = [];
-        let hiveCount = 0;
+  // 1) Create a "filtered" stakedNFT array specifically for environmentId
+  const filteredStakedNFTs = useMemo(() => {
+    return state.stakedNFTs.filter(
+      (nft) => Number(nft.environmentId.environmentId) === environmentId
+    );
+  }, [state.stakedNFTs, environmentId]);
 
-        state.environments.forEach((env) => {
-          env.resources.forEach((resource) => {
-            if (resource.type === "Hive") {
-              const hive = resource as HiveHatchling;
-              newHivesMap.set(hive.hiveId, hive);
-              hiveCount++;
-            } else {
-              newResources.push(resource as Resource);
-            }
-          });
-        });
-
-        logger.log(`Total hives: ${hiveCount}`);
-        logger.log("Hives map updated:", newHivesMap);
-        logger.log("Resources updated:", newResources);
-
-        dispatch({ type: "SET_HIVES_MAP", payload: newHivesMap });
-        dispatch({ type: "SET_RESOURCES", payload: newResources });
-
-        // Update maxBees per hive
-        if (!maxBeesLoading && maxBeesData) {
-          const maxBees = Number(maxBeesData);
-          if (!isNaN(maxBees)) {
-            const newMaxBeesMap = new Map<number, number>();
-            newHivesMap.forEach((_, hiveId) => {
-              newMaxBeesMap.set(hiveId, maxBees);
-              logger.log(`Max bees set for hive ID ${hiveId}: ${maxBees}`);
-            });
-            dispatch({ type: "SET_MAX_BEES_MAP", payload: newMaxBeesMap });
-          } else {
-            logger.error("Invalid maxBees value:", maxBeesData);
-          }
-        }
-
-        // Update each hive's productivityValue
-        if (!productionLoading && productionData && productionData.length > 0) {
-          const updatedHivesMap = new Map<number, HiveHatchling>(newHivesMap);
-
-          productionData.forEach((result, index) => {
-            const hiveId = Array.from(newHivesMap.keys())[index];
-            if (result && !result.error && result.result) {
-              const [totalProduction] = result.result as [bigint, bigint];
-              const hive = updatedHivesMap.get(hiveId);
-              if (hive) {
-                updatedHivesMap.set(hiveId, {
-                  ...hive,
-                  productivityValue: Number(totalProduction),
-                });
-              }
-            }
-          });
-
-          dispatch({ type: "SET_HIVES_MAP", payload: updatedHivesMap });
-        }
-      } catch (err) {
-        logger.error("Error in combined data fetch:", err);
-      }
-    };
-
-    fetchAndCombineData();
-  }, [
-    state.environments,
-    maxBeesData,
-    maxBeesLoading,
-    productionData,
-    productionLoading,
-  ]);
-
+  // 2) Update your getStakedNFTsByHiveId to use the filtered list
   const getStakedNFTsByHiveId = useCallback(
     (hiveId: number): StakedNFT[] => {
-      return state.stakedNFTs.filter(
+      // Now we only look at staked NFTs that match *this environment*.
+      return filteredStakedNFTs.filter(
         (nft) => Number(nft.hiveId.hiveId) === hiveId
       );
     },
-    [state.stakedNFTs]
+    [filteredStakedNFTs]
   );
 
   const getHiveById = (hiveId: number): HiveHatchling | undefined => {
@@ -317,7 +407,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     return state.maxBeesMap.get(hiveId);
   };
 
-  // Refresh data and poll until subquery is updated
+  // 9.1) Refresh data and poll subquery
   const refreshHiveData = async (
     affectedBeeId?: number,
     action?: "stake" | "unstake"
@@ -380,6 +470,9 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
     }
   };
 
+  // ------------------------------------------------------------------------
+  // 10) Gather final context value
+  // ------------------------------------------------------------------------
   const contextValue = useMemo(
     () => ({
       environments: state.environments,
@@ -393,6 +486,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
       loading: loading || maxBeesLoading || productionLoading,
       error: error || null,
       refreshHiveData,
+      filteredStakedNFTs,
       isRefreshing: state.isRefreshing,
     }),
     [
@@ -405,6 +499,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({ children }) => {
       maxBeesLoading,
       productionLoading,
       error,
+      filteredStakedNFTs,
       refreshHiveData,
       getHiveById,
       getStakedNFTsByHiveId,

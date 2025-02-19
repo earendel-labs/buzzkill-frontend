@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
+
 import Layout from "@/components/Layouts/Layout/Layout";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { useProfileContext } from "@/context/ProfileContext";

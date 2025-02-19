@@ -1,4 +1,3 @@
-// src/context/EnvironmentContext.tsx
 "use client";
 
 import React, {
@@ -8,6 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from "react";
+import { usePathname } from "next/navigation"; // For domain/path detection
 import {
   EnvironmentsData,
   Environment,
@@ -16,9 +16,11 @@ import {
 } from "@/types/Environment";
 import { logger } from "@/utils/logger";
 
+// The shape of the data we provide to children
 interface EnvironmentContextProps {
   environments: Environment[];
   hivesMap: Map<number, Map<number, Hive>>;
+  currentEnvironment?: Environment;
   getEnvironmentById: (id: number) => Environment | undefined;
   getHiveById: (environmentId: number, hiveId: number) => Hive | undefined;
 }
@@ -27,6 +29,7 @@ const EnvironmentContext = createContext<EnvironmentContextProps | undefined>(
   undefined
 );
 
+// Hook to easily get environment data
 export const useEnvironment = (): EnvironmentContextProps => {
   const context = useContext(EnvironmentContext);
   if (!context) {
@@ -49,25 +52,34 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     new Map()
   );
 
-  // Helper function to check if cached data is valid
-  const isCacheValid = (timestamp: number, maxAge: number = 3600000) => {
-    // default 1 hour
-    return Date.now() - timestamp < maxAge;
-  };
+  // The environment determined by matching the current URL path
+  const [currentEnvironment, setCurrentEnvironment] = useState<
+    Environment | undefined
+  >(undefined);
 
-  // Fetch environments.json with caching
+  // Next.js 13+ API to get the route path, ignoring domain
+  const pathname = usePathname();
+
+  // Helper to see if cache is still valid (default 1 hour)
+  const isCacheValid = (timestamp: number, maxAge: number = 3600000) =>
+    Date.now() - timestamp < maxAge;
+
+  // Fetch our environment.json from /Data/environment.json with localStorage caching
   useEffect(() => {
     const cachedEnv = localStorage.getItem("environments");
     const cachedEnvTimestamp = localStorage.getItem("environments_timestamp");
+
     if (
       cachedEnv &&
       cachedEnvTimestamp &&
       isCacheValid(Number(cachedEnvTimestamp))
     ) {
+      // Use cached data
       const data: EnvironmentsData = JSON.parse(cachedEnv);
       setEnvironments(data.environments);
       logger.log("Loaded environments from cache:", data.environments);
     } else {
+      // Fetch fresh data
       const fetchEnvironments = async () => {
         try {
           const response = await fetch("/Data/environment.json");
@@ -76,18 +88,22 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
           }
           const data: EnvironmentsData = await response.json();
           setEnvironments(data.environments);
+
+          // Store in localStorage for caching
           localStorage.setItem("environments", JSON.stringify(data));
           localStorage.setItem("environments_timestamp", Date.now().toString());
+
           logger.log("Fetched and cached environments:", data.environments);
         } catch (error) {
           logger.error("Failed to fetch environments data:", error);
         }
       };
+
       fetchEnvironments();
     }
   }, []);
 
-  // Fetch specific environment data with caching
+  // Fetch environment-specific data (resources, etc.), also with caching
   useEffect(() => {
     const fetchSpecificEnvironments = async () => {
       const newHivesMap = new Map<number, Map<number, Hive>>();
@@ -99,47 +115,56 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
           const cachedEnvTimestamp = localStorage.getItem(
             `${cacheKey}_timestamp`
           );
+
           if (
             cachedEnv &&
             cachedEnvTimestamp &&
             isCacheValid(Number(cachedEnvTimestamp))
           ) {
+            // Use cached environment data
             const data: SpecificEnvironmentData = JSON.parse(cachedEnv);
-            data.environment.resources.forEach((resource) => {
-              if (resource.type === "Hive") {
-                const hive = resource as Hive;
-                if (!newHivesMap.has(env.id)) {
-                  newHivesMap.set(env.id, new Map());
+
+            if (data.environment.resources) {
+              data.environment.resources.forEach((resource) => {
+                if (resource.resourceType === "Hive") {
+                  const hive = resource as Hive;
+                  if (!newHivesMap.has(env.id)) {
+                    newHivesMap.set(env.id, new Map());
+                  }
+                  newHivesMap.get(env.id)!.set(hive.hiveId, hive);
+
+                  logger.log(
+                    `Loaded Hive from cache: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
+                  );
                 }
-                newHivesMap.get(env.id)!.set(hive.hiveId, hive);
-                logger.log(
-                  `Loaded Hive from cache: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
-                );
-              }
-            });
+              });
+            }
           } else {
+            // Fetch fresh environment-specific data
             try {
+              if (!env.jsonUrl) return; // skip if no jsonUrl
               const response = await fetch(env.jsonUrl);
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
               const data: SpecificEnvironmentData = await response.json();
 
-              data.environment.resources.forEach((resource) => {
-                if (resource.type === "Hive") {
-                  const hive = resource as Hive;
-
-                  if (!newHivesMap.has(env.id)) {
-                    newHivesMap.set(env.id, new Map());
+              if (data.environment.resources) {
+                data.environment.resources.forEach((resource) => {
+                  if (resource.resourceType === "Hive") {
+                    const hive = resource as Hive;
+                    if (!newHivesMap.has(env.id)) {
+                      newHivesMap.set(env.id, new Map());
+                    }
+                    newHivesMap.get(env.id)!.set(hive.hiveId, hive);
+                    logger.log(
+                      `Fetched and cached Hive: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
+                    );
                   }
+                });
+              }
 
-                  newHivesMap.get(env.id)!.set(hive.hiveId, hive);
-                  logger.log(
-                    `Fetched and cached Hive: ${hive.name} (hiveId: ${hive.hiveId}) to Environment ID: ${env.id}`
-                  );
-                }
-              });
-
+              // Cache
               localStorage.setItem(cacheKey, JSON.stringify(data));
               localStorage.setItem(
                 `${cacheKey}_timestamp`,
@@ -155,6 +180,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
         })
       );
 
+      // After all environments are fetched/cached, update state
       setHivesMap(newHivesMap);
       logger.log("HivesMap populated:", newHivesMap);
     };
@@ -164,6 +190,53 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     }
   }, [environments]);
 
+  // Each time `pathname` or `environments` changes, figure out which environment is current
+  useEffect(() => {
+    if (!pathname || environments.length === 0) {
+      console.log("Either no pathname or environments empty", {
+        pathname,
+        environmentsLength: environments.length,
+      });
+      setCurrentEnvironment(undefined);
+      return;
+    }
+
+    console.log("Current pathname:", pathname);
+
+    const matchedEnv = environments.find((env) => {
+      console.log(
+        "Checking environment:",
+        env.name,
+        "with environmentURL:",
+        env.environmentURL
+      );
+
+      if (!env.environmentURL) {
+        console.log(`Skipping ${env.name} because environmentURL is empty.`);
+        return false;
+      }
+
+      const doesMatch = pathname.startsWith(env.environmentURL);
+      console.log(
+        `Does pathname "${pathname}" start with "${env.environmentURL}"?`,
+        doesMatch
+      );
+
+      return doesMatch;
+    });
+
+    if (!matchedEnv) {
+      console.log("No matching environment found for pathname:", pathname);
+    } else {
+      console.log("Matched environment:", matchedEnv.name);
+    }
+
+    setCurrentEnvironment(matchedEnv);
+  }, [pathname, environments]);
+
+  console.log("environments", environments);
+  console.log("CurrentEnvironment", currentEnvironment);
+  // Utility functions
   const getEnvironmentById = (id: number): Environment | undefined => {
     return environments.find((env) => env.id === id);
   };
@@ -184,6 +257,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
       value={{
         environments,
         hivesMap,
+        currentEnvironment,
         getEnvironmentById,
         getHiveById,
       }}
