@@ -211,24 +211,37 @@ const MoltenRidge: React.FC = () => {
       {/* 
         Dynamically Render CombinedResourceMarker (non-Hive) 
         ==> COMMENTED OUT FOR NOW:
-      
+        
         {nonHiveResources.map((resource) => {
-          const { type, id, position, resourceLink, contentValue } = resource;
+          const {
+            resourceType: resType,
+            id,
+            position,
+            resourceLink,
+            contentValue,
+          } = resource;
+          const left = position.left;
+          const top = position.top;
+          const castedResourceType = resType as ResourceType; // renamed to avoid duplicate
+
+          // Validate fields
           if (!resourceLink || !contentValue) {
             logger.warn(`Resource ID: ${id} is missing link or contentValue.`);
             return null;
           }
+
           return (
             <CombinedResourceMarker
               key={id}
-              left={position.left}
-              top={position.top}
+              left={left}
+              top={top}
               link={resourceLink}
-              resourceType={type as ResourceType}
+              resourceType={castedResourceType}
               contentValue={contentValue}
             />
           );
         })}
+
       */}
 
       <BottomBar />
@@ -237,6 +250,3 @@ const MoltenRidge: React.FC = () => {
 };
 
 export default MoltenRidge;
-
-
- 
