@@ -13,7 +13,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "8%", "top": "34%" },
+        "position": { "left": "9%", "top": "33%" },
         "resourceLink": "/Play/Location/MoltenRidge/EmberglowHive",
         "hiveId": 1
       },
@@ -24,7 +24,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "6%", "top": "42%" },
+        "position": { "left": "7%", "top": "43%" },
         "resourceLink": "/Play/Location/MoltenRidge/AshenspireHive",
         "hiveId": 2
       },
@@ -35,7 +35,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "20%", "top": "64%" },
+        "position": { "left": "19%", "top": "65%" },
         "resourceLink": "/Play/Location/MoltenRidge/FurnaceHive",
         "hiveId": 3
       },
@@ -46,7 +46,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "26%", "top": "62%" },
+        "position": { "left": "26%", "top": "63%" },
         "resourceLink": "/Play/Location/MoltenRidge/SmolderHive",
         "hiveId": 4
       },
@@ -57,7 +57,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "42%", "top": "76%" },
+        "position": { "left": "42%", "top": "77%" },
         "resourceLink": "/Play/Location/MoltenRidge/ObsidianHive",
         "hiveId": 5
       },
@@ -68,7 +68,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "86%", "top": "64%" },
+        "position": { "left": "85%", "top": "65%" },
         "resourceLink": "/Play/Location/MoltenRidge/BrimstoneHive",
         "hiveId": 6
       },
@@ -79,7 +79,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "86%", "top": "39%" },
+        "position": { "left": "85%", "top": "40%" },
         "resourceLink": "/Play/Location/MoltenRidge/InfernoHive",
         "hiveId": 7
       },
@@ -90,7 +90,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "73%", "top": "33%" },
+        "position": { "left": "73%", "top": "32%" },
         "resourceLink": "/Play/Location/MoltenRidge/LavaflowHive",
         "hiveId": 8
       }
