@@ -123,7 +123,7 @@ const MoltenRidge: React.FC = () => {
   // Handle non-Hive resources
   // (Currently commented out because we're not ready for non-hive resources in Molten Ridge)
   const nonHiveResources = useMemo(() => {
-    return resources.filter((resource) => resource.type !== "Hive");
+    return resources.filter((resource) => resource.resourceType !== "Hive");
   }, [resources]);
 
   return (
