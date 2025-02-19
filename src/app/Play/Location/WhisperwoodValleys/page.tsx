@@ -30,6 +30,7 @@ const Forest: React.FC = () => {
     hivesMap,
     resources, // Access non-Hive resources
     stakedNFTs,
+    filteredStakedNFTs,
     maxBeesMap,
     getHiveById,
     getStakedNFTsByHiveId,
@@ -72,7 +73,7 @@ const Forest: React.FC = () => {
       { common: number; rare: number; ultrarare: number; Total: number }
     >();
 
-    stakedNFTs.forEach((nft) => {
+    filteredStakedNFTs.forEach((nft) => {
       const hiveId = Number(nft.hiveId.hiveId);
       if (!countsMap.has(hiveId)) {
         countsMap.set(hiveId, { common: 0, rare: 0, ultrarare: 0, Total: 0 });
@@ -86,7 +87,7 @@ const Forest: React.FC = () => {
     });
 
     return countsMap;
-  }, [stakedNFTs]);
+  }, [filteredStakedNFTs]);
 
   // Compute hive hatchling info combining bee counts and max bees
   const hiveHatchlingData = useMemo(() => {
