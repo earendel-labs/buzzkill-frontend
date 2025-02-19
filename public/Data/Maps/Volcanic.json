@@ -62,7 +62,7 @@
         "hiveId": 5
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 6,
         "name": "Brimstone Hive",
         "productivityValue": 24,
@@ -73,7 +73,7 @@
         "hiveId": 6
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 7,
         "name": "Inferno Hive",
         "productivityValue": 24,
@@ -84,7 +84,7 @@
         "hiveId": 7
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 8,
         "name": "Lavaflow Hive",
         "productivityValue": 24,
