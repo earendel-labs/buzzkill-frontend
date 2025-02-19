@@ -126,7 +126,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
 
             if (data.environment.resources) {
               data.environment.resources.forEach((resource) => {
-                if (resource.type === "Hive") {
+                if (resource.resourceType === "Hive") {
                   const hive = resource as Hive;
                   if (!newHivesMap.has(env.id)) {
                     newHivesMap.set(env.id, new Map());
@@ -151,7 +151,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
 
               if (data.environment.resources) {
                 data.environment.resources.forEach((resource) => {
-                  if (resource.type === "Hive") {
+                  if (resource.resourceType === "Hive") {
                     const hive = resource as Hive;
                     if (!newHivesMap.has(env.id)) {
                       newHivesMap.set(env.id, new Map());

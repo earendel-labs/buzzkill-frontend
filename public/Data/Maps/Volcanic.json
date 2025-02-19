@@ -2,12 +2,12 @@
   "environment": {
     "id": 6,
     "name": "Molten Ridge",
-    "type": "Volcanic",
+    "environmentType": "Volcanic",
     "backgroundImage": "/Maps/Environments/Volcanic.jpg",
     "audioFile": "/Audio/Soundtrack/MoltenRidge/Volcanic.mp3",
     "resources": [
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 1,
         "name": "Emberglow Hive",
         "productivityValue": 24,
@@ -18,7 +18,7 @@
         "hiveId": 1
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 2,
         "name": "Ashenspire Hive",
         "productivityValue": 24,
@@ -29,7 +29,7 @@
         "hiveId": 2
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 3,
         "name": "Furnace Hive",
         "productivityValue": 24,
@@ -40,7 +40,7 @@
         "hiveId": 3
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 4,
         "name": "Smolder Hive",
         "productivityValue": 24,
@@ -51,7 +51,7 @@
         "hiveId": 4
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 5,
         "name": "Obsidian Hive",
         "productivityValue": 24,

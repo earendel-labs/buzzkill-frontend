@@ -2,12 +2,12 @@
   "environment": {
     "id": 2,
     "name": "Whisperwood Valleys",
-    "type": "Forest",
+    "environmentType": "Forest",
     "backgroundImage": "/Maps/Environments/Forest.jpg",
     "audioFile": "/Audio/Soundtrack/WhisperwoodValleys/Forest.wav",
     "resources": [
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 1,
         "name": "Cedar Hive",
         "productivityValue": 24,
@@ -18,7 +18,7 @@
         "hiveId": 1
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 2,
         "name": "Black Forest Hive",
         "productivityValue": 21,
@@ -29,7 +29,7 @@
         "hiveId": 2
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 3,
         "name": "Thornroot Hive",
         "productivityValue": 21,
@@ -40,7 +40,7 @@
         "hiveId": 3
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 4,
         "name": "Amberglass Hive",
         "productivityValue": 21,
@@ -51,7 +51,7 @@
         "hiveId": 4
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 5,
         "name": "Bramble Hive",
         "productivityValue": 21,
@@ -62,7 +62,7 @@
         "hiveId": 5
       },
       {
-        "type": "Hive",
+        "resourceType": "Hive",
         "id": 6,
         "name": "Sequoia Hive",
         "productivityValue": 13,

@@ -224,7 +224,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({
         // (the original code uses dispatch to store in state.environments)
         dispatch({
           type: "SET_ENVIRONMENTS",
-          payload: [fetchedData.environment],
+          payload: [fetchedData.environment as Environment],
         });
       } catch (err) {
         logger.error("Error in fetchEnvData:", err);
@@ -255,8 +255,8 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({
         // We might only have 1 environment in state (the one we fetched),
         // but let's do a forEach anyway, in case you expand later
         state.environments.forEach((env) => {
-          env.resources.forEach((resource) => {
-            if (resource.type === "Hive") {
+          env.resources?.forEach((resource) => {
+            if (resource.resourceType === "Hive") {
               const hive = resource as HiveHatchling;
               newHivesMap.set(hive.hiveId, hive);
               hiveCount++;
