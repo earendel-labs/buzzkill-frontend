@@ -92,7 +92,7 @@ const FurnaceHive: React.FC = () => {
   } = useWaitForTransactionReceipt({ hash: transactionHash });
 
   const environmentId = "6";
-  const hiveId = "1";
+  const hiveId = "3";
   const environmentIdNumber = Number(environmentId);
   const hiveIdNumber = Number(hiveId);
 

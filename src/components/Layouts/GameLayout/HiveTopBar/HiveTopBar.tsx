@@ -4,12 +4,15 @@ import LocationHeader from "@/components/MapNavigation/LocationHeader/LocationHe
 import WorldMapButton from "@/components/MapNavigation/WorldMapButton/WorldMapButton";
 import UserResourceBar from "@/components/User/UserResources/UserResourcesHatchlings";
 import HiveMapButton from "@/components/MapNavigation/HiveMapButton/HiveMapButton";
+import { useEnvironment } from "@/context/EnvironmentContext";
 
 interface HiveTopBarProps {
   mapHeaderLabel: string;
 }
 
 const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
+  const { currentEnvironment } = useEnvironment();
+  // console.log("currentEnvironment", currentEnvironment);
   return (
     <Box
       sx={{
@@ -75,7 +78,9 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           flex: 1,
         }}
       >
-        <HiveMapButton />
+        <HiveMapButton
+          environmentType={currentEnvironment?.environmentType || "Forest"}
+        />
         <WorldMapButton />
       </Box>
     </Box>

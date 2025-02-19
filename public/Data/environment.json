@@ -1,46 +1,88 @@
 {
   "environments": [
     {
-      "id": 0,
-      "name": "Beach",
-      "environmentType": "Coastal",
-      "jsonUrl": "/Data/Maps/beach.json"
-    },
-    {
       "id": 1,
       "name": "Desert",
       "environmentType": "Arid",
-      "jsonUrl": "/Data/Maps/desert.json"
+      "jsonUrl": "/Data/Maps/desert.json",
+      "environmentURL": "",
+      "backgroundImage": "",
+      "audioFile": "",
+      "MapMarker": "",
+      "MapMarkerHovered": "",
+      "MapMarkerPressed": ""
     },
     {
       "id": 2,
       "name": "Whisperwood Valleys",
       "environmentType": "Forest",
-      "jsonUrl": "/Data/Maps/Forest.json"
+      "jsonUrl": "/Data/Maps/Forest.json",
+      "environmentURL": "/Play/Location/WhisperwoodValleys",
+      "backgroundImage": "/Maps/Environments/Forest.jpg",
+      "audioFile": "/Audio/Soundtrack/WhisperwoodValleys/Forest.wav",
+      "MapMarker": "/MapNavigation/Forest/ForestMapMarker.png",
+      "MapMarkerHovered": "/MapNavigation/Forest/ForestMapMarkerHovered.png",
+      "MapMarkerPressed": "/MapNavigation/Forest/ForestMapMarkerPressed.png"
     },
     {
       "id": 3,
       "name": "Oceanic",
       "environmentType": "Aquatic",
-      "jsonUrl": "/Data/Maps/oceanic.json"
+      "jsonUrl": "/Data/Maps/oceanic.json",
+      "environmentURL": "",
+      "backgroundImage": "",
+      "audioFile": "",
+      "MapMarker": "",
+      "MapMarkerHovered": "",
+      "MapMarkerPressed": ""
     },
     {
       "id": 4,
       "name": "Snow",
       "environmentType": "Tundra",
-      "jsonUrl": "/Data/Maps/snow.json"
+      "jsonUrl": "/Data/Maps/snow.json",
+      "environmentURL": "",
+      "backgroundImage": "",
+      "audioFile": "",
+      "MapMarker": "",
+      "MapMarkerHovered": "",
+      "MapMarkerPressed": ""
     },
     {
       "id": 5,
       "name": "Spires",
       "environmentType": "Mountainous",
-      "jsonUrl": "/Data/Maps/spires.json"
+      "jsonUrl": "/Data/Maps/spires.json",
+      "environmentURL": "",
+      "backgroundImage": "",
+      "audioFile": "",
+      "MapMarker": "",
+      "MapMarkerHovered": "",
+      "MapMarkerPressed": ""
     },
     {
       "id": 6,
       "name": "Molten Ridge",
       "environmentType": "Volcanic",
-      "jsonUrl": "/Data/Maps/Volcanic.json"
+      "jsonUrl": "/Data/Maps/Volcanic.json",
+      "environmentURL": "/Play/Location/MoltenRidge/",
+      "backgroundImage": "/Maps/Environments/Volcanic.jpg",
+      "audioFile": "/Audio/Soundtrack/MoltenRidge/Volcanic.mp3",
+      "MapMarker": "/MapNavigation/Volcanic/VolcanicMapMarker.png",
+      "MapMarkerHovered": "/MapNavigation/Volcanic/VolcanicMapMarkerHovered.png",
+      "MapMarkerPressed": "/MapNavigation/Volcanic/VolcanicMapMarkerPressed.png"
+    },
+    {
+      "id": 7,
+      "name": "Beach",
+      "environmentType": "Coastal",
+      "jsonUrl": "/Data/Maps/beach.json",
+      "environmentURL": "",
+      "backgroundImage": "",
+      "audioFile": "",
+      "MapMarker": "",
+      "MapMarkerHovered": "",
+      "MapMarkerPressed": ""
     }
   ]
 }

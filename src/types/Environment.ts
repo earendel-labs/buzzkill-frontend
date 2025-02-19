@@ -30,15 +30,18 @@ export interface HiveHatchling {
 }
 
 export interface Environment {
-  [x: string]: any;
   id: number;
   name: string;
-  type: string;
-  backgroundImage: string;
-  audioFile: string;
-  resources: (Hive | Resource)[];
+  environmentType: string;
+  jsonUrl: string;
+  environmentURL?: string;
+  backgroundImage?: string;
+  audioFile?: string;
+  MapMarker?: string;
+  MapMarkerHovered?: string;
+  MapMarkerPressed?: string;
+  resources?: (Hive | Resource)[];
 }
-
 export interface SpecificEnvironmentData {
   environment: {
     id: number;
