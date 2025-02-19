@@ -147,9 +147,9 @@ const HatchlingInfoPanel: React.FC = () => {
         width: isExpanded
           ? "800px"
           : {
-              xs: "100%",
+              xs: "190px",
               md: "190px",
-              xl: "430px",
+              xl: "190px",
             },
         height: isExpanded
           ? {
@@ -349,7 +349,8 @@ const HatchlingInfoPanel: React.FC = () => {
         {selectedTab === "leaderboard" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
             <Typography sx={{ marginBottom: "1rem" }}>
-              Claim your points and view your spot on the leaderboard. Checkout the{" "}
+              Claim your points and view your spot on the leaderboard. Checkout
+              the{" "}
               <Link
                 href="/HoneyDrops"
                 style={{
@@ -357,7 +358,7 @@ const HatchlingInfoPanel: React.FC = () => {
                   fontWeight: "bold",
                 }}
               >
-                full leaderboard.  
+                full leaderboard.
               </Link>
             </Typography>
             <MiniLeaderboard />
