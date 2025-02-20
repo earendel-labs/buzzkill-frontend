@@ -164,7 +164,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
               md: "repeat(3, 1fr)",
               lg: "repeat(3, 1fr)",
               xl: "repeat(3, 1fr)",
-              xxl: "repeat(5, 1fr)",
+              xxl: "repeat(4, 1fr)",
             },
             justifyItems: "center",
             gap: "1.5em",

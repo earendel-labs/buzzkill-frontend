@@ -299,7 +299,7 @@ const HatchlingInfoPanel: React.FC = () => {
                         color: "inherit",
                       }}
                     >
-                      Whisperwood Valley (180 spots - open)
+                      Whisperwood Valley (186 spots - open)
                     </Link>
                   }
                   primaryTypographyProps={{
@@ -317,11 +317,21 @@ const HatchlingInfoPanel: React.FC = () => {
                 }}
               >
                 <ListItemText
-                  primary="Molten Ridge (closed - opening next)"
+                  primary={
+                    <Link
+                      href="/Play/Location/WhisperwoodValleys"
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                      }}
+                    >
+                      Molten Ridge (248 spots - open)
+                    </Link>
+                  }
                   primaryTypographyProps={{
                     sx: {
                       fontWeight: "bold",
-                      color: (theme) => theme.palette.Orange.light,
+                      color: (theme) => theme.palette.Gold.main,
                     },
                   }}
                 />
