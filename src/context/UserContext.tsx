@@ -111,6 +111,7 @@ interface UserContextType {
   ) => Promise<void>;
   pollForClaimUpdate: (oldTotalPoints: number) => Promise<void>;
   checkAndPromptApproval: () => Promise<boolean>;
+  fetchServerCalculatedRewards: () => Promise<void>;
   stakeBee: (beeId: number, environmentID: string, hiveID: string) => void;
   unstakeBee: (beeId: number) => void;
   isRefreshing: boolean;
@@ -771,6 +772,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         balance: balanceData?.formatted ?? null,
         approvalForStaking,
         checkAndPromptApproval,
+        fetchServerCalculatedRewards,
         refreshBeesData,
         pollForClaimUpdate,
         stakeBee,

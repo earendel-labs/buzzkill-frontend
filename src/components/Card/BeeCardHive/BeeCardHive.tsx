@@ -21,6 +21,7 @@ import { useTheme } from "@mui/material/styles";
 import Person from "@mui/icons-material/Person";
 import { useSound } from "@/context/SoundContext";
 import { RARITY_VALUES } from "@/constants/rarity";
+
 export interface BeeCardHiveProps {
   bee: Hatchling;
   onPlayClick?: () => void;
@@ -72,7 +73,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   additionalInfo = {},
   onUnstakeLoadingChange,
 }) => {
-  const { refreshBeesData } = useUserContext();
+  const { refreshBeesData, fetchServerCalculatedRewards } = useUserContext();
   const { refreshHiveData } = useHives();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const theme = useTheme();
@@ -97,7 +98,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
 
   const router = useRouter();
   const rarityValue = RARITY_VALUES[bee.rarity ?? "Commonn"];
-  // Sound management
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [buttonClickSound, setButtonClickSound] =
@@ -112,7 +112,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
 
   const handleHover = () => {
     if (!isMuted && hoverSound) {
-      hoverSound.currentTime = 0; // Ensure the sound starts fresh each time
+      hoverSound.currentTime = 0;
       hoverSound.play();
     }
   };
@@ -120,9 +120,8 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
   const handleUnstakeClick = () => {
     if (!isMuted && buttonClickSound) {
       buttonClickSound.currentTime = 0;
-      buttonClickSound.play(); // Play the button click sound on button press
+      buttonClickSound.play();
     }
-
     if (bee.id !== undefined && environment && hive) {
       setConfirmModalOpen(true);
     } else {
@@ -197,6 +196,22 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
       setSnackbarOpen(true);
       setTransactionHash(undefined);
 
+      (async () => {
+        try {
+          const res = await fetch("/api/user/rewards/claimUnstakingYield", {
+            method: "POST",
+          });
+          const data = await res.json();
+          if (data.success) {
+            logger.log("Unstaking yield claimed successfully", data);
+          } else {
+            logger.error("Failed to claim unstaking yield", data);
+          }
+        } catch (err) {
+          logger.error("Error claiming unstaking yield", err);
+        }
+      })();
+      fetchServerCalculatedRewards();
       if (bee.id && variant === "default") {
         logger.log(`Refreshing hive data for bee #${bee.id}, unstake action.`);
         refreshHiveData(bee.id, "unstake")
@@ -227,6 +242,9 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           });
       }
 
+      // Update user points and unclaimed rewards after unstake
+      fetchServerCalculatedRewards();
+
       setShowTxModal(false);
     }
 
@@ -256,6 +274,7 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
     refreshHiveData,
     refreshBeesData,
     onUnstakeLoadingChange,
+    fetchServerCalculatedRewards,
   ]);
 
   const handleCancelUnstake = () => {
@@ -306,8 +325,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
           >
             Hatchling ID: {bee.id}
           </Typography>
-
-          {/* Hathling production */}
           <Box
             sx={{
               display: "flex",
@@ -316,7 +333,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
               marginLeft: 1,
             }}
           >
-            {/* Rarity Value Typography */}
             <Stack alignItems="center" direction="row" gap={0.5}>
               <Typography
                 variant="h6"
@@ -328,20 +344,17 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
                 {rarityValue}
               </Typography>
             </Stack>
-            {/* Honey / Day Typography */}
             <Typography
               variant="body2"
               fontSize="20px"
               sx={{
                 color: theme.palette.Gold.main,
-                marginLeft: 1, // Add spacing between rarity and text
+                marginLeft: 1,
               }}
             >
               Honey Drops / Day
             </Typography>
           </Box>
-
-          {/* Owner */}
           <Typography
             variant="body1"
             color="white"
@@ -378,7 +391,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
                   )}`}
             </Box>
           </Typography>
-
           <ActionButtonsHive
             onPlayClick={variant === "myBees" ? onPlayClick : undefined}
             onUnstakeClick={
@@ -390,13 +402,11 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             isTransactionLoading={isTransactionLoading}
           />
         </Box>
-
         <TransactionInProgressModal
           open={showTxModal}
           onClose={() => setShowTxModal(false)}
           title="Unstaking in Progress..."
         />
-
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}
@@ -412,7 +422,6 @@ const BeeCardHive: React.FC<BeeCardHiveProps> = ({
             {alertMessage}
           </Alert>
         </Snackbar>
-
         {variant === "default" && (
           <ConfirmationModal
             open={confirmModalOpen}

@@ -18,18 +18,18 @@ import { Typography } from "@mui/material";
 import { useHives } from "@/context/HivesContext"; // Ensure correct import path
 import { HiveHatchlingInfo } from "@/types/Environment";
 import { logger } from "@/utils/logger";
+import { useEnvironment } from "@/context/EnvironmentContext";
 
 const Forest: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = React.useState<HTMLAudioElement | null>(null);
   const router = useRouter();
   const [isImageLoaded, setIsImageLoaded] = React.useState(false);
-
+  const { currentEnvironment } = useEnvironment();
   const {
     environments,
     hivesMap,
-    resources, // Access non-Hive resources
-    stakedNFTs,
+    resources,  
     filteredStakedNFTs,
     maxBeesMap,
     getHiveById,
@@ -42,7 +42,7 @@ const Forest: React.FC = () => {
   };
 
   useEffect(() => {
-    const audio = new Audio("/Audio/Soundtrack/Forest/Forest.wav");
+    const audio = new Audio(currentEnvironment?.audioFile);
     audio.loop = true;
     audio.volume = 0.8;
     setMusic(audio);
@@ -166,7 +166,7 @@ const Forest: React.FC = () => {
         }}
       >
         <Image
-          src="/Maps/Environments/Forest.jpg"
+          src={currentEnvironment?.backgroundImage || "/default"}
           alt="Forest map background"
           fill
           style={{
@@ -178,7 +178,7 @@ const Forest: React.FC = () => {
         />
       </Box>
 
-      <TopBar mapHeaderLabel="Whisperwood Valleys" />
+      <TopBar mapHeaderLabel={currentEnvironment?.name || "Default"} />
 
       {/* Dynamically Render CombinedHatchlingMarker Components */}
       {Array.from(hivesMap.values()).map((hive) => {

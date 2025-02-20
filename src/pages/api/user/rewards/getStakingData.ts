@@ -28,7 +28,13 @@ const HIVE_STAKING_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_HIVE_STAKING_ADDRESS ?? "";
 const BUZZKILL_HATCHLINGS_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_HATCHLINGS_ADDRESS ?? "";
-const BLOCKPI_RPC = process.env.BLOCKPI_RPC ?? "";
+// Setup RPC URLs
+const PRIMARY_RPC = process.env.BLOCKPI_RPC;
+const FALLBACK_RPC = "https://rpc.viction.xyz";
+
+if (!PRIMARY_RPC) {
+  throw new Error("Missing environment variable: BLOCKPI_RPC");
+}
 
 if (!HIVE_STAKING_CONTRACT_ADDRESS) {
   throw new Error(
@@ -40,7 +46,7 @@ if (!BUZZKILL_HATCHLINGS_CONTRACT_ADDRESS) {
     "Missing environment variable: NEXT_PUBLIC_HATCHLINGS_ADDRESS"
   );
 }
-if (!BLOCKPI_RPC) {
+if (!PRIMARY_RPC) {
   throw new Error("Missing environment variable: BLOCKPI_RPC");
 }
 
@@ -68,10 +74,27 @@ export default async function getStakingData(
     logger.warn("Invalid address received:", address);
     return res.status(400).json({ error: "Invalid address" });
   }
+  let provider: ethers.JsonRpcProvider;
 
   try {
     logger.log("Fetching staking data for address:", address);
-    const provider = new ethers.JsonRpcProvider(BLOCKPI_RPC);
+    try {
+      provider = new ethers.JsonRpcProvider(PRIMARY_RPC);
+      await provider.getBlockNumber(); // Test connection
+      logger.log("Connected to primary RPC:", PRIMARY_RPC);
+    } catch (primaryError) {
+      logger.error("Primary RPC failed, switching to fallback:", primaryError);
+      try {
+        provider = new ethers.JsonRpcProvider(FALLBACK_RPC);
+        await provider.getBlockNumber(); // Test connection
+        logger.log("Connected to fallback RPC:", FALLBACK_RPC);
+      } catch (fallbackError) {
+        logger.error("Fallback RPC also failed:", fallbackError);
+        return res
+          .status(500)
+          .json({ error: "Both primary and fallback RPCs failed" });
+      }
+    }
 
     // Create contract instances
     const hiveStakingContract = new ethers.Contract(

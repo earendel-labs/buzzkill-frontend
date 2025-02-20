@@ -19,7 +19,7 @@ import BeeCardBackground from "./BeeCardBackground";
 import RarityChip from "./RarityChip";
 import { logger } from "@/utils/logger";
 import TransactionInProgressModal from "@/components/Modals/TransactionProgressModal/TransactionInProgressModal";
-import { useSound } from "@/context/SoundContext"; // Import useSound context
+import { useSound } from "@/context/SoundContext";
 
 export interface BeeCardProps {
   bee: Hatchling;
@@ -60,7 +60,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
   variant = "default",
   additionalInfo = {},
 }) => {
-  const { refreshBeesData } = useUserContext();
+  const { refreshBeesData, fetchServerCalculatedRewards } = useUserContext();
   const { writeContractAsync, isPending } = useWriteHiveStakingUnstake();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState<
@@ -82,7 +82,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
     : null;
   const router = useRouter();
 
-  // Sound management
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [buttonClickSound, setButtonClickSound] =
@@ -94,7 +93,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
 
   const handleHover = () => {
     if (!isMuted && hoverSound) {
-      hoverSound.currentTime = 0; // Ensure the sound starts fresh each time
+      hoverSound.currentTime = 0;
       hoverSound.play();
     }
   };
@@ -114,7 +113,7 @@ const BeeCard: React.FC<BeeCardProps> = ({
     const { id, environmentID, hiveID } = bee;
     if (environmentID === null || hiveID === null) {
       setAlertSeverity("error");
-      +setAlertMessage("Invalid environment or hive ID.");
+      setAlertMessage("Invalid environment or hive ID.");
       setSnackbarOpen(true);
       return;
     }
@@ -147,7 +146,6 @@ const BeeCard: React.FC<BeeCardProps> = ({
       ) {
         setAlertSeverity("warning");
         setAlertMessage("User rejected transaction");
-        // Do not log rejection error
       } else {
         setAlertSeverity("error");
         setAlertMessage("Failed to unstake the Hatchling.");
@@ -181,11 +179,27 @@ const BeeCard: React.FC<BeeCardProps> = ({
       isTransactionError
     );
     if (isTransactionSuccess) {
+      // Call the claimUnstakingYield endpoint after successful unstake
+      (async () => {
+        try {
+          const res = await fetch("/api/user/rewards/claimUnstakingYield", {
+            method: "POST",
+          });
+          const data = await res.json();
+          if (data.success) {
+            logger.log("Unstaking yield claimed successfully", data);
+          } else {
+            logger.error("Failed to claim unstaking yield", data);
+          }
+        } catch (err) {
+          logger.error("Error claiming unstaking yield", err);
+        }
+      })();
+      fetchServerCalculatedRewards();
       setAlertSeverity("success");
       setAlertMessage("Successfully unstaked the Hatchling!");
       setSnackbarOpen(true);
       setTransactionHash(undefined);
-      logger.log("Called refreshBeesData() after successful transaction.");
       if (bee.id && variant === "myBees") {
         refreshBeesData(bee.id, "unstake");
       }
