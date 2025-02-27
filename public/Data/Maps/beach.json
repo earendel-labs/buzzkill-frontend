@@ -9,35 +9,46 @@
       {
         "resourceType": "Hive",
         "id": 1,
-        "name": "Emberglow Hive",
+        "name": "Renegades Hive",
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "23%", "top": "25%" },
-        "resourceLink": "/Play/Location/MoltenRidge/EmberglowHive",
+        "position": { "left": "24%", "top": "25%" },
+        "resourceLink": "/Play/Location/AzureReef/RenegadesHive",
         "hiveId": 1
       },
       {
         "resourceType": "Hive",
         "id": 2,
-        "name": "Ashenspire Hive",
+        "name": "Wayfarers Hive",
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "11%", "top": "43%" },
-        "resourceLink": "/Play/Location/MoltenRidge/AshenspireHive",
+        "position": { "left": "12%", "top": "43%" },
+        "resourceLink": "/Play/Location/AzureReef/WayfarersHive",
         "hiveId": 2
       },
       {
         "resourceType": "Hive",
         "id": 3,
-        "name": "Furnace Hive",
+        "name": "Mavericks Hive",
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "28%", "top": "74%" },
-        "resourceLink": "/Play/Location/MoltenRidge/FurnaceHive",
+        "position": { "left": "29%", "top": "74%" },
+        "resourceLink": "/Play/Location/AzureReef/MavericksHive",
         "hiveId": 3
+      },
+      {
+        "resourceType": "Hive",
+        "id": 4,
+        "name": "Celestial Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "68%", "top": "84%" },
+        "resourceLink": "/Play/Location/AzureReef/CelestialHive",
+        "hiveId": 4
       }
     ]
   }

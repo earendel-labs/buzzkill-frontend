@@ -1,63 +1,35 @@
-// src/components/Buttons/PrimaryButton/PrimaryButton.tsx
-import dynamic from "next/dynamic";
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { useSound } from "@/context/SoundContext";
 import { Skeleton } from "@mui/material";
-
-// Dynamic import of the PrimaryButton to avoid SSR
-const PrimaryButton = dynamic(() => import("./PrimaryButton"), { ssr: false });
+import React, { useState, useEffect } from "react";
+import { SxProps, Theme } from "@mui/system";
 
 interface PrimaryButtonProps {
   text: string;
   isActiveTab?: boolean;
   onClick: () => void;
-  scale?: number; // New scale prop to adjust size dynamically
-  disabled?: boolean; // Add the disabled prop here
+  scale?: number;
+  disabled?: boolean;
+  sx?: SxProps<Theme>;
 }
 
-const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   text,
-  isActiveTab = false,
   onClick,
-  scale = 1, // Default scale is 1 (no scaling)
-  disabled = false, // Default disabled to false
+  scale = 1,
+  disabled = false,
+  sx = {},
+  ...props
 }) => {
-  const theme = useTheme();
   const { isMuted } = useSound();
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // New state for loading
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const preloadImages = () => {
-      const images = [
-        "/Frames/Buttons/PrimaryButton/PrimaryButton.svg",
-        "/Frames/Buttons/PrimaryButton/PrimaryButtonHover.svg",
-        "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg",
-      ];
-
-      const promises = images.map((src) => {
-        return new Promise<void>((resolve, reject) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = () => resolve();
-          img.onerror = reject;
-        });
-      });
-
-      Promise.all(promises)
-        .then(() => {
-          setIsLoading(false); // Images are preloaded, loading done
-        })
-        .catch((error) => console.error("Error loading images", error));
-    };
-
-    preloadImages();
+    setIsLoading(false);
     setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
     setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
   }, []);
@@ -67,11 +39,6 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
       hoverSound.currentTime = 0;
       hoverSound.play();
     }
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
   };
 
   const handleMouseDown = () => {
@@ -79,38 +46,19 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
       clickSound.currentTime = 0;
       clickSound.play();
     }
-    setIsPressed(true);
   };
 
-  const handleMouseUp = () => {
+  const handleClick = () => {
     if (!disabled) {
-      setIsPressed(false);
       onClick();
-    } else {
-      setIsPressed(false);
     }
-  };
-
-  const getImageSrc = () => {
-    if (disabled) {
-      return "/Frames/Buttons/PrimaryButton/PrimaryButtonDisabled.svg"; // Optional: Create a disabled state image
-    }
-    if (isPressed) {
-      return "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg";
-    }
-    if (isActiveTab) {
-      return "/Frames/Buttons/PrimaryButton/PrimaryButtonActiveTab.svg";
-    }
-    return isHovered
-      ? "/Frames/Buttons/PrimaryButton/PrimaryButtonHover.svg"
-      : "/Frames/Buttons/PrimaryButton/PrimaryButton.svg";
   };
 
   if (isLoading) {
     return (
       <Skeleton
         variant="rectangular"
-        width={scale * 150} // Adjust size according to scale
+        width={scale * 150}
         height={scale * 50}
         sx={{ borderRadius: "8px" }}
       />
@@ -118,27 +66,20 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
   }
 
   return (
-    <Box
+    <Button
+      className="figmaButton"
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      onClick={handleClick}
+      disabled={disabled}
       sx={{
-        display: "inline-flex",
-        backgroundImage: `url(${getImageSrc()})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        transform: `scale(${scale})`,
         cursor: disabled ? "not-allowed" : "pointer",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-        fontWeight: "bold",
-        width: `${scale * 105}px`, // Adjust for your custom scaling
-        height: `${scale * 35}px`,
-        opacity: disabled ? 0.6 : 1, // Visual indication of disabled state
-        pointerEvents: disabled ? "none" : "auto", // Prevent interactions when disabled
+        opacity: disabled ? 0.6 : 1,
+        pointerEvents: disabled ? "none" : "auto",
         transition: "opacity 0.3s ease",
+        padding: "8px 20px",
+        ...sx,
       }}
     >
       <Typography
@@ -148,12 +89,16 @@ const PrimaryButtonComponent: React.FC<PrimaryButtonProps> = ({
           whiteSpace: "nowrap",
           fontWeight: "700",
           fontSize: `${scale * 1}rem`,
+          textShadow:
+            "1px 1px 0 #68341B, -1px -1px 0 #68341B, -1px 1px 0 #68341B, 1px -1px 0 #68341B", // Border effect
+          ...sx, // Ensure Typography also respects passed sx
         }}
+        {...props}
       >
         {text}
       </Typography>
-    </Box>
+    </Button>
   );
 };
 
-export default PrimaryButtonComponent;
+export default PrimaryButton;

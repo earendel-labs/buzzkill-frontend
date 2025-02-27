@@ -14,7 +14,7 @@ const NFT_MAPPINGS = [
   {
     userField: "has_ivy",
     snapshotField: "has_ivy",
-    task: "IVY holder",
+    task: "IVY Holder",
   },
   {
     userField: "has_starship",

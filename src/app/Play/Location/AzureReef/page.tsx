@@ -19,8 +19,10 @@ import { useHives } from "@/context/HivesContext"; // Ensure correct import path
 import { HiveHatchlingInfo } from "@/types/Environment";
 import { logger } from "@/utils/logger";
 import { useEnvironment } from "@/context/EnvironmentContext";
+import HiveRestrictionsInfo from "./components/HiveRestrictionsInfo";
+import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel";
 
-const Forest: React.FC = () => {
+const AzureReef: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = React.useState<HTMLAudioElement | null>(null);
   const router = useRouter();
@@ -111,7 +113,7 @@ const Forest: React.FC = () => {
         status,
         location: hive.name,
         environment:
-          environments.find((env) => env.id === 3)?.name || "Unknown", // Adjust environment logic as needed
+          environments.find((env) => env.id === 3)?.name || "Unknown",
       });
     });
 
@@ -125,6 +127,7 @@ const Forest: React.FC = () => {
 
   return (
     <GameLayout>
+      <LeftPanel />
       {/* Conditionally render loading spinner */}
       {!isImageLoaded && (
         <Box
@@ -163,7 +166,7 @@ const Forest: React.FC = () => {
         }}
       >
         <Image
-          src={currentEnvironment?.backgroundImage || "/default"}
+          src={currentEnvironment?.backgroundImage || "/Maps/BuzzkillMap.jpg"}
           alt="Forest map background"
           fill
           style={{
@@ -235,9 +238,9 @@ const Forest: React.FC = () => {
           />
         );
       })}
-      <BottomBar />
+      <BottomBar isRestrictedEnvironment={true} />
     </GameLayout>
   );
 };
 
-export default Forest;
+export default AzureReef;

@@ -7,7 +7,6 @@ const buttonStyles = (theme: Theme) => ({
         fontSize: "18px",
         fontWeight: "800",
         textTransform: "none",
-        padding: "10px 20px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -19,6 +18,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueConnectWallet": {
           backgroundColor: theme.palette.DarkBlue.main,
           color: "#fff",
+          padding: "10px 20px",
           borderColor: theme.palette.DarkBlue.dark,
           borderWidth: "1.25px",
           "&:hover": {
@@ -42,6 +42,7 @@ const buttonStyles = (theme: Theme) => ({
           backgroundColor: theme.palette.Gold.main,
           color: "#2E2E2E",
           borderColor: theme.palette.Gold.dark,
+          padding: "10px 20px",
           borderWidth: "1.25px",
           "&:hover": {
             backgroundColor: theme.palette.Gold.light,
@@ -63,6 +64,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueButton": {
           backgroundColor: "#1b48f5",
           color: "#fff",
+          padding: "10px 20px",
           borderColor: theme.palette.DarkBlue.main,
           "&:hover": {
             backgroundColor: "#5992ff",
@@ -80,9 +82,11 @@ const buttonStyles = (theme: Theme) => ({
             borderColor: theme.palette.DarkBlueFaded.dark,
           },
         },
+
         "&.orangeButton": {
           backgroundColor: theme.palette.Orange.main,
           color: "#fff",
+          padding: "10px 20px",
           borderColor: theme.palette.Orange.main,
           "&:hover": {
             backgroundColor: theme.palette.Orange.light,
@@ -135,6 +139,35 @@ const buttonStyles = (theme: Theme) => ({
           "&:hover": {
             background:
               "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
+          },
+        },
+
+        // New Figma-based style variant
+        "&.figmaButton": {
+          background:
+            "linear-gradient(0deg,rgb(142, 72, 39) 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
+          border: "3px solid #4d2614",
+          color: "#fff",
+          borderRadius: "4px",
+          "&:hover": {
+            background:
+              "radial-gradient(78.22% 240.77% at 50% 50%, #E9B743 4.86%, #E9B743 36.11%, #E9B743 73.5%, #7A4621 100%)",
+            boxShadow:
+              "inset -2px -2px 22px rgba(0, 0, 0, 0.25), inset 2px 2px 4px rgba(0, 0, 0, 0.25)",
+          },
+          "&:active": {
+            background:
+              "radial-gradient(78.22% 240.77% at 50% 50%, #E9B743 4.86%, #E9B743 36.11%, #E9B743 73.5%, #7A4621 100%)",
+            border: "2px solid #DCA425",
+            boxShadow:
+              "inset 2px 2px 20px rgba(0, 0, 0, 0.25), inset -2px -2px 20px rgba(0, 0, 0, 0.25)",
+          },
+          "&.Mui-disabled": {
+            background:
+              "radial-gradient(78.22% 240.77% at 50% 50%, #D0AC57 0%, #A98E51 0.01%, #A5863D 37%, #74553F 100%)",
+            border: "2px solid #C6A864",
+            boxShadow:
+              "inset 2px 2px 20px rgba(0, 0, 0, 0.25), inset -2px -2px 20px rgba(0, 0, 0, 0.25)",
           },
         },
       },

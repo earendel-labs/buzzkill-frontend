@@ -159,8 +159,8 @@ const Play: React.FC = () => {
         navigate={navigate}
       />
             <CombinedLocationMarker
-        left="25%"
-        top="55%"
+        left="20%"
+        top="45%"
         link="Play/Location/AzureReef"
         text="Azure Reef"
         navigate={navigate}

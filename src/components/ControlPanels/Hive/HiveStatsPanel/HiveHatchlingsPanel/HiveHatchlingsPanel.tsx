@@ -94,7 +94,7 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
             xs: "1.25rem", // 1.25rem on small screens
             sm: "1.5rem", // 1.5rem on small devices
             md: "1.75rem", // 1.75rem on medium devices
-            lg: "2rem",
+            lg: "1.75rem",
             xl: "3rem",
           },
           color: "#D4AF37",
@@ -400,11 +400,16 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
       </Box>
 
       {/* Buttons */}
-      {/* Buttons */}
       <Box
         sx={{
           display: "flex",
-          gap: "1.25rem",
+          gap: {
+            xs: "0.75rem",
+            sm: "0.875rem",
+            md: "1rem",
+            lg: "2rem",
+            xl: "4rem",
+          },
           marginTop: {
             xs: "0.75rem",
             sm: "0.875rem",
@@ -417,10 +422,10 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
             xl: "0rem",
           },
           flexDirection: {
-            xs: "column", // Stack buttons vertically on small screens
-            sm: "row", // Row layout on small screens and above
+            xs: "column",
+            sm: "row",
           },
-          width: { xs: "100%", sm: "auto" }, // Full width on small screens
+          width: { xs: "100%", sm: "auto" },
         }}
       >
         {/* Stake Button with Tooltip */}
@@ -434,12 +439,27 @@ const HiveHatchlingsPanel: React.FC<HiveHatchlingsPanelProps> = ({
               onClick={onStake}
               scale={scale}
               disabled={isHiveFull}
+              sx={{
+                width: "8rem", // Set consistent width
+                fontSize: "0.875rem", // Adjust font size if needed
+                padding: "0.25rem 1rem", // Adjust padding to fit the new height
+              }}
             />
           </span>
         </Tooltip>
 
         {/* Raid Button */}
-        <PrimaryButton text="Raid" onClick={onRaid} scale={scale} disabled />
+        <PrimaryButton
+          text="Raid"
+          onClick={onRaid}
+          scale={scale}
+          disabled
+          sx={{
+            width: "8rem", // Same width as the other button
+            fontSize: "0.875rem",
+            padding: "0.25rem 1rem",
+          }}
+        />
       </Box>
     </Box>
   );

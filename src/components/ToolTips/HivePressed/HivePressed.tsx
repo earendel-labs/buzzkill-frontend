@@ -85,13 +85,20 @@ const HivePressed: React.FC<HivePressedProps> = ({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-            marginTop: "10px", // Margin above the buttons
+            gap: "8px", // Small gap between buttons
           }}
         >
-          <PrimaryButton text="Raid" onClick={onRaidClick} disabled={true} />
-          <PrimaryButton text="Enter" onClick={onEnterClick} />
+          <PrimaryButton
+            text="Raid"
+            onClick={onRaidClick}
+            disabled={true}
+            sx={{ padding: "2px 16px", flex: 1 }} // Reduced vertical padding and fill available space
+          />
+          <PrimaryButton
+            text="Enter"
+            onClick={onEnterClick}
+            sx={{ padding: "2px 16px", flex: 1 }}
+          />
         </Box>
       </Box>
     </LargeTallToolTip>
