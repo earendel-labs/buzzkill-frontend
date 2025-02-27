@@ -11,8 +11,19 @@ const LeftPanel: React.FC = () => {
     <Box
       sx={{
         position: "absolute",
-        top: "160px", // Positioned right below the Resource Bar
-        left: "110px", // Adjusted to align with the red bo
+        top: {
+          xs: "100%",
+          md: "7rem",
+          xl: "9.3rem",
+          xxl: "10rem",
+        }, // Positioned right below the Resource Bar
+        left: {
+          xs: "100%",
+          md: "3rem",
+          xl: "5.7rem",
+          xxl: "7rem",
+        },
+        // Adjusted to align with the red bo
         padding: "12px",
         display: "flex",
         alignItems: "center",
