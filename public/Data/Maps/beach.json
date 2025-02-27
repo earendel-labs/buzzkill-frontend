@@ -46,9 +46,53 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "68%", "top": "84%" },
+        "position": { "left": "68%", "top": "83%" },
         "resourceLink": "/Play/Location/AzureReef/CelestialHive",
         "hiveId": 4
+      },
+      {
+        "resourceType": "Hive",
+        "id": 5,
+        "name": "Outliers Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "67%", "top": "67%" },
+        "resourceLink": "/Play/Location/AzureReef/OutliersHive",
+        "hiveId": 5
+      },
+      {
+        "resourceType": "Hive",
+        "id": 6,
+        "name": "Stellar Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "73%", "top": "60%" },
+        "resourceLink": "/Play/Location/AzureReef/StellarHive",
+        "hiveId": 6
+      },
+      {
+        "resourceType": "Hive",
+        "id": 7,
+        "name": "Vinecrest Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "64%", "top": "15%" },
+        "resourceLink": "/Play/Location/AzureReef/VinecrestHive",
+        "hiveId": 7
+      },
+      {
+        "resourceType": "Hive",
+        "id": 8,
+        "name": "Tangle Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "78%", "top": "8%" },
+        "resourceLink": "/Play/Location/AzureReef/TangleHive",
+        "hiveId": 8
       }
     ]
   }

@@ -40,9 +40,9 @@ interface HiveHatchlingInfo {
   environment: string;
 }
 
-const RenegadesHive: React.FC = () => {
+const StellarHive: React.FC = () => {
   const environmentId = "3";
-  const hiveId = "1";
+  const hiveId = "6";
 
   const { isMuted, isMusicMuted } = useSound();
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
@@ -565,4 +565,4 @@ const RenegadesHive: React.FC = () => {
   );
 };
 
-export default RenegadesHive;
+export default StellarHive;
