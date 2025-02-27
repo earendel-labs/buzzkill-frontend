@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import type { Session } from "next-auth";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
-import GlobalScrollbarStyles from "@/theme/TextStyles/ScrollBar/scrollBarStyles";
+import GlobalScrollbarStyles from "@/theme/scrollbar-styles/scrollBarStyles";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import WalletConfiguration from "@/hooks/WalletConfiguration";
 import { UserProvider } from "@/context/UserContext";

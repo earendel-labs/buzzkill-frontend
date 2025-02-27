@@ -1,89 +1,43 @@
 {
   "environment": {
     "id": 3,
-    "name": "Sunny Shores",
+    "name": "Azure Reef",
     "type": "Beach",
-    "backgroundImage": "/Maps/BeachMap.jpg",
-    "audioFile": "/Audio/Soundtrack/SunnyShores/Beach.wav",
+    "backgroundImage": "/Maps/Environments/Beach.jpg",
+    "audioFile": "/Audio/Soundtrack/Beach/Beach.wav",
     "resources": [
       {
-        "type": "Shell",
-        "id": 0,
-        "name": "Pearl Shell",
-        "defenseValue": 18,
-        "quantity": "15/30",
-        "position": { "left": "12%", "top": "35%" },
-        "resourceLink": "/resource-link",
-        "shellId": 1
-      },
-      {
-        "type": "Shell",
+        "resourceType": "Hive",
         "id": 1,
-        "name": "Coral Shell",
-        "defenseValue": 22,
-        "quantity": "8/20",
-        "position": { "left": "25%", "top": "20%" },
-        "resourceLink": "/Play/Location/SunnyShores/CoralShell",
-        "shellId": 2
+        "name": "Emberglow Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "23%", "top": "25%" },
+        "resourceLink": "/Play/Location/MoltenRidge/EmberglowHive",
+        "hiveId": 1
       },
       {
-        "type": "Driftwood",
+        "resourceType": "Hive",
         "id": 2,
-        "name": "Driftwood Log",
-        "defenseValue": 30,
-        "quantity": "5/15",
-        "position": { "left": "40%", "top": "25%" },
-        "resourceLink": "/resource-link",
-        "driftwoodId": 3
+        "name": "Ashenspire Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "11%", "top": "43%" },
+        "resourceLink": "/Play/Location/MoltenRidge/AshenspireHive",
+        "hiveId": 2
       },
       {
-        "type": "Seaweed",
+        "resourceType": "Hive",
         "id": 3,
-        "contentValue": "40%",
-        "position": { "left": "60%", "top": "30%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Seaweed",
-        "id": 4,
-        "contentValue": "65%",
-        "position": { "left": "70%", "top": "50%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "SandDollar",
-        "id": 5,
-        "contentValue": "50%",
-        "position": { "left": "55%", "top": "45%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Nerite",
-        "id": 6,
-        "contentValue": "20%",
-        "position": { "left": "80%", "top": "60%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Starfish",
-        "id": 7,
-        "contentValue": "30%",
-        "position": { "left": "15%", "top": "70%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Seagrass",
-        "id": 8,
-        "contentValue": "55%",
-        "position": { "left": "35%", "top": "55%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Pebble",
-        "id": 9,
-        "contentValue": "75%",
-        "position": { "left": "50%", "top": "65%" },
-        "resourceLink": "/resource-link"
+        "name": "Furnace Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "28%", "top": "74%" },
+        "resourceLink": "/Play/Location/MoltenRidge/FurnaceHive",
+        "hiveId": 3
       }
     ]
   }

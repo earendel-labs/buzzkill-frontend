@@ -11,7 +11,7 @@ const minuteRateLimiter = new RateLimiterMemory({
   duration: 25,
 });
 
-// Two calls total (per address). In-memory for demonstration.
+// Two calls total (per address). In-memory 
 const totalUsageLimiter = new RateLimiterMemory({
   points: 2,
   duration: 365 * 24 * 60 * 60,

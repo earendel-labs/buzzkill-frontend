@@ -8,10 +8,6 @@ interface Params {
   environment: string;
   hive: string;
 }
-const baseUrl =
-  typeof window !== "undefined"
-    ? window.location.origin
-    : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 // Pre-render hive pages for a given environment
 export async function generateStaticParams({
@@ -21,7 +17,7 @@ export async function generateStaticParams({
 }) {
   const environmentSlug = params.environment;
 
-  const metaRes = await fetch(`${baseUrl}/Data/environment.json`);
+  const metaRes = await fetch("/Data/environment.json");
   const metaJson = await metaRes.json();
   const environments: Environment[] = metaJson.environments;
   const environmentMeta = environments.find(
@@ -34,16 +30,18 @@ export async function generateStaticParams({
   const environmentDetail: Environment = detailJson.environment;
 
   // Filter to only HiveHatchling objects before mapping static params
-  return environmentDetail.resources.filter(isHive).map((resource) => ({
-    environment: environmentSlug,
-    hive: resource.name.replace(/\s/g, ""),
-  }));
+  return environmentDetail.resources
+    .filter(isHive)
+    .map((resource) => ({
+      environment: environmentSlug,
+      hive: resource.name.replace(/\s/g, ""),
+    }));
 }
 
 export default async function HivePage({ params }: { params: Params }) {
   const { environment: environmentSlug, hive: hiveSlug } = params;
 
-  const metaRes = await fetch(`${baseUrl}/Data/environment.json`);
+  const metaRes = await fetch("/Data/environment.json");
   const metaJson = await metaRes.json();
   const environments: Environment[] = metaJson.environments;
   const environmentMeta = environments.find(

@@ -158,6 +158,13 @@ const Play: React.FC = () => {
         text="Molten Ridge"
         navigate={navigate}
       />
+            <CombinedLocationMarker
+        left="25%"
+        top="55%"
+        link="Play/Location/AzureReef"
+        text="Azure Reef"
+        navigate={navigate}
+      />
       <BottomBar />
     </GameLayout>
   );
