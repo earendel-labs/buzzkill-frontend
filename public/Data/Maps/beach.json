@@ -13,7 +13,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "24%", "top": "25%" },
+        "position": { "left": "26%", "top": "32%" },
         "resourceLink": "/Play/Location/AzureReef/RenegadesHive",
         "hiveId": 1
       },
@@ -24,7 +24,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "12%", "top": "43%" },
+        "position": { "left": "15%", "top": "47%" },
         "resourceLink": "/Play/Location/AzureReef/WayfarersHive",
         "hiveId": 2
       },
@@ -79,7 +79,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "64%", "top": "15%" },
+        "position": { "left": "52%", "top": "25%" },
         "resourceLink": "/Play/Location/AzureReef/VinecrestHive",
         "hiveId": 7
       },
@@ -90,7 +90,7 @@
         "productivityValue": 24,
         "queenBees": "2/3",
         "workerBees": "40/55",
-        "position": { "left": "78%", "top": "8%" },
+        "position": { "left": "70%", "top": "22%" },
         "resourceLink": "/Play/Location/AzureReef/TangleHive",
         "hiveId": 8
       }

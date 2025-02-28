@@ -19,7 +19,6 @@ import { useHives } from "@/context/HivesContext"; // Ensure correct import path
 import { HiveHatchlingInfo } from "@/types/Environment";
 import { logger } from "@/utils/logger";
 import { useEnvironment } from "@/context/EnvironmentContext";
-import HiveRestrictionsInfo from "./components/HiveRestrictionsInfo";
 import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel";
 
 const AzureReef: React.FC = () => {
