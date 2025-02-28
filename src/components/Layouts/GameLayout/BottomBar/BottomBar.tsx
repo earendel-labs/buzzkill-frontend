@@ -3,13 +3,16 @@ import { Box } from "@mui/material";
 import AudioPanel from "@/components/ControlPanels/AudioPanel/AudioPanel";
 import BeePanelCard from "@/components/Card/BeePanelCard/BeePanelCard";
 import HatchlingInfoPanel from "@/components/ControlPanels/HatchlingInfoPanel/HatchlingInfoPanel";
+import HiveRestrictionsInfo from "@/app/Play/Location/AzureReef/components/HiveRestrictionsInfo";
 
 type BottomBarProps = {
   isAudioPanelVisible?: boolean;
+  isRestrictedEnvironment?: boolean; // New optional flag to show HiveRestrictionsInfo
 };
 
 const BottomBar: React.FC<BottomBarProps> = ({
   isAudioPanelVisible = true,
+  isRestrictedEnvironment = false, // Default is false
 }) => {
   return (
     <>
@@ -19,8 +22,8 @@ const BottomBar: React.FC<BottomBarProps> = ({
           sx={{
             position: "fixed",
             bottom: {
-              xs: "12rem", // Adjust for small screens
-              md: "14rem", // Adjust for medium screens
+              xs: "12rem",
+              md: "14rem",
               xl: "17rem",
               xxl: "18rem",
             },
@@ -36,6 +39,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
           <HatchlingInfoPanel />
         </Box>
       )}
+
       {/* Bee Panel Card */}
       <Box
         sx={{
@@ -58,6 +62,32 @@ const BottomBar: React.FC<BottomBarProps> = ({
       >
         <BeePanelCard />
       </Box>
+
+      {/* Hive Restrictions Info (Conditionally displayed) */}
+      {isRestrictedEnvironment && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: {
+              xs: "1rem",
+              md: "1rem",
+              lg: "1.3rem",
+              xl: "1.3rem",
+              xxl: "3.125rem",
+            },
+            left: "50%",
+            transform: "translateX(-50%)", // Centers it horizontally
+            zIndex: 101, // Same level as BeePanelCard but spaced out
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "auto",
+            padding: "10px",
+          }}
+        >
+          <HiveRestrictionsInfo />
+        </Box>
+      )}
 
       {/* Audio Panel */}
       {isAudioPanelVisible && (

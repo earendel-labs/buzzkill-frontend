@@ -238,7 +238,6 @@ const Forest: React.FC = () => {
           />
         );
       })}
-
       <BottomBar />
     </GameLayout>
   );

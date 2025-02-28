@@ -4,7 +4,7 @@
     "name": "Whisperwood Valleys",
     "environmentType": "Forest",
     "backgroundImage": "/Maps/Environments/Forest.jpg",
-    "audioFile": "/Audio/Soundtrack/WhisperwoodValleys/Forest.wav",
+    "audioFile": "/Audio/Soundtrack/Forest/Forest.mp3",
     "resources": [
       {
         "resourceType": "Hive",

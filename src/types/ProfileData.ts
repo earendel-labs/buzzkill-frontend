@@ -7,4 +7,7 @@ export type ProfileData = {
   invited_count: number;
   total_rewards: number;
   has_oneid: boolean;
+  has_ivy: boolean;
+  has_starship: boolean;
+  has_contrarians: boolean;
 };

@@ -1,9 +1,9 @@
 import { createTheme, Theme } from "@mui/material/styles";
-import buttonStyles from "./Button/buttonStyles";
-import linkStyles from "./TextStyles/linkStyles";
-import tabStyles from "./TabStyles/tabStyles";
-import textBoxStyles from "./TextBoxStyles/textBoxStyles";
-import toolTipStyles from "./ToolTipStyles/ToolTipStyles"; // Adjust the path accordingly
+import buttonStyles from "./button-styles/buttonStyles";
+import linkStyles from "./text-styles/linkStyles";
+import tabStyles from "./tab-styles/tabStyles";
+import textBoxStyles from "./textbox-styles/textBoxStyles";
+import toolTipStyles from "./tooltip-styles/ToolTipStyles"; // Adjust the path accordingly
 
 // Extend the Palette interface to include custom colors
 declare module "@mui/material/styles" {

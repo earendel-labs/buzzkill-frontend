@@ -1,89 +1,98 @@
 {
   "environment": {
     "id": 3,
-    "name": "Sunny Shores",
+    "name": "Azure Reef",
     "type": "Beach",
-    "backgroundImage": "/Maps/BeachMap.jpg",
-    "audioFile": "/Audio/Soundtrack/SunnyShores/Beach.wav",
+    "backgroundImage": "/Maps/Environments/Beach.jpg",
+    "audioFile": "/Audio/Soundtrack/Beach/Beach.wav",
     "resources": [
       {
-        "type": "Shell",
-        "id": 0,
-        "name": "Pearl Shell",
-        "defenseValue": 18,
-        "quantity": "15/30",
-        "position": { "left": "12%", "top": "35%" },
-        "resourceLink": "/resource-link",
-        "shellId": 1
-      },
-      {
-        "type": "Shell",
+        "resourceType": "Hive",
         "id": 1,
-        "name": "Coral Shell",
-        "defenseValue": 22,
-        "quantity": "8/20",
-        "position": { "left": "25%", "top": "20%" },
-        "resourceLink": "/Play/Location/SunnyShores/CoralShell",
-        "shellId": 2
+        "name": "Renegades Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "26%", "top": "32%" },
+        "resourceLink": "/Play/Location/AzureReef/RenegadesHive",
+        "hiveId": 1
       },
       {
-        "type": "Driftwood",
+        "resourceType": "Hive",
         "id": 2,
-        "name": "Driftwood Log",
-        "defenseValue": 30,
-        "quantity": "5/15",
-        "position": { "left": "40%", "top": "25%" },
-        "resourceLink": "/resource-link",
-        "driftwoodId": 3
+        "name": "Wayfarers Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "15%", "top": "47%" },
+        "resourceLink": "/Play/Location/AzureReef/WayfarersHive",
+        "hiveId": 2
       },
       {
-        "type": "Seaweed",
+        "resourceType": "Hive",
         "id": 3,
-        "contentValue": "40%",
-        "position": { "left": "60%", "top": "30%" },
-        "resourceLink": "/resource-link"
+        "name": "Mavericks Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "29%", "top": "74%" },
+        "resourceLink": "/Play/Location/AzureReef/MavericksHive",
+        "hiveId": 3
       },
       {
-        "type": "Seaweed",
+        "resourceType": "Hive",
         "id": 4,
-        "contentValue": "65%",
-        "position": { "left": "70%", "top": "50%" },
-        "resourceLink": "/resource-link"
+        "name": "Celestial Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "68%", "top": "83%" },
+        "resourceLink": "/Play/Location/AzureReef/CelestialHive",
+        "hiveId": 4
       },
       {
-        "type": "SandDollar",
+        "resourceType": "Hive",
         "id": 5,
-        "contentValue": "50%",
-        "position": { "left": "55%", "top": "45%" },
-        "resourceLink": "/resource-link"
+        "name": "Outliers Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "67%", "top": "67%" },
+        "resourceLink": "/Play/Location/AzureReef/OutliersHive",
+        "hiveId": 5
       },
       {
-        "type": "Nerite",
+        "resourceType": "Hive",
         "id": 6,
-        "contentValue": "20%",
-        "position": { "left": "80%", "top": "60%" },
-        "resourceLink": "/resource-link"
+        "name": "Stellar Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "73%", "top": "60%" },
+        "resourceLink": "/Play/Location/AzureReef/StellarHive",
+        "hiveId": 6
       },
       {
-        "type": "Starfish",
+        "resourceType": "Hive",
         "id": 7,
-        "contentValue": "30%",
-        "position": { "left": "15%", "top": "70%" },
-        "resourceLink": "/resource-link"
+        "name": "Vinecrest Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "52%", "top": "25%" },
+        "resourceLink": "/Play/Location/AzureReef/VinecrestHive",
+        "hiveId": 7
       },
       {
-        "type": "Seagrass",
+        "resourceType": "Hive",
         "id": 8,
-        "contentValue": "55%",
-        "position": { "left": "35%", "top": "55%" },
-        "resourceLink": "/resource-link"
-      },
-      {
-        "type": "Pebble",
-        "id": 9,
-        "contentValue": "75%",
-        "position": { "left": "50%", "top": "65%" },
-        "resourceLink": "/resource-link"
+        "name": "Tangle Hive",
+        "productivityValue": 24,
+        "queenBees": "2/3",
+        "workerBees": "40/55",
+        "position": { "left": "70%", "top": "22%" },
+        "resourceLink": "/Play/Location/AzureReef/TangleHive",
+        "hiveId": 8
       }
     ]
   }

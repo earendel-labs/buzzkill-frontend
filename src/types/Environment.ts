@@ -54,6 +54,7 @@ export interface SpecificEnvironmentData {
 }
 
 export interface Resource {
+  name: string;
   resourceType: string;
   id: number;
   contentValue?: string;

@@ -36,7 +36,7 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: userData, error } = await supabase
       .from("users")
       .select(
-        "account_name, email_address, address, invited_count, invite_code, total_rewards, oneid_name, has_oneid"
+        "account_name, email_address, address, invited_count, invite_code, total_rewards, oneid_name, has_oneid, has_ivy, has_starship, has_contrarians"
       )
       .eq("address", address)
       .maybeSingle();
@@ -58,6 +58,9 @@ const getProfile = async (req: NextApiRequest, res: NextApiResponse) => {
       total_rewards: userData.total_rewards,
       oneid_name: userData.oneid_name || null,
       has_oneid: userData.has_oneid,
+      has_ivy: userData.has_ivy,
+      has_starship: userData.has_starship,
+      has_contrarians: userData.has_contrarians
     };
     logger.log("profileData returned: ", profileData);
     return res.status(200).json(profileData);

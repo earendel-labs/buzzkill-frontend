@@ -104,7 +104,7 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
           if (primaryName) {
             const has_oneid = true;
 
-            // Call the syncOneID endpoint
+            // Step1: Call the syncOneID endpoint
             const response = await fetch("/api/user/syncOneID", {
               method: "POST",
               headers: {
@@ -118,7 +118,20 @@ export const ProfileProvider: React.FC<{ children: ReactNode }> = ({
               }),
               credentials: "include",
             });
-            // Clear the isNewUser status by calling an API route
+
+            // Step 2: Award NFT snapshots for a new user
+            const nftResponse = await fetch("/api/nft-snapshots/awardNftSnapshots", {
+              method: "POST",
+              credentials: "include",
+            });
+
+            if (!nftResponse.ok) {
+              const nftErrorData = await nftResponse.json();
+              showSnackbar(nftErrorData.error || "Error awarding NFT snapshots", "error");
+              return;
+            }
+
+            // Step 3: Clear the isNewUser status by calling an API route
             await fetch("/api/user/clearIsNewUser", {
               method: "POST",
               credentials: "include",
