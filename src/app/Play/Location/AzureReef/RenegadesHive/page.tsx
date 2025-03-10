@@ -28,7 +28,7 @@ import ConfirmModal from "../../WhisperwoodValleys/Components/HiveStakingModals"
 import useFetchStakedBees from "@/hooks/useFetchStakedBees";
 import TransactionInProgressModal from "../../../../../components/Modals/TransactionProgressModal/TransactionInProgressModal";
 import { useProfileContext } from "@/context/ProfileContext";
-
+import { logger } from "@/utils/logger";
 interface HiveHatchlingInfo {
   productivityValue: number;
   CommonBees: number;
@@ -59,8 +59,13 @@ const RenegadesHive: React.FC = () => {
   // This determines if we show the "Staking in progress" modal
   const [showTxModal, setShowTxModal] = useState(false);
 
-  const { activeBee, checkAndPromptApproval, setActiveBee, refreshBeesData } =
-    useUserContext();
+  const {
+    activeBee,
+    checkAndPromptApproval,
+    setActiveBee,
+    refreshBeesData,
+    stakedBees: userStakedBees,
+  } = useUserContext();
 
   const {
     environments,
@@ -182,7 +187,7 @@ const RenegadesHive: React.FC = () => {
     if (isStakingPending || isTransactionLoading) return;
 
     // Check if the user already has 2 bees staked in this hive
-    if (stakedBees.length >= 2) {
+    if (userStakedBees.length >= 2) {
       setAlertSeverity("error");
       setAlertMessage("You cannot stake more than 2 bees within this hive.");
       setSnackbarOpen(true);
@@ -190,11 +195,11 @@ const RenegadesHive: React.FC = () => {
     }
 
     // Check if the user already has a staked bee in a different environment
-    const hasStakedInDifferentEnvironment = stakedBees.some(
+    const hasStakedInDifferentEnvironment = userStakedBees.some(
       (bee) => bee.environmentID !== environmentId
     );
 
-    if (stakedBees.length > 0 && hasStakedInDifferentEnvironment) {
+    if (userStakedBees.length > 0 && hasStakedInDifferentEnvironment) {
       setAlertSeverity("error");
       setAlertMessage(
         "You already have staked Bee's in a different environment. You cannot stake within this hive."
