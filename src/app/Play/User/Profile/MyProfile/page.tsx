@@ -84,7 +84,7 @@ const ProfileTab = () => {
             Sign-up or login to view your profile
           </Typography>
           <Button
-            className="blueConnectWallet" // Use the old setup for styling
+            className="darkBlueButton" 
             onClick={() => (window.location.href = "/")} // Redirect to home
             sx={{ mt: 2 }}
           >

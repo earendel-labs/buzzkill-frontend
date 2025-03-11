@@ -10,121 +10,151 @@ const buttonStyles = (theme: Theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "4px",
+        borderRadius: "6px",
         borderStyle: "solid",
         boxSizing: "border-box",
         height: "auto",
+        padding: "12px 24px",
 
         "&.blueConnectWallet": {
           backgroundColor: theme.palette.DarkBlue.main,
           color: "#fff",
-          padding: "10px 20px",
+          borderRadius: "6px",
+          padding: "12px 24px",
           borderColor: theme.palette.DarkBlue.dark,
-          borderWidth: "1.25px",
+          borderWidth: "1.5px",
           "&:hover": {
             backgroundColor: "#4272ce",
-            color: "#fff",
-            borderColor: theme.palette.DarkBlue.light,
-          },
-          "&:active": {
-            backgroundColor: "#385fbd",
-            color: "#fff",
             borderColor: theme.palette.DarkBlue.light,
           },
           "&.Mui-disabled": {
             backgroundColor: "#222e50",
             color: "#385fbd",
             borderColor: "#222e50",
+          },
+        },
+        "&.darkBlueButton": {
+          background: `linear-gradient(180deg, ${theme.palette.Blue.light} 0%, ${theme.palette.DarkBlue.main} 100%)`,
+          color: "#fff",
+          borderRadius: "6px",
+          padding: "12px 24px",
+          border: `2px solid ${theme.palette.Blue.light}`, // More visible outline
+          boxShadow: "inset 0px -2px 4px rgba(0, 0, 0, 0.4)", // Subtle depth, no glow
+
+          "&:hover": {
+            background: `linear-gradient(180deg, ${theme.palette.Blue.main} 0%, ${theme.palette.DarkBlue.main} 100%)`,
+            borderColor: theme.palette.Blue.main,
+          },
+
+          "&:active": {
+            background: `linear-gradient(180deg, ${theme.palette.DarkBlue.main} 0%, ${theme.palette.DarkBlue.dark} 100%)`,
+            borderColor: theme.palette.DarkBlue.dark,
+            boxShadow: "inset 0px 2px 4px rgba(0, 0, 0, 0.5)", // Slight press effect
+          },
+
+          "&.Mui-disabled": {
+            background: `linear-gradient(180deg, ${theme.palette.DarkBlueFaded.light} 0%, ${theme.palette.DarkBlueFaded.dark} 100%)`,
+            color: "#5e7bc7",
+            borderColor: theme.palette.DarkBlueFaded.dark,
+            opacity: 0.5,
           },
         },
 
         "&.goldButton": {
-          backgroundColor: theme.palette.Gold.main,
+          background: "linear-gradient(180deg, #E9B743 0%, #C5972E 100%)",
           color: "#2E2E2E",
-          borderColor: theme.palette.Gold.dark,
-          padding: "10px 20px",
-          borderWidth: "1.25px",
+          borderRadius: "6px",
+          border: "1px solid #8F6224",
           "&:hover": {
-            backgroundColor: theme.palette.Gold.light,
+            background: "linear-gradient(180deg, #F1C75B 0%, #D4A141 100%)",
             color: "#fff",
             borderColor: theme.palette.Gold.light,
           },
           "&:active": {
-            backgroundColor: theme.palette.Gold.light,
-            color: "#fff",
-            borderColor: theme.palette.Gold.light,
-          },
-          "&.Mui-disabled": {
-            backgroundColor: "#222e50",
-            color: "#385fbd",
-            borderColor: "#222e50",
+            background: "linear-gradient(180deg, #D4A141 0%, #A67D2A 100%)",
           },
         },
 
         "&.blueButton": {
-          backgroundColor: "#1b48f5",
+          background: "linear-gradient(180deg, #1b48f5 0%, #122a9e 100%)",
           color: "#fff",
-          padding: "10px 20px",
-          borderColor: theme.palette.DarkBlue.main,
+          borderRadius: "6px",
+          border: "1.5px solid #0E1C6A",
           "&:hover": {
-            backgroundColor: "#5992ff",
-            color: "#fff",
-            borderColor: theme.palette.Gold.main,
+            background: "linear-gradient(180deg, #2A4CAF 0%, #1C398A 100%)",
+            borderColor: "#2C51A7",
           },
           "&:active": {
-            backgroundColor: "#8eb9ff",
-            color: "#fff",
-            borderColor: theme.palette.DarkBlue.light,
+            background: "linear-gradient(180deg, #1C398A 0%, #122a9e 100%)",
           },
           "&.Mui-disabled": {
-            backgroundColor: theme.palette.DarkBlueFaded.dark,
-            color: "#5e9dff",
-            borderColor: theme.palette.DarkBlueFaded.dark,
+            backgroundColor: "#1A1F3A", // Darker blue to make it clear it's disabled
+            color: "#5e7bc7",
+            borderColor: "#1A1F3A",
+            opacity: 0.6,
+          },
+        },
+        "&.blueButtonSmall": {
+          background: `linear-gradient(180deg, ${theme.palette.Blue.light} 0%, ${theme.palette.Blue.main} 50%, ${theme.palette.Blue.dark} 100%)`,
+          color: "#fff",
+          borderRadius: "6px",
+          border: `1.5px solid ${theme.palette.Blue.dark}`,
+          boxSizing: "border-box",
+          textTransform: "none",
+          padding: "8px 16px", // Smaller padding for a compact button
+          "&:hover": {
+            background: `linear-gradient(180deg, ${theme.palette.Blue.main} 0%, ${theme.palette.Blue.light} 50%, ${theme.palette.Blue.dark} 100%)`,
+            borderColor: theme.palette.Blue.dark,
+          },
+          "&:active": {
+            background: `linear-gradient(180deg, ${theme.palette.Blue.dark} 0%, ${theme.palette.Blue.main} 50%, ${theme.palette.Blue.light} 100%)`,
+          },
+          "&.Mui-disabled": {
+            backgroundColor: theme.palette.BlueFaded.main,
+            color: theme.palette.text.secondary,
+            borderColor: theme.palette.BlueFaded.main,
+            opacity: 0.6,
           },
         },
 
         "&.orangeButton": {
-          backgroundColor: theme.palette.Orange.main,
+          background:
+            "linear-gradient(180deg, #D56217 0%, #9B3611 50%, #75290E 100%)",
           color: "#fff",
-          padding: "10px 20px",
-          borderColor: theme.palette.Orange.main,
+          borderRadius: "6px",
+          border: "1px solid #6A220C",
+          boxShadow:
+            "inset 2px 2px 4px rgba(0, 0, 0, 0.25), inset -2px -2px 4px rgba(0, 0, 0, 0.25)",
           "&:hover": {
-            backgroundColor: theme.palette.Orange.light,
-            color: "#fff",
-            borderColor: theme.palette.Orange.light,
+            background:
+              "linear-gradient(180deg, #E07320 0%, #BA5614 50%, #8A320D 100%)",
+            borderColor: "#8A320D",
           },
           "&:active": {
-            backgroundColor: theme.palette.Orange.dark,
-            color: "#fff",
-            borderColor: theme.palette.Orange.dark,
+            background:
+              "linear-gradient(180deg, #C75712 0%, #8C2E0C 50%, #5C1C08 100%)",
           },
           "&.Mui-disabled": {
-            backgroundColor: "#692d1e",
-            color: "#9b4322",
-            borderColor: "#692d1e",
+            background:
+              "linear-gradient(180deg, #8F4C24 0%, #6E2F14 50%, #4E1E0C 100%)", // Muted, less vibrant
+            border: "1px solid #5A2612", // Subtle but clear border
+            color: "#A87B5E", // Faded text color
+            boxShadow:
+              "inset 1px 1px 3px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(0, 0, 0, 0.2)",
           },
         },
 
         "&.oneIDRedButton": {
-          backgroundColor: theme.palette.OneIDRed.light,
-          padding: "4px 16px",
+          background: "linear-gradient(180deg, #E24848 0%, #9A1E1E 100%)",
           borderRadius: "6px",
+          border: "1.5px solid #7D1A1A",
+          padding: "4px 16px",
           color: "#fff",
-          borderColor: theme.palette.OneIDRed.light,
           "&:hover": {
-            backgroundColor: theme.palette.OneIDRed.dark,
-            color: "#fff",
-            borderColor: theme.palette.OneIDRed.dark,
+            background: "linear-gradient(180deg, #FF5E5E 0%, #B42323 100%)",
           },
           "&:active": {
-            backgroundColor: theme.palette.OneIDRed.light,
-            color: "#fff",
-            borderColor: theme.palette.OneIDRed.light,
-          },
-          "&.Mui-disabled": {
-            backgroundColor: theme.palette.OneIDRedFaded.dark,
-            color: "#9c4b48",
-            borderColor: theme.palette.OneIDRedFaded.dark,
+            background: "linear-gradient(180deg, #C93434 0%, #8B1919 100%)",
           },
         },
 
@@ -133,41 +163,32 @@ const buttonStyles = (theme: Theme) => ({
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          padding: "10px 30px",
-          background:
-            "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
+          padding: "12px 30px",
+          borderRadius: "6px",
+          background: "linear-gradient(180deg, #E9B743 0%, #A56E28 100%)",
+          border: "1.5px solid #7D511E",
           "&:hover": {
-            background:
-              "linear-gradient(0deg, #68341B 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
+            background: "linear-gradient(180deg, #F1C75B 0%, #BE8435 100%)",
           },
         },
 
-        // New Figma-based style variant
+        // **Figma Button - Only This One Uses the Special Disabled State**
         "&.figmaButton": {
           background:
             "linear-gradient(0deg,rgb(142, 72, 39) 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
-          border: "3px solid #4d2614",
+          borderRadius: "6px",
+          border: "2px solid #4d2614",
           color: "#fff",
-          borderRadius: "4px",
           "&:hover": {
             background:
               "radial-gradient(78.22% 240.77% at 50% 50%, #E9B743 4.86%, #E9B743 36.11%, #E9B743 73.5%, #7A4621 100%)",
             boxShadow:
               "inset -2px -2px 22px rgba(0, 0, 0, 0.25), inset 2px 2px 4px rgba(0, 0, 0, 0.25)",
           },
-          "&:active": {
-            background:
-              "radial-gradient(78.22% 240.77% at 50% 50%, #E9B743 4.86%, #E9B743 36.11%, #E9B743 73.5%, #7A4621 100%)",
-            border: "2px solid #DCA425",
-            boxShadow:
-              "inset 2px 2px 20px rgba(0, 0, 0, 0.25), inset -2px -2px 20px rgba(0, 0, 0, 0.25)",
-          },
           "&.Mui-disabled": {
             background:
               "radial-gradient(78.22% 240.77% at 50% 50%, #D0AC57 0%, #A98E51 0.01%, #A5863D 37%, #74553F 100%)",
             border: "2px solid #C6A864",
-            boxShadow:
-              "inset 2px 2px 20px rgba(0, 0, 0, 0.25), inset -2px -2px 20px rgba(0, 0, 0, 0.25)",
           },
         },
       },
