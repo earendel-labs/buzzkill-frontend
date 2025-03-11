@@ -79,6 +79,7 @@ const buttonStyles = (theme: Theme) => ({
           background: "linear-gradient(180deg, #1b48f5 0%, #122a9e 100%)",
           color: "#fff",
           borderRadius: "6px",
+          padding: "10px 24px",
           border: "1.5px solid #0E1C6A",
           "&:hover": {
             background: "linear-gradient(180deg, #2A4CAF 0%, #1C398A 100%)",
@@ -101,7 +102,7 @@ const buttonStyles = (theme: Theme) => ({
           border: `1.5px solid ${theme.palette.Blue.dark}`,
           boxSizing: "border-box",
           textTransform: "none",
-          padding: "8px 16px", // Smaller padding for a compact button
+          padding: "6px 16px", // Smaller padding for a compact button
           "&:hover": {
             background: `linear-gradient(180deg, ${theme.palette.Blue.main} 0%, ${theme.palette.Blue.light} 50%, ${theme.palette.Blue.dark} 100%)`,
             borderColor: theme.palette.Blue.dark,
@@ -121,6 +122,7 @@ const buttonStyles = (theme: Theme) => ({
           background:
             "linear-gradient(180deg, #D56217 0%, #9B3611 50%, #75290E 100%)",
           color: "#fff",
+          adding: "8px 24px",
           borderRadius: "6px",
           border: "1px solid #6A220C",
           boxShadow:
@@ -177,6 +179,7 @@ const buttonStyles = (theme: Theme) => ({
           background:
             "linear-gradient(0deg,rgb(142, 72, 39) 0.01%, #E9B743 62%, #E9B743 95.5%, #F1B322 100%)",
           borderRadius: "6px",
+
           border: "2px solid #4d2614",
           color: "#fff",
           "&:hover": {

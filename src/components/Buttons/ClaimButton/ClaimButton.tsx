@@ -232,7 +232,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               textTransform: "none",
               fontWeight: "bold",
               fontSize: "1rem",
-              lineHeight: "1.5",
+              lineHeight: "1.2",
             }}
           >
             Claim Yield

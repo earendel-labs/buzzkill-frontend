@@ -239,6 +239,7 @@ const ProfileTab = () => {
                             paddingY: 1,
                             display: "flex",
                             alignItems: "center",
+                            
                             justifyContent: "center",
                           }}
                         >

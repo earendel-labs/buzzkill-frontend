@@ -107,10 +107,11 @@ const BeePanelCard: React.FC = () => {
           sx={{
             width: "40%",
             padding: "0px",
-            boxShadow: `
-              0px 4px 4px rgba(0, 0, 0, 0.25),
-              -2px -2px 4px rgba(0, 0, 0, 0.25)
-            `,
+            boxShadow:
+              activeBeeImage !== "/NFTs/default-hatchling.png"
+                ? `0px 4px 4px rgba(0, 0, 0, 0.25),
+           -2px -2px 4px rgba(0, 0, 0, 0.25)`
+                : "none", // Remove shadow for default image
             borderRadius: "8px",
             "@media (min-width:1400px) and (max-height:900px)": {
               width: "35%",
@@ -126,7 +127,7 @@ const BeePanelCard: React.FC = () => {
               objectFit: "contain",
               height: "100%",
               width: "auto",
-              borderRadius: "8px",
+              borderRadius: "12px",
             }}
           />
         </Box>
@@ -192,12 +193,14 @@ const BeePanelCard: React.FC = () => {
                   "@media (min-width:1400px) and (max-height:900px)": {
                     fontSize: "1rem",
                   },
+                  whiteSpace: "pre-line", // Enables line breaks from \n
                 }}
               >
                 {bees.length > 0
                   ? "Select Your Hatchling"
-                  : "You have staked Hatchlings\nView them here"}
+                  : "You have staked Hatchlings\n View them here"}
               </Typography>
+
               <Box display="flex" justifyContent="center">
                 <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
               </Box>
