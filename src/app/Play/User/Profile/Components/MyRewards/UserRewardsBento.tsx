@@ -97,7 +97,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
           Sign-up or login to view your rewards
         </Typography>
         <Button
-          className="blueConnectWallet"
+          className="darkBlueButton"
           onClick={() => router.push("/")}
           sx={{ mt: 2 }}
         >
@@ -556,7 +556,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
 
                     {profileData?.invite_code ? (
                       <Button
-                        className="blueConnectWallet"
+                        className="blueButton"
                         onClick={copyInviteLink}
                         startIcon={<CopyIcon />}
                         aria-label="Copy invite link and invite friends"
