@@ -68,21 +68,20 @@ const RightButton: React.FC = () => {
     return (
       <Box
         sx={{
-          width: "100px",
+          width: "120px",
           height: "100px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        {/* Skeleton loader with '>' shape */}
         <Skeleton
           variant="rectangular"
-          width="50px"
+          width="68px"
           height="100px"
           sx={{
-            clipPath: "polygon(0 0, 50% 50%, 0 100%)", // Create the '>' shape
-            backgroundColor: "#cccccc", // Optional: Customize skeleton color
+            clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+            backgroundColor: "#242E4E",
           }}
         />
       </Box>

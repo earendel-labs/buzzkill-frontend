@@ -1,8 +1,8 @@
-// src/components/Card/ConfirmationModal.tsx
+"use client";
 
 import React from "react";
-import { Box, Typography, Button, Modal } from "@mui/material";
-import SemiTransparentCard from "../SemiTransaprentCard";
+import { Box, Typography, Button } from "@mui/material";
+import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -26,72 +26,61 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isConfirmLoading = false,
 }) => {
   return (
-    <Modal
+    <StyledModal
       open={open}
       onClose={onCancel}
-      aria-labelledby="confirmation-modal-title"
-      aria-describedby="confirmation-modal-description"
+      sx={{
+        padding: "30px",
+        maxWidth: "500px",
+        width: "90%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+      }}
     >
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          bgcolor: "rgba(0, 0, 0, 0.5)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1300,
-        }}
+      <Typography
+        id="confirmation-modal-title"
+        variant="h5"
+        component="h2"
+        align="center"
+        sx={{ fontWeight: "bold", color: "#f0c850" }}
       >
-        <SemiTransparentCard
-          transparency={1}
+        {title}
+      </Typography>
+      <Typography
+        id="confirmation-modal-description"
+        variant="body1"
+        align="center"
+        sx={{ fontSize: "1rem", color: "white" }}
+      >
+        {description}
+      </Typography>
+      <Box sx={{ display: "flex", gap: "20px" }}>
+        <Button
+          onClick={onCancel}
+          variant="outlined"
+          className="goldOutlinedButton"
           sx={{
-            maxWidth: "500px",
-            width: "90%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
-            padding: "30px",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            borderColor: "#c9a227",
+            color: "#f0c850",
           }}
         >
-          <Typography
-            id="confirmation-modal-title"
-            variant="h5"
-            component="h2"
-            align="center"
-            sx={{ fontWeight: "bold" }}
-          >
-            {title}
-          </Typography>
-          <Typography
-            id="confirmation-modal-description"
-            variant="body1"
-            align="center"
-            sx={{ fontSize: "1rem" }}
-          >
-            {description}
-          </Typography>
-          <Box sx={{ display: "flex", gap: "20px" }}>
-            <Button onClick={onCancel} variant="contained">
-              {cancelButtonText}
-            </Button>
-            <Button
-              onClick={onConfirm}
-              variant="contained"
-              color="primary"
-              disabled={isConfirmLoading}
-            >
-              {isConfirmLoading ? "Processing..." : confirmButtonText}
-            </Button>
-          </Box>
-        </SemiTransparentCard>
+          {cancelButtonText}
+        </Button>
+        <Button
+          onClick={onConfirm}
+          variant="contained"
+          disabled={isConfirmLoading}
+          className="redButton"
+          sx={{ fontWeight: "bold" }}
+        >
+          {isConfirmLoading ? "Processing..." : confirmButtonText}
+        </Button>
       </Box>
-    </Modal>
+    </StyledModal>
   );
 };
 

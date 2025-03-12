@@ -159,6 +159,34 @@ const buttonStyles = (theme: Theme) => ({
             background: "linear-gradient(180deg, #C93434 0%, #8B1919 100%)",
           },
         },
+        
+        "&.redButton": {
+          background: "linear-gradient(180deg, #E24848 0%, #9A1E1E 100%)",
+          color: "#fff",
+          fontWeight: "bold",
+          padding: "10px 24px",
+          borderRadius: "6px",
+          border: "1.5px solid #7D1A1A",
+          boxShadow: "inset 0px -3px 6px rgba(0, 0, 0, 0.3)",
+
+          "&:hover": {
+            background: "linear-gradient(180deg, #FF5E5E 0%, #B42323 100%)",
+            borderColor: "#B42323",
+            boxShadow: "inset 0px -2px 5px rgba(0, 0, 0, 0.25)",
+          },
+
+          "&:active": {
+            background: "linear-gradient(180deg, #C93434 0%, #8B1919 100%)",
+            borderColor: "#8B1919",
+            boxShadow: "inset 0px 2px 4px rgba(0, 0, 0, 0.4)",
+          },
+
+          "&.Mui-disabled": {
+            opacity: 0.6,
+            background: "linear-gradient(180deg, #E24848 0%, #9A1E1E 100%)",
+            boxShadow: "none",
+          },
+        },
 
         "&.primaryButton": {
           display: "flex",
@@ -173,7 +201,63 @@ const buttonStyles = (theme: Theme) => ({
             background: "linear-gradient(180deg, #F1C75B 0%, #BE8435 100%)",
           },
         },
+        "&.goldButtonHorizontal": {
+          background: "linear-gradient(to right, #c9a227, #f0c850)", // Default gold gradient
+          color: "black",
+          fontWeight: "bold",
+          padding: "8px 30px",
+          borderRadius: "6px",
+          border: "1px solid #8F6224",
+          boxShadow: "inset 0px -3px 6px rgba(0, 0, 0, 0.3)", // Creates a subtle depth effect
 
+          "&:hover": {
+            background: "linear-gradient(to right, #e1bb50, #f5d470)", // Lighter gold gradient
+            borderColor: "#e1bb50",
+            boxShadow: "inset 0px -2px 5px rgba(0, 0, 0, 0.25)", // Softens the shadow on hover
+          },
+
+          "&:active": {
+            background: "linear-gradient(to right, #f1c75b, #ffde80)", // Pressed state lighter gold
+            borderColor: "#f1c75b",
+            boxShadow: "inset 0px 2px 4px rgba(0, 0, 0, 0.4)", // Press effect for depth
+          },
+
+          "&.Mui-disabled": {
+            opacity: 0.6,
+            background: "linear-gradient(to right, #c9a227, #f0c850)", // Keeps original gold when disabled
+            boxShadow: "none", // Removes shadow effect for disabled state
+          },
+        },
+        "&.goldOutlinedButton": {
+          color: "#f0c850",
+          padding: "10px 20px",
+          border: "1.5px solid #c9a227",
+          fontWeight: "bold",
+          borderRadius: "6px",
+          background: "transparent",
+          transition: "all 0.2s ease-in-out",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)", // Subtle outer shadow for 3D depth
+
+          "&:hover": {
+            background: "rgba(240, 200, 80, 0.1)", // Light gold glow effect
+            borderColor: "#f0c850",
+            boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.4)", // Slightly stronger shadow on hover
+          },
+
+          "&:active": {
+            background: "rgba(240, 200, 80, 0.2)", // Slightly deeper glow on press
+            borderColor: "#d4a141",
+            boxShadow: "inset 0px 2px 4px rgba(0, 0, 0, 0.5)", // Inset shadow for pressed effect
+          },
+
+          "&.Mui-disabled": {
+            color: "#a88b4e",
+            borderColor: "#a88b4e",
+            background: "transparent",
+            opacity: 0.5,
+            boxShadow: "none", // Remove shadow for disabled state
+          },
+        },
         // **Figma Button - Only This One Uses the Special Disabled State**
         "&.figmaButton": {
           background:
