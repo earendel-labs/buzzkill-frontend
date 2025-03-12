@@ -1,3 +1,5 @@
+// StatsUpgradedCard.tsx
+// (Updated with slightly tighter spacing and the stroke effect you provided)
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 
@@ -16,13 +18,13 @@ const StatUpgradeCard: React.FC<StatUpgradeCardProps> = ({
   value,
   onClick,
 }) => {
-  // Darker shade of the color for stroke
-  const darkerColor = `rgba(0, 0, 0, 0.8)`;
+  const darkerColor = "rgba(0, 0, 0, 0.8)";
 
   return (
     <Paper
       sx={{
-        p: 2,
+        p: { xs: 2, md: 2 },
+        mb: 1,
         bgcolor: "#1a3045",
         textAlign: "center",
         cursor: "pointer",
@@ -30,13 +32,11 @@ const StatUpgradeCard: React.FC<StatUpgradeCardProps> = ({
       }}
       onClick={onClick}
     >
-      {/* Icon + Label */}
       <Box
         sx={{
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "center",
-          mb: 1,
         }}
       >
         <Box
@@ -65,23 +65,16 @@ const StatUpgradeCard: React.FC<StatUpgradeCardProps> = ({
         </Typography>
       </Box>
 
-      {/* Stat Value with Stroke Effect */}
       <Typography
         variant="h5"
         sx={{
           fontWeight: "bold",
           color,
           fontSize: "3.5rem",
-          mb: 1,
-          textShadow: `-1px -1px 0 ${darkerColor}, 1px -1px 0 ${darkerColor}, -1px 1px 0 ${darkerColor}, 1px 1px 0 ${darkerColor}`, // Thinner stroke effect
+          textShadow: `-1px -1px 0 ${darkerColor}, 1px -1px 0 ${darkerColor}, -1px 1px 0 ${darkerColor}, 1px 1px 0 ${darkerColor}`,
         }}
       >
         {value}
-      </Typography>
-
-      {/* Upgrade Message */}
-      <Typography variant="body2" sx={{ color: "#f0c850" }}>
-        Click to upgrade
       </Typography>
     </Paper>
   );

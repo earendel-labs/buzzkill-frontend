@@ -36,17 +36,12 @@ const SkillsCard: React.FC<SkillsCardProps> = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-end", // Aligns text and icons properly
+          alignItems: "flex-end",
           mb: 1,
         }}
       >
         {/* Icon + Label */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-end", // Ensures icon and text align at the bottom
-          }}
-        >
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
           <Box
             sx={{
               display: "flex",
@@ -61,7 +56,7 @@ const SkillsCard: React.FC<SkillsCardProps> = ({
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: "1.25rem",
+              fontSize: { xl: "1.25rem", lg: "1.0rem" },
               color: "white",
               display: "flex",
               alignItems: "center",
@@ -76,7 +71,7 @@ const SkillsCard: React.FC<SkillsCardProps> = ({
         <Typography
           sx={{
             fontWeight: "bold",
-            fontSize: "1.1rem",
+            fontSize: { xs: "1.1rem", lg: "1rem" },
             color: "white",
           }}
         >
@@ -114,10 +109,6 @@ const SkillsCard: React.FC<SkillsCardProps> = ({
           />
         )}
       </Box>
-
-      <Typography variant="body2" sx={{ color: "Gold.main" }}>
-        Click to upgrade max capacity
-      </Typography>
     </Paper>
   );
 };

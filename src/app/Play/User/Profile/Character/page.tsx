@@ -1,29 +1,31 @@
+// CharacterDashboard.tsx
 "use client";
-
-import type React from "react";
-import { useState } from "react";
-import { Box, Grid, Tabs, Tab } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Grid, Tabs, Tab, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Layout from "@/components/Layouts/Layout/Layout";
-import { BeeStats } from "./components/types";
+import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
+import LeftButton from "@/components/Buttons/CarouselNavigation/LeftButton";
+import RightButton from "@/components/Buttons/CarouselNavigation/RightButton";
+import UpgradeDialog from "./components/UpgradeDialog";
 import BeeHeader from "./components/BeeHeader";
 import StatsTab from "./components/StatsTab";
 import TraitsTab from "./components/TraitsTab";
 import UpgradesTab from "./components/UpgradesTab";
-import UpgradeDialog from "./components/UpgradeDialog";
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
-import LeftButton from "@/components/Buttons/CarouselNavigation/LeftButton";
-import RightButton from "@/components/Buttons/CarouselNavigation/RightButton";
+import type { BeeStats } from "./components/types";
 
 export default function CharacterDashboard() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [beeStats, setBeeStats] = useState<BeeStats>({
     id: "#522",
     name: "Worker Bee",
     level: 2,
     xp: 150,
     maxXp: 250,
-    attack: 30,
-    defence: 30,
-    foraging: 30,
+    attack: 86,
+    defence: 52,
+    foraging: 40,
     energy: 82,
     maxEnergy: 90,
     health: 24,
@@ -54,25 +56,8 @@ export default function CharacterDashboard() {
     setTabValue(newValue);
   };
 
-  const initializeBee = () => {
-    setBeeStats((prev) => ({
-      ...prev,
-      attack: Math.floor(Math.random() * 20) + 20,
-      defence: Math.floor(Math.random() * 20) + 20,
-      foraging: Math.floor(Math.random() * 20) + 20,
-      energy: Math.floor(Math.random() * 30) + 70,
-      maxEnergy: 100,
-      health: Math.floor(Math.random() * 20) + 40,
-      maxHealth: 60,
-      productivity: Math.floor(Math.random() * 15) + 15,
-      currentProductivity: Math.floor(Math.random() * 20) + 30,
-      maxProductivity: 70,
-      initialized: true,
-    }));
-  };
-
   const openUpgradeDialog = (stat: string) => {
-    setSelectedStat(stat);
+    setSelectedStat(stat.toLowerCase());
     setUpgradeDialogOpen(true);
   };
 
@@ -80,7 +65,6 @@ export default function CharacterDashboard() {
     const cost = 500;
     if (honey >= cost) {
       setHoney(honey - cost);
-
       setBeeStats((prev) => {
         switch (selectedStat) {
           case "attack":
@@ -99,36 +83,52 @@ export default function CharacterDashboard() {
             return prev;
         }
       });
-
       setUpgradeDialogOpen(false);
     }
   };
 
   return (
     <Layout>
-      <Box sx={{ mx: { xs: 1, md: 2 }, my: 4 }}>
-        <SemiTransparentCard sx={{ px: 2, py: 4 }}>
-          <Grid container alignItems="center">
-            {/* Left Arrow using LeftButton Component */}
-            <Grid item xs={1} display="flex" justifyContent="center">
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          // Tighter top/bottom margin at lg for vertical fit
+          my: { xs: 6, sm: 5, md: 4, lg: 2, xl: 4 },
+          px: { xs: 2, sm: 3, md: 3, lg: 2, xl: 3 },
+        }}
+      >
+        <SemiTransparentCard
+          sx={{
+            // Slightly tighter padding at lg
+            px: { xs: 2, sm: 2, md: 3, lg: 2 },
+            py: { xs: 2, sm: 2, md: 3, lg: 2 },
+            width: "100%",
+            maxWidth: "1400px",
+          }}
+        >
+          <Grid container alignItems="center" spacing={{ xs: 2, md: 3 }}>
+            <Grid
+              item
+              xs={1}
+              display={{ xs: "none", md: "flex" }}
+              justifyContent="center"
+            >
               <LeftButton />
             </Grid>
 
-            {/* Main Content */}
-            <Grid item xs={10}>
-              <Grid container spacing={3}>
-                {/* Left Column - Header + Image + Traits */}
+            <Grid item xs={isSmallScreen ? 12 : 10}>
+              <Grid container spacing={{ xs: 3, md: 4, lg: 3 }}>
                 <Grid item xs={12} md={5}>
                   <BeeHeader
                     beeStats={beeStats}
                     honey={honey}
-                    initializeBee={initializeBee}
+                    initializeBee={() => {}}
                   />
                 </Grid>
-
-                {/* Right Column - Tabs + Content */}
                 <Grid item xs={12} md={7}>
-                  <Box sx={{ mb: 2 }}>
+                  <Box sx={{ mb: { xs: 2, md: 3 } }}>
                     <Tabs
                       value={tabValue}
                       onChange={handleTabChange}
@@ -147,9 +147,7 @@ export default function CharacterDashboard() {
                       openUpgradeDialog={openUpgradeDialog}
                     />
                   )}
-
                   {tabValue === 1 && <TraitsTab beeStats={beeStats} />}
-
                   {tabValue === 2 && (
                     <UpgradesTab
                       beeStats={beeStats}
@@ -160,8 +158,12 @@ export default function CharacterDashboard() {
               </Grid>
             </Grid>
 
-            {/* Right Arrow using RightButton Component */}
-            <Grid item xs={1} display="flex" justifyContent="center">
+            <Grid
+              item
+              xs={1}
+              display={{ xs: "none", md: "flex" }}
+              justifyContent="center"
+            >
               <RightButton />
             </Grid>
           </Grid>
