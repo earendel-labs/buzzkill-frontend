@@ -1,4 +1,3 @@
-// CharacterDashboard.tsx
 "use client";
 import React, { useState } from "react";
 import { Box, Grid, Tabs, Tab, useMediaQuery } from "@mui/material";
@@ -17,6 +16,7 @@ import type { BeeStats } from "./components/types";
 export default function CharacterDashboard() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [beeStats, setBeeStats] = useState<BeeStats>({
     id: "#522",
     name: "Worker Bee",
@@ -93,47 +93,92 @@ export default function CharacterDashboard() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "flex-start",
-          // Tighter top/bottom margin at lg for vertical fit
-          my: { xs: 6, sm: 5, md: 4, lg: 2, xl: 4 },
-          px: { xs: 2, sm: 3, md: 3, lg: 2, xl: 3 },
+          alignItems: "center",
+          px: { xs: 2, sm: 3, md: 1 },
+          py: { xs: 2, sm: 2, md: 3 },
+          width: "100%",
         }}
       >
         <SemiTransparentCard
           sx={{
-            // Slightly tighter padding at lg
-            px: { xs: 2, sm: 2, md: 3, lg: 2 },
-            py: { xs: 2, sm: 2, md: 3, lg: 2 },
             width: "100%",
-            maxWidth: "1400px",
+            maxWidth: 1400,
+            // Force a consistent height
+            minHeight: { xs: 500, md: 600 },
+            // If you want a strict fixed height plus scroll, use this instead:
+            // height: { xs: 600, md: 650 },
+            // overflowY: "auto",
+            py: { xs: 1.5, sm: 1.5, md: 1 },
+            px: { xs: 1.5, sm: 2, md: 1 },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Grid container alignItems="center" spacing={{ xs: 2, md: 3 }}>
-            <Grid
-              item
-              xs={1}
-              display={{ xs: "none", md: "flex" }}
-              justifyContent="center"
-            >
+          <Grid container alignItems="center" spacing={2}>
+            {/* Left Arrow */}
+            <Grid item>
               <LeftButton />
             </Grid>
 
-            <Grid item xs={isSmallScreen ? 12 : 10}>
-              <Grid container spacing={{ xs: 3, md: 4, lg: 3 }}>
-                <Grid item xs={12} md={5}>
+            {/* Middle Content */}
+            <Grid
+              item
+              xs
+              sx={{
+                textAlign: "left",
+              }}
+            >
+              <Grid
+                container
+                alignItems="flex-start"
+                spacing={{ xs: 2, md: 3 }}
+              >
+                <Grid
+                  item
+                  xs={12}
+                  md={5}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
                   <BeeHeader
                     beeStats={beeStats}
                     honey={honey}
                     initializeBee={() => {}}
                   />
                 </Grid>
-                <Grid item xs={12} md={7}>
-                  <Box sx={{ mb: { xs: 2, md: 3 } }}>
+
+                {/* Tabs + Content */}
+                <Grid
+                  item
+                  xs={12}
+                  md={7}
+                  sx={{ display: "flex", flexDirection: "column" }}
+                >
+                  <Box
+                    sx={{
+                      py: { xs: 1, sm: 1, md: 1.25 },
+                      mb: { xs: 1, md: 1 },
+                    }}
+                  >
                     <Tabs
                       value={tabValue}
                       onChange={handleTabChange}
                       variant="fullWidth"
-                      sx={{ minHeight: 40 }}
+                      sx={{
+                        minHeight: 36,
+                        "& .MuiTab-root": {
+                          fontSize: "1.1rem",
+                          minHeight: 36,
+                          padding: "6px 12px",
+                        },
+                        "& .MuiTabs-indicator": {
+                          height: 3,
+                        },
+                      }}
                     >
                       <Tab label="Stats" />
                       <Tab label="Traits" />
@@ -141,29 +186,28 @@ export default function CharacterDashboard() {
                     </Tabs>
                   </Box>
 
-                  {tabValue === 0 && (
-                    <StatsTab
-                      beeStats={beeStats}
-                      openUpgradeDialog={openUpgradeDialog}
-                    />
-                  )}
-                  {tabValue === 1 && <TraitsTab beeStats={beeStats} />}
-                  {tabValue === 2 && (
-                    <UpgradesTab
-                      beeStats={beeStats}
-                      openUpgradeDialog={openUpgradeDialog}
-                    />
-                  )}
+                  {/* Tab Content */}
+                  <Box sx={{ flex: 1, width: "100%" }}>
+                    {tabValue === 0 && (
+                      <StatsTab
+                        beeStats={beeStats}
+                        openUpgradeDialog={openUpgradeDialog}
+                      />
+                    )}
+                    {tabValue === 1 && <TraitsTab beeStats={beeStats} />}
+                    {tabValue === 2 && (
+                      <UpgradesTab
+                        beeStats={beeStats}
+                        openUpgradeDialog={openUpgradeDialog}
+                      />
+                    )}
+                  </Box>
                 </Grid>
               </Grid>
             </Grid>
 
-            <Grid
-              item
-              xs={1}
-              display={{ xs: "none", md: "flex" }}
-              justifyContent="center"
-            >
+            {/* Right Arrow */}
+            <Grid item>
               <RightButton />
             </Grid>
           </Grid>

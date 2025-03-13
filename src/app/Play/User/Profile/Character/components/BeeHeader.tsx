@@ -1,4 +1,3 @@
-// BeeHeader.tsx
 "use client";
 import React from "react";
 import Image from "next/image";
@@ -15,6 +14,7 @@ import {
   BarChart as ActivityIcon,
   Hexagon as HexagonIcon,
 } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 import type { BeeStats } from "./types";
 
 interface BeeHeaderProps {
@@ -28,18 +28,28 @@ export default function BeeHeader({
   honey,
   initializeBee,
 }: BeeHeaderProps) {
-  return (
-    <Box>
-      {/* A bit more padding on smaller screens, less on bigger */}
-      <Box sx={{ p: { xs: 2, md: 3 }, textAlign: "center" }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          {beeStats.name} {beeStats.id}
-        </Typography>
-      </Box>
+  const theme = useTheme();
 
-      {/* Make image smaller on small screens, normal on md+ */}
+  return (
+    <Box
+      // Reduced padding on larger screens to make it tighter
+      sx={{
+        py: {
+          xs: 1,
+          md: 1.25,
+        },
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+        {beeStats.name} {beeStats.id}
+      </Typography>
+
+      {/* Adjust overall width on smaller screens to leave more space */}
       <Box
         sx={{
+          mt: 1,
+          mb: 2,
           position: "relative",
           aspectRatio: { xs: "1/1.3", sm: "1/1.2", md: "1/1" },
           borderRadius: "12px",
@@ -48,9 +58,9 @@ export default function BeeHeader({
           alignItems: "center",
           justifyContent: "center",
           boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.3)",
-          mx: { xs: "auto", md: 0 },
+          mx: "auto",
           width: "100%",
-          maxWidth: { xs: 300, sm: 400, md: "100%" },
+          maxWidth: { xs: 250, sm: 320, md: 340, lg: 360 },
         }}
       >
         <Box
@@ -58,7 +68,6 @@ export default function BeeHeader({
             position: "absolute",
             inset: 0,
             borderRadius: "8px",
-            padding: "4px",
             background:
               "linear-gradient(135deg, #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
             content: '""',
@@ -80,13 +89,18 @@ export default function BeeHeader({
             src="/NFTs/Workers/JungleWorker.png"
             alt="Bee Warrior NFT"
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
             style={{ objectFit: "cover" }}
           />
         </Box>
       </Box>
 
-      <Box sx={{ p: { xs: 2, md: 3 } }}>
+      <Box
+        // Reduced padding on larger screens to make it tighter
+        sx={{ p: { xs: 1, md: 0 } }}
+      >
         <Box
+          // Align items so Level text and Chip/Button line up
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -95,32 +109,55 @@ export default function BeeHeader({
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <HexagonIcon sx={{ color: "#f0c850", fontSize: "2rem" }} />
             <Typography
-              component="div"
+              variant="h6"
               sx={{
-                mb: 1.4,
                 fontWeight: "bold",
                 color: "white",
-                display: "flex",
-                alignItems: "flex-end",
+                lineHeight: 1.0,
               }}
             >
-              <HexagonIcon sx={{ color: "#f0c850", marginRight: 1 }} />
-              <Typography
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  lineHeight: 1.0,
-                }}
-              >
-                Level {beeStats.level}
-              </Typography>
+              Level {beeStats.level}
             </Typography>
           </Box>
-          <Chip
-            label={beeStats.initialized ? "Initialized" : "Uninitialized"}
-            size="small"
-          />
+
+          {/* If uninitialized, show button; otherwise show chip */}
+          {!beeStats.initialized ? (
+            <Button
+              variant="contained"
+              onClick={initializeBee}
+              sx={{
+                px: 2,
+                py: 1,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                background: theme.palette.Gold.main,
+                color: "black",
+                borderRadius: "16px",
+                textTransform: "none",
+              }}
+            >
+              Uninitialized
+            </Button>
+          ) : (
+            <Chip
+              label="Initialized"
+              sx={{
+                fontSize: "1rem",
+                padding: "8px 16px",
+                backgroundColor: theme.palette.Blue.main,
+                boxShadow:
+                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)", // 3D effect
+                "& .MuiLinearProgress-bar": {
+                  background: "linear-gradient(to right, #f0c850, #c9a227)", // Keep gold gradient
+                  boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)", // 3D highlight effect
+                },
+                color: "white",
+                fontWeight: "bold",
+              }}
+            />
+          )}
         </Box>
 
         <Box sx={{ mb: 2 }}>
@@ -132,20 +169,28 @@ export default function BeeHeader({
               {beeStats.xp}/{beeStats.maxXp}
             </Typography>
           </Box>
-          <LinearProgress
-            variant="determinate"
-            value={(beeStats.xp / beeStats.maxXp) * 100}
-            sx={{
-              height: 8,
-              borderRadius: "4px",
-              "& .MuiLinearProgress-bar": {
-                backgroundImage: "linear-gradient(to right, #c9a227, #f0c850)",
-              },
-            }}
-          />
+          <Box sx={{ position: "relative" }}>
+            <Box sx={{ position: "relative" }}>
+              <LinearProgress
+                variant="determinate"
+                value={(beeStats.xp / beeStats.maxXp) * 100}
+                sx={{
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: "rgba(0, 121, 145, 0.4)", // Background color effect from first code
+                  boxShadow:
+                    "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)", // 3D effect
+                  "& .MuiLinearProgress-bar": {
+                    background: "linear-gradient(to right, #f0c850, #c9a227)", // Keep gold gradient
+                    boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)", // 3D highlight effect
+                  },
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+        {/* <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
           <Box
             sx={{
               borderRadius: "50%",
@@ -171,50 +216,24 @@ export default function BeeHeader({
               {honey.toLocaleString()}
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
 
-        <Grid container spacing={1} sx={{ mb: 2 }}>
+        <Grid container spacing={1} sx={{}}>
           {Object.entries(beeStats.traits).map(([key, value]) => (
             <Grid item xs={6} key={key}>
-              <Paper sx={{ p: 1.5, bgcolor: "#1a3045" }}>
-                <Typography variant="body2" sx={{ color: "#f0c850", mb: 0.5 }}>
+              <Paper sx={{ p: 1.25, bgcolor: "#1a3045" }}>
+                <Typography variant="body2" sx={{ color: "#f0c850", mb: 0.25 }}>
                   {key
                     .replace(/([A-Z])/g, " $1")
                     .replace(/^./, (str) => str.toUpperCase())}
                 </Typography>
-                <Typography variant="body2" noWrap>
+                <Typography variant="body1" noWrap sx={{ fontWeight: "bold" }}>
                   {value}
                 </Typography>
               </Paper>
             </Grid>
           ))}
         </Grid>
-
-        {!beeStats.initialized ? (
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={initializeBee}
-            sx={{
-              background: "linear-gradient(to right, #c9a227, #f0c850)",
-              color: "black",
-              fontWeight: "bold",
-              py: 1,
-            }}
-          >
-            Initialize Bee
-          </Button>
-        ) : (
-          <Button
-            fullWidth
-            className="blueButton"
-            onClick={() => {}}
-            sx={{ py: 1 }}
-            startIcon={<ActivityIcon />}
-          >
-            View Activity
-          </Button>
-        )}
       </Box>
     </Box>
   );

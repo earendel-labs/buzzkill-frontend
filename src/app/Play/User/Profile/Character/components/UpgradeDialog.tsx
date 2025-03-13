@@ -88,6 +88,7 @@ export default function UpgradeDialog({
                 alt="Honey"
                 width={38}
                 height={38}
+                style={{ width: "auto", height: "auto" }} // Ensures aspect ratio is maintained
               />
             </Box>
             <Box>

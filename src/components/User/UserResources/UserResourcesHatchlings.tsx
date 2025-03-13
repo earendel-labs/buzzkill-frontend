@@ -81,11 +81,9 @@ const UserResourceBar: React.FC = () => {
                 <Image
                   src="/Icons/Resources/HoneyToken.png"
                   alt="HoneyToken"
-                  width={32}
-                  height={32}
+                  fill
+                  sizes="(max-width: 768px) 32px, 32px"
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "contain",
                   }}
                 />
