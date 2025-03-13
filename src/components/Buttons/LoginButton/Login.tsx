@@ -17,31 +17,36 @@ import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import CustomAvatar from "@/components/User/CustomAvatar";
 import { useRouter } from "next/navigation";
-
 import { signOut, signIn } from "next-auth/react";
 import { useDisconnect } from "wagmi";
-
-// Import the useProfileContext hook
 import { useProfileContext } from "@/context/ProfileContext";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import DisconnectDialog from "@/components/Modals/DisconnectDialog/DisconnectDialog";
 
 interface LoginButtonProps {
-  loginButtonText?: string; // Optional prop for custom button text
-  loading?: boolean; // Add loading prop to handle skeleton state
+  loginButtonText?: string;
+  loading?: boolean;
+  isMenu?: boolean; // If true, hide down arrow and use disconnect popup
 }
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
   loginButtonText,
   loading = false,
+  isMenu = false,
 }) => {
-  const theme = useTheme(); // Access MUI theme
+  const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openDisconnectDialog, setOpenDisconnectDialog] = useState(false);
   const open = Boolean(anchorEl);
   const router = useRouter();
+
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
-  const { disconnect } = useDisconnect();
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -59,9 +64,10 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     router.push("/Play/User/Profile/MyRewards");
   };
 
-  const handleLogout = async () => {
-    disconnect(); // Disconnect the RainbowKit wallet
+  const { disconnect } = useDisconnect();
 
+  const handleLogout = async () => {
+    disconnect();
     try {
       signOut({
         callbackUrl: `${window.location.origin}/?loggingOut=true`,
@@ -71,7 +77,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     }
   };
 
-  // Access profileData and loadingProfile from ProfileContext
+  const handleOpenDisconnectDialog = () => {
+    setOpenDisconnectDialog(true);
+  };
+
+  const handleCloseDisconnectDialog = () => {
+    setOpenDisconnectDialog(false);
+  };
+
   const { profileData, loadingProfile } = useProfileContext();
 
   return (
@@ -84,19 +97,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
         authenticationStatus,
         mounted,
       }) => {
-        // Check if component is mounted and authentication status is either authenticated or undefined
         const ready = mounted && authenticationStatus !== "loading";
         const connected =
           ready &&
           account &&
           chain &&
           (authenticationStatus === "authenticated" || !authenticationStatus);
-        const router = useRouter();
-
-        // Determine if the component should show a loading state
         const isLoading = !mounted || !ready || loading || loadingProfile;
 
-        // Show skeleton loader if the component is not ready or custom loading state is true
         if (isLoading) {
           return (
             <Skeleton
@@ -113,7 +121,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
         const handleConnect = async () => {
           if (account) {
-            // After wallet is connected, initiate NextAuth sign in
             await signIn("credentials", {
               address: account.address,
             });
@@ -130,7 +137,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
             ) : (
               <Box>
                 <Button
-                  onClick={handleMenuOpen}
+                  onClick={isMenu ? handleOpenDisconnectDialog : handleMenuOpen}
                   variant="contained"
                   className="blueConnectWallet"
                   sx={{
@@ -165,318 +172,314 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       color: theme.palette.text.primary,
                     }}
                   >
-                    {/* Display account_name if available, else displayName */}
                     {profileData && profileData.account_name
                       ? profileData.account_name
                       : account.displayName}
                   </Typography>
-                  <ArrowDropDownIcon
-                    sx={{
-                      color: theme.palette.text.primary,
-                      ml: "auto",
-                    }}
-                  />
+                  {!isMenu && (
+                    <ArrowDropDownIcon
+                      sx={{
+                        color: theme.palette.text.primary,
+                        ml: "auto",
+                      }}
+                    />
+                  )}
                 </Button>
 
-                {/* Profile dropdown menu */}
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleMenuClose}
-                  PaperProps={{
-                    elevation: 2,
-                    sx: {
-                      backgroundColor: theme.palette.DarkBlue.main,
-                      borderRadius: "0px 0px 6px 6px",
-                      borderColor: "#2e447a",
-                      borderWidth: "1.5px",
-                      borderTopStyle: "none",
-                      minWidth: "210px",
-                      color: theme.palette.text.primary,
-                      mt: -1,
-                      padding: "0px 1px",
-                      "& .MuiAvatar-root": {
-                        width: 24,
-                        height: 24,
-                        ml: 0,
-                        mb: 1,
-                        mr: 1,
-                      },
-                    },
-                  }}
-                  transformOrigin={{
-                    horizontal: "right",
-                    vertical: "top",
-                  }}
-                  anchorOrigin={{
-                    horizontal: "right",
-                    vertical: "bottom",
-                  }}
-                >
-                  {/* Account balance */}
-                  <MenuItem
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      padding: "10px 16px",
-                      fontSize: "1.2rem",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
+                {!isMenu && (
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleMenuClose}
+                    PaperProps={{
+                      elevation: 2,
+                      sx: {
+                        backgroundColor: theme.palette.DarkBlue.main,
+                        borderRadius: "0px 0px 6px 6px",
+                        borderColor: "#2e447a",
+                        borderWidth: "1.5px",
+                        borderTopStyle: "none",
+                        minWidth: "210px",
+                        color: theme.palette.text.primary,
+                        mt: -1,
+                        padding: "0px 1px",
+                        "& .MuiAvatar-root": {
+                          width: 24,
+                          height: 24,
+                          ml: 0,
+                          mb: 1,
+                          mr: 1,
+                        },
                       },
                     }}
-                  >
-                    <Typography
-                      sx={{ textAlign: "left", lineHeight: "1.7rem" }}
-                    >
-                      Balance: {account.displayBalance}
-                    </Typography>
-                  </MenuItem>
-
-                  {/* Chain selector */}
-                  <MenuItem
-                    onClick={openChainModal}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      padding: "10px 0px 10px 18px",
-                      fontSize: "1.2rem",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
+                    transformOrigin={{
+                      horizontal: "right",
+                      vertical: "top",
+                    }}
+                    anchorOrigin={{
+                      horizontal: "right",
+                      vertical: "bottom",
                     }}
                   >
-                    {chain.hasIcon && (
-                      <Avatar
-                        src={chain.iconUrl}
-                        alt={chain.name ?? "Chain icon"}
-                        sx={{
-                          width: "22px !important",
-                          height: "22px !important",
-                          backgroundColor: chain.iconBackground,
-                        }}
-                      />
-                    )}
-                    <Typography
-                      variant="body1"
+                    <MenuItem
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        padding: "0px 4px",
-                        lineHeight: "1.7rem",
+                        justifyContent: "left",
+                        padding: "10px 16px",
+                        fontSize: "1.2rem",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                      }}
+                    >
+                      <Typography
+                        sx={{ textAlign: "left", lineHeight: "1.7rem" }}
+                      >
+                        Balance: {account.displayBalance}
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={openChainModal}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "left",
+                        padding: "10px 0px 10px 18px",
+                        fontSize: "1.2rem",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                      }}
+                    >
+                      {chain.hasIcon && (
+                        <Avatar
+                          src={chain.iconUrl}
+                          alt={chain.name ?? "Chain icon"}
+                          sx={{
+                            width: "22px !important",
+                            height: "22px !important",
+                            backgroundColor: chain.iconBackground,
+                          }}
+                        />
+                      )}
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          padding: "0px 4px",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        {chain.name}
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleProfileNavigation}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "left",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                        padding: "10px 16px",
                         fontSize: "1.2rem",
                       }}
                     >
-                      {chain.name}
-                    </Typography>
-                  </MenuItem>
-
-                  {/* Profile Section */}
-                  <MenuItem
-                    onClick={handleProfileNavigation}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
-                      padding: "10px 16px",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <AccountCircleIcon
+                      <ListItemIcon
                         sx={{
-                          color: theme.palette.Orange.main,
-                          fontSize: "1.7rem",
+                          minWidth: "36px",
+                          display: "flex",
+                          alignItems: "center",
                         }}
-                      />
-                    </ListItemIcon>
-                    <Typography
-                      variant="body1"
+                      >
+                        <AccountCircleIcon
+                          sx={{
+                            color: theme.palette.Orange.main,
+                            fontSize: "1.7rem",
+                          }}
+                        />
+                      </ListItemIcon>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        My Profile
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleMyBeesNavigation}
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        lineHeight: "1.7rem",
+                        justifyContent: "left",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                        padding: "10px 16px",
                         fontSize: "1.2rem",
                       }}
                     >
-                      My Profile
-                    </Typography>
-                  </MenuItem>
-
-                  {/* MyBees Option */}
-                  <MenuItem
-                    onClick={handleMyBeesNavigation}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
-                      padding: "10px 16px",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <SportsEsportsRoundedIcon
+                      <ListItemIcon
                         sx={{
-                          color: theme.palette.Orange.main,
-                          fontSize: "1.7rem",
+                          minWidth: "36px",
+                          display: "flex",
+                          alignItems: "center",
                         }}
-                      />
-                    </ListItemIcon>
-                    <Typography
-                      variant="body1"
+                      >
+                        <SportsEsportsRoundedIcon
+                          sx={{
+                            color: theme.palette.Orange.main,
+                            fontSize: "1.7rem",
+                          }}
+                        />
+                      </ListItemIcon>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        My Bees
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleMyRewardsNavigation}
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        lineHeight: "1.7rem",
+                        justifyContent: "left",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                        padding: "10px 16px",
                         fontSize: "1.2rem",
                       }}
                     >
-                      My Bees
-                    </Typography>
-                  </MenuItem>
-
-                  {/* MyRewards Option */}
-                  <MenuItem
-                    onClick={handleMyRewardsNavigation}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
-                      padding: "10px 16px",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <WaterDropRoundedIcon
+                      <ListItemIcon
                         sx={{
-                          color: theme.palette.Orange.main,
-                          fontSize: "1.7rem",
+                          minWidth: "36px",
+                          display: "flex",
+                          alignItems: "center",
                         }}
-                      />
-                    </ListItemIcon>
-                    <Typography
-                      variant="body1"
+                      >
+                        <WaterDropRoundedIcon
+                          sx={{
+                            color: theme.palette.Orange.main,
+                            fontSize: "1.7rem",
+                          }}
+                        />
+                      </ListItemIcon>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        My Rewards
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        lineHeight: "1.7rem",
+                        justifyContent: "left",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
+                        padding: "10px 16px",
                         fontSize: "1.2rem",
                       }}
                     >
-                      My Rewards
-                    </Typography>
-                  </MenuItem>
-
-                  {/* Settings Option */}
-                  <MenuItem
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
-                      padding: "10px 16px",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <SettingsIcon
+                      <ListItemIcon
                         sx={{
-                          color: theme.palette.Orange.main,
-                          fontSize: "1.7rem",
+                          minWidth: "36px",
+                          display: "flex",
+                          alignItems: "center",
                         }}
-                      />
-                    </ListItemIcon>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        lineHeight: "1.7rem",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      Settings
-                    </Typography>
-                  </MenuItem>
-
-                  {/* Logout button */}
-                  <MenuItem
-                    onClick={handleLogout}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "left",
-                      padding: "10px 16px",
-
-                      fontSize: "1.2rem",
-                      "&:hover": {
-                        backgroundColor: theme.palette.DarkOrange.main,
-                      },
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PowerSettingsNewRoundedIcon
+                      >
+                        <SettingsIcon
+                          sx={{
+                            color: theme.palette.Orange.main,
+                            fontSize: "1.7rem",
+                          }}
+                        />
+                      </ListItemIcon>
+                      <Typography
+                        variant="body1"
                         sx={{
-                          color: theme.palette.Orange.main,
-                          fontSize: "1.7rem",
+                          display: "flex",
+                          alignItems: "center",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
                         }}
-                      />
-                    </ListItemIcon>
-                    <Typography
-                      variant="body1"
+                      >
+                        Settings
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleLogout}
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        lineHeight: "1.7rem",
+                        justifyContent: "left",
+                        padding: "10px 16px",
                         fontSize: "1.2rem",
+                        "&:hover": {
+                          backgroundColor: theme.palette.DarkOrange.main,
+                        },
                       }}
                     >
-                      Logout
-                    </Typography>
-                  </MenuItem>
-                </Menu>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: "36px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <PowerSettingsNewRoundedIcon
+                          sx={{
+                            color: theme.palette.Orange.main,
+                            fontSize: "1.7rem",
+                          }}
+                        />
+                      </ListItemIcon>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          lineHeight: "1.7rem",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        Logout
+                      </Typography>
+                    </MenuItem>
+                  </Menu>
+                )}
+
+                {isMenu && (
+                  <DisconnectDialog
+                    open={openDisconnectDialog}
+                    onClose={handleCloseDisconnectDialog}
+                    onDisconnect={handleLogout}
+                  />
+                )}
               </Box>
             )}
           </Box>
