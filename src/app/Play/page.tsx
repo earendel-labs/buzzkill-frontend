@@ -15,6 +15,7 @@ import Image from "next/image";
 import { logger } from "@/utils/logger";
 import VerifyPartnerNftButton from "@/components/Buttons/VerifyPartnerNFT/VerifyPartnerNFT";
 import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel";
+import GoldOutlinedButton from "@/components/Buttons/GoldOutlinedButton/GoldOutlinedButton";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -168,6 +169,7 @@ const Play: React.FC = () => {
         text="Azure Reef"
         navigate={navigate}
       />
+
       <LeftPanel />
       <BottomBar />
     </GameLayout>

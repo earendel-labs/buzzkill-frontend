@@ -10,10 +10,7 @@ import {
   Grid,
   LinearProgress,
 } from "@mui/material";
-import {
-  BarChart as ActivityIcon,
-  Hexagon as HexagonIcon,
-} from "@mui/icons-material";
+import { Hexagon as HexagonIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import type { BeeStats } from "./types";
 
@@ -29,23 +26,21 @@ export default function BeeHeader({
   initializeBee,
 }: BeeHeaderProps) {
   const theme = useTheme();
+  const allowedTraits = [
+    "leftHand",
+    "rightHand",
+    "armor",
+    "wings",
+    "headpiece",
+    "environment",
+  ];
 
   return (
-    <Box
-      // Reduced padding on larger screens to make it tighter
-      sx={{
-        py: {
-          xs: 1,
-          md: 1.25,
-        },
-        textAlign: "center",
-      }}
-    >
+    <Box sx={{ py: { xs: 1, md: 1.25 }, textAlign: "center" }}>
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
         {beeStats.name} {beeStats.id}
       </Typography>
 
-      {/* Adjust overall width on smaller screens to leave more space */}
       <Box
         sx={{
           mt: 1,
@@ -92,15 +87,25 @@ export default function BeeHeader({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
             style={{ objectFit: "cover" }}
           />
+
+          <Chip
+            label={beeStats.traits.character}
+            sx={{
+              position: "absolute",
+              bottom: 8,
+              left: 8,
+              backgroundColor:
+                beeStats.traits.character === "Queen" ? "#9c27b0" : "#2196f3",
+              color: "white",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
+              zIndex: 2,
+            }}
+          />
         </Box>
       </Box>
 
-      <Box
-        // Reduced padding on larger screens to make it tighter
-        sx={{ p: { xs: 1, md: 0 } }}
-      >
+      <Box sx={{ p: { xs: 1, md: 0 } }}>
         <Box
-          // Align items so Level text and Chip/Button line up
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -112,17 +117,12 @@ export default function BeeHeader({
             <HexagonIcon sx={{ color: "#f0c850", fontSize: "2rem" }} />
             <Typography
               variant="h6"
-              sx={{
-                fontWeight: "bold",
-                color: "white",
-                lineHeight: 1.0,
-              }}
+              sx={{ fontWeight: "bold", color: "white", lineHeight: 1.0 }}
             >
               Level {beeStats.level}
             </Typography>
           </Box>
 
-          {/* If uninitialized, show button; otherwise show chip */}
           {!beeStats.initialized ? (
             <Button
               variant="contained"
@@ -148,10 +148,10 @@ export default function BeeHeader({
                 padding: "8px 16px",
                 backgroundColor: theme.palette.Blue.main,
                 boxShadow:
-                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)", // 3D effect
+                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)",
                 "& .MuiLinearProgress-bar": {
-                  background: "linear-gradient(to right, #f0c850, #c9a227)", // Keep gold gradient
-                  boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)", // 3D highlight effect
+                  background: "linear-gradient(to right, #f0c850, #c9a227)",
+                  boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)",
                 },
                 color: "white",
                 fontWeight: "bold",
@@ -159,37 +159,6 @@ export default function BeeHeader({
             />
           )}
         </Box>
-
-        <Box sx={{ mb: 2 }}>
-          <Box
-            sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
-          >
-            <Typography variant="body2">XP</Typography>
-            <Typography variant="body2">
-              {beeStats.xp}/{beeStats.maxXp}
-            </Typography>
-          </Box>
-          <Box sx={{ position: "relative" }}>
-            <Box sx={{ position: "relative" }}>
-              <LinearProgress
-                variant="determinate"
-                value={(beeStats.xp / beeStats.maxXp) * 100}
-                sx={{
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor: "rgba(0, 121, 145, 0.4)", // Background color effect from first code
-                  boxShadow:
-                    "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)", // 3D effect
-                  "& .MuiLinearProgress-bar": {
-                    background: "linear-gradient(to right, #f0c850, #c9a227)", // Keep gold gradient
-                    boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)", // 3D highlight effect
-                  },
-                }}
-              />
-            </Box>
-          </Box>
-        </Box>
-
         {/* <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
           <Box
             sx={{
@@ -217,22 +186,60 @@ export default function BeeHeader({
             </Typography>
           </Box>
         </Box> */}
+        <Box sx={{ mb: 2 }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
+          >
+            <Typography variant="body2">XP</Typography>
+            <Typography variant="body2">
+              {beeStats.xp}/{beeStats.maxXp}
+            </Typography>
+          </Box>
+          <Box sx={{ position: "relative" }}>
+            <Box sx={{ position: "relative" }}>
+              <LinearProgress
+                variant="determinate"
+                value={(beeStats.xp / beeStats.maxXp) * 100}
+                sx={{
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: "rgba(0, 121, 145, 0.4)",
+                  boxShadow:
+                    "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)",
+                  "& .MuiLinearProgress-bar": {
+                    background: "linear-gradient(to right, #f0c850, #c9a227)",
+                    boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)",
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+        </Box>
 
-        <Grid container spacing={1} sx={{}}>
-          {Object.entries(beeStats.traits).map(([key, value]) => (
-            <Grid item xs={6} key={key}>
-              <Paper sx={{ p: 1.25, bgcolor: "#1a3045" }}>
-                <Typography variant="body2" sx={{ color: "#f0c850", mb: 0.25 }}>
-                  {key
-                    .replace(/([A-Z])/g, " $1")
-                    .replace(/^./, (str) => str.toUpperCase())}
-                </Typography>
-                <Typography variant="body1" noWrap sx={{ fontWeight: "bold" }}>
-                  {value}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
+        <Grid container spacing={1}>
+          {Object.entries(beeStats.traits)
+            .filter(([key]) => allowedTraits.includes(key))
+            .map(([key, value]) => (
+              <Grid item xs={6} key={key}>
+                <Paper sx={{ p: 1.25, bgcolor: "#1a3045" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#f0c850", mb: 0.25 }}
+                  >
+                    {key
+                      .replace(/([A-Z])/g, " $1")
+                      .replace(/^./, (str) => str.toUpperCase())}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    noWrap
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    {value}
+                  </Typography>
+                </Paper>
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </Box>

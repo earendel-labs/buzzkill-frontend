@@ -38,12 +38,16 @@ export default function CharacterDashboard() {
     foragesCompleted: 50,
     initialized: true,
     traits: {
-      leftArm: "Lightning Sword",
-      rightArm: "Shield of Pollen",
-      body: "Royal Armor",
-      head: "Antler Crown",
+      environment: "Forest Haven",
       wings: "Golden Wings",
-      background: "Forest Haven",
+      base: "Standard Base",
+      armor: "Royal Armor",
+      leftHand: "Lightning Sword",
+      rightHand: "Shield of Pollen",
+      hair: "Default Hair",
+      eyes: "Default Eyes",
+      headpiece: "Antler Crown",
+      character: "Worker",
     },
   });
 

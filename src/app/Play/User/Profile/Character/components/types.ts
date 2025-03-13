@@ -1,4 +1,3 @@
-// Reusable TypeScript type used across multiple components.
 export interface BeeStats {
   id: string;
   name: string;
@@ -20,11 +19,15 @@ export interface BeeStats {
   foragesCompleted: number;
   initialized: boolean;
   traits: {
-    leftArm: string;
-    rightArm: string;
-    body: string;
-    head: string;
+    environment: string;
     wings: string;
-    background: string;
+    base: string;
+    armor: string;
+    leftHand: string;
+    rightHand: string;
+    hair: string;
+    eyes: string;
+    headpiece: string;
+    character: "Queen" | "Worker";
   };
 }

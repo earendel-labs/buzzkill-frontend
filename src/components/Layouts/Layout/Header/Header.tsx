@@ -1,4 +1,4 @@
-// src/app/HoneyDrops/page.tsx
+"use client";
 
 import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -9,20 +9,8 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
-
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
-
-// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-//   return {
-//     props: {
-//       session: await getServerSession(
-//         req,
-//         res,
-//         getAuthOptions(req, res as any)
-//       ),
-//     },
-//   };
-// };
+import GameMenuModal from "@/components/Modals/GameMenu/GameMenu";
 
 interface HeaderProps {
   isGameLayout?: boolean;
@@ -39,8 +27,8 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
 
   return (
     <>
-      {/* Show CircleIconButton only if isGameLayout is true and menu is not open */}
-      {isGameLayout && !isMenuOpen && (
+      {/* Show CircleIconButton only if isGameLayout is true */}
+      {isGameLayout && (
         <CircleIconButton
           icon={<MenuIcon sx={{ fontSize: "34px", color: "white" }} />}
           onClick={toggleMenu}
@@ -49,16 +37,19 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
             top: "2.6rem",
             right: "0.5rem",
             transform: "translateY(-50%)",
+            zIndex: 1500,
           }}
         />
       )}
 
-      {/* AppBar component (Shared in both layouts) */}
-      {(!isGameLayout || isMenuOpen) && (
+      {/* Game Menu Modal (Replaces the old Drawer) */}
+      {isGameLayout && <GameMenuModal open={isMenuOpen} onClose={toggleMenu} />}
+
+      {/* AppBar for standard layout */}
+      {!isGameLayout && (
         <AppBar
           position="static"
           sx={{
-            boxSizing: "border-box",
             height: "70px",
             display: "flex",
             flexDirection: "row",
@@ -66,8 +57,6 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
             alignItems: "center",
             boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.25)",
             backgroundColor: `${NavBarColour} !important`,
-            overflow: "visible",
-            alignContent: "center",
             position: "relative",
             zIndex: 1100,
           }}
@@ -81,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               alignItems: "center",
             }}
           >
-            {/* Logo   Label */}
+            {/* Logo */}
             <Box display="flex" alignItems="center">
               <Link href="/">
                 <Box
@@ -106,76 +95,27 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               <Link href="/Play" className="linkStyle2">
                 Play
               </Link>
-
-              <Link
-                href="/Mint"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
+              <Link href="/Mint" className="linkStyle2">
                 Mint
               </Link>
-              <Link
-                href="/HoneyDrops"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
+              <Link href="/HoneyDrops" className="linkStyle2">
                 Leaderboard
               </Link>
-              <Link
-                href="/Play/User/Profile/MyProfile"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
+              <Link href="/Play/User/Profile/MyProfile" className="linkStyle2">
                 My Profile
               </Link>
-              <Link
-                href="/Play/User/Profile/MyBees"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
+              <Link href="/Play/User/Profile/MyBees" className="linkStyle2">
                 My Hatchlings
               </Link>
-              <Link
-                href="/Play/User/Profile/MyRewards"
-                color="inherit"
-                underline="none"
-                className="linkStyle2"
-              >
+              <Link href="/Play/User/Profile/MyRewards" className="linkStyle2">
                 Rewards
               </Link>
             </Box>
 
-            {/* Connect Button this takes up 11MB Need to reduce */}
+            {/* Login Button */}
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <LoginButton />
             </Box>
-
-            {/* Close Button in GameLayout */}
-            {isGameLayout && (
-              <IconButton
-                edge="end"
-                color="inherit"
-                aria-label="close"
-                sx={{
-                  ml: 2,
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: `2px solid #FFFFFF`,
-                }}
-                onClick={toggleMenu}
-              >
-                <MenuIcon sx={{ fontSize: "32px", color: "#FFFFFF" }} />
-              </IconButton>
-            )}
           </Toolbar>
         </AppBar>
       )}
