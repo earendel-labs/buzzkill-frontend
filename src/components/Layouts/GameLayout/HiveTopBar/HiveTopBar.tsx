@@ -12,7 +12,6 @@ interface HiveTopBarProps {
 
 const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
   const { currentEnvironment } = useEnvironment();
-  // console.log("currentEnvironment", currentEnvironment);
   return (
     <Box
       sx={{

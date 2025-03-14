@@ -337,7 +337,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.orangeButton": {
           backgroundColor: "rgba(213, 98, 23, 0.8)",
           color: "#fff",
-          padding: "8px 24px",
+          padding: "12px 24px",
           borderRadius: "6px",
           border: "1px solid rgba(106, 34, 12, 0.9)",
           boxShadow: "none",

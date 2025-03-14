@@ -1,36 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import {
+  Box,
+  Button,
+  Avatar,
+  Menu,
+  MenuItem,
+  Typography,
+  ListItemIcon,
+  Skeleton,
+} from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import WaterDropRoundedIcon from "@mui/icons-material/WaterDropRounded";
 import SportsEsportsRoundedIcon from "@mui/icons-material/SportsEsportsRounded";
 import PowerSettingsNewRoundedIcon from "@mui/icons-material/PowerSettingsNewRounded";
-import { useTheme } from "@mui/material/styles";
-import Skeleton from "@mui/material/Skeleton";
-import CustomAvatar from "@/components/User/CustomAvatar";
+import { useTheme, keyframes } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { signOut, signIn } from "next-auth/react";
 import { useDisconnect } from "wagmi";
+import CustomAvatar from "@/components/User/CustomAvatar";
 import { useProfileContext } from "@/context/ProfileContext";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
 import DisconnectDialog from "@/components/Modals/DisconnectDialog/DisconnectDialog";
+import { useSound } from "@/context/SoundContext";
+
+const glowPulse = keyframes`
+  0% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.5), 0 0 10px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 8px rgba(212, 175, 55, 0.7), 0 0 15px rgba(212, 175, 55, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.5), 0 0 10px rgba(212, 175, 55, 0.3); }
+`;
 
 interface LoginButtonProps {
   loginButtonText?: string;
   loading?: boolean;
-  isMenu?: boolean; // If true, hide down arrow and use disconnect popup
+  isMenu?: boolean;
 }
 
 export const LoginButton: React.FC<LoginButtonProps> = ({
@@ -39,10 +43,50 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
   isMenu = false,
 }) => {
   const theme = useTheme();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDisconnectDialog, setOpenDisconnectDialog] = useState(false);
   const open = Boolean(anchorEl);
-  const router = useRouter();
+
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
+
+  const { profileData, loadingProfile } = useProfileContext();
+  const { disconnect } = useDisconnect();
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/Button/LoginButton/LoginHover.mp3"));
+    setClickSound(new Audio("/Audio/Button/LoginButton/LoginPressed.mp3"));
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    }
+  };
+
+  const handleMouseDown = () => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+  };
+
+  const handleMenuItemMouseEnter = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    }
+  };
+
+  const handleMenuItemMouseDown = () => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+  };
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,6 +94,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOpenDisconnectDialog = () => {
+    setOpenDisconnectDialog(true);
+  };
+
+  const handleCloseDisconnectDialog = () => {
+    setOpenDisconnectDialog(false);
   };
 
   const handleProfileNavigation = () => {
@@ -64,28 +116,14 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
     router.push("/Play/User/Profile/MyRewards");
   };
 
-  const { disconnect } = useDisconnect();
-
   const handleLogout = async () => {
     disconnect();
     try {
-      signOut({
-        callbackUrl: `${window.location.origin}/?loggingOut=true`,
-      });
+      signOut({ callbackUrl: `${window.location.origin}/?loggingOut=true` });
     } catch (error) {
       console.error("Error during sign out:", error);
     }
   };
-
-  const handleOpenDisconnectDialog = () => {
-    setOpenDisconnectDialog(true);
-  };
-
-  const handleCloseDisconnectDialog = () => {
-    setOpenDisconnectDialog(false);
-  };
-
-  const { profileData, loadingProfile } = useProfileContext();
 
   return (
     <ConnectButton.Custom>
@@ -128,359 +166,533 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
           openConnectModal();
         };
 
+        if (!connected) {
+          return (
+            <Button
+              className="blueButton"
+              onClick={handleConnect}
+              onMouseEnter={handleMouseEnter}
+              onMouseDown={handleMouseDown}
+            >
+              {loginButtonText || "Sign Up / Login"}
+            </Button>
+          );
+        }
+
         return (
           <Box>
-            {!connected ? (
-              <Button className="blueButton" onClick={handleConnect}>
-                {loginButtonText || "Sign Up / Login"}
-              </Button>
-            ) : (
-              <Box>
-                <Button
-                  onClick={isMenu ? handleOpenDisconnectDialog : handleMenuOpen}
-                  variant="contained"
-                  className="blueConnectWallet"
+            <Button
+              onClick={isMenu ? handleOpenDisconnectDialog : handleMenuOpen}
+              variant="contained"
+              className="blueConnectWallet"
+              sx={{
+                elevation: 0,
+                backgroundColor: theme.palette.DarkBlue.main,
+                boxShadow: "none",
+                color: theme.palette.text.primary,
+                borderRadius: open ? "6px 6px 0 0" : "6px",
+                borderBottomWidth: open ? "0" : "1.25px",
+                borderBottomStyle: open ? "none" : "solid",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                padding: "8px 16px",
+                minWidth: 200,
+                "&:hover": {
+                  backgroundColor: theme.palette.DarkBlue.dark,
+                },
+              }}
+              onMouseEnter={handleMouseEnter}
+              onMouseDown={handleMouseDown}
+            >
+              <CustomAvatar
+                address={account.address}
+                ensImage={account.ensAvatar}
+                size={24}
+              />
+              <Typography
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  color: theme.palette.text.primary,
+                }}
+              >
+                {profileData && profileData.account_name
+                  ? profileData.account_name
+                  : account.displayName}
+              </Typography>
+              {!isMenu && (
+                <ArrowDropDownIcon
                   sx={{
-                    elevation: 0,
-                    backgroundColor: theme.palette.DarkBlue.main,
-                    boxShadow: "none",
-                    borderColor: open ? "#2e447a  !important" : "white",
                     color: theme.palette.text.primary,
-                    borderRadius: open ? "6px 6px 0 0" : "6px",
-                    borderBottomWidth: open ? "0px" : "1.25px",
-                    borderBottomStyle: open ? "none" : "solid",
+                    ml: "auto",
+                  }}
+                />
+              )}
+            </Button>
+
+            {!isMenu && (
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                // Updated styling below:
+                PaperProps={{
+                  elevation: 2,
+                  sx: {
+                    backgroundColor: "rgba(27, 72, 245, 0.8)",
+                    borderRadius: "0 0 6px 6px",
+                    borderColor: "rgba(14, 28, 106, 0.9)",
+                    borderWidth: "1.5px",
+                    borderTopStyle: "none",
+                    minWidth: "210px",
+                    color: theme.palette.text.primary,
+                    mt: 0,
+                    padding: "0px 1px",
+                  },
+                }}
+                transformOrigin={{
+                  horizontal: "right",
+                  vertical: "top",
+                }}
+                anchorOrigin={{
+                  horizontal: "right",
+                  vertical: "bottom",
+                }}
+              >
+                {/* Common hover styles for each MenuItem */}
+                {/* These replicate the moving 'shine' and color shift for icons */}
+                <MenuItem
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 1,
-                    padding: "8px 16px",
-                    minWidth: 200,
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
                     "&:hover": {
-                      backgroundColor: theme.palette.DarkBlue.dark,
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
                     },
                   }}
                 >
-                  <CustomAvatar
-                    address={account.address}
-                    ensImage={account.ensAvatar}
-                    size={24}
-                  />
-                  <Typography
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end",
-                      color: theme.palette.text.primary,
-                    }}
-                  >
-                    {profileData && profileData.account_name
-                      ? profileData.account_name
-                      : account.displayName}
+                  <Typography sx={{ textAlign: "left", lineHeight: "1.7rem" }}>
+                    Balance: {account.displayBalance}
                   </Typography>
-                  {!isMenu && (
-                    <ArrowDropDownIcon
+                </MenuItem>
+
+                <MenuItem
+                  onClick={openChainModal}
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 0px 10px 18px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  {chain.hasIcon && (
+                    <Avatar
+                      src={chain.iconUrl}
+                      alt={chain.name ?? "Chain icon"}
                       sx={{
-                        color: theme.palette.text.primary,
-                        ml: "auto",
+                        width: "22px !important",
+                        height: "22px !important",
+                        backgroundColor: chain.iconBackground,
                       }}
                     />
                   )}
-                </Button>
-
-                {!isMenu && (
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleMenuClose}
-                    PaperProps={{
-                      elevation: 2,
-                      sx: {
-                        backgroundColor: theme.palette.DarkBlue.main,
-                        borderRadius: "0px 0px 6px 6px",
-                        borderColor: "#2e447a",
-                        borderWidth: "1.5px",
-                        borderTopStyle: "none",
-                        minWidth: "210px",
-                        color: theme.palette.text.primary,
-                        mt: -1,
-                        padding: "0px 1px",
-                        "& .MuiAvatar-root": {
-                          width: 24,
-                          height: 24,
-                          ml: 0,
-                          mb: 1,
-                          mr: 1,
-                        },
-                      },
-                    }}
-                    transformOrigin={{
-                      horizontal: "right",
-                      vertical: "top",
-                    }}
-                    anchorOrigin={{
-                      horizontal: "right",
-                      vertical: "bottom",
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "0px 10px",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
                     }}
                   >
-                    <MenuItem
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                      }}
-                    >
-                      <Typography
-                        sx={{ textAlign: "left", lineHeight: "1.7rem" }}
-                      >
-                        Balance: {account.displayBalance}
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={openChainModal}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        padding: "10px 0px 10px 18px",
-                        fontSize: "1.2rem",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                      }}
-                    >
-                      {chain.hasIcon && (
-                        <Avatar
-                          src={chain.iconUrl}
-                          alt={chain.name ?? "Chain icon"}
-                          sx={{
-                            width: "22px !important",
-                            height: "22px !important",
-                            backgroundColor: chain.iconBackground,
-                          }}
-                        />
-                      )}
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          padding: "0px 4px",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        {chain.name}
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleProfileNavigation}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: "36px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <AccountCircleIcon
-                          sx={{
-                            color: theme.palette.Orange.main,
-                            fontSize: "1.7rem",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        My Profile
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleMyBeesNavigation}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: "36px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <SportsEsportsRoundedIcon
-                          sx={{
-                            color: theme.palette.Orange.main,
-                            fontSize: "1.7rem",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        My Bees
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleMyRewardsNavigation}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: "36px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <WaterDropRoundedIcon
-                          sx={{
-                            color: theme.palette.Orange.main,
-                            fontSize: "1.7rem",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        My Rewards
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: "36px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <SettingsIcon
-                          sx={{
-                            color: theme.palette.Orange.main,
-                            fontSize: "1.7rem",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        Settings
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleLogout}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "left",
-                        padding: "10px 16px",
-                        fontSize: "1.2rem",
-                        "&:hover": {
-                          backgroundColor: theme.palette.DarkOrange.main,
-                        },
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: "36px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <PowerSettingsNewRoundedIcon
-                          sx={{
-                            color: theme.palette.Orange.main,
-                            fontSize: "1.7rem",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          lineHeight: "1.7rem",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        Logout
-                      </Typography>
-                    </MenuItem>
-                  </Menu>
-                )}
+                    {chain.name}
+                  </Typography>
+                </MenuItem>
 
-                {isMenu && (
-                  <DisconnectDialog
-                    open={openDisconnectDialog}
-                    onClose={handleCloseDisconnectDialog}
-                    onDisconnect={handleLogout}
-                  />
-                )}
-              </Box>
+                <MenuItem
+                  onClick={handleProfileNavigation}
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <AccountCircleIcon
+                      sx={{
+                        color: theme.palette.Orange.main,
+                        fontSize: "1.7rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    My Profile
+                  </Typography>
+                </MenuItem>
+
+                <MenuItem
+                  onClick={handleMyBeesNavigation}
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <SportsEsportsRoundedIcon
+                      sx={{
+                        color: theme.palette.Orange.main,
+                        fontSize: "1.7rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    My Bees
+                  </Typography>
+                </MenuItem>
+
+                <MenuItem
+                  onClick={handleMyRewardsNavigation}
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <WaterDropRoundedIcon
+                      sx={{
+                        color: theme.palette.Orange.main,
+                        fontSize: "1.7rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    My Rewards
+                  </Typography>
+                </MenuItem>
+
+                <MenuItem
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <SettingsIcon
+                      sx={{
+                        color: theme.palette.Orange.main,
+                        fontSize: "1.7rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Settings
+                  </Typography>
+                </MenuItem>
+
+                <MenuItem
+                  onClick={handleLogout}
+                  onMouseEnter={handleMenuItemMouseEnter}
+                  onMouseDown={handleMenuItemMouseDown}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "left",
+                    position: "relative",
+                    overflow: "hidden",
+                    padding: "10px 16px",
+                    fontSize: "1.2rem",
+                    transition: "all 0.3s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: "-100%",
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                      transition: "left 0.8s ease",
+                    },
+                    "&:hover::before": {
+                      left: "100%",
+                    },
+                    "&:hover": {
+                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      boxShadow:
+                        "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
+                      "& svg": {
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "36px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PowerSettingsNewRoundedIcon
+                      sx={{
+                        color: theme.palette.Orange.main,
+                        fontSize: "1.7rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      lineHeight: "1.7rem",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Logout
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            )}
+
+            {isMenu && (
+              <DisconnectDialog
+                open={openDisconnectDialog}
+                onClose={handleCloseDisconnectDialog}
+                onDisconnect={handleLogout}
+              />
             )}
           </Box>
         );

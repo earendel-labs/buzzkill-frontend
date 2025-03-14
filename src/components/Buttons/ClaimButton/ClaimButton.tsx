@@ -13,11 +13,13 @@ import TransactionInProgressModal from "@/components/Modals/TransactionProgressM
 interface ClaimButtonProps {
   liveUnclaimedPoints: number;
   isUserResource?: boolean;
+  sx?: object;
 }
 
 const ClaimButton: React.FC<ClaimButtonProps> = ({
   liveUnclaimedPoints,
   isUserResource = false,
+  sx = {},
 }) => {
   const [transactionHash, setTransactionHash] = useState<
     `0x${string}` | undefined
@@ -233,6 +235,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               fontWeight: "bold",
               fontSize: "1rem",
               lineHeight: "1.2",
+              ...sx,
             }}
           >
             Claim Yield

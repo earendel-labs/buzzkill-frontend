@@ -193,7 +193,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
   // Each time `pathname` or `environments` changes, figure out which environment is current
   useEffect(() => {
     if (!pathname || environments.length === 0) {
-      console.log("Either no pathname or environments empty", {
+      logger.log("Either no pathname or environments empty", {
         pathname,
         environmentsLength: environments.length,
       });
@@ -201,10 +201,10 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
       return;
     }
 
-    console.log("Current pathname:", pathname);
+    logger.log("Current pathname:", pathname);
 
     const matchedEnv = environments.find((env) => {
-      console.log(
+      logger.log(
         "Checking environment:",
         env.name,
         "with environmentURL:",
@@ -212,12 +212,12 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
       );
 
       if (!env.environmentURL) {
-        console.log(`Skipping ${env.name} because environmentURL is empty.`);
+        logger.log(`Skipping ${env.name} because environmentURL is empty.`);
         return false;
       }
 
       const doesMatch = pathname.startsWith(env.environmentURL);
-      console.log(
+      logger.log(
         `Does pathname "${pathname}" start with "${env.environmentURL}"?`,
         doesMatch
       );
@@ -226,16 +226,16 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     });
 
     if (!matchedEnv) {
-      console.log("No matching environment found for pathname:", pathname);
+      logger.log("No matching environment found for pathname:", pathname);
     } else {
-      console.log("Matched environment:", matchedEnv.name);
+      logger.log("Matched environment:", matchedEnv.name);
     }
 
     setCurrentEnvironment(matchedEnv);
   }, [pathname, environments]);
 
-  console.log("environments", environments);
-  console.log("CurrentEnvironment", currentEnvironment);
+  logger.log("environments", environments);
+  logger.log("CurrentEnvironment", currentEnvironment);
   // Utility functions
   const getEnvironmentById = (id: number): Environment | undefined => {
     return environments.find((env) => env.id === id);
