@@ -346,7 +346,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       <Tooltip
                         title={
                           <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-                            Daily Total Yield per day from all your Hatchlings
+                            Daily total yield per day from all your Hatchlings
                           </Typography>
                         }
                         placement="top"
@@ -393,34 +393,38 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     </Tooltip>
 
                     {profileData?.has_oneid && (
-                      <Chip
-                        label="1.2x OneID Multiplier"
-                        icon={
-                          <WhatshotIcon
-                            sx={{
+                      <Tooltip
+                        title={`Bonus Hatchling yield multiplier from having a valid OneID`}
+                      >
+                        <Chip
+                          label="1.2x OneID Multiplier"
+                          icon={
+                            <WhatshotIcon
+                              sx={{
+                                color: "white",
+                                fontSize: "1.2rem",
+                              }}
+                            />
+                          }
+                          sx={{
+                            "& .MuiChip-icon": {
+                              marginRight: "-12px",
                               color: "white",
-                              fontSize: "1.2rem",
-                            }}
-                          />
-                        }
-                        sx={{
-                          "& .MuiChip-icon": {
-                            marginRight: "-12px",
+                            },
+                            backgroundColor: theme.palette.OneIDRed.main,
                             color: "white",
-                          },
-                          backgroundColor: theme.palette.OneIDRed.main,
-                          color: "white",
-                          fontWeight: "bold",
-                          borderRadius: "24px",
-                          paddingY: "20px",
-                          width: "100%",
-                          fontSize: "1.125rem",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      />
+                            fontWeight: "bold",
+                            borderRadius: "24px",
+                            paddingY: "23px",
+                            width: "100%",
+                            fontSize: "1.1rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        />
+                      </Tooltip>
                     )}
                   </Box>
                 </SemiTransparentCard>

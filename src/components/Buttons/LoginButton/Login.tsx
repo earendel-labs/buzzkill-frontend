@@ -186,7 +186,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
               variant="contained"
               className="blueConnectWallet"
               sx={{
-                elevation: 0,
                 backgroundColor: theme.palette.DarkBlue.main,
                 boxShadow: "none",
                 color: theme.palette.text.primary,
@@ -197,7 +196,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                 alignItems: "center",
                 gap: 1,
                 padding: "8px 16px",
-                minWidth: 200,
+                minWidth: 210,
                 "&:hover": {
                   backgroundColor: theme.palette.DarkBlue.dark,
                 },
@@ -205,23 +204,31 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
               onMouseEnter={handleMouseEnter}
               onMouseDown={handleMouseDown}
             >
-              <CustomAvatar
-                address={account.address}
-                ensImage={account.ensAvatar}
-                size={24}
-              />
-              <Typography
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  color: theme.palette.text.primary,
-                }}
-              >
-                {profileData && profileData.account_name
-                  ? profileData.account_name
-                  : account.displayName}
-              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <CustomAvatar
+                  address={account.address}
+                  ensImage={account.ensAvatar}
+                  size={24}
+                />
+
+                {/* Use fontSize instead of textSize */}
+                <Typography
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    lineHeight: 1.0,
+                    ml: 1.5,
+                    fontSize: "1rem", // or any size you want, e.g. "1.2rem"
+                    color: "white",
+                  }}
+                >
+                  {profileData && profileData.account_name
+                    ? profileData.account_name
+                    : account.displayName}
+                </Typography>
+              </Box>
+
               {!isMenu && (
                 <ArrowDropDownIcon
                   sx={{
