@@ -18,7 +18,7 @@ const StyledModal: React.FC<StyledModalProps> = ({
 }) => {
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      onClose(); // Close the modal if the backdrop is clicked
+      onClose();
     }
   };
 
@@ -30,25 +30,25 @@ const StyledModal: React.FC<StyledModalProps> = ({
       aria-describedby="modal-description"
     >
       <Box
-        onClick={handleBackdropClick} // Capture clicks outside modal content
+        onClick={handleBackdropClick}
         sx={{
           position: "fixed",
           top: 0,
           left: 0,
           width: "100%",
           height: "100%",
-          bgcolor: "rgba(0, 0, 0, 0.5)",
+          bgcolor: "rgba(0, 0, 0, 0.7)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           zIndex: 1300,
         }}
       >
-        <Paper
+        <Box
           sx={{
-            bgcolor: "rgba(15, 28, 48, 0.85)", // Updated background to match MenuModal
-            backdropFilter: "blur(10px)", // Background blur effect
-            border: "1.5px solid #c9a227", // Previous outline remains
+            bgcolor: "rgba(34, 46, 80, 0.6)",
+            backdropFilter: "blur(10px)",
+            border: "1.5px solid #c9a227",
             borderRadius: 4,
             maxWidth: "600px",
             width: "90%",
@@ -56,10 +56,10 @@ const StyledModal: React.FC<StyledModalProps> = ({
             boxShadow: 24,
             ...sx,
           }}
-          onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing
+          onClick={(e) => e.stopPropagation()}
         >
           {children}
-        </Paper>
+        </Box>
       </Box>
     </Modal>
   );

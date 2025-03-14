@@ -23,7 +23,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
           xs: "0rem 1rem",
           sm: "0rem 2rem",
           md: "0rem 2.5rem",
-          lg: "0rem 3rem",
+          lg: "0rem 4.2rem 0rem 3rem",
           xl: "0rem, 4rem",
           xxl: "0rem, 12rem",
         },
@@ -73,7 +73,7 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          gap: 1,
+          gap: 1.1,
           flex: 1,
         }}
       >

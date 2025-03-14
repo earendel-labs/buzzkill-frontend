@@ -154,7 +154,7 @@ const HatchlingInfoPanel: React.FC = () => {
         height: isExpanded
           ? {
               xs: "100%",
-              md: "500px",
+              md: "530px",
               xl: "600px",
               xxl: "800px",
             }
@@ -359,7 +359,7 @@ const HatchlingInfoPanel: React.FC = () => {
 
         {selectedTab === "leaderboard" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "1rem" }}>
+            <Typography sx={{ marginBottom: "0.75rem" }}>
               Claim your points and view your spot on the leaderboard. Checkout
               the{" "}
               <Link
@@ -369,7 +369,7 @@ const HatchlingInfoPanel: React.FC = () => {
                   fontWeight: "bold",
                 }}
               >
-                full leaderboard.
+                full leaderboard here.
               </Link>
             </Typography>
             <MiniLeaderboard />

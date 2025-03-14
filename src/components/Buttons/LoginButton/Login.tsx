@@ -196,7 +196,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                 alignItems: "center",
                 gap: 1,
                 padding: "8px 16px",
-                minWidth: 210,
+                minWidth: isMenu ? 150 : 210,
                 "&:hover": {
                   backgroundColor: theme.palette.DarkBlue.dark,
                 },

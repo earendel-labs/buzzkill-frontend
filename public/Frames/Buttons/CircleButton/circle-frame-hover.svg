@@ -79,10 +79,11 @@
 <stop offset="0.98" stop-color="#E9B743"/>
 </linearGradient>
 <linearGradient id="paint8_linear_821624_701" x1="107.173" y1="183.594" x2="107.173" y2="31.4434" gradientUnits="userSpaceOnUse">
-<stop offset="0.065" stop-color="#68341B"/>
-<stop offset="0.29" stop-color="#915E28"/>
-<stop offset="0.77" stop-color="#E9B743"/>
-<stop offset="0.98" stop-color="#E9B743"/>
+<stop stop-color="#B88534"/>
+<stop offset="0.185" stop-color="#936029"/>
+<stop offset="0.385" stop-color="#E9B743"/>
+<stop offset="0.64" stop-color="#936029"/>
+<stop offset="0.87" stop-color="#E9B743"/>
 </linearGradient>
 </defs>
 </svg>

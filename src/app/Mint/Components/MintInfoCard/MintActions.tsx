@@ -101,13 +101,14 @@ const MintActions: React.FC = () => {
           <PrimaryButton
             text={mintedCount === totalSupply ? "Fully Minted" : "Mint"}
             onClick={handleMint}
-            scale={1.4}
+            scale={1.2}
             disabled={
               mintedCount === totalSupply ||
               !hasRemainingMint ||
               isMintLoading ||
               (isCooldown && cooldownRemaining > 0)
             }
+            sx={{ padding: "4px 14px" }}
           />
         </>
       )}

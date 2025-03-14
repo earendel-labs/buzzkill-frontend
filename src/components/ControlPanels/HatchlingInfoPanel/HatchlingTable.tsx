@@ -64,7 +64,7 @@ export const HatchlingTable: React.FC<HatchlingTableProps> = ({ data }) => {
       component={Paper}
       sx={{
         position: "relative",
-        backgroundColor: "rgba(34, 46, 80, 0.8)", // Reduced transparency
+        backgroundColor: "rgba(34, 46, 80, 0.4)", // Reduced transparency
         boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.3)",
         borderRadius: "12px",
         padding: "1rem",

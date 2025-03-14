@@ -339,7 +339,7 @@ const buttonStyles = (theme: Theme) => ({
           color: "#fff",
           padding: "12px 24px",
           borderRadius: "6px",
-          border: "1px solid rgba(106, 34, 12, 0.9)",
+          border: "1px solid rgba(224, 115, 32, 0.9)",
           boxShadow: "none",
           animation: "none",
           "&:hover": {
@@ -356,7 +356,7 @@ const buttonStyles = (theme: Theme) => ({
           "&.Mui-disabled": {
             backgroundColor: "rgba(160, 82, 38, 0.8)",
             border: "1px solid rgba(90, 38, 18, 0.8)",
-            color: "rgba(183, 135, 103, 0.8)",
+            color: "rgba(168, 123, 94, 0.8)",
             opacity: 0.6,
             boxShadow: "none",
           },

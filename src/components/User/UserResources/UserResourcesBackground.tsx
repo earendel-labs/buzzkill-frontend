@@ -15,10 +15,9 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
     <Box
       sx={{
         position: "relative",
-        background:
-          "linear-gradient(to right, rgba(36, 46, 78, 0.9), rgba(18, 23, 39, 0.9))",
+        background: "rgba(15, 28, 48, 0.85)",
         borderRadius: "10px",
-        padding: "10px 4px",
+        padding: "8px 4px",
         "&::before": {
           content: '""',
           position: "absolute",
@@ -38,7 +37,7 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
           position: "absolute",
           inset: "2px",
           borderRadius: "8px",
-          backgroundColor: "rgba(34, 46, 80, 0.6)",
+          backgroundColor: "rgba(15, 28, 48, 0.85)",
           zIndex: 1,
         },
         ...sx,
