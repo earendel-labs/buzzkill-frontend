@@ -118,7 +118,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                 <Box
                   sx={{
                     padding: "2px 2px 24px 12px",
-                    marginBottom: "16px",
+                    marginBottom: "28px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
@@ -257,11 +257,12 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       title={`From ${stakedBees.length} staked hatchlings`}
                     >
                       <Typography
-                        variant="h5"
+                        variant="h4"
                         fontWeight="bold"
                         sx={{
                           color: theme.palette.Gold.main,
                           lineHeight: "1.2",
+                          WebkitTextStroke: "0",
                           marginTop: "8px",
                           marginBottom: "8px",
                         }}
@@ -272,6 +273,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           component="span"
                           sx={{
                             color: theme.palette.Gold.main,
+                            fontSize: "1.75rem",
                             WebkitTextStroke: "0",
                             marginLeft: "8px",
                           }}
@@ -366,12 +368,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       title={`From ${stakedBees.length} staked hatchlings`}
                     >
                       <Typography
-                        variant="h5"
+                        variant="h4"
                         fontWeight="bold"
                         sx={{
                           color: theme.palette.Gold.main,
                           lineHeight: "1.2",
                           marginTop: "12px",
+                          WebkitTextStroke: "0",
                           marginBottom: "12px",
                         }}
                       >
@@ -384,6 +387,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           sx={{
                             color: theme.palette.Gold.main,
                             WebkitTextStroke: "0",
+                            fontSize: "1.4rem",
                             marginLeft: "8px",
                           }}
                         >
