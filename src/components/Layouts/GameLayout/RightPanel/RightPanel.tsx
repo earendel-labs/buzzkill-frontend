@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { logger } from "@/utils/logger";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 const RightPanel: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -58,7 +59,7 @@ const RightPanel: React.FC = () => {
           <Typography variant="body2">3️⃣ Player3 - 390pts</Typography>
         </Box>
 
-        <Button
+        <DefaultButton
           fullWidth
           variant="contained"
           color="primary"
@@ -66,7 +67,7 @@ const RightPanel: React.FC = () => {
           onClick={() => logger.log("View Full Leaderboard")}
         >
           View Full Leaderboard
-        </Button>
+        </DefaultButton>
       </Drawer>
     </>
   );

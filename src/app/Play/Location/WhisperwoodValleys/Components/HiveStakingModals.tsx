@@ -1,9 +1,10 @@
 "use client";
 
 import React, { FC } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 import { ArrowCircleUp as UpgradeIcon } from "@mui/icons-material";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface ConfirmModalProps {
   open: boolean;
@@ -57,7 +58,7 @@ const ConfirmModal: FC<ConfirmModalProps> = ({
           pb: 4,
         }}
       >
-        <Button
+        <DefaultButton
           onClick={onClose}
           variant="outlined"
           className="goldOutlinedButton"
@@ -69,8 +70,8 @@ const ConfirmModal: FC<ConfirmModalProps> = ({
           }}
         >
           Cancel
-        </Button>
-        <Button
+        </DefaultButton>
+        <DefaultButton
           onClick={onConfirm}
           variant="contained"
           disabled={isLoading}
@@ -78,7 +79,7 @@ const ConfirmModal: FC<ConfirmModalProps> = ({
           startIcon={<UpgradeIcon />}
         >
           {isLoading ? "Processing..." : confirmLabel}
-        </Button>
+        </DefaultButton>
       </Box>
     </StyledModal>
   );

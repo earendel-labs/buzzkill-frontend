@@ -5,6 +5,7 @@ import { Box, Button, Typography } from "@mui/material";
 import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 import GoldOutlinedButton from "@/components/Buttons/GoldOutlinedButton/GoldOutlinedButton";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface DisconnectDialogProps {
   open: boolean;
@@ -66,7 +67,7 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({
         />
 
         {/* Disconnect Button - Matches PrimaryButton without glow */}
-        <Button
+        <DefaultButton
           className="oneIDRedButton"
           onClick={onDisconnect}
           sx={{
@@ -77,7 +78,7 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({
           }}
         >
           Disconnect
-        </Button>
+        </DefaultButton>
       </Box>
     </StyledModal>
   );

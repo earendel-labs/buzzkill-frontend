@@ -7,11 +7,11 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  Button,
   Box,
 } from "@mui/material";
 import Image from "next/image";
 import { ArrowCircleUp as UpgradeIcon } from "@mui/icons-material";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UpgradeDialogProps {
   upgradeDialogOpen: boolean;
@@ -125,7 +125,7 @@ export default function UpgradeDialog({
       <DialogActions sx={{ px: 3, pb: 4, gap: 1.5 }}>
         {" "}
         {/* Slightly more spacing */}
-        <Button
+        <DefaultButton
           variant="outlined"
           className="goldOutlinedButton"
           onClick={() => setUpgradeDialogOpen(false)}
@@ -137,15 +137,15 @@ export default function UpgradeDialog({
           }}
         >
           Cancel
-        </Button>
-        <Button
+        </DefaultButton>
+        <DefaultButton
           onClick={upgradeStat}
           disabled={honey < 500}
           className="goldButtonHorizontal"
           startIcon={<UpgradeIcon />}
         >
           Upgrade
-        </Button>
+        </DefaultButton>
       </DialogActions>
     </Dialog>
   );

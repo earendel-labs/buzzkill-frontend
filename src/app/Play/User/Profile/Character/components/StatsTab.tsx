@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Paper, Box, Typography, Grid, useTheme, Button } from "@mui/material";
+import { Paper, Box, Typography, Grid, useTheme } from "@mui/material";
 import {
   LocalFireDepartment as AttackIcon,
   Shield as ShieldIcon,
@@ -15,6 +15,7 @@ import {
 import type { BeeStats } from "./types";
 import StatUpgradeCard from "./StatsUpgradedCard";
 import SkillsCard from "./SkillsCard";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface StatsTabProps {
   beeStats: BeeStats;
@@ -198,7 +199,7 @@ export default function StatsTab({
         ))}
       </Grid>
       <Box sx={{ marginTop: 1.5 }}>
-        <Button
+        <DefaultButton
           fullWidth
           onClick={() => {}}
           sx={{ py: 1 }}
@@ -206,7 +207,7 @@ export default function StatsTab({
           className="blueButton"
         >
           View Activity
-        </Button>
+        </DefaultButton>
       </Box>
     </Box>
   );

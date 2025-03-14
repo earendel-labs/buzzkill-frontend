@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, Grid, Button, Paper, useTheme } from "@mui/material";
+import { Box, Typography, Grid, Paper, useTheme } from "@mui/material";
 import { ArrowCircleUp as UpgradeIcon } from "@mui/icons-material";
 import { BeeStats } from "./types";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UpgradesTabProps {
   beeStats: BeeStats;
@@ -79,7 +80,7 @@ export default function UpgradesTab({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                gap: { xs: 1, lg: 2 }, // Added gap for spacing between text and button
+                gap: { xs: 1, lg: 2 },
               }}
             >
               <Box sx={{ flex: 1 }}>
@@ -107,18 +108,18 @@ export default function UpgradesTab({
                   {upgrade.desc}
                 </Typography>
               </Box>
-              <Button
+              <DefaultButton
                 variant="contained"
                 onClick={() => openUpgradeDialog(upgrade.stat)}
                 className="goldButtonHorizontal"
                 sx={{
                   width: { xs: "100%", lg: "auto" },
-                  minWidth: "180px", // Added minimum width for better button sizing
+                  minWidth: "180px",
                 }}
               >
                 <UpgradeIcon sx={{ mr: 1 }} />
                 500 $HONEY
-              </Button>
+              </DefaultButton>
             </Paper>
           </Grid>
         ))}

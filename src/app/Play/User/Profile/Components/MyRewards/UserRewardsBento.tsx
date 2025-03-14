@@ -4,7 +4,7 @@ import React from "react";
 import {
   Grid,
   Typography,
-  Button,
+ 
   Skeleton,
   Box,
   Tooltip,
@@ -23,6 +23,7 @@ import { useTheme } from "@mui/system";
 import { useUserContext } from "@/context/UserContext";
 import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
 import { formatNumber } from "@/utils/formatNumber";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
@@ -95,13 +96,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
         <Typography variant="body1" color="white" sx={{ mb: 3 }}>
           Sign-up or login to view your rewards
         </Typography>
-        <Button
+        <DefaultButton
           className="darkBlueButton"
           onClick={() => router.push("/")}
           sx={{ mt: 2 }}
         >
           Go to Home
-        </Button>
+        </DefaultButton>
       </SemiTransparentCard>
     );
   }
@@ -629,7 +630,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     )}
 
                     {profileData?.invite_code ? (
-                      <Button
+                      <DefaultButton
                         className="blueButton"
                         onClick={copyInviteLink}
                         startIcon={<CopyIcon />}
@@ -646,7 +647,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         }}
                       >
                         Invite Friends
-                      </Button>
+                      </DefaultButton>
                     ) : (
                       <Skeleton
                         variant="text"

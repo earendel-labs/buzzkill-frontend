@@ -5,7 +5,6 @@
 import React, { useEffect } from "react";
 import {
   TextField,
-  Button,
   Box,
   Typography,
   Grid,
@@ -25,6 +24,7 @@ import ProfileLayout from "../Components/ProfileLayout/ProfileLayout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useProfileContext } from "@/context/ProfileContext";
 import { OneID } from "@oneid-xyz/inspect";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 const ProfileTab = () => {
   const theme = useTheme();
@@ -83,13 +83,13 @@ const ProfileTab = () => {
           <Typography variant="body1" color="white" sx={{ mb: 3 }}>
             Sign-up or login to view your profile
           </Typography>
-          <Button
-            className="darkBlueButton" 
+          <DefaultButton
+            className="darkBlueButton"
             onClick={() => (window.location.href = "/")} // Redirect to home
             sx={{ mt: 2 }}
           >
             Go to Home
-          </Button>
+          </DefaultButton>
         </SemiTransparentCard>
       </ProfileLayout>
     );
@@ -196,7 +196,7 @@ const ProfileTab = () => {
                         <Typography variant="body1" sx={{ color: "white" }}>
                           {profileData.oneid_name}
                         </Typography>
-                        <Button
+                        <DefaultButton
                           variant="contained"
                           className="oneIDRedButton"
                           onClick={handleSyncOneID}
@@ -212,7 +212,7 @@ const ProfileTab = () => {
                           }}
                         >
                           {savingProfile ? <>Syncing...</> : "Sync OneID"}
-                        </Button>
+                        </DefaultButton>
                       </Box>
                     </>
                   ) : (
@@ -227,7 +227,7 @@ const ProfileTab = () => {
                         <Typography variant="body1" sx={{ color: "white" }}>
                           OneID is not linked.
                         </Typography>
-                        <Button
+                        <DefaultButton
                           variant="contained"
                           className="blueButtonSmall"
                           onClick={handleSyncOneID}
@@ -239,7 +239,7 @@ const ProfileTab = () => {
                             paddingY: 1,
                             display: "flex",
                             alignItems: "center",
-                            
+
                             justifyContent: "center",
                           }}
                         >
@@ -255,7 +255,7 @@ const ProfileTab = () => {
                           ) : (
                             "Link OneID"
                           )}
-                        </Button>
+                        </DefaultButton>
                       </Box>
                     </>
                   )}
@@ -586,7 +586,7 @@ const ProfileTab = () => {
                   gap: 4,
                 }}
               >
-                <Button
+                <DefaultButton
                   className="blueButton"
                   onClick={
                     isEditable ? handleCancelEdit : () => setIsEditable(true)
@@ -597,8 +597,8 @@ const ProfileTab = () => {
                   }}
                 >
                   {isEditable ? "Cancel Edit" : "Edit Profile"}
-                </Button>
-                <Button
+                </DefaultButton>
+                <DefaultButton
                   className="blueButton"
                   type="submit"
                   disabled={!isEditable || savingProfile}
@@ -608,7 +608,7 @@ const ProfileTab = () => {
                   }}
                 >
                   {savingProfile ? "Saving..." : "Save Changes"}
-                </Button>
+                </DefaultButton>
               </Grid>
             </Grid>
           </Box>

@@ -11,6 +11,7 @@ import Link from "next/link";
 import { HatchlingTable } from "./HatchlingTable";
 import MiniLeaderboard from "@/app/Play/User/Profile/Components/MyRewards/MiniLeaderboard";
 import { useSound } from "@/context/SoundContext"; // Import useSound context
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 // Define the shape of a leaderboard entry
 interface LeaderboardEntry {
@@ -377,7 +378,7 @@ const HatchlingInfoPanel: React.FC = () => {
         )}
       </Box>
 
-      <Button
+      <DefaultButton
         onClick={handleToggle}
         sx={{
           color: "#FFD700",
@@ -399,7 +400,7 @@ const HatchlingInfoPanel: React.FC = () => {
         endIcon={isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       >
         {isExpanded ? "Minimise" : "How to Play"}
-      </Button>
+      </DefaultButton>
     </Box>
   );
 };

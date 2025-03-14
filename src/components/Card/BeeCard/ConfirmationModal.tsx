@@ -3,6 +3,7 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import StyledModal from "@/components/Modals/StyledModal/StyledModal";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -57,7 +58,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         {description}
       </Typography>
       <Box sx={{ display: "flex", gap: "20px" }}>
-        <Button
+        <DefaultButton
           onClick={onCancel}
           variant="outlined"
           className="goldOutlinedButton"
@@ -69,8 +70,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           }}
         >
           {cancelButtonText}
-        </Button>
-        <Button
+        </DefaultButton>
+        <DefaultButton
           onClick={onConfirm}
           variant="contained"
           disabled={isConfirmLoading}
@@ -78,7 +79,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           sx={{ fontWeight: "bold" }}
         >
           {isConfirmLoading ? "Processing..." : confirmButtonText}
-        </Button>
+        </DefaultButton>
       </Box>
     </StyledModal>
   );

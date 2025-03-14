@@ -1,20 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Link } from "@mui/material";
+import { Link as MuiLink, LinkProps } from "@mui/material";
 import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import GameMenuModal from "@/components/Modals/GameMenu/GameMenu";
+import { useSound } from "@/context/SoundContext";
 
 interface HeaderProps {
   isGameLayout?: boolean;
 }
+
+// Component to wrap MUI Link with sound effects
+const SoundLink: React.FC<LinkProps> = (props) => {
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
+    setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
+  }, []);
+
+  const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    }
+    if (props.onMouseEnter) props.onMouseEnter(event);
+  };
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+    if (props.onMouseDown) props.onMouseDown(event);
+  };
+
+  return (
+    <MuiLink
+      {...props}
+      onMouseEnter={handleMouseEnter}
+      onMouseDown={handleMouseDown}
+    />
+  );
+};
 
 const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +63,6 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
 
   return (
     <>
-      {/* Show CircleIconButton only if isGameLayout is true */}
       {isGameLayout && (
         <CircleIconButton
           icon={<MenuIcon sx={{ fontSize: "34px", color: "white" }} />}
@@ -42,10 +77,8 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
         />
       )}
 
-      {/* Game Menu Modal (Replaces the old Drawer) */}
       {isGameLayout && <GameMenuModal open={isMenuOpen} onClose={toggleMenu} />}
 
-      {/* AppBar for standard layout */}
       {!isGameLayout && (
         <AppBar
           position="static"
@@ -70,19 +103,17 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               alignItems: "center",
             }}
           >
-            {/* Logo */}
             <Box display="flex" alignItems="center">
-              <Link href="/">
+              <MuiLink href="/">
                 <Box
                   component="img"
                   src="/Logos/buzzkill-logo-nav.png"
                   alt="Buzzkill Logo"
                   sx={{ height: "30px", cursor: "pointer", mr: 1 }}
                 />
-              </Link>
+              </MuiLink>
             </Box>
 
-            {/* Navigation Links */}
             <Box
               sx={{
                 flex: 1,
@@ -92,27 +123,35 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
                 padding: "0 0 0 44px",
               }}
             >
-              <Link href="/Play" className="linkStyle2">
+              <SoundLink href="/Play" className="linkStyle2">
                 Play
-              </Link>
-              <Link href="/Mint" className="linkStyle2">
+              </SoundLink>
+              <SoundLink href="/Mint" className="linkStyle2">
                 Mint
-              </Link>
-              <Link href="/HoneyDrops" className="linkStyle2">
+              </SoundLink>
+              <SoundLink href="/HoneyDrops" className="linkStyle2">
                 Leaderboard
-              </Link>
-              <Link href="/Play/User/Profile/MyProfile" className="linkStyle2">
+              </SoundLink>
+              <SoundLink
+                href="/Play/User/Profile/MyProfile"
+                className="linkStyle2"
+              >
                 My Profile
-              </Link>
-              <Link href="/Play/User/Profile/MyBees" className="linkStyle2">
+              </SoundLink>
+              <SoundLink
+                href="/Play/User/Profile/MyBees"
+                className="linkStyle2"
+              >
                 My Hatchlings
-              </Link>
-              <Link href="/Play/User/Profile/MyRewards" className="linkStyle2">
+              </SoundLink>
+              <SoundLink
+                href="/Play/User/Profile/MyRewards"
+                className="linkStyle2"
+              >
                 Rewards
-              </Link>
+              </SoundLink>
             </Box>
 
-            {/* Login Button */}
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <LoginButton />
             </Box>
