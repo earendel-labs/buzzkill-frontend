@@ -354,9 +354,9 @@ const buttonStyles = (theme: Theme) => ({
               "0 0 5px rgba(213, 98, 23, 0.4), 0 0 10px rgba(213, 98, 23, 0.2)",
           },
           "&.Mui-disabled": {
-            backgroundColor: "rgba(143, 76, 36, 0.8)",
+            backgroundColor: "rgba(160, 82, 38, 0.8)",
             border: "1px solid rgba(90, 38, 18, 0.8)",
-            color: "rgba(168, 123, 94, 0.8)",
+            color: "rgba(183, 135, 103, 0.8)",
             opacity: 0.6,
             boxShadow: "none",
           },

@@ -300,7 +300,7 @@ const HatchlingInfoPanel: React.FC = () => {
                         color: "inherit",
                       }}
                     >
-                      Whisperwood Valley (186 spots - open)
+                      Whisperwood Valley (240 spots - open)
                     </Link>
                   }
                   primaryTypographyProps={{
@@ -326,7 +326,7 @@ const HatchlingInfoPanel: React.FC = () => {
                         color: "inherit",
                       }}
                     >
-                      Molten Ridge (248 spots - open)
+                      Molten Ridge (240 spots - open)
                     </Link>
                   }
                   primaryTypographyProps={{
@@ -344,11 +344,11 @@ const HatchlingInfoPanel: React.FC = () => {
                 }}
               >
                 <ListItemText
-                  primary="Azure Reef (closed)"
+                  primary="Azure Reef (320 spots - open)"
                   primaryTypographyProps={{
                     sx: {
                       fontWeight: "bold",
-                      color: (theme) => theme.palette.DarkOrange.light,
+                      color: (theme) => theme.palette.Gold.main,
                     },
                   }}
                 />

@@ -290,7 +290,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -332,7 +332,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -394,7 +394,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -458,7 +458,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -522,7 +522,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -585,7 +585,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {
@@ -649,7 +649,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                       left: "100%",
                     },
                     "&:hover": {
-                      backgroundColor: "rgba(224, 115, 32, 0.9)",
+                      backgroundColor: "rgba(208, 46, 0, 0.9)",
                       boxShadow:
                         "0 0 8px rgba(213, 98, 23, 0.7), 0 0 15px rgba(213, 98, 23, 0.5)",
                       "& svg": {

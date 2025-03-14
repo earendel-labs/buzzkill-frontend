@@ -105,11 +105,11 @@ const MenuTitle = styled(Typography)({
 });
 
 const MenuContent = styled(Box)({
-  padding: "20px 30px",
+  padding: "30px 30px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: "14px",
+  gap: "20px",
 });
 
 const CloseButton = styled(IconButton)({
