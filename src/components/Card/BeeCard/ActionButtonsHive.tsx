@@ -49,8 +49,7 @@ const ActionButtonsHive: React.FC<ActionButtonsHiveProps> = ({
       )}
       {onUnstakeClick ? (
         <StyledActionButton
-          variant="contained"
-          color="secondary"
+          className="goldButton"
           onClick={onUnstakeClick}
           disabled={isPending || isTransactionLoading}
         >

@@ -85,6 +85,7 @@ const VerifyPartnerNftButton: React.FC = () => {
             onClick={handleClick}
             disabled={isProcessing || isDisabled || isVerified}
             scale={1}
+            sx={{ padding: "6px 10px" }}
           />
         </div>
       </Tooltip>

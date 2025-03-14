@@ -46,6 +46,7 @@ const BeePanelCard: React.FC = () => {
           height: "220px",
           padding: "16px",
           backgroundColor: "rgba(34, 46, 80, 0.6)",
+          backdropFilter: "blur(20px)",
           "@media (min-width:1400px) and (max-height:900px)": {
             height: "180px",
             width: "360px",
@@ -53,7 +54,12 @@ const BeePanelCard: React.FC = () => {
           },
         }}
       >
-        <Skeleton variant="rectangular" width="100%" height="100%" />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="100%"
+          sx={{ borderRadius: "6px" }}
+        />
       </SemiTransparentCard>
     );
   }
@@ -67,7 +73,7 @@ const BeePanelCard: React.FC = () => {
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "rgba(34, 46, 80, 0.8)",
+        bgcolor: "rgba(15, 28, 48, 0.85)",
         borderRadius: "8px",
         overflow: "hidden",
         zIndex: 1,

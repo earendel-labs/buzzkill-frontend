@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, CircularProgress, Grid, Button } from "@mui/material";
+import React from "react";
+import { Box } from "@mui/material";
 import Layout from "@/components/Layouts/Layout/Layout";
 
 const GalleryPage: React.FC = () => {

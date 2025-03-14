@@ -235,7 +235,7 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({
   }, [environmentId]);
 
   useEffect(() => {
-    console.log("Environments array in the provider:", state.environments);
+    logger.log("Environments array in the provider:", state.environments);
   }, [state.environments]);
   // ------------------------------------------------------------------------
   // 7) Once we have environment data in state, gather hives / resources, etc.

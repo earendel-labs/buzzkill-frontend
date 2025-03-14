@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
+import { useSound } from "@/context/SoundContext";
 
 const CustomSvgIcon = styled(SvgIcon)({
   width: "35px",
@@ -32,6 +33,28 @@ const SocialIcon: React.FC<SocialIconProps> = ({
   ...props
 }) => {
   const theme = useTheme();
+  const { isMuted } = useSound();
+  const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
+  const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setHoverSound(new Audio("/Audio/Button/SocialIconHover.wav"));
+    setClickSound(new Audio("/Audio/Button/SocialIconPressed.wav"));
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (!isMuted && hoverSound) {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    }
+  };
+
+  const handleMouseDown = () => {
+    if (!isMuted && clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+  };
 
   return (
     <a
@@ -39,6 +62,8 @@ const SocialIcon: React.FC<SocialIconProps> = ({
       target={target}
       rel={rel}
       style={{ display: "inline-block" }}
+      onMouseEnter={handleMouseEnter}
+      onMouseDown={handleMouseDown}
     >
       <CustomSvgIcon {...props} viewBox="0 0 35 35">
         <Component />

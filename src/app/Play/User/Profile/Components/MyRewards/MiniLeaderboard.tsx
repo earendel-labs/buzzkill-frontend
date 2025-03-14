@@ -15,8 +15,7 @@ import {
 import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useSWR from 'swr';
-
+import useSWR from "swr";
 
 // Define sort directions and sortable columns for the leaderboard
 type SortDirection = "asc" | "desc";
@@ -328,7 +327,7 @@ const MiniLeaderboard: React.FC = () => {
 
   if (loading) {
     return (
-      <Typography variant="h6" color="text.secondary">
+      <Typography variant="h6" sx={{ color: theme.palette.Gold.main }}>
         Loading leaderboard...
       </Typography>
     );

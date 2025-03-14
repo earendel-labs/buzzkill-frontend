@@ -55,7 +55,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
+    setHoverSound(new Audio("/Audio/Button/SocialIconHover.wav"));
     setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
   }, []);
 
@@ -69,21 +69,13 @@ const BeeGrid: React.FC<BeeGridProps> = ({
     }
   };
 
-  const handleMintClick = () => {
-    if (!isMuted && clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play();
+  const handleMouseEnter = () => {
+    if (hoverSound) {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
     }
-    window.open("/Mint", "_blank");
   };
-
-  const handleHatchlingsClick = () => {
-    if (!isMuted && clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play();
-    }
-    window.open("/Play/User/Profile/MyBees", "_blank");
-  };
+ 
 
   // Filter and sort the bees based on tab and ownership
   const filteredBees = useMemo(() => {
@@ -121,6 +113,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
     >
       {beeCategories.map((category) => (
         <Tab
+          onMouseEnter={handleMouseEnter}
           key={category.filter}
           label={category.label}
           value={category.filter}

@@ -27,7 +27,7 @@ const TopBar: React.FC<TopBarProps> = ({
             xs: "10px 20px",
             sm: "20px 20px 0px 40px",
             md: "20px 30px 0px 40px",
-            lg: "20px 80px 0px 60px",
+            lg: "20px 90px 0px 60px",
             xl: "30px 100px",
             xxl: "40px 120px",
           },

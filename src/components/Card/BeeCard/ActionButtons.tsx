@@ -82,8 +82,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     >
       {onPlayClick && (
         <StyledActionButton
-          variant="contained"
-          color="primary"
+          className="blueButton"
           onClick={handlePlayClick}
           onMouseEnter={handleHover} // Play hover sound on mouse enter
           disabled={isPending || isTransactionLoading}
@@ -93,8 +92,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       )}
       {onUnstakeClick && (
         <StyledActionButton
-          variant="contained"
-          color="secondary"
+          className="redButton"
           onClick={handleUnstakeClick}
           onMouseEnter={handleHover} // Play hover sound on mouse enter
           disabled={isPending || isTransactionLoading}

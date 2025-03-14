@@ -90,22 +90,20 @@ const LeftButtonComponent: React.FC = () => {
     return (
       <Box
         sx={{
-          width: "100px",
+          width: "68px",  
           height: "100px",
-          position: "relative",
-          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box
+        <Skeleton
+          variant="rectangular"
+          width="68px" 
+          height="100px"
           sx={{
-            width: 0,
-            height: 0,
-            borderTop: "50px solid transparent",
-            borderBottom: "50px solid transparent",
-            borderRight: "100px solid #E0E0E0", // Color for the skeleton
-            position: "absolute",
-            top: 0,
-            left: 0,
+            clipPath: "polygon(100% 0, 0% 50%, 100% 100%)", 
+            backgroundColor: "#242E4E",
           }}
         />
       </Box>

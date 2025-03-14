@@ -15,17 +15,19 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
     <Box
       sx={{
         position: "relative",
-        background: "linear-gradient(to right, rgba(36, 46, 78, 0.9), rgba(18, 23, 39, 0.9))",
+        background: "rgba(15, 28, 48, 0.85)",
         borderRadius: "10px",
-        padding: "10px 4px",
+        padding: "8px 4px",
         "&::before": {
           content: '""',
           position: "absolute",
           inset: 0,
           borderRadius: "inherit",
           padding: borderWidth,
-          background: "linear-gradient(135deg, #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
-          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          background:
+            "linear-gradient(135deg, #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
+          WebkitMask:
+            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
           zIndex: 0,
@@ -35,7 +37,7 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
           position: "absolute",
           inset: "2px",
           borderRadius: "8px",
-          background: "linear-gradient(180deg, rgba(36, 46, 78, 0.9) 11.54%, rgba(18, 23, 39, 0.9) 49.51%, rgba(32, 41, 70, 0.9) 80.36%, rgba(23, 29, 50, 0.9) 91.43%)",
+          backgroundColor: "rgba(15, 28, 48, 0.85)",
           zIndex: 1,
         },
         ...sx,
@@ -48,4 +50,3 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
 };
 
 export default UserResourcesBackground;
-

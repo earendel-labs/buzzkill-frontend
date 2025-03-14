@@ -4,13 +4,14 @@
 import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layouts/Layout/Layout";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Snackbar, Alert } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import { useRouter } from "next/navigation";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { useSession } from "next-auth/react";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
@@ -162,13 +163,13 @@ const HomePage: React.FC = () => {
             {/* Buttons Row */}
             <Box sx={{ display: "flex", gap: 8, mt: 6 }}>
               <LoginButton />
-              <Button
+              <DefaultButton
                 className="blueButton"
                 onClick={handleClick}
                 sx={{ width: "155px", fontSize: "18px" }}
               >
                 Mint
-              </Button>
+              </DefaultButton>
             </Box>
           </Box>
         </SemiTransparentCard>

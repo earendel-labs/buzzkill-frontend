@@ -11,6 +11,7 @@ import Link from "next/link";
 import { HatchlingTable } from "./HatchlingTable";
 import MiniLeaderboard from "@/app/Play/User/Profile/Components/MyRewards/MiniLeaderboard";
 import { useSound } from "@/context/SoundContext"; // Import useSound context
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 // Define the shape of a leaderboard entry
 interface LeaderboardEntry {
@@ -154,7 +155,7 @@ const HatchlingInfoPanel: React.FC = () => {
         height: isExpanded
           ? {
               xs: "100%",
-              md: "500px",
+              md: "530px",
               xl: "600px",
               xxl: "800px",
             }
@@ -162,7 +163,8 @@ const HatchlingInfoPanel: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        backgroundColor: "rgba(34, 46, 80, 0.95)",
+        bgcolor: "rgba(15, 28, 48, 0.85)",
+        backdropFilter: "blur(12px)",
         borderRadius: "8px",
         boxShadow: `
           inset 4px 4px 4px rgba(0, 0, 0, 0.25),
@@ -299,7 +301,7 @@ const HatchlingInfoPanel: React.FC = () => {
                         color: "inherit",
                       }}
                     >
-                      Whisperwood Valley (186 spots - open)
+                      Whisperwood Valley (240 spots - open)
                     </Link>
                   }
                   primaryTypographyProps={{
@@ -325,7 +327,7 @@ const HatchlingInfoPanel: React.FC = () => {
                         color: "inherit",
                       }}
                     >
-                      Molten Ridge (248 spots - open)
+                      Molten Ridge (240 spots - open)
                     </Link>
                   }
                   primaryTypographyProps={{
@@ -343,11 +345,11 @@ const HatchlingInfoPanel: React.FC = () => {
                 }}
               >
                 <ListItemText
-                  primary="Azure Reef (closed)"
+                  primary="Azure Reef (320 spots - open)"
                   primaryTypographyProps={{
                     sx: {
                       fontWeight: "bold",
-                      color: (theme) => theme.palette.DarkOrange.light,
+                      color: (theme) => theme.palette.Gold.main,
                     },
                   }}
                 />
@@ -358,7 +360,7 @@ const HatchlingInfoPanel: React.FC = () => {
 
         {selectedTab === "leaderboard" && (
           <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "1rem" }}>
+            <Typography sx={{ marginBottom: "0.75rem" }}>
               Claim your points and view your spot on the leaderboard. Checkout
               the{" "}
               <Link
@@ -368,7 +370,7 @@ const HatchlingInfoPanel: React.FC = () => {
                   fontWeight: "bold",
                 }}
               >
-                full leaderboard.
+                full leaderboard here.
               </Link>
             </Typography>
             <MiniLeaderboard />
@@ -376,7 +378,7 @@ const HatchlingInfoPanel: React.FC = () => {
         )}
       </Box>
 
-      <Button
+      <DefaultButton
         onClick={handleToggle}
         sx={{
           color: "#FFD700",
@@ -398,7 +400,7 @@ const HatchlingInfoPanel: React.FC = () => {
         endIcon={isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       >
         {isExpanded ? "Minimise" : "How to Play"}
-      </Button>
+      </DefaultButton>
     </Box>
   );
 };

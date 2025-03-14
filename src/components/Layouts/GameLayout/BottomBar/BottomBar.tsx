@@ -23,7 +23,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
             position: "fixed",
             bottom: {
               xs: "12rem",
-              md: "14rem",
+              md: "13.4rem",
               xl: "17rem",
               xxl: "18rem",
             },

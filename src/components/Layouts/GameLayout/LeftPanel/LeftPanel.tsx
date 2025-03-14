@@ -15,7 +15,7 @@ const LeftPanel: React.FC = () => {
           xs: "100%",
           md: "7rem",
           xl: "9.3rem",
-          xxl: "10rem",
+          xxl: "9.3rem",
         }, // Positioned right below the Resource Bar
         left: {
           xs: "100%",

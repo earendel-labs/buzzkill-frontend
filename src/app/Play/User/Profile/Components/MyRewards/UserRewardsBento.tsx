@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
-  Button,
+ 
   Skeleton,
   Box,
   Tooltip,
@@ -13,17 +13,17 @@ import {
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import { ContentCopy as CopyIcon } from "@mui/icons-material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import PaymentsIcon from "@mui/icons-material/Payments";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import InfoIcon from "@mui/icons-material/InfoOutlined";
-import { useRouter } from "next/navigation";
-import { useTheme } from "@mui/system";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import FactoryIcon from "@mui/icons-material/Factory";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
+import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/system";
 import { useUserContext } from "@/context/UserContext";
 import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
 import { formatNumber } from "@/utils/formatNumber";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UserRewardsBentoProps {
   loadingProfile: boolean;
@@ -96,13 +96,13 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
         <Typography variant="body1" color="white" sx={{ mb: 3 }}>
           Sign-up or login to view your rewards
         </Typography>
-        <Button
+        <DefaultButton
           className="darkBlueButton"
           onClick={() => router.push("/")}
           sx={{ mt: 2 }}
         >
           Go to Home
-        </Button>
+        </DefaultButton>
       </SemiTransparentCard>
     );
   }
@@ -112,108 +112,92 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
       {/* Total Earnings Card */}
       <Grid item xs={12}>
         <SemiTransparentCard transparency={0.3} sx={{ padding: "40px" }}>
-          <Box
-            sx={{
-              padding: "2px 2px 24px 12px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              textAlign: "left",
-            }}
-          >
-            {/* Title with Icon + Tooltip */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              <TrendingUpIcon
-                sx={{
-                  color: theme.palette.LightBlue.main,
-                  fontSize: "32px",
-                }}
-              />
-              <Typography
-                variant="h5"
-                component="p"
-                sx={{
-                  fontWeight: "bold",
-                  color: theme.palette.LightBlue.main,
-                }}
-              >
-                Total Rewards
-              </Typography>
-              <Tooltip
-                title={
-                  <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-                    Total rewards earned throughout Buzzkill Campaigns
-                  </Typography>
-                }
-                placement="top"
-                arrow
-              >
-                <InfoIcon
+          <Grid item xs={12}>
+            {/* Wrap both sections in a Grid container so they're on the same row */}
+            <Grid container spacing={2} alignItems="flex-start">
+              <Grid item xs={12} sm={6} md={6} lg={8.1}>
+                <Box
                   sx={{
-                    color: theme.palette.LightBlue.main,
-                    fontSize: "1.2rem",
-                    cursor: "pointer",
+                    padding: "2px 2px 24px 12px",
+                    marginBottom: "28px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    textAlign: "left",
                   }}
-                />
-              </Tooltip>
-            </Box>
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <TrendingUpIcon
+                      sx={{
+                        color: theme.palette.LightBlue.main,
+                        fontSize: "32px",
+                      }}
+                    />
+                    <Typography
+                      variant="h5"
+                      component="p"
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.palette.LightBlue.main,
+                      }}
+                    >
+                      Total Rewards
+                    </Typography>
+                    <Tooltip
+                      title={
+                        <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                          Total rewards earned throughout Buzzkill Campaigns
+                        </Typography>
+                      }
+                      placement="top"
+                      arrow
+                    >
+                      <InfoIcon
+                        sx={{
+                          color: theme.palette.LightBlue.main,
+                          fontSize: "1.2rem",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </Tooltip>
+                  </Box>
 
-            {/* Total Rewards Display */}
-            <Typography
-              variant="h2"
-              component="p"
-              fontWeight="bold"
-              sx={{
-                color: theme.palette.Gold.main,
-                WebkitTextStroke: "0",
-                lineHeight: "1.2",
-              }}
-            >
-              {profileData?.total_rewards !== undefined
-                ? `${profileData.total_rewards.toLocaleString()}`
-                : "0"}
-              <Typography
-                variant="h4"
-                component="span"
-                sx={{
-                  color: theme.palette.Gold.main,
-                  WebkitTextStroke: "0",
-                  marginLeft: "8px",
-                }}
-              >
-                Honey Drops
-              </Typography>
-            </Typography>
-          </Box>
+                  <Typography
+                    variant="h2"
+                    component="p"
+                    fontWeight="bold"
+                    sx={{
+                      color: theme.palette.Gold.main,
+                      WebkitTextStroke: "0",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    {profileData?.total_rewards !== undefined
+                      ? `${profileData.total_rewards.toLocaleString()}`
+                      : "0"}
+                    <Typography
+                      variant="h4"
+                      component="span"
+                      sx={{
+                        color: theme.palette.Gold.main,
+                        WebkitTextStroke: "0",
+                        marginLeft: "8px",
+                      }}
+                    >
+                      Honey Drops
+                    </Typography>
+                  </Typography>
+                </Box>
+              </Grid>
 
-          {/* Inner Row for Daily Bonus, Referral Rewards, and Bee Production */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "flex-end",
-              height: "100%",
-              paddingBottom: 0,
-            }}
-          >
-            <Grid
-              container
-              spacing={4}
-              sx={{
-                maxWidth: "1200px",
-                justifyContent: "center",
-                padding: 0,
-              }}
-            >
-              {/* Hatchling Yield */}
-              <Grid item xs={12} sm={6} md={4} lg={4}>
+              <Grid item xs={12} sm={6} md={6} lg={3.9}>
                 <SemiTransparentCard
                   sx={{ height: "100%", p: 3 }}
                   shadowTransparency={0}
@@ -270,43 +254,129 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                       </Tooltip>
                     </Box>
 
-                    <Typography
-                      variant="h4"
-                      component="p"
-                      fontWeight="bold"
-                      sx={{
-                        color: theme.palette.Gold.main,
-                        WebkitTextStroke: "0",
-                        lineHeight: "1.2",
-                        marginTop: "8px",
-                        marginBottom: "2px",
-                      }}
+                    <Tooltip
+                      title={`From ${stakedBees.length} staked hatchlings`}
                     >
-                      {formatNumber(onChainPoints || 0)}
                       <Typography
-                        variant="h5"
-                        component="span"
+                        variant="h4"
+                        fontWeight="bold"
                         sx={{
                           color: theme.palette.Gold.main,
+                          lineHeight: "1.2",
                           WebkitTextStroke: "0",
-                          marginLeft: "8px",
+                          marginTop: "8px",
+                          marginBottom: "8px",
                         }}
                       >
-                        Honey Drops
+                        {formatNumber(onChainPoints || 0)}
+                        <Typography
+                          variant="h6"
+                          component="span"
+                          sx={{
+                            color: theme.palette.Gold.main,
+                            fontSize: "1.75rem",
+                            WebkitTextStroke: "0",
+                            marginLeft: "8px",
+                          }}
+                        >
+                          Honey Drops
+                        </Typography>
                       </Typography>
-                    </Typography>
+                    </Tooltip>
+                  </Box>
+                </SemiTransparentCard>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          {/* Row for Daily Hatchling Yield, Unclaimed Yield, Referral Rewards, Staked Hatchling Yield */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-end",
+              height: "100%",
+              paddingBottom: 0,
+            }}
+          >
+            <Grid
+              container
+              spacing={4}
+              sx={{
+                maxWidth: "1200px",
+                justifyContent: "center",
+                padding: 0,
+              }}
+            >
+              {/* Daily Hatchling Yield */}
+              <Grid item xs={12} sm={6} md={3} lg={4}>
+                <SemiTransparentCard
+                  sx={{ height: "100%", p: 3 }}
+                  shadowTransparency={0}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      <TrendingUpIcon
+                        sx={{
+                          color: theme.palette.LightBlue.main,
+                          fontSize: "1.25rem",
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        component="p"
+                        sx={{
+                          fontWeight: "bold",
+                          color: theme.palette.LightBlue.main,
+                        }}
+                      >
+                        Daily Hatchling Yield
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <Typography variant="body1" sx={{ fontSize: "1rem" }}>
+                            Daily total yield per day from all your Hatchlings
+                          </Typography>
+                        }
+                        placement="top"
+                        arrow
+                      >
+                        <InfoIcon
+                          sx={{
+                            color: theme.palette.LightBlue.main,
+                            fontSize: "1.2rem",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
 
                     <Tooltip
                       title={`From ${stakedBees.length} staked hatchlings`}
                     >
                       <Typography
-                        variant="h5"
+                        variant="h4"
                         fontWeight="bold"
                         sx={{
-                          color: theme.palette.LightBlue.main,
+                          color: theme.palette.Gold.main,
                           lineHeight: "1.2",
-                          marginTop: "8px",
-                          marginBottom: "8px",
+                          marginTop: "12px",
+                          WebkitTextStroke: "0",
+                          marginBottom: "12px",
                         }}
                       >
                         {formatNumber(
@@ -316,8 +386,9 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           variant="h6"
                           component="span"
                           sx={{
-                            color: theme.palette.LightBlue.main,
+                            color: theme.palette.Gold.main,
                             WebkitTextStroke: "0",
+                            fontSize: "1.4rem",
                             marginLeft: "8px",
                           }}
                         >
@@ -327,41 +398,45 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     </Tooltip>
 
                     {profileData?.has_oneid && (
-                      <Chip
-                        label="1.2x OneID Multiplier"
-                        icon={
-                          <WhatshotIcon
-                            sx={{
+                      <Tooltip
+                        title={`Bonus Hatchling yield multiplier from having a valid OneID`}
+                      >
+                        <Chip
+                          label="1.2x OneID Multiplier"
+                          icon={
+                            <WhatshotIcon
+                              sx={{
+                                color: "white",
+                                fontSize: "1.2rem",
+                              }}
+                            />
+                          }
+                          sx={{
+                            "& .MuiChip-icon": {
+                              marginRight: "-12px",
                               color: "white",
-                              fontSize: "1.2rem",
-                            }}
-                          />
-                        }
-                        sx={{
-                          "& .MuiChip-icon": {
-                            marginRight: "-12px",
+                            },
+                            backgroundColor: theme.palette.OneIDRed.main,
                             color: "white",
-                          },
-                          backgroundColor: theme.palette.OneIDRed.main,
-                          color: "white",
-                          fontWeight: "bold",
-                          borderRadius: "24px",
-                          paddingY: "20px",
-                          width: "100%",
-                          fontSize: "1.125rem",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      />
+                            fontWeight: "bold",
+                            borderRadius: "24px",
+                            paddingY: "23px",
+                            width: "100%",
+                            fontSize: "1.1rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        />
+                      </Tooltip>
                     )}
                   </Box>
                 </SemiTransparentCard>
               </Grid>
 
-              {/* Unclaimed Points */}
-              <Grid item xs={12} sm={6} md={4} lg={4}>
+              {/* Unclaimed Yield */}
+              <Grid item xs={12} sm={6} md={3} lg={4}>
                 <SemiTransparentCard
                   shadowTransparency={0}
                   sx={{ height: "100%", p: 3 }}
@@ -461,7 +536,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
               </Grid>
 
               {/* Referral Rewards */}
-              <Grid item xs={12} sm={6} md={4} lg={4}>
+              <Grid item xs={12} sm={6} md={3} lg={4}>
                 <SemiTransparentCard
                   shadowTransparency={0}
                   sx={{ height: "100%", p: 3 }}
@@ -555,7 +630,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     )}
 
                     {profileData?.invite_code ? (
-                      <Button
+                      <DefaultButton
                         className="blueButton"
                         onClick={copyInviteLink}
                         startIcon={<CopyIcon />}
@@ -572,7 +647,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                         }}
                       >
                         Invite Friends
-                      </Button>
+                      </DefaultButton>
                     ) : (
                       <Skeleton
                         variant="text"

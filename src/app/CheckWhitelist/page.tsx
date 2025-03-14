@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button } from "@mui/material";
+import { Box, Typography, TextField } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Layout from "@/components/Layouts/Layout/Layout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import axios from "axios";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 function isValidEVMAddress(address: string) {
   return /^0x[a-fA-F0-9]{40}$/.test(address);
@@ -183,14 +184,14 @@ const CheckWhitelistPage: React.FC = () => {
             }}
           />
 
-          <Button
+          <DefaultButton
             className="blueButton"
             onClick={handleCheckWhitelist}
             disabled={loading || submitDisabled}
             sx={{ mb: 3 }}
           >
             {loading ? "Checking..." : "Check Wallet"}
-          </Button>
+          </DefaultButton>
 
           {/* Display the result below the button instead of a toast */}
           {(error || successMessage) && (
@@ -198,7 +199,7 @@ const CheckWhitelistPage: React.FC = () => {
               variant="h6"
               sx={{
                 mt: 2,
-                color: error ? "red" : "limegreen",
+                color: error ? theme.palette.DarkOrange.main : "limegreen",
                 whiteSpace: "pre-line",
               }}
             >
