@@ -2,7 +2,6 @@
 
 import "../styles/globals.css";
 import CssBaseline from "@mui/material/CssBaseline";
-import type { Session } from "next-auth";
 import { SoundProvider } from "@/context/SoundContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 import GlobalScrollbarStyles from "@/theme/scrollbar-styles/scrollBarStyles";
@@ -17,15 +16,14 @@ import { OneIDProvider } from "@/context/OneIDContext";
 import { ApolloProvider } from "@apollo/client";
 import createApolloClient from "./libs/apolloClient";
 import { Analytics } from "@vercel/analytics/react";
+import type { Session } from "next-auth";
 
-// Load Google Poppins font using next/font
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
 });
 
-// Load custom "Vera Humana 95" font
 const veraHumana = localFont({
   src: [
     {
@@ -46,10 +44,12 @@ const veraHumana = localFont({
 
 const client = createApolloClient();
 
-export default function RootLayout({
-  children,
-  session,
-}: Readonly<{ session: Session; children: React.ReactNode }>) {
+type RootLayoutProps = {
+  children: React.ReactNode;
+  session: Session;
+};
+
+export default function RootLayout({ children, session }: RootLayoutProps) {
   return (
     <html lang="en" className={`${veraHumana.variable} ${poppins.variable}`}>
       <head>
@@ -64,12 +64,11 @@ export default function RootLayout({
         <meta property="og:title" content="Buzzkill - Honeycomb Hustle" />
         <meta
           property="og:description"
-          content="Buzzkill - HoneyComb Hustle created by Buzzkill Studio Inc. "
+          content="Buzzkill - HoneyComb Hustle created by Buzzkill Studio Inc."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://play.buzzkill.world/" />
         <meta property="og:image" content="/thumbnail/buzzkill-thumbnail.png" />
-
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://play.buzzkill.world/" />
         <title>Buzzkill - Play Game</title>
