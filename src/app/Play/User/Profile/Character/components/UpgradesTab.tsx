@@ -79,6 +79,7 @@ export default function UpgradesTab({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                gap: { xs: 1, lg: 2 }, // Added gap for spacing between text and button
               }}
             >
               <Box sx={{ flex: 1 }}>
@@ -110,7 +111,10 @@ export default function UpgradesTab({
                 variant="contained"
                 onClick={() => openUpgradeDialog(upgrade.stat)}
                 className="goldButtonHorizontal"
-                sx={{ width: { xs: "100%", lg: "auto" } }}
+                sx={{
+                  width: { xs: "100%", lg: "auto" },
+                  minWidth: "180px", // Added minimum width for better button sizing
+                }}
               >
                 <UpgradeIcon sx={{ mr: 1 }} />
                 500 $HONEY

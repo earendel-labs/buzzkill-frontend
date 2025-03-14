@@ -6,6 +6,7 @@ import { SxProps, Theme } from "@mui/system";
 import { Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 import { logger } from "@/utils/logger";
+
 interface CircleIconButtonProps {
   icon: React.ReactNode;
   onClick: () => void;
@@ -17,7 +18,7 @@ interface CircleIconButtonProps {
 
 const sizeMap = {
   small: { button: "60px", icon: "28px" },
-  medium: { button: "70px", icon: "34px" }, // Default size
+  medium: { button: "70px", icon: "34px" },
   large: { button: "90px", icon: "44px" },
   extraLarge: { button: "110px", icon: "54px" },
 };
@@ -26,20 +27,18 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
   icon,
   onClick,
   backgroundColor,
-  size = "medium", // Default to "medium"
+  size = "medium",
   sx,
-  disableClickSound = false, // Default to false
+  disableClickSound = false,
 }) => {
   const theme = useTheme();
   const { isMuted } = useSound();
   const { button: buttonSize, icon: iconSize } = sizeMap[size];
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
-  const [disableHoverSound, setDisableHoverSound] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Track loading state
-  const [isClicking, setIsClicking] = useState(false); // Track button press
+  const [isLoading, setIsLoading] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Preload the images and sounds
   useEffect(() => {
     const images = [
       "/Frames/Buttons/CircleButton/circle-frame.svg",
@@ -59,42 +58,36 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
       .then(() => {
         setHoverSound(new Audio("/Audio/Button/WoodenHover.wav"));
         setClickSound(new Audio("/Audio/Button/WoodenClick.wav"));
-        setIsLoading(false); // Set loading to false when assets are loaded
+        setIsLoading(false);
       })
       .catch((err) => logger.log("Error loading images or sounds:", err));
   }, []);
 
   const handleMouseEnter = () => {
-    if (!isMuted && !disableHoverSound && hoverSound) {
+    if (!isMuted && hoverSound) {
       hoverSound.play();
     }
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
   };
 
   const handleMouseDown = () => {
     if (!isMuted && clickSound && !disableClickSound) {
       clickSound.play();
     }
-    setIsClicking(true);
-    setDisableHoverSound(true);
   };
-
-  // Re-enable hover sound when clicking state changes back
-  useEffect(() => {
-    if (isClicking) {
-      // Simulate the effect of a completed button press by resetting the state
-      setIsClicking(false);
-      setDisableHoverSound(false);
-    }
-  }, [isClicking]);
 
   if (isLoading) {
     return (
       <Box
         sx={{
-          position: "absolute", // Ensure Skeleton respects positioning
+          position: "absolute",
           width: buttonSize,
           height: buttonSize,
-          ...sx, // Apply the same sx prop to maintain positioning and other styles
+          ...sx,
         }}
       >
         <Skeleton
@@ -121,38 +114,39 @@ const CircleIconButton: React.FC<CircleIconButtonProps> = ({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "transparent",
+        position: "relative",
         ...sx,
       }}
       onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Box
         sx={{
           position: "absolute",
           width: buttonSize,
           height: buttonSize,
-          backgroundImage: `url('/Frames/Buttons/CircleButton/circle-frame.svg')`,
-          backgroundSize: "contain",
+          backgroundImage: `url('${
+            isHovering
+              ? "/Frames/Buttons/CircleButton/circle-frame-hover.svg"
+              : "/Frames/Buttons/CircleButton/circle-frame.svg"
+          }')`,
+          backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundColor: "transparent",
-          transition: "width 0.2s ease-in-out, height 0.2s ease-in-out",
-          "&:hover": {
-            width: `calc(${buttonSize} * 1.1)`,
-            height: `calc(${buttonSize} * 1.1)`,
-            backgroundImage: `url('/Frames/Buttons/CircleButton/circle-frame-hover.svg')`,
-          },
         }}
       />
       <IconButton
         color="inherit"
         aria-label="icon-button"
         sx={{
-          width: `calc(${buttonSize} * 0.714)`,
-          height: `calc(${buttonSize} * 0.714)`,
+          width: `calc(${buttonSize} * 0.85)`,
+          height: `calc(${buttonSize} * 0.85)`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: backgroundColor || theme.palette.GoldFaded.main,
+          position: "relative",
         }}
         onClick={() => {
           handleMouseDown();

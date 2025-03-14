@@ -162,7 +162,8 @@ const HatchlingInfoPanel: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        backgroundColor: "rgba(34, 46, 80, 0.95)",
+        bgcolor: "rgba(15, 28, 48, 0.85)",
+        backdropFilter: "blur(12px)",
         borderRadius: "8px",
         boxShadow: `
           inset 4px 4px 4px rgba(0, 0, 0, 0.25),

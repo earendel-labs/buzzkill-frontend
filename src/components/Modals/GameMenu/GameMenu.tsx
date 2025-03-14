@@ -29,7 +29,7 @@ const menuItems = [
   { label: "My Profile", path: "/Play/User/Profile/MyProfile" },
   { label: "My Hatchlings", path: "/Play/User/Profile/MyBees" },
   { label: "Rewards", path: "/Play/User/Profile/MyRewards" },
-  { label: "Check Whitelist", path: "/Whitelist" },
+  { label: "Check Whitelist", path: "/CheckWhitelist" },
 ];
 
 // Keyframes for animations
