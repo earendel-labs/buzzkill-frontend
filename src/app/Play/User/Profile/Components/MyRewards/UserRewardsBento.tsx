@@ -376,7 +376,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                           lineHeight: "1.2",
                           marginTop: "12px",
                           WebkitTextStroke: "0",
-                          marginBottom: "12px",
+                          marginBottom: "6px",
                         }}
                       >
                         {formatNumber(
