@@ -36,8 +36,8 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
 
   // Show nav links only if screen is lg (1280px) or wider
   const showNavLinks = useMediaQuery(theme.breakpoints.up("lg"));
-  // Show the LoginButton for screens md (960px) and wider
-  const showLoginButton = useMediaQuery(theme.breakpoints.up("md"));
+  // Show the LoginButton for screens sm (600px) and wider
+  const showLoginButton = useMediaQuery(theme.breakpoints.up("sm"));
   // If nav links are hidden, we show the hamburger
   const isMobileOrTablet = !showNavLinks;
 
@@ -177,7 +177,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
               gap: theme.spacing(2),
             }}
           >
-            {/* Show LoginButton if screen >= md */}
+            {/* Show LoginButton if screen >= sm */}
             {showLoginButton && <LoginButton />}
 
             {/* If nav links are hidden, show hamburger */}
