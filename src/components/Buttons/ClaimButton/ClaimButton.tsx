@@ -233,8 +233,16 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               justifyContent: "center",
               textTransform: "none",
               fontWeight: "bold",
-              fontSize: "1rem",
+              fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
               lineHeight: "1.2",
+              padding: isUserResource
+                ? {
+                    xs: "6px 8px",
+                    sm: "6px 8px",
+                    md: "6px 8px",
+                    lg: "10px 16px",
+                  }
+                : "12px 24px",
               ...sx,
             }}
           >

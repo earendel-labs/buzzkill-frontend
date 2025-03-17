@@ -8,13 +8,13 @@ import UserResourcesBackground from "./UserResourcesBackground";
 import { useProfileContext } from "@/context/ProfileContext";
 import { useUserContext } from "@/context/UserContext"; // import useUserContext for liveUnclaimedPoints
 import { formatNumber } from "@/utils/formatNumber";
-import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton"; // import ClaimButton
+import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
 import { useTheme } from "@mui/material/styles";
 
 const UserResourceBar: React.FC = () => {
   const theme = useTheme();
   const { profileData, loadingProfile } = useProfileContext();
-  const { userRewards, liveUnclaimedPoints } = useUserContext(); // get liveUnclaimedPoints from context
+  const { userRewards, liveUnclaimedPoints } = useUserContext();
   const totalRewards = loadingProfile
     ? undefined
     : profileData?.total_rewards || 0;
@@ -29,7 +29,7 @@ const UserResourceBar: React.FC = () => {
     ) {
       setDisplayPoints(0);
     } else {
-      setDisplayPoints(Number(liveUnclaimedPoints));
+      setDisplayPoints(Number(23456)); //
     }
   }, [liveUnclaimedPoints]);
 
@@ -45,11 +45,9 @@ const UserResourceBar: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            minWidth: {
-              lg: "120px",
-              xl: "420px",
-            },
-            height: "54px", // Fixed height to match the image
+            // Reduce overall dimensions on mobile/tablet
+            minWidth: { xs: "80px", sm: "100px", lg: "260px" },
+            height: { xs: "30px", sm: "36px", lg: "54px" },
             flexWrap: "nowrap",
           }}
         >
@@ -58,9 +56,10 @@ const UserResourceBar: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-start",
-              gap: 1,
-              px: 2,
-              height: "48px", // Fixed height to match the image
+              // Smaller gap and padding for mobile/tablet
+              gap: { xs: 0.25, sm: 0.5 },
+              px: { xs: 0.5, sm: 1 },
+              height: "100%",
             }}
           >
             <motion.div
@@ -70,8 +69,9 @@ const UserResourceBar: React.FC = () => {
             >
               <Box
                 sx={{
-                  width: 32,
-                  height: 32,
+                  // Decrease icon dimensions on smaller screens
+                  width: { xs: 20, sm: 24 },
+                  height: { xs: 20, sm: 24 },
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -82,10 +82,8 @@ const UserResourceBar: React.FC = () => {
                   src="/Icons/Resources/HoneyToken.png"
                   alt="HoneyToken"
                   fill
-                  sizes="(max-width: 768px) 32px, 32px"
-                  style={{
-                    objectFit: "contain",
-                  }}
+                  sizes="(max-width: 768px) 20px, 24px"
+                  style={{ objectFit: "contain" }}
                 />
               </Box>
             </motion.div>
@@ -98,8 +96,8 @@ const UserResourceBar: React.FC = () => {
               {loadingProfile || totalRewards === undefined ? (
                 <Skeleton
                   variant="text"
-                  width={80}
-                  height={34}
+                  width={50}
+                  height={20}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                     transform: "none",
@@ -108,19 +106,18 @@ const UserResourceBar: React.FC = () => {
               ) : (
                 <Tooltip title="Total claimed points across your campaign">
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                       fontWeight: "bold",
                       color: theme.palette.Gold.main,
                       letterSpacing: "0.5px",
-                      fontSize: { xs: "24px", sm: "28px" },
-
+                      // Smaller font size on mobile/tablet
+                      fontSize: { xs: "14px", sm: "18px", lg: "24px" },
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "start",
                       lineHeight: 1,
-                      height: "100%",
-                      marginTop: "3px", // Push text downward
+                      marginTop: "2px",
                     }}
                   >
                     {formatNumber(totalRewards) || 0}
@@ -129,43 +126,46 @@ const UserResourceBar: React.FC = () => {
               )}
             </motion.div>
           </Box>
-          {/* Display Unclaimed Points and ClaimButton on the same line */}
+
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: {
-                lg: 1,
-                xl: 2,
-              },
-              px: 2,
+              // Reduce gap on smaller screens
+              gap: { xs: 0.25, sm: 0.5, lg: 1.5 },
+              px: { xs: 0.5, sm: 1 },
               flexWrap: "wrap",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {/* Tooltip for unclaimed points */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: { xs: 0.25, sm: 0.5 },
+              }}
+            >
               <Tooltip title="Total unclaimed points from your hatchlings">
                 <Typography
-                  variant="h4"
+                  variant="h5"
                   fontWeight="bold"
                   sx={{
-                    color: theme.palette.LightBlue.main, // Gold color for total points
+                    color: theme.palette.LightBlue.main,
                     WebkitTextStroke: "0",
                     lineHeight: "1.2",
-                    marginTop: "6px",
-                    fontSize: { xs: "20px", sm: "24px", xl: "28px" },
+                    marginTop: "2px",
+                    // Smaller font for mobile/tablet
+                    fontSize: { xs: "12px", sm: "16px", lg: "24px" },
                   }}
                 >
                   {displayPoints !== null ? (
                     formatNumber(Math.floor(displayPoints))
                   ) : (
-                    <Skeleton variant="text" width={40} height={60} />
+                    <Skeleton variant="text" width={30} height={20} />
                   )}
                 </Typography>
               </Tooltip>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              {/* Claim Button for Unclaimed Points */}
               <ClaimButton
                 isUserResource={true}
                 liveUnclaimedPoints={displayPoints || 0}

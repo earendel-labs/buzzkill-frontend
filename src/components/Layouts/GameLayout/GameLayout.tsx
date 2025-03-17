@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, useMediaQuery, Theme, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useMediaQuery,
+  Theme,
+  useTheme,
+  CssBaseline,
+} from "@mui/material";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
+import Header from "../Layout/Header/Header";
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -45,5 +53,20 @@ export default function GameLayout({ children }: GameLayoutProps) {
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {" "}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <CssBaseline />
+        <Header isGameLayout={true} />
+        <Box>{children}</Box>
+      </Box>
+    </>
+  );
 }

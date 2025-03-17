@@ -29,19 +29,22 @@ const menuItems = [
 const MenuContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  height: "100vh",
-  maxWidth: "43.75rem", // 700px
   width: "100%",
+  maxWidth: "43.75rem", // 700px
+  maxHeight: "80vh", // Constrain height for desktop
   backgroundColor: "rgba(15, 28, 48, 0.95)",
   backdropFilter: "blur(0.625rem)",
   borderRadius: "0.75rem",
   border: "0.125rem solid #D4AF37",
   outline: "none",
   overflow: "hidden",
-  margin: "0 auto", // Center horizontally if there's space
+  margin: "auto", // Center on desktop
+  alignSelf: "center", // Center vertically
 
   [theme.breakpoints.down("md")]: {
     maxWidth: "100vw",
+    height: "100vh", // Full height for mobile
+    maxHeight: "100vh",
     border: "none",
     borderRadius: 0,
   },
@@ -124,7 +127,16 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
   };
 
   return (
-    <Modal open={open} onClose={onClose} aria-labelledby="menu-modal-title">
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="menu-modal-title"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <MenuContainer>
         {/* Header */}
         <MenuHeader>

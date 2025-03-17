@@ -15,6 +15,7 @@ import { LoginButton } from "@/components/Buttons/LoginButton/Login";
 import GameMenuModal from "@/components/Modals/GameMenu/GameMenu";
 import GoldOutlinedButton from "@/components/Buttons/GoldOutlinedButton/GoldOutlinedButton";
 import { useSound } from "@/context/SoundContext";
+import CircleIconButton from "@/components/Buttons/CircleIcon/CircleIconButton";
 
 interface HeaderProps {
   isGameLayout?: boolean;
@@ -74,25 +75,22 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
   if (isGameLayout) {
     return (
       <>
-        <Box
-          sx={{
-            position: "fixed",
-            top: "3rem",
-            right: "1rem",
-            zIndex: 1500,
-          }}
-        >
-          <GoldOutlinedButton
-            text=""
+        {/* Show CircleIconButton only if menu is not open */}
+        {isGameLayout && !isMenuOpen && (
+          <CircleIconButton
+            icon={<MenuIcon sx={{ fontSize: "34px", color: "white" }} />}
             onClick={toggleMenu}
-            sx={{ padding: "0.5rem", minWidth: "3rem", height: "3rem" }}
-          >
-            <MenuIcon sx={{ fontSize: "2rem", color: "#D4AF37" }} />
-          </GoldOutlinedButton>
-        </Box>
-        {isMobileOrTablet && (
-          <GameMenuModal open={isMenuOpen} onClose={toggleMenu} />
+            sx={{
+              position: "fixed",
+              top: "2.6rem",
+              right: "0.5rem",
+              transform: "translateY(-50%)",
+            }}
+          />
         )}
+
+        {/* Game Menu Modal */}
+        <GameMenuModal open={isMenuOpen} onClose={toggleMenu} />
       </>
     );
   }
