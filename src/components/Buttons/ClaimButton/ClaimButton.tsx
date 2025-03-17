@@ -237,9 +237,9 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
               lineHeight: "1.2",
               padding: isUserResource
                 ? {
-                    xs: "6px 8px",
-                    sm: "6px 8px",
-                    md: "6px 8px",
+                    xs: "8px 8px",
+                    sm: "8px 8px",
+                    md: "8px 8px",
                     lg: "10px 16px",
                   }
                 : "12px 24px",

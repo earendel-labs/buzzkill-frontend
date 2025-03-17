@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  useMediaQuery,
-  Theme,
-  useTheme,
-  CssBaseline,
-} from "@mui/material";
+import { Box, Typography, useTheme, CssBaseline } from "@mui/material";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import Header from "../Layout/Header/Header";
 
@@ -14,22 +7,52 @@ interface GameLayoutProps {
   children: React.ReactNode;
 }
 
+// Identify phones
+function isPhoneDevice() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isPhoneUA =
+    /mobi|iphone|ipod|android(.*)mobile|windows phone|blackberry/i.test(ua);
+  const width = window.innerWidth;
+  return isPhoneUA || width < 600;
+}
+
+// Identify tablets
+function isTabletDevice() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isTabletUA =
+    /ipad|android(?!.*mobi)|tablet|kindle|playbook|silk|nexus\s(7|9|10)/i.test(
+      ua
+    );
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const isTabletResolution =
+    width >= 600 && width <= 1300 && height >= 600 && height <= 2000;
+
+  return isTabletUA || isTabletResolution;
+}
+
 export default function GameLayout({ children }: GameLayoutProps) {
   const theme = useTheme();
-  const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down("md")); // Matches md (960px) and below
-  const [isPortrait, setIsPortrait] = useState(false);
+  const [portrait, setPortrait] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(orientation: portrait)");
-    const checkOrientation = () => setIsPortrait(mediaQuery.matches);
+    function checkDeviceAndOrientation() {
+      const phone = isPhoneDevice();
+      const tablet = isTabletDevice();
+      setIsMobileOrTablet(phone || tablet);
+      setPortrait(window.innerHeight > window.innerWidth);
+    }
 
-    checkOrientation(); // Initial check
-    mediaQuery.addEventListener("change", checkOrientation);
+    checkDeviceAndOrientation();
+    window.addEventListener("resize", checkDeviceAndOrientation);
 
-    return () => mediaQuery.removeEventListener("change", checkOrientation);
+    return () => {
+      window.removeEventListener("resize", checkDeviceAndOrientation);
+    };
   }, []);
 
-  if (isTabletOrSmaller && isPortrait) {
+  if (isMobileOrTablet && portrait) {
     return (
       <Box
         sx={{
@@ -54,19 +77,10 @@ export default function GameLayout({ children }: GameLayoutProps) {
   }
 
   return (
-    <>
-      {" "}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-        }}
-      >
-        <CssBaseline />
-        <Header isGameLayout={true} />
-        <Box>{children}</Box>
-      </Box>
-    </>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <CssBaseline />
+      <Header isGameLayout={true} />
+      <Box>{children}</Box>
+    </Box>
   );
 }
