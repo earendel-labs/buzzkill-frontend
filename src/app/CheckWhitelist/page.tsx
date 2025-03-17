@@ -98,44 +98,47 @@ const CheckWhitelistPage: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "80vh",
-          p: 3,
+          px: 2,
         }}
       >
         <SemiTransparentCard
           sx={{
-            maxWidth: 1600,
+            // Fills width up to 1600px
             width: "100%",
+            maxWidth: "1600px",
+            // Minimum 600px after small screens
+            // (Allows shrink below 600px for xs devices)
+            [theme.breakpoints.up("sm")]: {
+              minWidth: "600px",
+            },
             p: 8, // More padding inside
-            textAlign: "center",
+            mx: "auto",
+            textAlign: "left", // Left-justify text
           }}
         >
-          <Typography variant="h4" sx={{ mb: 3 }}>
+          <Typography variant="h4" sx={{ mb: 3, textAlign: "center" }}>
             Wallet Checker
           </Typography>
 
-          <Typography
-            component="div"
-            sx={{
-              mb: 2,
-              fontWeight: "bold",
-              color: "white",
-              display: "flex",
-              alignItems: "flex-end",
-            }}
-          >
-            <AccountBalanceWalletIcon
-              sx={{ color: "white", fontSize: "24px", marginRight: 1 }}
-            />
-            <Box
+          {/* Label */}
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              component="div"
               sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                lineHeight: 1.0,
+                fontWeight: "bold",
+                color: "white",
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "flex-start", // left-aligned
+                gap: 1,
               }}
             >
-              Wallet Address
-            </Box>
-          </Typography>
+              <AccountBalanceWalletIcon sx={{ color: "white", fontSize: 24 }} />
+              <Typography variant="h6" component="span" sx={{ color: "white" }}>
+                Wallet Address
+              </Typography>
+            </Typography>
+          </Box>
 
           {/* TextField with Filled Variant & Custom Styles */}
           <TextField
@@ -147,7 +150,6 @@ const CheckWhitelistPage: React.FC = () => {
             InputProps={{ disableUnderline: true }}
             sx={{
               mb: 4,
-              width: "500px",
               input: {
                 color: "white",
                 fontWeight: "bold",
