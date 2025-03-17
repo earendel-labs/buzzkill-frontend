@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Box, AppBar, Tabs, Tab, Toolbar, Typography } from "@mui/material";
+import {
+  Box,
+  AppBar,
+  Tabs,
+  Tab,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
@@ -17,6 +25,9 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
@@ -77,11 +88,11 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
         backgroundColor: "transparent",
         boxShadow: "none",
         borderBottom: "none",
-        margin: "12px 30px 0px 30px",
+        margin: isMobile ? "8px 16px 0px 16px" : "12px 30px 0px 30px",
       }}
     >
       <Toolbar sx={{ justifyContent: "center" }}>
-        <Box>
+        <Box width="100%">
           {loading ? (
             <Box
               display="flex"
@@ -102,6 +113,7 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               centered
               sx={{
                 "& .MuiTabs-indicator": { display: "none" },
+                minHeight: isMobile ? 56 : "auto",
               }}
             >
               <Tab
@@ -113,16 +125,18 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                       ? theme.palette.Gold.main
                       : theme.palette.GoldFaded.main,
                   fontWeight: "bold",
+                  fontSize: isMobile ? "18px" : isTablet ? "20px" : "22px",
+                  minWidth: "auto",
                   borderBottom:
                     selectedTab === 0
-                      ? `2px solid ${theme.palette.Gold.dark}`
-                      : `2px solid transparent`,
+                      ? `3px solid ${theme.palette.Gold.dark}`
+                      : `3px solid transparent`,
                   "&:hover": {
                     color: theme.palette.Gold.main,
-                    borderBottom: `2px solid ${theme.palette.Gold.main}`,
+                    borderBottom: `3px solid ${theme.palette.Gold.main}`,
                   },
-                  mx: 1,
-                  px: 3,
+                  mx: isTablet ? 1 : 2,
+                  px: isTablet ? 2 : 3,
                 }}
               />
               <Tab
@@ -134,16 +148,18 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                       ? theme.palette.Gold.main
                       : theme.palette.GoldFaded.main,
                   fontWeight: "bold",
+                  fontSize: isMobile ? "18px" : isTablet ? "20px" : "22px",
+                  minWidth: "auto",
                   borderBottom:
                     selectedTab === 1
-                      ? `2px solid ${theme.palette.Gold.dark}`
-                      : `2px solid transparent`,
+                      ? `3px solid ${theme.palette.Gold.dark}`
+                      : `3px solid transparent`,
                   "&:hover": {
                     color: theme.palette.Gold.main,
-                    borderBottom: `2px solid ${theme.palette.Gold.main}`,
+                    borderBottom: `3px solid ${theme.palette.Gold.main}`,
                   },
-                  mx: 1,
-                  px: 3,
+                  mx: isTablet ? 1 : 2,
+                  px: isTablet ? 2 : 3,
                 }}
               />
               <Tab
@@ -155,16 +171,18 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                       ? theme.palette.Gold.main
                       : theme.palette.GoldFaded.main,
                   fontWeight: "bold",
+                  fontSize: isMobile ? "18px" : isTablet ? "20px" : "22px",
+                  minWidth: "auto",
                   borderBottom:
                     selectedTab === 2
-                      ? `2px solid ${theme.palette.Gold.dark}`
-                      : `2px solid transparent`,
+                      ? `3px solid ${theme.palette.Gold.dark}`
+                      : `3px solid transparent`,
                   "&:hover": {
                     color: theme.palette.Gold.main,
-                    borderBottom: `2px solid ${theme.palette.Gold.main}`,
+                    borderBottom: `3px solid ${theme.palette.Gold.main}`,
                   },
-                  mx: 1,
-                  px: 3,
+                  mx: isTablet ? 1 : 2,
+                  px: isTablet ? 2 : 3,
                 }}
               />
             </Tabs>

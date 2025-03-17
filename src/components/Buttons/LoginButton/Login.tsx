@@ -251,6 +251,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({
                     backgroundColor: "rgba(27, 72, 245, 0.8)",
                     borderRadius: "0 0 6px 6px",
                     borderColor: "rgba(14, 28, 106, 0.9)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
                     borderWidth: "1.5px",
                     borderTopStyle: "none",
                     minWidth: "210px",

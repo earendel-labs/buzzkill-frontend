@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import type { ButtonProps } from "@mui/material";
 import { Button, styled, keyframes, Skeleton } from "@mui/material";
 import type { SxProps, Theme } from "@mui/system";
@@ -8,34 +8,39 @@ import { useSound } from "@/context/SoundContext";
 
 // Define props for GoldOutlinedButton.
 interface GoldOutlinedButtonProps {
-  text: string;
+  text?: string; // Make text optional
   onClick: () => void;
   scale?: number;
   disabled?: boolean;
   sx?: SxProps<Theme>;
+  children?: ReactNode; // Allow passing icons or other elements
 }
 
-// Keyframes for glow pulse effect (matching MenuModal usage).
+// Keyframes for glow pulse effect.
 const glowPulse = keyframes`
   0% { box-shadow: 0 0 5px #D4AF37, 0 0 10px #D4AF37; }
   50% { box-shadow: 0 0 10px #D4AF37, 0 0 20px #D4AF37; }
   100% { box-shadow: 0 0 5px #D4AF37, 0 0 10px #D4AF37; }
 `;
 
-// Styled button matching the MenuModal's MenuButton design.
+// Styled button.
 const StyledButton = styled(Button)(({ theme }) => ({
   padding: "12px 20px",
   borderRadius: "6px",
-  backgroundColor: "rgba(15, 28, 48, 0.7)", // Semi-transparent dark blue.
-  color: "#FFFFFF", // White text.
+  backgroundColor: "rgba(15, 28, 48, 0.7)", // Semi-transparent dark blue
+  color: "#FFFFFF", // White text
   fontSize: "16px",
   fontWeight: 700,
   letterSpacing: "1px",
   textTransform: "none",
-  border: "1px solid rgba(212, 175, 55, 0.7)", // Gold border.
+  border: "1px solid rgba(212, 175, 55, 0.7)", // Gold border
   position: "relative",
   overflow: "hidden",
   transition: "all 0.3s ease",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
   "&:hover": {
     backgroundColor: "rgba(212, 175, 55, 0.2)",
     animation: `${glowPulse} 3s infinite`,
@@ -64,13 +69,14 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-// GoldOutlinedButton component with sound effects, scaling, and a loading state.
+// GoldOutlinedButton component.
 const GoldOutlinedButton: React.FC<GoldOutlinedButtonProps> = ({
   text,
   onClick,
   scale = 1,
   disabled = false,
   sx = {},
+  children, // Allow passing icons or other elements
   ...props
 }) => {
   const { isMuted } = useSound();
@@ -127,11 +133,13 @@ const GoldOutlinedButton: React.FC<GoldOutlinedButtonProps> = ({
         opacity: disabled ? 0.6 : 1,
         pointerEvents: disabled ? "none" : "auto",
         transition: "opacity 0.3s ease",
+        minWidth: "3rem", // Ensure consistent button width for icons
+        height: "3rem", // Ensure square shape for icon buttons
         ...sx,
       }}
       {...props}
     >
-      {text}
+      {children || text}{" "}
     </StyledButton>
   );
 };
