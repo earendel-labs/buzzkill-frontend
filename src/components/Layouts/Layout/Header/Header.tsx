@@ -103,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
       <AppBar
         position="static"
         sx={{
-          height: "4.5rem",
+          height: "5rem",
           backgroundColor: `${NavBarColour} !important`,
           boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.25)",
         }}
@@ -114,7 +114,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
             maxWidth: "1800px",
             margin: "0 auto",
             display: "flex",
-            justifyContent: "space-between", // Left box & right box
+            justifyContent: "space-between",
             alignItems: "center",
             padding: theme.spacing(2),
           }}
