@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100dvh"
+          height="100vh"
           flexDirection="column"
           position="fixed"
           width="100vw"
