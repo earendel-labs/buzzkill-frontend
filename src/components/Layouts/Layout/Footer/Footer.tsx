@@ -3,11 +3,11 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import { useMediaQuery } from "@mui/material"; // ✅ Corrected import
+import { useMediaQuery } from "@mui/material";
 import Link from "@mui/material/Link";
 import SocialIcon from "@/components/Layouts/Layout/Footer/SocialIcons/SocialIcon";
 
-// Import the individual social icons
+// Import social icons
 import DiscordIcon from "/public/Icons/Social/discord.svg";
 import TwitterIcon from "/public/Icons/Social/twitter.svg";
 import GitbookIcon from "/public/Icons/Social/gitbook.svg";
@@ -15,8 +15,8 @@ import MediumIcon from "/public/Icons/Social/medium.svg";
 
 const Footer: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Only for extra small screens
+  const isTablet = useMediaQuery(theme.breakpoints.down("md")); // sm and md screens
 
   const backgroundColor = theme.palette.FooterBackground.main;
   const Gold = theme.palette.Gold.main;
@@ -28,32 +28,35 @@ const Footer: React.FC = () => {
         boxSizing: "border-box",
         width: "100%",
         backgroundColor,
-        padding: isMobile ? "16px" : "20px",
+        padding: isMobile ? "12px" : "20px", // Increased padding for better spacing
         display: "flex",
-        flexDirection: isTablet ? "column" : "row",
-        justifyContent: "space-between",
-        alignItems: isTablet ? "center" : "center",
+        flexDirection: isMobile ? "column" : "row", // Stack only on mobile (xs)
+        justifyContent: isTablet ? "space-around" : "space-between", // Center elements in sm/md
+        alignItems: "center",
         color: theme.palette.text.primary,
         borderTop: "1px solid #222f4b",
-        textAlign: isTablet ? "center" : "left",
+        textAlign: "center",
+        flexWrap: "wrap", // Allows better fitting when near md breakpoint
+        gap: isMobile ? "px" : "4px", // Increased spacing between sections for mobile
       }}
     >
       {/* Copyright section */}
       <Typography
         variant="body2"
         color={Gold}
-        sx={{ marginBottom: isTablet ? "8px" : 0 }}
+        sx={{ marginBottom: isMobile ? "12px" : 0 }} // Added margin for better spacing
       >
-        © 2024 Buzzkill Studios Inc. All rights reserved.
+        © 2024 Buzzkill Studios Inc.
       </Typography>
 
       {/* Social icons */}
       <Box
         sx={{
           display: "flex",
-          gap: isMobile ? "20px" : "32px",
+          gap: isMobile ? "24px" : isTablet ? "24px" : "32px",
           justifyContent: "center",
-          marginY: isTablet ? "12px" : 0,
+          flexWrap: "wrap", // Allows them to wrap naturally if needed
+          marginBottom: isMobile ? "12px" : 0, // More spacing between sections on mobile
         }}
       >
         <SocialIcon
@@ -86,9 +89,9 @@ const Footer: React.FC = () => {
       <Box
         sx={{
           display: "flex",
-          gap: "24px",
+          gap: isMobile ? "24px" : isTablet ? "20px" : "24px", // More spacing on mobile
           flexDirection: "row",
-          alignItems: isMobile ? "center" : "flex-start",
+          alignItems: "center",
         }}
       >
         <Link href="/TermsOfService" className="linkStyle1">

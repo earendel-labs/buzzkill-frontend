@@ -59,7 +59,7 @@ const MenuHeader = styled(Box)(({ theme }) => ({
   padding: "1rem 2rem",
 
   [theme.breakpoints.down("md")]: {
-    padding: "1rem 1rem",
+    padding: "1rem 2rem",
   },
 }));
 
@@ -71,11 +71,10 @@ const ScrollableContent = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: "1rem",
   padding: "1rem 2rem",
-  overflowY: "auto",
-  scrollbarWidth: "thin",
+  overflowY: "auto", 
   scrollbarColor: "#D4AF37 transparent",
   "&::-webkit-scrollbar": {
-    width: "6px",
+    width: "16px",
   },
   "&::-webkit-scrollbar-thumb": {
     backgroundColor: "#D4AF37",
@@ -84,7 +83,7 @@ const ScrollableContent = styled(Box)(({ theme }) => ({
 
   [theme.breakpoints.down("md")]: {
     padding: "1rem",
-    gap: "0.9rem",
+    gap: "0.8rem",
   },
 
   // Tweak spacing in very tight horizontal screens
@@ -183,7 +182,7 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
               sx={{
                 width: "100%",
                 maxWidth: "25rem",
-                padding: "0.9rem 1.2rem",
+                padding: "1.25rem 1.2rem",
                 fontSize: "1.15rem",
                 opacity: 0.9,
                 textAlign: "center",

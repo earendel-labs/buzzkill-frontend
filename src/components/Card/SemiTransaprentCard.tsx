@@ -9,24 +9,24 @@ interface SemiTransparentCardProps extends BoxProps {
 
 const SemiTransparentCard: React.FC<SemiTransparentCardProps> = ({
   children,
-  transparency = 0.4,  
-  shadowTransparency = 0.3, 
-  sx,  
-  ...props  
+  transparency = 0.4,
+  shadowTransparency = 0.3,
+  sx,
+  ...props
 }) => {
   return (
     <Box
       sx={{
-        position: "relative",  
+        position: "relative",
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: `rgba(12,	44,	76, ${transparency})`,  
-        boxShadow: `0px 12px 24px rgba(0, 0, 0, ${shadowTransparency})`, 
-        borderRadius: "12px",  
-        backdropFilter: "blur(20px)",
-        overflow: "hidden",  
-        zIndex: 1,  
+        backgroundColor: `rgba(34, 46, 80, ${transparency})`,
+        boxShadow: `0px 12px 24px rgba(0, 0, 0, ${shadowTransparency})`,
+        borderRadius: "12px",
+        backdropFilter: "blur(8px)",
+        overflow: "hidden",
+        zIndex: 1,
         "&::before": {
           content: '""',
           position: "absolute",
