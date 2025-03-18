@@ -25,53 +25,47 @@ const menuItems = [
   { label: "Check Whitelist", path: "/CheckWhitelist" },
 ];
 
-// 1) Main Container: full-height column layout
 const MenuContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "100%",
-  maxWidth: "43.75rem", // 700px
-  maxHeight: "80vh", // Constrain height for desktop
+  maxWidth: "43.75rem",
+  maxHeight: "80vh",
   backgroundColor: "rgba(15, 28, 48, 0.95)",
   backdropFilter: "blur(0.625rem)",
   borderRadius: "0.75rem",
   border: "0.125rem solid #D4AF37",
   outline: "none",
   overflow: "hidden",
-  margin: "auto", // Center on desktop
-  alignSelf: "center", // Center vertically
-
+  margin: "auto",
+  alignSelf: "center",
   [theme.breakpoints.down("md")]: {
     maxWidth: "100vw",
-    height: "100vh", // Full height for mobile
+    height: "100vh",
     maxHeight: "100vh",
     border: "none",
     borderRadius: 0,
   },
 }));
 
-// 2) Header: top row
 const MenuHeader = styled(Box)(({ theme }) => ({
   flex: "0 0 auto",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "1rem 2rem",
-
+  padding: "1rem 2rem 0.5rem 2rem",
   [theme.breakpoints.down("md")]: {
-    padding: "1rem 2rem",
+    padding: "0.5rem 2rem 0.5rem 2rem",
   },
 }));
 
-// 3) ScrollableContent: middle row (scrolls if needed)
-const ScrollableContent = styled(Box)(({ theme }) => ({
+const MiddleSection = styled(Box)(({ theme }) => ({
   flex: "1 1 auto",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   gap: "1rem",
-  padding: "1rem 2rem",
-  overflowY: "auto", 
+  overflowY: "auto",
   scrollbarColor: "#D4AF37 transparent",
   "&::-webkit-scrollbar": {
     width: "16px",
@@ -82,29 +76,38 @@ const ScrollableContent = styled(Box)(({ theme }) => ({
   },
 
   [theme.breakpoints.down("md")]: {
-    padding: "1rem",
-    gap: "0.8rem",
-  },
-
-  // Tweak spacing in very tight horizontal screens
-  "@media (max-width: 844px) and (max-height: 390px)": {
-    padding: "0.5rem",
     gap: "0.75rem",
+    padding: "0.25rem 0",
+  },
+  "@media (max-width: 844px) and (max-height: 390px)": {
+    gap: "0.8rem",
+    padding: "0.25rem 0",
   },
 }));
 
-// 4) Footer: bottom row
+const GradientLineTop = styled("div")(({ theme }) => ({
+  width: "90%",
+  height: "1px",
+  background: "linear-gradient(to right, transparent, #D4AF37, transparent)",
+  margin: "1rem auto 0.5rem auto",
+}));
+
+const GradientLineBottom = styled("div")(({ theme }) => ({
+  width: "90%",
+  height: "1px",
+  background: "linear-gradient(to right, transparent, #D4AF37, transparent)",
+  margin: "0.5rem auto 1rem auto",
+}));
+
 const ModalFooter = styled(Box)(({ theme }) => ({
   flex: "0 0 auto",
   display: "flex",
   justifyContent: "center",
   gap: "1.5rem",
-  padding: "1rem 0 1.5rem 0",
-
+  padding: "0.5rem 0 1.5rem 0",
   [theme.breakpoints.down("md")]: {
     padding: "0.75rem 0 1rem 0",
   },
-
   "@media (max-width: 844px) and (max-height: 390px)": {
     paddingBottom: "0.5rem",
   },
@@ -137,7 +140,6 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
       }}
     >
       <MenuContainer>
-        {/* Header */}
         <MenuHeader>
           <Typography
             id="menu-modal-title"
@@ -151,7 +153,6 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
           >
             MENU
           </Typography>
-
           <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <LoginButton isMenu={true} />
             {isTabletOrSmaller && (
@@ -169,8 +170,8 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
           </Box>
         </MenuHeader>
 
-        {/* Scrollable Menu Content */}
-        <ScrollableContent>
+        <MiddleSection>
+          <GradientLineTop />
           {menuItems.map((item) => (
             <GoldOutlinedButton
               key={item.label}
@@ -189,9 +190,9 @@ const GameMenuModal: React.FC<GameMenuModalProps> = ({ open, onClose }) => {
               }}
             />
           ))}
-        </ScrollableContent>
+          <GradientLineBottom />
+        </MiddleSection>
 
-        {/* Footer */}
         <ModalFooter>
           <SocialIcon
             Component={DiscordIcon}

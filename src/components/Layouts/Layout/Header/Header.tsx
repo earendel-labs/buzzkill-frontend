@@ -103,6 +103,7 @@ const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {
         sx={{
           height: "5rem",
           backgroundColor: `${NavBarColour} !important`,
+          backdropFilter: "blur(10px)",
           boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.25)",
         }}
       >

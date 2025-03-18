@@ -34,6 +34,7 @@ const Footer: React.FC = () => {
         justifyContent: isTablet ? "space-around" : "space-between", // Center elements in sm/md
         alignItems: "center",
         color: theme.palette.text.primary,
+        backdropFilter: "blur(10px)",
         borderTop: "1px solid #222f4b",
         textAlign: "center",
         flexWrap: "wrap", // Allows better fitting when near md breakpoint

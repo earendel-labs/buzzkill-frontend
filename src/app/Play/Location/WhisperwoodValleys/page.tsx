@@ -29,7 +29,7 @@ const Forest: React.FC = () => {
   const {
     environments,
     hivesMap,
-    resources,  
+    resources,
     filteredStakedNFTs,
     maxBeesMap,
     getHiveById,
@@ -147,7 +147,7 @@ const Forest: React.FC = () => {
           }}
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading World...
           </Typography>
         </Box>

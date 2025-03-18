@@ -14,7 +14,7 @@ import {
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ThemeProvider, Box, Modal } from "@mui/material";
 import CustomAvatar from "@/components/User/CustomAvatar";
-
+import { GlobalStyles } from "@mui/material";
 import getTheme from "../theme/theme";
 import "@rainbow-me/rainbowkit/styles.css";
 import { createWalletTheme } from "@/theme/walletTheme";
@@ -218,6 +218,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
     >
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
+          modalSize="compact"
           appInfo={{
             disclaimer: Disclaimer,
           }}
@@ -225,6 +226,50 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
           avatar={CustomAvatar}
         >
           <ThemeProvider theme={theme}>
+            <GlobalStyles
+              styles={{
+                // Hide "What is a Wallet?" section
+                ".iekbcc0.ju367v7e.ju367v7z.ju367v4.ju367va.ju367v15.ju367v1z":
+                  {
+                    display: "none !important",
+                  },
+                // Hide "Get a Wallet" and "Learn More" row
+                ".iekbcc0.ju367v7b.ju367v7w.ju367v8k": {
+                  display: "none !important",
+                },
+
+                // Force modal width on screens ≤ 960px
+                "@media (max-width: 960px)": {
+                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                    {
+                      width: "100% !important",
+                      maxWidth: "100% !important",
+                    },
+                },
+                "@media (min-width: 961px)": {
+                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                    {
+                      width: "auto !important", // Allow the container to adjust to its content
+                      maxWidth: "none !important", // Remove the max-width constraint
+                    },
+                },
+                "@media (max-width: 630px)": {
+                  ".iekbcc0.ju367va[style='margin: 0px auto;']": {
+                    display: "flex !important",
+                    flexWrap: "wrap !important",
+                    justifyContent: "center !important",
+                    gap: "12px !important",
+                  },
+                  // Ensure each wallet item has a minimum width
+                  ".iekbcc0.ju367va[style='margin: 0px auto;'] > .iekbcc0.ju367v7b.ju367v7w":
+                    {
+                      minWidth: "120px !important",
+                      margin: "0 auto !important",
+                    },
+                },
+              }}
+            />
+
             {children}
 
             {/* hCaptcha Modal for new or unverified addresses */}

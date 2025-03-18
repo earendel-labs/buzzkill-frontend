@@ -91,10 +91,8 @@ const HomePage: React.FC = () => {
           justifyContent="center"
           alignItems="center"
           height="100vh"
-          flexDirection="column"
-          position="fixed"
           width="100vw"
-          zIndex={1300}
+          flexDirection="column"
           sx={{
             backgroundImage: (theme) =>
               theme.palette.customBackgrounds.boxGradient,
@@ -137,7 +135,7 @@ const HomePage: React.FC = () => {
       {/* Centered Semi-Transparent Card */}
       <Box
         sx={{
-          width: { xs: "95%", sm: "65%", md: "50%", lg: "55%" },
+          width: { xs: "95%", sm: "65%", md: "50%", lg: "50%", xl: "38%" },
           mx: { xs: "1rem", md: "auto" },
           my: { sm: "2rem", md: "auto" },
         }}
