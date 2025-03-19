@@ -142,8 +142,8 @@ const UserResourceBar: React.FC = () => {
               alignItems: "center",
               gap: {
                 xs: 0.5,
-                sm: 0.5,
-                md: 1,
+                sm: 0.7,
+                md: 1.3,
                 lg: 1.5,
                 xl: 2,
               },
@@ -182,7 +182,13 @@ const UserResourceBar: React.FC = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                padding: "0px 4px 0px 0px",
+                padding: {
+                  xs: "0px 0px",
+                  sm: "0px 4px",
+                  md: "0px 0px",
+                  lg: "0px 0px",
+                  xl: "0px 0px",
+                },
               }}
             >
               <ClaimButton
