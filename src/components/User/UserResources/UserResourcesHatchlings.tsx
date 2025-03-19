@@ -99,7 +99,7 @@ const UserResourceBar: React.FC = () => {
               {loadingProfile || totalRewards === undefined ? (
                 <Skeleton
                   variant="text"
-                  width={80}
+                  width={64}
                   height={34}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",

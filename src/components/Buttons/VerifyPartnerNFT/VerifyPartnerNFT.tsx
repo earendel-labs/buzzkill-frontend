@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { Tooltip, Snackbar, Alert, Box, useMediaQuery } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ImageIcon from "@mui/icons-material/Image";
+
+import ColorLensIcon from "@mui/icons-material/ColorLens";
 import { useTheme } from "@mui/material/styles";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useProfileContext } from "@/context/ProfileContext";
@@ -75,16 +76,16 @@ const VerifyPartnerNftButton: React.FC = () => {
 
   // Determine which icon to use based on viewport.
   const buttonIcon = isMobile ? (
-    <ImageIcon
+    <ColorLensIcon
       sx={{
-        fontSize: 30,
+        fontSize: 32,
         color: isVerified ? theme.palette.DarkBlue.main : "inherit",
       }}
     />
   ) : (
     <CheckCircleIcon
       sx={{
-        color: isVerified ? theme.palette.Gold.main : "inherit",
+        color: isVerified ? theme.palette.DarkBlue.main : "inherit",
         fontSize: 24,
       }}
     />
@@ -108,6 +109,12 @@ const VerifyPartnerNftButton: React.FC = () => {
             disabled={isProcessing || isDisabled || isVerified}
             onClick={handleClick}
             scale={1}
+            sx={{
+              padding: {
+                sm: "4px 4px",
+                md: "8px 20px",
+              },
+            }}
           />
         </Box>
       </Tooltip>
