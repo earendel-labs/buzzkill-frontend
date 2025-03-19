@@ -1,5 +1,11 @@
 import React from "react";
-import { Box, Typography, Skeleton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Skeleton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -14,6 +20,9 @@ const PrimaryButton = dynamic(
 
 const BeePanelCard: React.FC = () => {
   const { activeBee, bees, stakedBees, loadingBees } = useUserContext();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const router = useRouter();
 
   const handleMyBeesClick = () => {
@@ -29,29 +38,15 @@ const BeePanelCard: React.FC = () => {
     bees.find((bee) => bee.id === activeBee)?.imageAddress ||
     "/NFTs/default-hatchling.png";
 
-  // Media query for resolution 1400x900 to reduce vertical height and adjust spacing
-  const mediaQueryStyles = {
-    "@media (min-width:1400px) and (max-height:900px)": {
-      height: "180px",
-      width: "360px",
-      padding: "20px 24px",
-    },
-  };
-
   if (loadingBees) {
     return (
       <SemiTransparentCard
         sx={{
-          width: "420px",
-          height: "220px",
-          padding: "16px",
+          width: { xs: "300px", sm: "420px" },
+          height: { xs: "180px", sm: "220px" },
+          padding: { xs: "12px", sm: "16px" },
           backgroundColor: "rgba(34, 46, 80, 0.6)",
           backdropFilter: "blur(20px)",
-          "@media (min-width:1400px) and (max-height:900px)": {
-            height: "180px",
-            width: "360px",
-            padding: "12px",
-          },
         }}
       >
         <Skeleton
@@ -67,12 +62,12 @@ const BeePanelCard: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "430px",
-        height: "220px",
-        padding: "28px 32px",
+        width: { xs: "100px", sm: "290px", md: "430px" },
+        height: { xs: "auto", sm: "120px", md: "220px" },
+        padding: { xs: "16px", sm: "16px 16px", md: "28px 32px" },
         position: "relative",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: { xs: "column", sm: "row" },
         bgcolor: "rgba(15, 28, 48, 0.85)",
         borderRadius: "8px",
         overflow: "hidden",
@@ -99,144 +94,138 @@ const BeePanelCard: React.FC = () => {
           maskComposite: "exclude",
           zIndex: -1,
         },
-        ...mediaQueryStyles,
       }}
     >
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ width: "100%", height: "100%" }}
+        sx={{
+          width: { xs: "100%", sm: "40%", md: "40%", lg: "50%" },
+          padding: { xs: "0px", sm: "0px", md: "0px", lg: "12px" },
+          boxShadow:
+            activeBeeImage !== "/NFTs/default-hatchling.png"
+              ? `0px 4px 4px rgba(0, 0, 0, 0.25),
+                 -2px -2px 4px rgba(0, 0, 0, 0.25)`
+              : "none",
+          borderRadius: "8px",
+          mb: { xs: 2, sm: 0 },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        {/* Left column with bee image */}
-        <Box
-          sx={{
-            width: "40%",
-            padding: "0px",
-            boxShadow:
-              activeBeeImage !== "/NFTs/default-hatchling.png"
-                ? `0px 4px 4px rgba(0, 0, 0, 0.25),
-           -2px -2px 4px rgba(0, 0, 0, 0.25)`
-                : "none", // Remove shadow for default image
-            borderRadius: "8px",
-            "@media (min-width:1400px) and (max-height:900px)": {
-              width: "35%",
-            },
+        <Image
+          src={activeBeeImage}
+          alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
+          width={320}
+          height={320}
+          style={{
+            objectFit: "contain",
+            height: "100%",
+            width: "auto",
+            borderRadius: "12px",
           }}
-        >
-          <Image
-            src={activeBeeImage}
-            alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
-            width={320}
-            height={320}
-            style={{
-              objectFit: "contain",
-              height: "100%",
-              width: "auto",
-              borderRadius: "12px",
-            }}
-          />
-        </Box>
+        />
+      </Box>
 
-        {/* Right column with text and button */}
-        <Box sx={{ width: "55%", padding: "4px", textAlign: "center" }}>
-          {activeBee ? (
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "55%" },
+          padding: "4px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        {activeBee ? (
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            sx={{ height: "100%" }}
+          >
             <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-start"
-              alignItems="center"
-              sx={{ height: "100%" }}
+              sx={{
+                width: "100%",
+                textAlign: "center",
+                mb: { xs: 2, sm: 4 },
+              }}
             >
-              {/* Hatchling number */}
-              <Box
+              <Typography
+                variant="h6"
                 sx={{
-                  width: "100%",
-                  textAlign: "center",
-                  mb: 4,
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{
-                    "@media (min-width:1400px) and (max-height:900px)": {
-                      fontSize: "1rem",
-                    },
-                  }}
-                >
-                  {`Hatchling #${activeBee}`}
-                </Typography>
-              </Box>
-
-              {/* Button container */}
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexGrow: 1,
-                  mb: 6,
-                  "@media (min-width:1400px) and (max-height:900px)": {
-                    mb: 4,
+                  fontSize: {
+                    xs: "1rem",
+                    sm: "1.1rem",
+                    md: "1.2rem",
                   },
                 }}
               >
-                <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
-              </Box>
+                {`Hatchling #${activeBee}`}
+              </Typography>
             </Box>
-          ) : bees.length > 0 || stakedBees.length > 0 ? (
-            <>
-              <Typography
-                sx={{
-                  mb: 3,
-                  textAlign: "center",
-                  maxWidth: "480px",
-                  fontSize: {
-                    xs: "0.9rem",
-                    sm: "1rem",
-                    xxl: "1.2rem",
-                  },
-                  "@media (min-width:1400px) and (max-height:900px)": {
-                    fontSize: "1rem",
-                  },
-                  whiteSpace: "pre-line", // Enables line breaks from \n
-                }}
-              >
-                {bees.length > 0
-                  ? "Select Your Hatchling"
-                  : "You have staked Hatchlings\n View them here"}
-              </Typography>
-
-              <Box display="flex" justifyContent="center">
-                <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
-              </Box>
-            </>
-          ) : (
-            <>
-              <Typography
-                sx={{
-                  mb: 3,
-                  textAlign: "center",
-                  maxWidth: "480px",
-                  fontSize: {
-                    xs: "0.9rem",
-                    sm: "1rem",
-                    xxl: "1.2rem",
-                  },
-                  "@media (min-width:1400px) and (max-height:900px)": {
-                    fontSize: "0.8rem",
-                  },
-                }}
-              >
-                You have no Hatchlings. <br />
-                Mint yours here
-              </Typography>
-              <Box display="flex" justifyContent="center">
-                <PrimaryButton text="Mint" onClick={handleMintClick} />
-              </Box>
-            </>
-          )}
-        </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexGrow: 1,
+                mb: { xs: 2, sm: 6 },
+              }}
+            >
+              <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
+            </Box>
+          </Box>
+        ) : bees.length > 0 || stakedBees.length > 0 ? (
+          <>
+            <Typography
+              sx={{
+                mb: { xs: 1, sm: 0, md: 3 },
+                textAlign: "center",
+                maxWidth: "480px",
+                fontSize: {
+                  xs: "0.4rem",
+                  sm: "0.4rem",
+                  md: "1rem",
+                },
+                whiteSpace: "pre-line",
+              }}
+            >
+              {bees.length > 0
+                ? "Select Your Hatchling"
+                : "You have staked Hatchlings\n View them here"}
+            </Typography>
+            <Box display="flex" justifyContent="center">
+              <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
+            </Box>
+          </>
+        ) : (
+          <>
+            <Typography
+              sx={{
+                mb: { xs: 1, sm: 1, md: 3 },
+                textAlign: "center",
+                maxWidth: "490px",
+                fontSize: {
+                  xs: "0.4rem",
+                  sm: "0.8rem",
+                  md: "1rem",
+                },
+              }}
+            >
+              You have no Hatchlings.
+              <br />
+              Mint yours here
+            </Typography>
+            <Box display="flex" justifyContent="center">
+              <PrimaryButton
+                text="Mint"
+                onClick={handleMintClick}
+                sx={{ padding: { sm: "2px 32px", md: "8px 32px" } }}
+              />
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

@@ -3,8 +3,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import VerifyPartnerNftButton from "@/components/Buttons/VerifyPartnerNFT/VerifyPartnerNFT";
-const PANEL_WIDTH = 300; 
-const PANEL_HEIGHT = 100;  
+const PANEL_WIDTH = 300;
+const PANEL_HEIGHT = 100;
 
 const LeftPanel: React.FC = () => {
   return (
@@ -12,25 +12,23 @@ const LeftPanel: React.FC = () => {
       sx={{
         position: "absolute",
         top: {
-          xs: "3.3rem",  
-          sm: "4rem",
-          md: "5rem",
-          xl: "9.3rem",
-          xxl: "6.4rem",
-        },  
+          xs: "3.3rem",
+          sm: "6rem",
+          md: "6.5rem",
+          xl: "7.3rem",
+          xxl: "8rem",
+        },
         left: {
-          xs: "0rem",  
-          sm: "0rem",
-          md: "2.6rem",
-          xl: "3.7rem",
-          xxl: "6.5rem",
+          xs: "0rem",
+          sm: "1.3rem",
+          md: "1.4rem",
+          lg: "3.9rem",
+          xl: "6.4rem",
+          xxl: "7.5rem",
         },
         width: PANEL_WIDTH,
         height: PANEL_HEIGHT,
-        padding: { xs: "4px", sm: "2px" }, // Reduced padding for mobile
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <VerifyPartnerNftButton />

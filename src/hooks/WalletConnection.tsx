@@ -31,7 +31,7 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
     By connecting your wallet, you agree to the{" "}
     <Link href="/TermsOfService">Terms of Service</Link> and acknowledge you
-    have read and understand the protocol{" "}
+    have read and understand Buzzkill's{" "}
     <Link href="/PrivacyPolicy">Privacy Policy</Link>
   </Text>
 );
@@ -249,8 +249,8 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                 "@media (min-width: 961px)": {
                   ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
                     {
-                      width: "auto !important", // Allow the container to adjust to its content
-                      maxWidth: "none !important", // Remove the max-width constraint
+                      width: "auto !important",
+                      maxWidth: "none !important",
                     },
                 },
                 "@media (max-width: 630px)": {
@@ -266,6 +266,54 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                       minWidth: "120px !important",
                       margin: "0 auto !important",
                     },
+                },
+                // Override h1 text content for Connect title
+                "#rk_connect_title": {
+                  content: '""',
+                  position: "relative",
+                  color: "transparent",
+                },
+                // Icon on the left
+                "#rk_connect_title::before": {
+                  content: '""',
+                  display: "inline-block",
+                  width: "48px",
+                  height: "48px",
+                  verticalAlign: "middle",
+                  background: "url('/favicon.ico') no-repeat center center",
+                  backgroundSize: "contain",
+                  marginRight: "36px",
+                },
+
+                // Text on the right
+                "#rk_connect_title::after": {
+                  content: '"Connect to Buzzkill"',
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  position: "absolute",
+                  top: 12,
+                  left: 62,
+                  color: "#fff",
+                  whiteSpace: "nowrap",
+                },
+                // Layout for the row containing info button, title, and close button
+                ".iekbcc0.ju367v2r": {
+                  display: "grid !important",
+                  gridTemplateColumns: "auto 1fr auto", // info button, title, close button
+                  alignItems: "center !important",
+                  width: "100%", // optional, if you need full width
+                },
+                // Center the text within its grid cell
+                ".iekbcc0.ju367v7a.ju367v7v.ju367v3h.ju367v6k.ju367v86": {
+                  textAlign: "center !important",
+                },
+                // The info button container
+                ".iekbcc0.ju367v3s.ju367v94": {
+                  justifySelf: "start", // keep it at the left
+                },
+                // The close button container
+                ".iekbcc0.ju367v4d": {
+                  justifySelf: "end", // keep it at the right
                 },
               }}
             />

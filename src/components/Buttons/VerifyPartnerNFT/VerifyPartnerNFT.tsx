@@ -2,13 +2,15 @@
 import React, { useState } from "react";
 import { Tooltip, Snackbar, Alert, Box, useMediaQuery } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ImageIcon from "@mui/icons-material/Image";
 import { useTheme } from "@mui/material/styles";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useProfileContext } from "@/context/ProfileContext";
 
 const VerifyPartnerNftButton: React.FC = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  // Use the "md" breakpoint for mobile devices.
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -65,32 +67,42 @@ const VerifyPartnerNftButton: React.FC = () => {
     }
   };
 
-  // On desktop, show full text; on mobile, show empty text so that only the icon displays.
-  const desktopText = isVerified
-    ? "NFT Ownership Confirmed"
-    : "Verify NFT Ownership";
-  const mobileText = ""; // Empty on mobile, to reserve space for just the icon.
+  // Update tooltip text based on mobile mode and NFT verification status.
+  const tooltipText =
+    isMobile && isVerified
+      ? "NFT Ownership for Contrarian, Ivy & Starship confirmed"
+      : "Claim points and access to Azure Reef by verifying you owned Ivy, Starship and/or Contrarian NFTs at the time of our snapshot.";
 
-  const buttonIcon = (
+  // Determine which icon to use based on viewport.
+  const buttonIcon = isMobile ? (
+    <ImageIcon
+      sx={{
+        fontSize: 30,
+        color: isVerified ? theme.palette.DarkBlue.main : "inherit",
+      }}
+    />
+  ) : (
     <CheckCircleIcon
       sx={{
-        // Use gold color if verified, otherwise default.
-        color: isVerified ? "gold" : "inherit",
-        // On mobile, make the icon a bit larger.
-        fontSize: isSmallScreen ? 30 : 24,
+        color: isVerified ? theme.palette.Gold.main : "inherit",
+        fontSize: 24,
       }}
     />
   );
 
+  // For desktop, show text; on mobile, display only the icon.
+  const desktopText = isVerified
+    ? "NFT Ownership Confirmed"
+    : "Verify NFT Ownership";
+  const buttonText = isMobile ? "" : desktopText;
+  const mobileText = ""; // Always empty on mobile.
+
   return (
     <>
-      <Tooltip
-        title="Claim points and access to Azure Reef by verifying you owned Ivy, Starship and/or Contrarian NFTs at the time of our snapshot."
-        arrow
-      >
+      <Tooltip title={tooltipText} arrow>
         <Box>
           <PrimaryButton
-            text={desktopText}
+            text={buttonText}
             mobileText={mobileText}
             icon={buttonIcon}
             disabled={isProcessing || isDisabled || isVerified}

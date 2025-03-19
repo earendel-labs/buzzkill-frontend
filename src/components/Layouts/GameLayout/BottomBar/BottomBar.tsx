@@ -22,15 +22,17 @@ const BottomBar: React.FC<BottomBarProps> = ({
           sx={{
             position: "fixed",
             bottom: {
-              xs: "10rem",
-              md: "13.4rem",
+              xs: "9rem",
+              md: "16rem",
+              lg: "16rem",
               xl: "17rem",
               xxl: "18rem",
             },
             left: {
               xs: "1rem",
-              md: "3.7rem",
-              xl: "4.7rem",
+              md: "1.7rem",
+              lg: "3.7rem",
+              xl: "2.6rem",
               xxl: "5rem",
             },
             zIndex: 102, // Ensure it stays above BeePanelCard
@@ -53,8 +55,9 @@ const BottomBar: React.FC<BottomBarProps> = ({
           },
           left: {
             xs: "1rem",
-            md: "3.7rem",
-            xl: "4.6rem",
+            md: "1.7rem",
+            lg: "3.7rem",
+            xl: "2.6rem",
             xxl: "5rem",
           },
           zIndex: 101, // Below HatchlingInfoPanel
