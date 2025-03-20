@@ -165,6 +165,7 @@ const UserRewardsBento: React.FC<UserRewardsBentoProps> = ({
                     lineHeight: 1.2,
                     WebkitTextStroke: "0px",
                     mt: "8px",
+                    flexWrap: "wrap",
                   }}
                 >
                   {profileData?.total_rewards
