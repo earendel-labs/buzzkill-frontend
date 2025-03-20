@@ -13,9 +13,9 @@ const MintPriceDisplay: React.FC = () => {
           mb: 1,
           textAlign: "center",
           fontSize: {
-            xs: "1rem",
-            md: "2rem",
-            lg: "2.5rem",
+            xs: "2.5rem",
+            md: "3rem",
+            lg: "3rem",
             xxl: "3.5rem",
           },
           maxWidth: {

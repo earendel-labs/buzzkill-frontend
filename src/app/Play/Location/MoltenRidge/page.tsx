@@ -147,7 +147,7 @@ const MoltenRidge: React.FC = () => {
           }}
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading World...
           </Typography>
         </Box>

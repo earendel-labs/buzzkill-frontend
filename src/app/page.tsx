@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
 import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
+import { useTheme } from "@mui/material";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const HomePage: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const theme = useTheme();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorParam = params.get("error");
@@ -89,10 +91,8 @@ const HomePage: React.FC = () => {
           justifyContent="center"
           alignItems="center"
           height="100vh"
-          flexDirection="column"
-          position="fixed"
           width="100vw"
-          zIndex={1300}
+          flexDirection="column"
           sx={{
             backgroundImage: (theme) =>
               theme.palette.customBackgrounds.boxGradient,
@@ -101,7 +101,7 @@ const HomePage: React.FC = () => {
           }}
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading World...
           </Typography>
         </Box>
@@ -114,7 +114,7 @@ const HomePage: React.FC = () => {
           top: 0,
           left: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100dvh",
           zIndex: -1,
           overflow: "hidden",
         }}
@@ -133,10 +133,16 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Centered Semi-Transparent Card */}
-      <Box width="55%">
-        <SemiTransparentCard transparency={0.5}>
+      <Box
+        sx={{
+          width: { xs: "95%", sm: "65%", md: "50%", lg: "50%", xl: "38%" },
+          mx: { xs: "1rem", md: "auto" },
+          my: { sm: "2rem", md: "auto" },
+        }}
+      >
+        <SemiTransparentCard transparency={0.7}>
           <Box
-            padding="3rem"
+            padding={{ xs: "2rem 0rem", sm: "2rem 2rem", md: "3rem" }}
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -145,28 +151,69 @@ const HomePage: React.FC = () => {
               textAlign: "center",
             }}
           >
-            <Image
-              src="/Maps/backgroundText.svg"
-              alt="Buzzkill Text "
-              width={850}
-              height={850}
-              style={{ width: "85%", height: "85%" }} // Adjust style if necessary
-            />
+            <Box
+              sx={{
+                width: "100%",
+                maxWidth: {
+                  xs: "15rem",
+                  sm: "17rem",
+                  md: "20rem",
+                  lg: "45rem",
+                },
+                position: "relative",
+                aspectRatio: "16/9",
+              }}
+            >
+              <Image
+                src="/Maps/backgroundText.svg"
+                alt="Buzzkill Text"
+                fill // Makes it responsive within the container
+                sizes="(max-width: 600px) 75vw, (max-width: 960px) 85vw, 850px" // Adaptive sizes
+                style={{ objectFit: "contain" }} // Maintain aspect ratio
+              />
+            </Box>
 
             {/* Render login message if not authenticated */}
             {!session && error === "auth" && (
-              <Typography variant="h6" color="red" sx={{ marginTop: 4 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  marginTop: 2,
+                  paddingX: {
+                    xs: "28px",
+                    sm: "auto",
+                  },
+                  fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
+                  color: theme.palette.Orange.main,
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  whiteSpace: "normal",
+                }}
+              >
                 Please login or create an account to play
               </Typography>
             )}
 
-            {/* Buttons Row */}
-            <Box sx={{ display: "flex", gap: 8, mt: 6 }}>
+            {/* Buttons Row - Stack on small screens */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" }, // Stack buttons on mobile
+                gap: { xs: 2, sm: 3, md: 6 },
+                mt: { xs: 2, sm: 2, md: 2 },
+                mb: { xs: 1, sm: 1, md: 0 },
+                width: { xs: "75%", sm: "100%" },
+                justifyContent: "center",
+              }}
+            >
               <LoginButton />
               <DefaultButton
                 className="blueButton"
                 onClick={handleClick}
-                sx={{ width: "155px", fontSize: "18px" }}
+                sx={{
+                  width: { xs: "100%", sm: "155px" }, // Full width on mobile
+                  fontSize: { xs: "16px", sm: "18px" },
+                }}
               >
                 Mint
               </DefaultButton>
@@ -174,6 +221,7 @@ const HomePage: React.FC = () => {
           </Box>
         </SemiTransparentCard>
       </Box>
+
       {/* Snackbar for invite code validation */}
       <Snackbar
         open={isSnackbarOpen}

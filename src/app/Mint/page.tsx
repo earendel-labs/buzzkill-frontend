@@ -77,12 +77,13 @@ const MintPageContent: React.FC = () => {
         rowSpacing={0}
         sx={{ margin: "0 auto" }}
       >
-        {/* First Column */}
+        {/* NFTCard Column */}
         <Grid
           item
           xs={12}
           md={6}
           sx={{
+            order: { xs: 2, md: 1 },
             display: "flex",
             maxWidth: "550px",
             width: "100%",
@@ -102,12 +103,13 @@ const MintPageContent: React.FC = () => {
           />
         </Grid>
 
-        {/* Second Column */}
+        {/* MintInfoCard Column */}
         <Grid
           item
           xs={12}
           md={6}
           sx={{
+            order: { xs: 1, md: 2 },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

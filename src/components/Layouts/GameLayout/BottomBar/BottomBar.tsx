@@ -22,15 +22,17 @@ const BottomBar: React.FC<BottomBarProps> = ({
           sx={{
             position: "fixed",
             bottom: {
-              xs: "12rem",
-              md: "13.4rem",
+              sm: "9.2rem",
+              md: "12rem",
+              lg: "12rem",
               xl: "17rem",
               xxl: "18rem",
             },
             left: {
-              xs: "1rem",
-              md: "3.7rem",
-              xl: "4.7rem",
+              sm: "1rem",
+              md: "1rem",
+              lg: "1.7rem",
+              xl: "2.6rem",
               xxl: "5rem",
             },
             zIndex: 102, // Ensure it stays above BeePanelCard
@@ -45,16 +47,17 @@ const BottomBar: React.FC<BottomBarProps> = ({
         sx={{
           position: "fixed",
           bottom: {
-            xs: "1rem",
+            sm: "1rem",
             md: "1rem",
             lg: "1.3rem",
             xl: "2rem",
             xxl: "3.125rem",
           },
           left: {
-            xs: "1rem",
-            md: "3.7rem",
-            xl: "4.6rem",
+            sm: "1rem",
+            md: "1rem",
+            lg: "1.7rem",
+            xl: "2.6rem",
             xxl: "5rem",
           },
           zIndex: 101, // Below HatchlingInfoPanel
@@ -67,22 +70,19 @@ const BottomBar: React.FC<BottomBarProps> = ({
       {isRestrictedEnvironment && (
         <Box
           sx={{
-            position: "fixed",
             bottom: {
-              xs: "1rem",
+              sm: "1rem",
               md: "1rem",
               lg: "1.3rem",
-              xl: "1.3rem",
+              xl: "2rem",
               xxl: "3.125rem",
             },
+            zIndex: 101,
+            position: "absolute",
             left: "50%",
-            transform: "translateX(-50%)", // Centers it horizontally
-            zIndex: 101, // Same level as BeePanelCard but spaced out
+            transform: "translateX(-50%)",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            width: "auto",
-            padding: "10px",
           }}
         >
           <HiveRestrictionsInfo />
@@ -95,11 +95,11 @@ const BottomBar: React.FC<BottomBarProps> = ({
           sx={{
             position: "fixed",
             bottom: {
-              xs: "1rem",
+              sm: "1rem",
               md: "2rem",
             },
             right: {
-              xs: "1rem",
+              sm: "1rem",
               md: "2rem",
             },
             zIndex: 100,

@@ -419,7 +419,7 @@ const CelestialHive: React.FC = () => {
           flexDirection="column"
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading Hive Data...
           </Typography>
         </Box>
@@ -515,7 +515,22 @@ const CelestialHive: React.FC = () => {
             }}
           >
             {loadingBees ? (
-              <HexagonSpinner />
+              // TODO: HEXAGON SPINNER
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="50%"
+                flexDirection="column"
+                position="fixed"
+                width="100%"
+                zIndex={1300}
+              >
+                <HexagonSpinner />
+                <Typography className="body1" padding="44px 0px">
+                  Loading World...
+                </Typography>
+              </Box>
             ) : (
               <BeeGrid
                 bees={stakedBees}

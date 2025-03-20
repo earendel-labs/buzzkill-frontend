@@ -12,10 +12,8 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import { Typography } from "@mui/material";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
-import { logger } from "@/utils/logger";
-import VerifyPartnerNftButton from "@/components/Buttons/VerifyPartnerNFT/VerifyPartnerNFT";
-import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel";
-import GoldOutlinedButton from "@/components/Buttons/GoldOutlinedButton/GoldOutlinedButton";
+import { logger } from "@/utils/logger"; 
+import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel"; 
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();
@@ -100,7 +98,7 @@ const Play: React.FC = () => {
         }}
       >
         <HexagonSpinner />
-        <Typography className="body1" padding="24px 0px">
+        <Typography className="body1" padding="44px 0px">
           Loading World...
         </Typography>
       </Box>

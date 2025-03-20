@@ -1,12 +1,18 @@
 // src/components/VerifyPartnerNftButton.tsx
 import React, { useState } from "react";
-import Tooltip from "@mui/material/Tooltip";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { Tooltip, Snackbar, Alert, Box, useMediaQuery } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { useTheme } from "@mui/material/styles";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
 import { useProfileContext } from "@/context/ProfileContext";
 
 const VerifyPartnerNftButton: React.FC = () => {
+  const theme = useTheme();
+  // Use the "md" breakpoint for mobile devices.
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
@@ -16,8 +22,6 @@ const VerifyPartnerNftButton: React.FC = () => {
   );
 
   const { profileData } = useProfileContext();
-
-  // Check if the profile already shows that the user is verified.
   const isVerified = profileData
     ? (profileData.has_contrarians ?? false) ||
       (profileData.has_ivy ?? false) ||
@@ -25,7 +29,6 @@ const VerifyPartnerNftButton: React.FC = () => {
     : false;
 
   const handleClick = async () => {
-    // If already verified, do nothing.
     if (isVerified || isProcessing || isDisabled) return;
 
     setIsProcessing(true);
@@ -36,14 +39,12 @@ const VerifyPartnerNftButton: React.FC = () => {
       const data = await response.json();
 
       if (response.ok && data.updated) {
-        // Successful update: the API confirms NFT ownership.
         setToastMessage(
           "NFT Ownership Confirmed. Awarded points for your NFT(s)!"
         );
         setToastSeverity("success");
         setIsDisabled(true);
       } else {
-        // Failure: no NFT found or update not needed.
         setToastMessage(
           data.error || data.message || "You do not own the required NFT."
         );
@@ -67,28 +68,75 @@ const VerifyPartnerNftButton: React.FC = () => {
     }
   };
 
+  // Update tooltip text based on mobile mode and NFT verification status.
+  const tooltipText =
+    isMobile && isVerified
+      ? "NFT Ownership for Contrarian, Ivy & Starship confirmed"
+      : "Claim points and access to Azure Reef by verifying you owned Ivy, Starship and/or Contrarian NFTs at the time of our snapshot.";
+
+  // Determine which icon to use based on viewport.
+  const buttonIcon = isMobile ? (
+    <ColorLensIcon
+      sx={{
+        fontSize: 32,
+        color: isVerified ? theme.palette.DarkBlue.main : "inherit",
+      }}
+    />
+  ) : (
+    <CheckCircleIcon
+      sx={{
+        color: isVerified ? theme.palette.DarkBlue.main : "inherit",
+        fontSize: 24,
+      }}
+    />
+  );
+
+  // For desktop, show text; on mobile, display only the icon.
+  const desktopText = isVerified
+    ? "NFT Ownership Confirmed"
+    : "Verify NFT Ownership";
+  const buttonText = isMobile ? "" : desktopText;
+  const mobileText = "";
+
   return (
     <>
       <Tooltip
-        title="Claim points and access to Azure Reef by verifying you owned Ivy, Starship and/or Contrarian NFTs at the time of our snapshot."
+        title={tooltipText}
         arrow
+        placement={isMobile ? "bottom" : "right"}
+        sx={{
+          zIndex: 99,
+        }}
       >
-        <div>
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "auto",
+            padding: 0,
+            margin: 0,
+            overflow: "hidden",
+          }}
+        >
           <PrimaryButton
-            text={
-              isVerified
-                ? "NFT Ownership Confirmed"
-                : isProcessing
-                ? "Processing..."
-                : "Verify NFT Ownership"
-            }
-            onClick={handleClick}
+            text={buttonText}
+            mobileText={mobileText}
+            icon={buttonIcon}
             disabled={isProcessing || isDisabled || isVerified}
+            onClick={handleClick}
             scale={1}
-            sx={{ padding: "6px 10px" }}
+            sx={{
+              minHeight: 40,
+              padding: {
+                sm: "4px 4px",
+                md: "8px 20px",
+              },
+            }}
           />
-        </div>
+        </Box>
       </Tooltip>
+
       <Snackbar
         open={toastOpen}
         autoHideDuration={6000}

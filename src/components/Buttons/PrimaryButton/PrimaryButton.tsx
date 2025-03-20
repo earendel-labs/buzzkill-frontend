@@ -1,13 +1,16 @@
+// src/components/Buttons/PrimaryButton/PrimaryButton.tsx
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import { useSound } from "@/context/SoundContext";
-import { Skeleton } from "@mui/material";
+import { Skeleton, useMediaQuery } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { SxProps, Theme } from "@mui/system";
+import { useSound } from "@/context/SoundContext";
 
 interface PrimaryButtonProps {
   text: string;
+  mobileText?: string;
+  icon?: React.ReactNode;
   isActiveTab?: boolean;
   onClick: () => void;
   scale?: number;
@@ -17,16 +20,23 @@ interface PrimaryButtonProps {
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   text,
+  mobileText,
+  icon,
   onClick,
   scale = 1,
   disabled = false,
   sx = {},
   ...props
 }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { isMuted } = useSound();
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Use mobileText on small screens; if empty, we’re showing icon-only.
+  const buttonLabel = isSmallScreen ? mobileText : text;
 
   useEffect(() => {
     setIsLoading(false);
@@ -60,7 +70,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         variant="rectangular"
         width={scale * 150}
         height={scale * 50}
-        sx={{ borderRadius: "8px" }}
+        sx={{ borderRadius: { sm: "2px", md: "6px" } }}
       />
     );
   }
@@ -78,25 +88,45 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         opacity: disabled ? 0.6 : 1,
         pointerEvents: disabled ? "none" : "auto",
         transition: "opacity 0.3s ease",
-        padding: "8px 20px",
+        // If no label, reduce horizontal padding so the icon is centered
+        padding: isSmallScreen && !buttonLabel ? "8px" : "8px 20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        // Remove gap if there’s no label
+        gap: buttonLabel ? "8px" : 0,
         ...sx,
       }}
+      {...props}
     >
-      <Typography
-        variant="h5"
-        component="div"
-        sx={{
-          whiteSpace: "nowrap",
-          fontWeight: "700",
-          fontSize: `${scale * 1}rem`,
-          textShadow:
-            "1px 1px 0 #68341B, -1px -1px 0 #68341B, -1px 1px 0 #68341B, 1px -1px 0 #68341B", // Border effect
-          ...sx, // Ensure Typography also respects passed sx
-        }}
-        {...props}
-      >
-        {text}
-      </Typography>
+      {buttonLabel ? (
+        <>
+          {icon && (
+            <span style={{ display: "flex", alignItems: "center" }}>
+              {icon}
+            </span>
+          )}
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{
+              whiteSpace: "nowrap",
+              display: "inline-flex",
+              alignItems: "center",
+              lineHeight: 1.0,
+              fontWeight: 700,
+              fontSize: `${scale}rem`,
+              textShadow:
+                "1px 1px 0 #68341B, -1px -1px 0 #68341B, -1px 1px 0 #68341B, 1px -1px 0 #68341B",
+            }}
+          >
+            {buttonLabel}
+          </Typography>
+        </>
+      ) : (
+        // If there is no label, render only the icon.
+        icon
+      )}
     </Button>
   );
 };

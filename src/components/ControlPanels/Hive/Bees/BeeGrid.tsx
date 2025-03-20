@@ -140,7 +140,7 @@ const BeeGrid: React.FC<BeeGridProps> = ({
         height="100%"
       >
         <HexagonSpinner />
-        <Typography className="body1" padding="24px 0px">
+        <Typography className="body1" padding="44px 0px">
           Loading Bees...
         </Typography>
       </Box>

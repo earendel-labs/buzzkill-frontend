@@ -16,7 +16,7 @@ const UserResourcesBackground: React.FC<GradientCardProps> = ({
       sx={{
         position: "relative",
         background: "rgba(15, 28, 48, 0.85)",
-        borderRadius: "10px",
+        borderRadius: { sm: "6px", md: "10px" },
         padding: "8px 4px",
         "&::before": {
           content: '""',

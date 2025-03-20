@@ -6,15 +6,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import UserResourcesBackground from "./UserResourcesBackground";
 import { useProfileContext } from "@/context/ProfileContext";
-import { useUserContext } from "@/context/UserContext"; // import useUserContext for liveUnclaimedPoints
+import { useUserContext } from "@/context/UserContext";
 import { formatNumber } from "@/utils/formatNumber";
-import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton"; // import ClaimButton
+import ClaimButton from "@/components/Buttons/ClaimButton/ClaimButton";
 import { useTheme } from "@mui/material/styles";
 
 const UserResourceBar: React.FC = () => {
   const theme = useTheme();
   const { profileData, loadingProfile } = useProfileContext();
-  const { userRewards, liveUnclaimedPoints } = useUserContext(); // get liveUnclaimedPoints from context
+  const { userRewards, liveUnclaimedPoints } = useUserContext();
   const totalRewards = loadingProfile
     ? undefined
     : profileData?.total_rewards || 0;
@@ -29,7 +29,7 @@ const UserResourceBar: React.FC = () => {
     ) {
       setDisplayPoints(0);
     } else {
-      setDisplayPoints(Number(liveUnclaimedPoints));
+      setDisplayPoints(Number(23456)); // For testing, replace with liveUnclaimedPoints
     }
   }, [liveUnclaimedPoints]);
 
@@ -46,10 +46,11 @@ const UserResourceBar: React.FC = () => {
             alignItems: "center",
             justifyContent: "space-between",
             minWidth: {
+              md: "100px",
               lg: "120px",
               xl: "420px",
             },
-            height: "54px", // Fixed height to match the image
+            height: "54px",
             flexWrap: "nowrap",
           }}
         >
@@ -58,9 +59,9 @@ const UserResourceBar: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-start",
-              gap: 1,
-              px: 2,
-              height: "48px", // Fixed height to match the image
+              gap: { xs: 0.5, md: 1 },
+              px: { xs: 1, md: 2 },
+              height: "48px",
             }}
           >
             <motion.div
@@ -98,7 +99,7 @@ const UserResourceBar: React.FC = () => {
               {loadingProfile || totalRewards === undefined ? (
                 <Skeleton
                   variant="text"
-                  width={80}
+                  width={64}
                   height={34}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -113,14 +114,19 @@ const UserResourceBar: React.FC = () => {
                       fontWeight: "bold",
                       color: theme.palette.Gold.main,
                       letterSpacing: "0.5px",
-                      fontSize: { xs: "24px", sm: "28px" },
-
+                      fontSize: {
+                        xs: "20px",
+                        sm: "20px",
+                        md: "20px",
+                        lg: "28px",
+                        xl: "30px",
+                      },
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "start",
                       lineHeight: 1,
                       height: "100%",
-                      marginTop: "3px", // Push text downward
+                      marginTop: "3px",
                     }}
                   >
                     {formatNumber(totalRewards) || 0}
@@ -129,31 +135,39 @@ const UserResourceBar: React.FC = () => {
               )}
             </motion.div>
           </Box>
-          {/* Display Unclaimed Points and ClaimButton on the same line */}
+
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               gap: {
-                lg: 1,
+                xs: 0.5,
+                sm: 0.7,
+                md: 1.3,
+                lg: 1.5,
                 xl: 2,
               },
-              px: 2,
+              px: { xs: 1, md: 2 },
               flexWrap: "wrap",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {/* Tooltip for unclaimed points */}
               <Tooltip title="Total unclaimed points from your hatchlings">
                 <Typography
                   variant="h4"
                   fontWeight="bold"
                   sx={{
-                    color: theme.palette.LightBlue.main, // Gold color for total points
+                    color: theme.palette.LightBlue.main,
                     WebkitTextStroke: "0",
                     lineHeight: "1.2",
                     marginTop: "6px",
-                    fontSize: { xs: "20px", sm: "24px", xl: "28px" },
+                    fontSize: {
+                      xs: "16px",
+                      sm: "16px",
+                      md: "16px",
+                      lg: "24px",
+                      xl: "28px",
+                    },
                   }}
                 >
                   {displayPoints !== null ? (
@@ -164,8 +178,19 @@ const UserResourceBar: React.FC = () => {
                 </Typography>
               </Tooltip>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              {/* Claim Button for Unclaimed Points */}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                padding: {
+                  xs: "0px 0px",
+                  sm: "0px 4px",
+                  md: "0px 0px",
+                  lg: "0px 0px",
+                  xl: "0px 0px",
+                },
+              }}
+            >
               <ClaimButton
                 isUserResource={true}
                 liveUnclaimedPoints={displayPoints || 0}

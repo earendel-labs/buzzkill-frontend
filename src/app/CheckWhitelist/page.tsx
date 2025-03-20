@@ -97,45 +97,59 @@ const CheckWhitelistPage: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "80vh",
-          p: 3,
+          minWidth: { xs: "100%", sm: "80%", md: "600px" },
+          height: { xs: "50vh", md: "60vh", lg: "80vh" },
+          px: 2,
         }}
       >
         <SemiTransparentCard
           sx={{
-            maxWidth: 1600,
+            // Fills width up to 1600px
             width: "100%",
-            p: 8, // More padding inside
-            textAlign: "center",
+            maxWidth: "1600px",
+            p: { xs: "1.2rem", sm: "1.5rem", md: "2rem", lg: "4rem" },
+
+            textAlign: "left",
           }}
         >
-          <Typography variant="h4" sx={{ mb: 3 }}>
-            Wallet Checker
-          </Typography>
-
           <Typography
-            component="div"
+            variant="h4"
             sx={{
-              mb: 2,
-              fontWeight: "bold",
-              color: "white",
-              display: "flex",
-              alignItems: "flex-end",
+              mb: { xs: "1.2rem", sm: "0.8rem", md: "3rem", lg: "3rem" },
+              fontSize: { xs: "1.5rem", sm: "1.7rem", md: "inherit" },
+              textAlign: "center",
             }}
           >
-            <AccountBalanceWalletIcon
-              sx={{ color: "white", fontSize: "24px", marginRight: 1 }}
-            />
-            <Box
+            Whitelist Checker
+          </Typography>
+
+          {/* Label */}
+          <Box sx={{ mb: 0 }}>
+            <Typography
+              component="div"
               sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                lineHeight: 1.0,
+                mb: 1,
+                fontWeight: "bold",
+                color: "white",
+                display: "flex",
+                alignItems: "flex-end",
               }}
             >
-              Wallet Address
-            </Box>
-          </Typography>
+              <AccountBalanceWalletIcon
+                sx={{ color: "white", marginRight: 1, marginBottom: 1 }}
+              />
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  mb: 1,
+                  lineHeight: 1.0,
+                }}
+              >
+                Wallet Address
+              </Box>
+            </Typography>
+          </Box>
 
           {/* TextField with Filled Variant & Custom Styles */}
           <TextField
@@ -146,8 +160,7 @@ const CheckWhitelistPage: React.FC = () => {
             placeholder="Enter your wallet address"
             InputProps={{ disableUnderline: true }}
             sx={{
-              mb: 4,
-              width: "500px",
+              mb: 2,
               input: {
                 color: "white",
                 fontWeight: "bold",
@@ -188,7 +201,6 @@ const CheckWhitelistPage: React.FC = () => {
             className="blueButton"
             onClick={handleCheckWhitelist}
             disabled={loading || submitDisabled}
-            sx={{ mb: 3 }}
           >
             {loading ? "Checking..." : "Check Wallet"}
           </DefaultButton>
@@ -198,7 +210,7 @@ const CheckWhitelistPage: React.FC = () => {
             <Typography
               variant="h6"
               sx={{
-                mt: 2,
+                mt: { xs: 0, md: 2 },
                 color: error ? theme.palette.DarkOrange.main : "limegreen",
                 whiteSpace: "pre-line",
               }}

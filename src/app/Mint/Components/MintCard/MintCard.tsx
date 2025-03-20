@@ -76,10 +76,8 @@ const CardBack = styled(CardFace)({
   height: "100%",
   transform: "rotateY(180deg)",
   ...glassEffect,
-  backgroundColor: "rgba(0,0, 0, 0.5)", //
-  boxShadow: ` 0px 4px 15px rgba(255, 255, 255, 0.4),  /* White glow */
-  `,
-
+  backgroundColor: "rgba(0,0, 0, 0.5)",
+  boxShadow: `0px 4px 15px rgba(255, 255, 255, 0.4)`,
   color: "white",
 });
 
@@ -171,13 +169,15 @@ export default function NFTCard({
     <Box
       sx={{
         width: {
+          xs: "100%",
           sm: "100%",
           xxl: "80%",
         },
         height: {
-          sm: "65%",
-          xl: "70%",
-          xxl: "80%",
+          xs: "65vh",
+          sm: "65vh",
+          xl: "70vh",
+          xxl: "80vh",
         },
         position: "relative",
         transformStyle: "preserve-3d",
@@ -211,7 +211,6 @@ export default function NFTCard({
                   textAlign: "center",
                 }}
               >
-                {" "}
                 <Box
                   sx={{
                     maxWidth: "70%",
@@ -228,7 +227,7 @@ export default function NFTCard({
                         objectFit: "contain",
                         borderRadius: "12px",
                       }}
-                    />{" "}
+                    />
                   </NFTImageContainer>
                 </Box>
               </Grid>
@@ -246,7 +245,11 @@ export default function NFTCard({
                   textAlign: "center",
                 }}
               >
-                <Box sx={{ padding: "2px, 0px" }}>
+                <Box
+                  sx={{
+                    padding: { xs: "1px 0", sm: "2px 0" },
+                  }}
+                >
                   <Typography variant="h4" component="div" sx={{ mb: 2 }}>
                     Minted NFT{quantityMinted > 1 ? "s" : ""}
                   </Typography>
@@ -272,9 +275,9 @@ export default function NFTCard({
                   {/* Buttons Row */}
                   <Box
                     sx={{
-                      mt: 3,
+                      mt: { xs: 1, sm: 3 },
                       gap: 2,
-                      padding: "0px, 4px",
+                      padding: { xs: "0 2px", sm: "0 4px" },
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",

@@ -147,7 +147,15 @@ const ProfileTab = () => {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ color: "white", padding: "5px 0px" }}
+                    sx={{
+                      color: "white",
+                      padding: "5px 0px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "block",
+                      maxWidth: "100%",
+                    }}
                   >
                     {profileData.address}
                   </Typography>

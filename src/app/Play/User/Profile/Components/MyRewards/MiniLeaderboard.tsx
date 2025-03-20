@@ -15,7 +15,6 @@ import {
 import { styled, useTheme } from "@mui/system";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useSWR from "swr";
 
 // Define sort directions and sortable columns for the leaderboard
 type SortDirection = "asc" | "desc";
@@ -50,6 +49,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const HeaderTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.Gold.main,
   fontWeight: "bold",
+  fontSize: "1.1rem",
 }));
 
 interface MiniLeaderboardTableProps {
@@ -60,6 +60,8 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
   data,
 }) => {
   const theme = useTheme();
+
+  // Track which column is sorted and its direction
   const [sortColumn, setSortColumn] = useState<SortableColumn>("total_rewards");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
@@ -72,11 +74,13 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
     }
   };
 
+  // Sort the data based on the chosen column and direction
   const sortedData = useMemo(() => {
     const entries = [...data];
     entries.sort((a, b) => {
       let aValue: number | string;
       let bValue: number | string;
+
       switch (sortColumn) {
         case "rank":
           aValue = a.rank;
@@ -94,6 +98,7 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
           aValue = "";
           bValue = "";
       }
+
       if (typeof aValue === "number" && typeof bValue === "number") {
         return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
       }
@@ -238,11 +243,28 @@ export const MiniLeaderboardTable: React.FC<MiniLeaderboardTableProps> = ({
           ) : (
             sortedData.map((row) => (
               <StyledTableRow key={row.id}>
-                <TableCell sx={{ color: "white" }}>{row.rank}</TableCell>
-                <TableCell sx={{ color: "white" }}>
+                <TableCell
+                  sx={{
+                    color: "white",
+                    fontSize: { md: "0.875rem", lg: "1rem" },
+                  }}
+                >
+                  {row.rank}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    color: "white",
+                    fontSize: { md: "0.875rem", lg: "1rem" },
+                  }}
+                >
                   {row.account_name ? row.account_name : row.address}
                 </TableCell>
-                <TableCell sx={{ color: "white" }}>
+                <TableCell
+                  sx={{
+                    color: "white",
+                    fontSize: { md: "0.875rem", lg: "1rem" },
+                  }}
+                >
                   {row.total_rewards}
                 </TableCell>
               </StyledTableRow>
@@ -260,11 +282,16 @@ const MiniLeaderboard: React.FC = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const theme = useTheme();
+
+  // Detect different breakpoints
   const isXXL = useMediaQuery("(min-width:1800px)");
   const isXL = useMediaQuery("(min-width:1536px)");
   const isLG = useMediaQuery("(min-width:1280px)");
+  const isMD = useMediaQuery(theme.breakpoints.down("md")); // New media query
 
+  // Adjust how many rows to show based on screen size
   let rowsToShow = 3;
   if (isXXL) {
     rowsToShow = 8;
@@ -272,6 +299,8 @@ const MiniLeaderboard: React.FC = () => {
     rowsToShow = 5;
   } else if (isLG) {
     rowsToShow = 3;
+  } else if (isMD) {
+    rowsToShow = 2; // Fewer rows for md and below
   }
 
   useEffect(() => {
