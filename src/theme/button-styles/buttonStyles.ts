@@ -42,7 +42,7 @@ const buttonStyles = (theme: Theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: { sm: "2px", md: "6px" },
+        borderRadius: { sm: "2px", md: "8px" },
         borderStyle: "solid",
         boxSizing: "border-box",
         height: "auto",

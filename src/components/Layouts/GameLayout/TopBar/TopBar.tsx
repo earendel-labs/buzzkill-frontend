@@ -14,13 +14,7 @@ const TopBar: React.FC<TopBarProps> = ({
   mapHeaderLabel,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
-  // left: {
-  //   sm: "1rem",
-  //   md: "1rem",
-  //   lg: "1.7rem",
-  //   xl: "2.6rem",
-  //   xxl: "5rem",
-  // },
+
   return (
     <Box
       sx={{

@@ -111,6 +111,9 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
             component="div"
             sx={{
               whiteSpace: "nowrap",
+              display: "inline-flex",
+              alignItems: "center",
+              lineHeight: 1.0,
               fontWeight: 700,
               fontSize: `${scale}rem`,
               textShadow:
