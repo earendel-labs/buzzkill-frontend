@@ -156,6 +156,10 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({
     variables: { after: null },
   });
 
+  useEffect(() => {
+    logger.log("GET_ALL_HIVE_DATA State:", { data, loading, error });
+  }, [data, loading, error]);
+
   // 5.2) read on-chain data
   const {
     data: maxBeesData,
@@ -335,6 +339,11 @@ export const HivesProvider: React.FC<HivesProviderProps> = ({
       const { data: newData } = await fetchMore({
         variables: { after: cursor },
       });
+
+      // Log the fetched data
+      logger.log("checking if we enter here");
+      logger.log("Fetched staked data:", newData);
+
       if (!newData || !newData.stakedNFTs) {
         return;
       }

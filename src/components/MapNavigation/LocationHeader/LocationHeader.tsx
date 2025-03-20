@@ -86,7 +86,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
               backgroundSize: "90% 100%", // Scale down the background size
             },
             "@media (max-width: 1024px)": {
-              padding: isHeader ? "1rem 2rem" : "0.5rem 1rem", // Even smaller padding on smaller screens
+              padding: isHeader ? "1rem 2rem" : "1rem 2rem", // Even smaller padding on smaller screens
               backgroundSize: "80% 100%", // Further scale down the background size
             },
           }}
@@ -107,9 +107,23 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({
       ) : (
         <Skeleton
           variant="rectangular"
-          width={300} // Fixed width for skeleton
-          height={80} // Fixed height for skeleton
           sx={{
+            width: {
+              xs: "6rem", // 96px
+              sm: "8rem", // 128px
+              md: "10rem", // 160px
+              lg: "18.75rem", // 300px
+              xl: "18.75rem", // 300px
+              xxl: "20rem", // 320px
+            },
+            height: {
+              xs: "1.6rem", // 26px
+              sm: "2.5rem", // 40px
+              md: "3rem", // 48px
+              lg: "5rem", // 80px
+              xl: "5rem", // 80px
+              xxl: "5.5rem", // 88px
+            },
             borderRadius: "4px", // Optional: if you want rounded corners on the skeleton
             backgroundColor: "#242E4E", // Skeleton color to match design
           }}

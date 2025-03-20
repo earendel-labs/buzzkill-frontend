@@ -70,7 +70,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         variant="rectangular"
         width={scale * 150}
         height={scale * 50}
-        sx={{ borderRadius: "8px" }}
+        sx={{ borderRadius: { sm: "2px", md: "6px" } }}
       />
     );
   }
@@ -112,7 +112,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
             sx={{
               whiteSpace: "nowrap",
               fontWeight: 700,
-              fontSize: isSmallScreen ? "0.9rem" : `${scale}rem`,
+              fontSize: `${scale}rem`,
               textShadow:
                 "1px 1px 0 #68341B, -1px -1px 0 #68341B, -1px 1px 0 #68341B, 1px -1px 0 #68341B",
             }}

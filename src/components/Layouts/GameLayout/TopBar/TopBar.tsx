@@ -14,7 +14,13 @@ const TopBar: React.FC<TopBarProps> = ({
   mapHeaderLabel,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
-
+  // left: {
+  //   sm: "1rem",
+  //   md: "1rem",
+  //   lg: "1.7rem",
+  //   xl: "2.6rem",
+  //   xxl: "5rem",
+  // },
   return (
     <Box
       sx={{
@@ -23,11 +29,11 @@ const TopBar: React.FC<TopBarProps> = ({
         alignItems: "center",
         justifyContent: "space-between",
         padding: {
-          xs: "16px 90px 5px 20px",
-          md: "20px 20px 0px 20px",
-          lg: "20px 90px 0px 60px",
-          xl: "30px 100px",
-          xxl: "40px 120px",
+          sm: "1rem 5.625rem 0.3125rem 1rem",
+          md: "1.25rem 5.25rem 0rem 1rem",
+          lg: "1.25rem 5.625rem 0rem 1.7rem",
+          xl: "0.2rem 5.6rem 0rem 2.5rem",
+          xxl: "2.5rem 5rem",
         },
         width: "100%",
         height: "auto",

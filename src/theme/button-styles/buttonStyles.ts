@@ -36,13 +36,13 @@ const buttonStyles = (theme: Theme) => ({
   MuiButton: {
     styleOverrides: {
       root: {
-        fontSize: "18px",
+        fontSize: { sm: "2px", md: "18px" },
         fontWeight: "800",
         textTransform: "none",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "6px",
+        borderRadius: { sm: "2px", md: "6px" },
         borderStyle: "solid",
         boxSizing: "border-box",
         height: "auto",
@@ -77,7 +77,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.futuristicGoldButton": {
           backgroundColor: "rgba(212, 175, 55, 0.8)",
           color: "#0F1C30",
-          borderRadius: "6px",
+
           border: "1px solid rgba(212, 175, 55, 0.9)",
           fontWeight: 700,
           letterSpacing: "1px",
@@ -109,7 +109,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.futuristicBlueButton": {
           backgroundColor: "rgba(27, 72, 245, 0.8)",
           color: "#FFFFFF",
-          borderRadius: "6px",
+
           border: "1px solid rgba(27, 72, 245, 0.9)",
           fontWeight: 700,
           letterSpacing: "1px",
@@ -138,7 +138,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.futuristicRedButton": {
           backgroundColor: "rgba(226, 72, 72, 0.8)",
           color: "#FFFFFF",
-          borderRadius: "6px",
+
           border: "1px solid rgba(226, 72, 72, 0.9)",
           fontWeight: 700,
           letterSpacing: "1px",
@@ -167,7 +167,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.futuristicOrangeButton": {
           backgroundColor: "rgba(213, 98, 23, 0.8)",
           color: "#FFFFFF",
-          borderRadius: "6px",
+
           border: "1px solid rgba(213, 98, 23, 0.9)",
           fontWeight: 700,
           letterSpacing: "1px",
@@ -196,7 +196,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueConnectWallet": {
           backgroundColor: "rgba(27, 72, 245, 0.8)",
           color: "#fff",
-          borderRadius: "6px",
+
           padding: "12px 24px",
           border: "1px solid rgba(27, 72, 245, 0.9)",
           boxShadow: "none",
@@ -223,7 +223,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.darkBlueButton": {
           backgroundColor: "rgba(27, 72, 245, 0.8)",
           color: "#fff",
-          borderRadius: "6px",
+
           padding: "12px 24px",
           border: "1px solid rgba(94, 123, 199, 0.9)",
           boxShadow: "none",
@@ -252,7 +252,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.goldButton": {
           backgroundColor: "rgba(212, 175, 55, 0.8)",
           color: "#0F1C30",
-          borderRadius: "6px",
+
           border: "1px solid rgba(212, 175, 55, 0.9)",
           boxShadow: "none",
           animation: "none",
@@ -279,7 +279,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueButton": {
           backgroundColor: "rgba(27, 72, 245, 0.8)",
           color: "#fff",
-          borderRadius: "6px",
+
           padding: "10px 24px",
           border: "1px solid rgba(14, 28, 106, 0.9)",
           boxShadow: "none",
@@ -307,7 +307,7 @@ const buttonStyles = (theme: Theme) => ({
         "&.blueButtonSmall": {
           backgroundColor: "rgba(66, 114, 206, 0.8)",
           color: "#fff",
-          borderRadius: "6px",
+
           border: "1px solid rgba(56, 95, 189, 0.9)",
           boxSizing: "border-box",
           textTransform: "none",
@@ -336,8 +336,8 @@ const buttonStyles = (theme: Theme) => ({
 
         "&.orangeButton": {
           backgroundColor: "rgba(213, 98, 23, 0.8)",
-          color: "#fff", 
-          borderRadius: "6px",
+          color: "#fff",
+
           border: "1px solid rgba(224, 115, 32, 0.9)",
           boxShadow: "none",
           animation: "none",
@@ -363,7 +363,7 @@ const buttonStyles = (theme: Theme) => ({
 
         "&.oneIDRedButton": {
           backgroundColor: "rgba(226, 72, 72, 0.8)",
-          borderRadius: "6px",
+
           border: "1px solid rgba(125, 26, 26, 0.9)",
           padding: "4px 16px",
           color: "#fff",
@@ -391,7 +391,7 @@ const buttonStyles = (theme: Theme) => ({
           color: "#fff",
           fontWeight: "bold",
           padding: "10px 24px",
-          borderRadius: "6px",
+
           border: "1px solid rgba(125, 26, 26, 0.9)",
           boxShadow: "none",
           animation: "none",
@@ -420,7 +420,7 @@ const buttonStyles = (theme: Theme) => ({
           justifyContent: "center",
           alignItems: "center",
           padding: "12px 30px",
-          borderRadius: "6px",
+
           backgroundColor: "rgba(212, 175, 55, 0.8)",
           border: "1px solid rgba(125, 81, 30, 0.9)",
           boxShadow: "none",
@@ -447,7 +447,7 @@ const buttonStyles = (theme: Theme) => ({
           color: "#0F1C30",
           fontWeight: "bold",
           padding: "8px 30px",
-          borderRadius: "6px",
+
           border: "1px solid rgba(143, 98, 36, 0.9)",
           boxShadow: "none",
           animation: "none",
@@ -475,7 +475,7 @@ const buttonStyles = (theme: Theme) => ({
           padding: "10px 20px",
           border: "1.5px solid rgba(201, 162, 39, 0.9)",
           fontWeight: "bold",
-          borderRadius: "6px",
+
           background: "transparent",
           boxShadow: "none",
           animation: "none",
@@ -502,7 +502,7 @@ const buttonStyles = (theme: Theme) => ({
 
         "&.figmaButton": {
           backgroundColor: "rgba(212, 175, 55, 0.8)",
-          borderRadius: "6px",
+
           border: "2px solid rgba(212, 175, 55, 0.8)",
           color: "#fff",
           boxShadow: "none",

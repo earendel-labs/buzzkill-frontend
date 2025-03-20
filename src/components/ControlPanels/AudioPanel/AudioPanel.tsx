@@ -8,12 +8,12 @@ const AudioPanel: React.FC = () => {
     <Box
       sx={{
         position: "fixed",
-        bottom: "20px",
-        right: "20px",
+        bottom: { sm: "0.5rem", md: "1rem", lg: "20px" },
+        right: { sm: "0.5rem", md: "1rem", lg: "20px" },
         display: "flex",
-        flexDirection: "row", // Change to row to align horizontally
-        alignItems: "center", // Center align items vertically
-        gap: "12px", // Spacing between buttons
+        flexDirection: "row",
+        alignItems: "center",
+        gap: "12px",
       }}
     >
       <Box sx={{ position: "relative" }}>

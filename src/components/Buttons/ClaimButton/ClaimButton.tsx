@@ -239,7 +239,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({
                 ? {
                     xs: "8px 8px",
                     sm: "8px 8px",
-                    md: "8px 8px",
+                    md: "8px 12px",
                     lg: "10px 16px",
                   }
                 : "12px 24px",

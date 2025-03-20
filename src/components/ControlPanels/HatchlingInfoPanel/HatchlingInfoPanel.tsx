@@ -1,9 +1,9 @@
-"use client";
+// rest of your imports here
 
+"use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import {
   Tab,
   Tabs,
@@ -41,6 +41,8 @@ const HatchlingInfoPanel: React.FC = () => {
   const panelRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { isMuted } = useSound();
@@ -184,11 +186,23 @@ const HatchlingInfoPanel: React.FC = () => {
       : {
           position: "relative",
           width: isExpanded
-            ? "800px"
-            : { xs: "190px", md: "190px", xl: "190px" },
+            ? { sm: "100%", md: "98vw", lg: "900px" }
+            : { sm: "53px", md: "170px", lg: "170px", xl: "190px" },
           height: isExpanded
-            ? { xs: "100%", md: "530px", xl: "600px", xxl: "800px" }
-            : "4rem",
+            ? {
+                sm: "200px",
+                md: "67vh",
+                lg: "530px",
+                xl: "600px",
+                xxl: "800px",
+              }
+            : {
+                sm: "3rem",
+                md: "4rem",
+                lg: "4rem",
+                xl: "4rem",
+                xxl: "4rem",
+              },
           bgcolor: "rgba(15, 28, 48, 0.85)",
           backdropFilter: "blur(12px)",
           borderRadius: "8px",
@@ -196,7 +210,7 @@ const HatchlingInfoPanel: React.FC = () => {
             "inset 4px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.15)",
           transition: "width 0.3s ease, height 0.3s ease",
           overflow: "hidden",
-          zIndex: 102,
+          zIndex: 999999,
           "&::before": {
             content: '""',
             position: "absolute",
@@ -218,30 +232,14 @@ const HatchlingInfoPanel: React.FC = () => {
 
   return (
     <Box ref={panelRef} sx={containerStyles}>
-      {isMobile && isMobileFullScreen && (
-        <IconButton
-          onClick={handleToggle}
-          sx={{
-            position: "absolute",
-            top: "1rem",
-            right: "1rem",
-            color: "#FFD700",
-            zIndex: 103,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      )}
-
       <Box
         ref={contentRef}
         sx={{
           opacity: showContent ? 1 : 0,
           transition: "opacity 0.5s ease",
-          padding: "2rem",
+          padding: { sm: "1.3rem", lg: "2rem" },
           textAlign: "left",
           color: "white",
-          minHeight: "400px",
         }}
       >
         <Typography
@@ -250,23 +248,38 @@ const HatchlingInfoPanel: React.FC = () => {
             fontWeight: "bold",
             fontSize: "2rem",
             color: "#FFD700",
-            marginBottom: "1.5rem",
+            marginBottom: { sm: "1rem", lg: "1.5rem" },
             textAlign: "center",
           }}
         >
           The Hatchling Explorer
         </Typography>
-
         <Tabs
           value={selectedTab}
           onChange={handleTabChange}
           key={resizeKey}
+          variant={isSmallScreen ? "scrollable" : "standard"}
+          scrollButtons={isSmallScreen ? "auto" : false}
           sx={{
             "& .MuiTabs-flexContainer": {
               justifyContent: "center",
+              gap: isMediumScreen ? "4px" : "8px",
             },
             "& .MuiTabs-indicator": {
               backgroundColor: "#FFD700",
+            },
+            "& .MuiTab-root": {
+              fontSize: isSmallScreen
+                ? "12px"
+                : isMediumScreen
+                ? "14px"
+                : "16px",
+              minWidth: isSmallScreen
+                ? "70px"
+                : isMediumScreen
+                ? "100px"
+                : "120px",
+              padding: isSmallScreen ? "1px" : isMediumScreen ? "0px" : "6px",
             },
           }}
         >
@@ -275,27 +288,66 @@ const HatchlingInfoPanel: React.FC = () => {
           <Tab label="Explore Nectera" value="explore" />
           <Tab label="Leaderboard" value="leaderboard" />
         </Tabs>
-
         {selectedTab === "campaign" && (
-          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "1rem" }}>
+          <Box
+            sx={{
+              marginTop: { sm: "1.3rem", md: "0.7rem", lg: "2rem" },
+              padding: "0 2rem",
+            }}
+          >
+            <Typography
+              sx={{
+                marginBottom: "1rem",
+                fontSize: {
+                  xs: "14px",
+                  sm: "15px",
+                  md: "16px",
+                  lg: "inherit",
+                },
+              }}
+            >
               In the thawing world of Nectera, the Buzzkill Hatchlings are
               awakening after millennia of dormancy. Now’s your chance to
               explore the planet and earn Honey Drop Points.
               <br />
               <br />
-              1. Mint up to 2 free Hatchlings. <br />
-              2. Select your active Hatchling from the panel below. <br />
-              3. Explore the map and find your hive. <br />
-              4. Stake your Hatchling and earn points based on their rarity.{" "}
+              1. Mint up to 2 free Hatchlings.
               <br />
+              2. Select your active Hatchling from the panel below.
+              <br />
+              3. Explore the map and find your hive.
+              <br />
+              4. Stake your Hatchling and earn points based on their rarity.
             </Typography>
           </Box>
         )}
-
         {selectedTab === "hatchlings" && (
-          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "1rem" }}>
+          <Box
+            sx={{
+              marginTop: {
+                xs: "1rem",
+                sm: "1rem",
+                md: "1rem",
+                lg: "2rem",
+              },
+              padding: "0 2rem",
+            }}
+          >
+            <Typography
+              sx={{
+                marginBottom: {
+                  sm: "0.1rem",
+                  md: "0.25rem",
+                  lg: "1rem",
+                },
+                fontSize: {
+                  xs: "14px",
+                  sm: "15px",
+                  md: "16px",
+                  lg: "inherit",
+                },
+              }}
+            >
               You can{" "}
               <Link
                 href="/mint"
@@ -307,15 +359,24 @@ const HatchlingInfoPanel: React.FC = () => {
                 Mint
               </Link>{" "}
               up to 2 Hatchlings per wallet. There are 3 rarities. The higher
-              the rarity the more Honey Drop points your hatchling will yield:
+              the rarity the more Honey Drop points you earn
             </Typography>
             <HatchlingTable data={data} />
           </Box>
         )}
-
         {selectedTab === "explore" && (
-          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "1rem" }}>
+          <Box sx={{ marginTop: "1rem", padding: "0 2rem" }}>
+            <Typography
+              sx={{
+                marginBottom: "1rem",
+                fontSize: {
+                  xs: "14px",
+                  sm: "15px",
+                  md: "16px",
+                  lg: "inherit",
+                },
+              }}
+            >
               Stake your hatchling to yield Honey Drop points. Environments will
               launch throughout the campaign. Below are the status of the
               current campaigns:
@@ -324,7 +385,7 @@ const HatchlingInfoPanel: React.FC = () => {
               component="ul"
               sx={{ padding: 0, margin: 0, listStyle: "none" }}
             >
-              <Box component="li" sx={{ padding: "2px 0" }}>
+              <Box component="li" sx={{ padding: "1px 0" }}>
                 <ListItemText
                   primary={
                     <Link
@@ -345,7 +406,7 @@ const HatchlingInfoPanel: React.FC = () => {
                   }}
                 />
               </Box>
-              <Box component="li" sx={{ padding: "2px 0" }}>
+              <Box component="li" sx={{ padding: "1px 0" }}>
                 <ListItemText
                   primary={
                     <Link
@@ -380,10 +441,29 @@ const HatchlingInfoPanel: React.FC = () => {
             </Box>
           </Box>
         )}
-
         {selectedTab === "leaderboard" && (
-          <Box sx={{ marginTop: "2rem", padding: "0 2rem" }}>
-            <Typography sx={{ marginBottom: "0.75rem" }}>
+          <Box
+            sx={{
+              marginTop: {
+                xs: "1rem",
+                sm: "1rem",
+                md: "1rem",
+                lg: "2rem",
+              },
+              padding: "0 2rem",
+            }}
+          >
+            <Typography
+              sx={{
+                marginBottom: "0.75rem",
+                fontSize: {
+                  xs: "14px",
+                  sm: "15px",
+                  md: "16px",
+                  lg: "inherit",
+                },
+              }}
+            >
               Claim your points and view your spot on the leaderboard. Checkout
               the{" "}
               <Link
@@ -401,6 +481,10 @@ const HatchlingInfoPanel: React.FC = () => {
         )}
       </Box>
 
+      {/* The key fix is below. 
+          We rely on startIcon for mobile with no text, 
+          and handle text vs. icon with simpler logic. 
+      */}
       <DefaultButton
         onClick={handleToggle}
         sx={{
@@ -409,17 +493,28 @@ const HatchlingInfoPanel: React.FC = () => {
           fontWeight: "bold",
           borderRadius: isMobile ? "0" : "0 0 12px 12px",
           width: "100%",
-          height: "4rem",
+          height: isMobile ? "3.1rem" : "4rem",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          padding: isMobile ? "0.5rem" : "0 2rem",
+          justifyContent: isMobile ? "center" : "space-between",
+          padding: isMobile ? "0rem" : "0 2rem",
           "&:hover": {
             backgroundColor: "rgba(212, 175, 55, 0.2)",
           },
           position: isMobile ? "fixed" : "absolute",
           bottom: 0,
         }}
+        // Show the bulb icon if mobile and not expanded, otherwise show the expand icon if mobile and expanded
+        startIcon={
+          isMobile ? (
+            isExpanded ? (
+              <ExpandMoreIcon />
+            ) : (
+              <EmojiObjectsIcon />
+            )
+          ) : undefined
+        }
+        // Keep the desktop arrow icons on the right
         endIcon={
           !isMobile ? (
             isExpanded ? (
@@ -430,13 +525,16 @@ const HatchlingInfoPanel: React.FC = () => {
           ) : undefined
         }
       >
-        {isMobile ? (
-          <EmojiObjectsIcon />
-        ) : isExpanded ? (
-          "Minimise"
-        ) : (
-          "How to Play"
-        )}
+        {
+          // Decide what text to show depending on mobile/expanded
+          isMobile && isExpanded
+            ? "Minimise" 
+            : !isMobile && isExpanded
+            ? "Minimise"
+            : !isMobile && !isExpanded
+            ? "How to Play"
+            : ""
+        }
       </DefaultButton>
     </Box>
   );

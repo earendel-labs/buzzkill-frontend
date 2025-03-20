@@ -22,7 +22,6 @@ const BeePanelCard: React.FC = () => {
   const { activeBee, bees, stakedBees, loadingBees } = useUserContext();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const router = useRouter();
 
   const handleMyBeesClick = () => {
@@ -42,9 +41,9 @@ const BeePanelCard: React.FC = () => {
     return (
       <SemiTransparentCard
         sx={{
-          width: { xs: "300px", sm: "420px" },
-          height: { xs: "180px", sm: "220px" },
-          padding: { xs: "12px", sm: "16px" },
+          width: { xs: "100px", sm: "290px", md: "380px", lg: "430px" },
+          height: { xs: "auto", sm: "120px", md: "160px", lg: "220px" },
+          padding: { xs: "8px", sm: "8px", md: "16px" },
           backgroundColor: "rgba(34, 46, 80, 0.6)",
           backdropFilter: "blur(20px)",
         }}
@@ -53,30 +52,48 @@ const BeePanelCard: React.FC = () => {
           variant="rectangular"
           width="100%"
           height="100%"
-          sx={{ borderRadius: "6px" }}
+          sx={{ borderRadius: { sm: "6px", md: "8px" } }}
         />
       </SemiTransparentCard>
     );
   }
 
   return (
+    // Everything must be wrapped in one parent element (Box is fine)
     <Box
       sx={{
-        width: { xs: "100px", sm: "290px", md: "430px" },
-        height: { xs: "auto", sm: "120px", md: "220px" },
-        padding: { xs: "16px", sm: "16px 16px", md: "28px 32px" },
+        width: {
+          xs: "100px",
+          sm: "290px",
+          md: "360px",
+          lg: "360px",
+          xl: "430px",
+        },
+        height: {
+          xs: "auto",
+          sm: "120px",
+          md: "160px",
+          lg: "160px",
+          xl: "220px",
+        },
+        padding: {
+          xs: "4px",
+          sm: "16px 16px",
+          md: "24px 24px",
+          lg: "28px 24px",
+        },
+        gap: { sm: "2px", md: "20px", lg: "16px", xl: "0px" },
         position: "relative",
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
         bgcolor: "rgba(15, 28, 48, 0.85)",
-        borderRadius: "8px",
+        borderRadius: { sm: "6px", md: "8px" },
         overflow: "hidden",
         zIndex: 1,
         backdropFilter: "blur(2px)",
-        boxShadow: `
-          inset 4px 4px 4px rgba(0, 0, 0, 0.25),
-          inset 0px 4px 4px rgba(0, 0, 0, 0.12)
-        `,
+        // IMPORTANT: boxShadow must be a valid string or array value
+        boxShadow:
+          "inset 4px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.12)",
         "&::before": {
           content: '""',
           position: "absolute",
@@ -98,22 +115,20 @@ const BeePanelCard: React.FC = () => {
     >
       <Box
         sx={{
-          width: { xs: "100%", sm: "40%", md: "40%", lg: "50%" },
-          padding: { xs: "0px", sm: "0px", md: "0px", lg: "12px" },
           boxShadow:
             activeBeeImage !== "/NFTs/default-hatchling.png"
-              ? `0px 4px 4px rgba(0, 0, 0, 0.25),
-                 -2px -2px 4px rgba(0, 0, 0, 0.25)`
+              ? // Must be a string or array, not raw CSS
+                "0px 4px 4px rgba(0, 0, 0, 0.25), -2px -2px 4px rgba(0, 0, 0, 0.25)"
               : "none",
-          borderRadius: "8px",
-          mb: { xs: 2, sm: 0 },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          margin: { sm: "0px 0px 0px 12px", md: "0px" },
         }}
       >
         <Image
           src={activeBeeImage}
+          // alt text must be in a template string if you want #${activeBee}
           alt={activeBee ? `Hatchling #${activeBee}` : "Placeholder"}
           width={320}
           height={320}
@@ -121,15 +136,15 @@ const BeePanelCard: React.FC = () => {
             objectFit: "contain",
             height: "100%",
             width: "auto",
-            borderRadius: "12px",
+            borderRadius: "16px",
           }}
         />
       </Box>
 
       <Box
         sx={{
-          width: { xs: "100%", sm: "55%" },
-          padding: "4px",
+          width: { xs: "100%", sm: "100%", md: "55%" },
+          padding: { sm: "2px", md: "4px" },
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
@@ -180,7 +195,7 @@ const BeePanelCard: React.FC = () => {
           <>
             <Typography
               sx={{
-                mb: { xs: 1, sm: 0, md: 3 },
+                mb: { xs: 1, sm: 0, md: 3, lg: 3 },
                 textAlign: "center",
                 maxWidth: "480px",
                 fontSize: {
@@ -203,7 +218,7 @@ const BeePanelCard: React.FC = () => {
           <>
             <Typography
               sx={{
-                mb: { xs: 1, sm: 1, md: 3 },
+                mb: { xs: 1, sm: 1, md: 1.8, lg: 1.8, xl: 3 },
                 textAlign: "center",
                 maxWidth: "490px",
                 fontSize: {
@@ -221,7 +236,9 @@ const BeePanelCard: React.FC = () => {
               <PrimaryButton
                 text="Mint"
                 onClick={handleMintClick}
-                sx={{ padding: { sm: "2px 32px", md: "8px 32px" } }}
+                sx={{
+                  padding: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" },
+                }}
               />
             </Box>
           </>
