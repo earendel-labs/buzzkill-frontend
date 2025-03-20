@@ -15,9 +15,9 @@ const LeftPanel: React.FC = () => {
           xs: "3.3rem",
           sm: "6rem",
           md: "6.5rem",
-          lg: "7.3rem",
+          lg: "6.8rem",
           xl: "7.3rem",
-          xxl: "10rem",
+          xxl: "7.5rem",
         },
         left: {
           sm: "1rem",

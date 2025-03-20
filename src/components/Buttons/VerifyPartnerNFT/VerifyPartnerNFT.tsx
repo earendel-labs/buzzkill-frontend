@@ -96,12 +96,29 @@ const VerifyPartnerNftButton: React.FC = () => {
     ? "NFT Ownership Confirmed"
     : "Verify NFT Ownership";
   const buttonText = isMobile ? "" : desktopText;
-  const mobileText = ""; // Always empty on mobile.
+  const mobileText = "";
 
   return (
     <>
-      <Tooltip title={tooltipText} arrow>
-        <Box>
+      <Tooltip
+        title={tooltipText}
+        arrow
+        placement={isMobile ? "bottom" : "right"}
+        sx={{
+          zIndex: 99,
+        }}
+      >
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "auto",
+            padding: 0,
+            margin: 0,
+            overflow: "hidden",
+          }}
+        >
           <PrimaryButton
             text={buttonText}
             mobileText={mobileText}
@@ -110,6 +127,7 @@ const VerifyPartnerNftButton: React.FC = () => {
             onClick={handleClick}
             scale={1}
             sx={{
+              minHeight: 40,
               padding: {
                 sm: "4px 4px",
                 md: "8px 20px",

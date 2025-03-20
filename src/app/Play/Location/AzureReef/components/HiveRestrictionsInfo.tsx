@@ -62,6 +62,7 @@ const HiveRestrictionsInfo: React.FC = () => {
               fontSize: { sm: "16px", md: "inherit" },
               flex: 1,
               textAlign: "left",
+              lineHeight: "1",
             }}
           >
             {expanded ? fullMessage : shortMessage}
