@@ -120,7 +120,7 @@ const CheckWhitelistPage: React.FC = () => {
               textAlign: "center",
             }}
           >
-            Wallet Checker
+            Whitelist Checker
           </Typography>
 
           {/* Label */}

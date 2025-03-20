@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
         boxSizing: "border-box",
         width: "100%",
         backgroundColor,
-        padding: isMobile ? "12px" : "20px", // Increased padding for better spacing
+        padding: { xs: "12px", md: "14px", lg: "20px" }, // Increased padding for better spacing
         display: "flex",
         flexDirection: isMobile ? "column" : "row", // Stack only on mobile (xs)
         justifyContent: isTablet ? "space-around" : "space-between", // Center elements in sm/md
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
         borderTop: "1px solid #222f4b",
         textAlign: "center",
         flexWrap: "wrap", // Allows better fitting when near md breakpoint
-        gap: isMobile ? "px" : "4px", // Increased spacing between sections for mobile
+        gap: isMobile ? "2px" : "4px", // Increased spacing between sections for mobile
       }}
     >
       {/* Copyright section */}
