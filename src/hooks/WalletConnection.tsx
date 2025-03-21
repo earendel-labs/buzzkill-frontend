@@ -273,7 +273,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                     position: "absolute",
                     top: "28%",
                     left: "28%",
-                    color: "#64c6ed", // light blue
+                    color: "#fff", // light blue
                     whiteSpace: "nowrap",
                   },
                 },
@@ -313,7 +313,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                     position: "absolute",
                     top: "28%",
                     left: "32%",
-                    color: "#101240", // dark blue
+                    color: "#fff", // dark blue
                     whiteSpace: "nowrap",
                   },
                 },
@@ -347,7 +347,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                     position: "absolute",
                     top: "28%",
                     left: "42%",
-                    color: "#edb864", // light orange
+                    color: "#fff", // light orange
                     whiteSpace: "nowrap",
                   },
                 },
@@ -382,7 +382,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                       position: "absolute",
                       top: "28%", // Update if needed for portrait
                       left: "26%", // Update if needed for portrait
-                      color: "#c6ed64", // light green
+                      color: "#fff", // light green
                       whiteSpace: "nowrap",
                     },
                   },
@@ -417,7 +417,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                       position: "absolute",
                       top: "28%",
                       left: "42%",
-                      color: "#ed6492", // pink
+                      color: "#fff", // pink
                       whiteSpace: "nowrap",
                     },
                   },
@@ -452,7 +452,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                       position: "absolute",
                       top: "28%",
                       left: "43%",
-                      color: "#5a37a3", // purple
+                      color: "#fff", // purple
                       whiteSpace: "nowrap",
                     },
                   },
@@ -485,7 +485,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                     position: "absolute",
                     top: "28%",
                     left: "26%",
-                    color: "#eded64", // light yellow
+                    color: "#fff", // light yellow
                     whiteSpace: "nowrap",
                   },
                 },
@@ -519,7 +519,7 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                     position: "absolute",
                     top: "28%",
                     left: "26%",
-                    color: "#eded64", // light yellow
+                    color: "#fff", // light yellow
                     whiteSpace: "nowrap",
                   },
                 },

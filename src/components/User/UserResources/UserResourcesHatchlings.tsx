@@ -29,7 +29,7 @@ const UserResourceBar: React.FC = () => {
     ) {
       setDisplayPoints(0);
     } else {
-      setDisplayPoints(Number(23456)); // For testing, replace with liveUnclaimedPoints
+      setDisplayPoints(Number(liveUnclaimedPoints)); // For testing, replace with liveUnclaimedPoints
     }
   }, [liveUnclaimedPoints]);
 
