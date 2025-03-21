@@ -82,6 +82,7 @@ const HomePage: React.FC = () => {
   const handleClick = () => {
     router.push("/Mint");
   };
+
   return (
     <Layout>
       {/* Conditionally render loading spinner */}
@@ -90,10 +91,13 @@ const HomePage: React.FC = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh"
-          width="100vw"
           flexDirection="column"
           sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
             backgroundImage: (theme) =>
               theme.palette.customBackgrounds.boxGradient,
             backgroundSize: "cover",
@@ -131,6 +135,33 @@ const HomePage: React.FC = () => {
           priority
         />
       </Box>
+
+      {/* Show spinner overlay while image is loading */}
+      {!isImageLoaded && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+          flexDirection="column"
+          sx={{
+            backgroundImage: theme.palette.customBackgrounds.boxGradient,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            zIndex: 100,
+          }}
+        >
+          <HexagonSpinner />
+          <Typography className="body1" padding="44px 0px">
+            Loading World...
+          </Typography>
+        </Box>
+      )}
 
       {/* Centered Semi-Transparent Card */}
       <Box
