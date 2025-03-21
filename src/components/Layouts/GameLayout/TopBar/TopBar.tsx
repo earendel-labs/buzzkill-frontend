@@ -26,7 +26,7 @@ const TopBar: React.FC<TopBarProps> = ({
           sm: "1rem 5.625rem 0.3125rem 1rem",
           md: "1.25rem 5.25rem 0rem 1rem",
           lg: "1.25rem 5.625rem 0rem 1.7rem",
-          xl: "0.2rem 5.6rem 0rem 2.5rem",
+          xl: "2.0rem 5.6rem 0rem 2.5rem",
           xxl: "2.5rem 5rem",
         },
         width: "100%",

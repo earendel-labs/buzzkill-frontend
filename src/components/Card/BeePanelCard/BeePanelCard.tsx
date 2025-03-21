@@ -282,9 +282,9 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({
               variant="h6"
               sx={{
                 fontSize: {
-                  xs: "1rem",
-                  sm: "1.1rem",
-                  md: "1.2rem",
+                  xs: "0.4rem",
+                  sm: "0.8rem",
+                  md: "1rem",
                 },
               }}
             >
@@ -300,19 +300,25 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({
               mb: { xs: 2, sm: 6 },
             }}
           >
-            <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
+            <PrimaryButton
+              text="Hatchlings"
+              onClick={handleMyBeesClick}
+              sx={{
+                padding: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" },
+              }}
+            />
           </Box>
         </Box>
       ) : bees.length > 0 || stakedBees.length > 0 ? (
         <>
           <Typography
             sx={{
-              mb: { xs: 1, sm: 0, md: 3 },
+              mb: { xs: 1, sm: 1, md: 1.8 },
               textAlign: "center",
               maxWidth: "480px",
               fontSize: {
                 xs: "0.4rem",
-                sm: "0.4rem",
+                sm: "0.8rem",
                 md: "1rem",
               },
               whiteSpace: "pre-line",
@@ -323,7 +329,13 @@ const DetailsBox: React.FC<DetailsBoxProps> = ({
               : "You have staked Hatchlings\nView them here"}
           </Typography>
           <Box display="flex" justifyContent="center">
-            <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
+            <PrimaryButton
+              text="Hatchlings"
+              onClick={handleMyBeesClick}
+              sx={{
+                padding: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" },
+              }}
+            />
           </Box>
         </>
       ) : (
