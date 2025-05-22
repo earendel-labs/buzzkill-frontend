@@ -11,84 +11,71 @@ import BeeHeader from "./components/BeeHeader";
 import StatsTab from "./components/StatsTab";
 import TraitsTab from "./components/TraitsTab";
 import UpgradesTab from "./components/UpgradesTab";
-import type { BeeStats } from "./components/types";
+import { useBuzzkillOriginsContext } from "@/context/BuzzkillOriginsContext";
+import type { BeeStats } from "@/types/OriginsStats";
 
 export default function CharacterDashboard() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [beeStats, setBeeStats] = useState<BeeStats>({
-    id: "#522",
-    name: "Worker Bee",
-    level: 2,
-    xp: 150,
-    maxXp: 250,
-    attack: 86,
-    defence: 52,
-    foraging: 40,
-    energy: 82,
-    maxEnergy: 90,
-    health: 24,
-    maxHealth: 55,
-    productivity: 21,
-    currentProductivity: 44,
-    maxProductivity: 67,
-    raidsCompleted: 13,
-    raidsSuccessful: 6,
-    foragesCompleted: 50,
-    initialized: true,
-    traits: {
-      environment: "Forest Haven",
-      wings: "Golden Wings",
-      base: "Standard Base",
-      armor: "Royal Armor",
-      leftHand: "Lightning Sword",
-      rightHand: "Shield of Pollen",
-      hair: "Default Hair",
-      eyes: "Default Eyes",
-      headpiece: "Antler Crown",
-      character: "Worker",
-    },
-  });
+  // ⇢ grab merged array & loading flag from context
+  const { bees, loading } = useBuzzkillOriginsContext();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // local UI state
   const [honey, setHoney] = useState(3356);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
   const [selectedStat, setSelectedStat] = useState("");
   const [tabValue, setTabValue] = useState(0);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
+  // 1) loading / empty guards
+  if (loading) {
+    return <Layout>Loading your bees…</Layout>;
+  }
+  if (bees.length === 0) {
+    return <Layout>No bees found.</Layout>;
+  }
 
+  // 2) current BeeStats
+  const currentBee: BeeStats = bees[currentIndex];
+
+  // 3) disable carousel at ends
+  const leftDisabled = currentIndex === 0;
+  const rightDisabled = currentIndex === bees.length - 1;
+  const showPrev = () => !leftDisabled && setCurrentIndex((i) => i - 1);
+  const showNext = () => !rightDisabled && setCurrentIndex((i) => i + 1);
+
+  const handleTabChange = (_: any, newVal: number) => setTabValue(newVal);
   const openUpgradeDialog = (stat: string) => {
     setSelectedStat(stat.toLowerCase());
     setUpgradeDialogOpen(true);
   };
-
   const upgradeStat = () => {
     const cost = 500;
-    if (honey >= cost) {
-      setHoney(honey - cost);
-      setBeeStats((prev) => {
-        switch (selectedStat) {
-          case "attack":
-            return { ...prev, attack: prev.attack + 5 };
-          case "defence":
-            return { ...prev, defence: prev.defence + 5 };
-          case "foraging":
-            return { ...prev, foraging: prev.foraging + 5 };
-          case "energy":
-            return { ...prev, maxEnergy: prev.maxEnergy + 10 };
-          case "health":
-            return { ...prev, maxHealth: prev.maxHealth + 10 };
-          case "productivity":
-            return { ...prev, maxProductivity: prev.maxProductivity + 10 };
-          default:
-            return prev;
-        }
-      });
-      setUpgradeDialogOpen(false);
+    if (honey < cost) return setUpgradeDialogOpen(false);
+    setHoney((h) => h - cost);
+    // local hack: mutate currentBee; ideally push update back into context or DB
+    switch (selectedStat) {
+      case "attack":
+        currentBee.attack += 5;
+        break;
+      case "defence":
+        currentBee.defence += 5;
+        break;
+      case "foraging":
+        currentBee.foraging += 5;
+        break;
+      case "energy":
+        currentBee.maxEnergy += 10;
+        break;
+      case "health":
+        currentBee.maxHealth += 10;
+        break;
+      case "productivity":
+        currentBee.maxProductivity += 10;
+        break;
     }
+    setUpgradeDialogOpen(false);
   };
 
   return (
@@ -107,11 +94,7 @@ export default function CharacterDashboard() {
           sx={{
             width: "100%",
             maxWidth: 1400,
-            // Force a consistent height
             minHeight: { xs: 500, md: 600 },
-            // If you want a strict fixed height plus scroll, use this instead:
-            // height: { xs: 600, md: 650 },
-            // overflowY: "auto",
             py: { xs: 1.5, sm: 1.5, md: 1 },
             px: { xs: 1.5, sm: 2, md: 1 },
             display: "flex",
@@ -120,54 +103,30 @@ export default function CharacterDashboard() {
           }}
         >
           <Grid container alignItems="center" spacing={2}>
-            {/* Left Arrow */}
             <Grid item>
-              <LeftButton />
+              <LeftButton disabled={leftDisabled} onClick={showPrev} />
             </Grid>
 
-            {/* Middle Content */}
-            <Grid
-              item
-              xs
-              sx={{
-                textAlign: "left",
-              }}
-            >
+            <Grid item xs sx={{ textAlign: "left" }}>
               <Grid
                 container
                 alignItems="flex-start"
                 spacing={{ xs: 2, md: 3 }}
               >
-                <Grid
-                  item
-                  xs={12}
-                  md={5}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
+                <Grid item xs={12} md={5}>
                   <BeeHeader
-                    beeStats={beeStats}
+                    beeStats={currentBee}
                     honey={honey}
                     initializeBee={() => {}}
                   />
                 </Grid>
-
-                {/* Tabs + Content */}
                 <Grid
                   item
                   xs={12}
                   md={7}
                   sx={{ display: "flex", flexDirection: "column" }}
                 >
-                  <Box
-                    sx={{
-                      py: { xs: 1, sm: 1, md: 1.25 },
-                      mb: { xs: 1, md: 1 },
-                    }}
-                  >
+                  <Box sx={{ py: 1, mb: 1 }}>
                     <Tabs
                       value={tabValue}
                       onChange={handleTabChange}
@@ -179,9 +138,7 @@ export default function CharacterDashboard() {
                           minHeight: 36,
                           padding: "6px 12px",
                         },
-                        "& .MuiTabs-indicator": {
-                          height: 3,
-                        },
+                        "& .MuiTabs-indicator": { height: 3 },
                       }}
                     >
                       <Tab label="Stats" />
@@ -189,19 +146,17 @@ export default function CharacterDashboard() {
                       <Tab label="Upgrades" />
                     </Tabs>
                   </Box>
-
-                  {/* Tab Content */}
                   <Box sx={{ flex: 1, width: "100%" }}>
                     {tabValue === 0 && (
                       <StatsTab
-                        beeStats={beeStats}
+                        beeStats={currentBee}
                         openUpgradeDialog={openUpgradeDialog}
                       />
                     )}
-                    {tabValue === 1 && <TraitsTab beeStats={beeStats} />}
+                    {tabValue === 1 && <TraitsTab beeStats={currentBee} />}
                     {tabValue === 2 && (
                       <UpgradesTab
-                        beeStats={beeStats}
+                        beeStats={currentBee}
                         openUpgradeDialog={openUpgradeDialog}
                       />
                     )}
@@ -210,9 +165,8 @@ export default function CharacterDashboard() {
               </Grid>
             </Grid>
 
-            {/* Right Arrow */}
             <Grid item>
-              <RightButton />
+              <RightButton disabled={rightDisabled} onClick={showNext} />
             </Grid>
           </Grid>
         </SemiTransparentCard>

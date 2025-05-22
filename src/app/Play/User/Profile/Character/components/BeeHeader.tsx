@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Hexagon as HexagonIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
-import type { BeeStats } from "./types";
+import type { BeeStats } from "../../../../../../types/OriginsStats";
 
 interface BeeHeaderProps {
   beeStats: BeeStats;
@@ -34,6 +34,8 @@ export default function BeeHeader({
     "headpiece",
     "environment",
   ];
+
+  const imageSrc = beeStats.imageAddress || "/NFTs/Workers/worker-blur.png";
 
   return (
     <Box sx={{ py: { xs: 1, md: 1.25 }, textAlign: "center" }}>
@@ -81,7 +83,7 @@ export default function BeeHeader({
           }}
         >
           <Image
-            src="/NFTs/Workers/JungleWorker.png"
+            src={imageSrc}
             alt="Bee Warrior NFT"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
@@ -95,7 +97,9 @@ export default function BeeHeader({
               bottom: 8,
               left: 8,
               backgroundColor:
-                beeStats.traits.character === "Queen" ? "#9c27b0" : "#2196f3",
+                beeStats.traits.character === "Queen Bee"
+                  ? "#9c27b0"
+                  : "#2196f3",
               color: "white",
               boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
               zIndex: 2,

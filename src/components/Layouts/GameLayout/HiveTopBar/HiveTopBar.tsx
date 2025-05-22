@@ -20,21 +20,15 @@ const HiveTopBar: React.FC<HiveTopBarProps> = ({ mapHeaderLabel }) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: {
-          xs: "0rem 1rem",
-          sm: "0rem 2rem",
-          md: "0rem 2.5rem",
-          lg: "0rem 4.2rem 0rem 3rem",
-          xl: "0rem, 4rem",
-          xxl: "0rem, 12rem",
+          sm: "1rem 5.625rem 0.3125rem 1rem",
+          md: "1.25rem 5.25rem 0rem 1rem",
+          lg: "1.25rem 5.625rem 0rem 1.7rem",
+          xl: "1.75rem 5.3rem 0rem 2.9rem",
+          xxl: "2rem 5rem",
         },
         width: "100%",
-        height: {
-          xs: "6rem",
-          md: "7rem",
-          xl: "8.8rem",
-          xxl: "12rem",
-        },
-        boxSizing: "border-box",
+        height: "auto",
+        gap: { xs: "10px", md: "0px" },
       }}
     >
       {/* Left section with User Resources */}

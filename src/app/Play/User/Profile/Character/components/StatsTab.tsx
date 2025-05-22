@@ -12,7 +12,7 @@ import {
   EmojiEvents as TrophyIcon,
   Gavel as RaidsIcon,
 } from "@mui/icons-material";
-import type { BeeStats } from "./types";
+import type { BeeStats } from "../../../../../../types/OriginsStats";
 import StatUpgradeCard from "./StatsUpgradedCard";
 import SkillsCard from "./SkillsCard";
 import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";

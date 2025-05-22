@@ -526,7 +526,7 @@ const MavericksHive: React.FC = () => {
           </Grid>
         </Grid>
 
-        <BottomBar isAudioPanelVisible={false} />
+        <BottomBar isHiveLayout={true} />
       </Box>
 
       {/* Staking Confirmation Modal */}

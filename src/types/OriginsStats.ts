@@ -1,6 +1,7 @@
 export interface BeeStats {
   id: string;
   name: string;
+  imageAddress: string;
   level: number;
   xp: number;
   maxXp: number;
@@ -28,6 +29,6 @@ export interface BeeStats {
     hair: string;
     eyes: string;
     headpiece: string;
-    character: "Queen" | "Worker";
+    character: "Queen Bee" | "Worker Bee";
   };
 }

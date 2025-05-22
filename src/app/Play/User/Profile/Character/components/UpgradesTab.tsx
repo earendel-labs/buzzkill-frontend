@@ -3,7 +3,7 @@
 import React from "react";
 import { Box, Typography, Grid, Paper, useTheme } from "@mui/material";
 import { ArrowCircleUp as UpgradeIcon } from "@mui/icons-material";
-import { BeeStats } from "./types";
+import { BeeStats } from "../../../../../../types/OriginsStats";
 import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UpgradesTabProps {
