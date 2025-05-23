@@ -286,11 +286,12 @@ export default function CharacterDashboard() {
             sx={{
               display: "flex",
               flexDirection: "column",
+              justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
               gap: 3,
               p: 3,
-              width: 340,
+              width: "100%",
               position: "relative",
             }}
           >
