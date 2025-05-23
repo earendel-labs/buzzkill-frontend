@@ -1,7 +1,17 @@
+// components/CharacterDashboard.tsx
 "use client";
-import React, { useState } from "react";
-import { Box, Grid, Tabs, Tab, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+
+import React, { useState, useCallback, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Tabs,
+  Tab,
+  Snackbar,
+  Typography,
+  LinearProgress,
+} from "@mui/material";
+import MuiAlert, { AlertColor } from "@mui/material/Alert";
 import Layout from "@/components/Layouts/Layout/Layout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import LeftButton from "@/components/Buttons/CarouselNavigation/LeftButton";
@@ -12,49 +22,126 @@ import StatsTab from "./components/StatsTab";
 import TraitsTab from "./components/TraitsTab";
 import UpgradesTab from "./components/UpgradesTab";
 import { useBuzzkillOriginsContext } from "@/context/BuzzkillOriginsContext";
+import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 import type { BeeStats } from "@/types/OriginsStats";
+import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
+import { formatNumber } from "@/utils/formatNumber";
 
 export default function CharacterDashboard() {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { bees, loading, refreshBees } = useBuzzkillOriginsContext();
 
-  // ⇢ grab merged array & loading flag from context
-  const { bees, loading } = useBuzzkillOriginsContext();
+  /* ---------- local state ---------- */
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // local UI state
   const [honey, setHoney] = useState(3356);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
   const [selectedStat, setSelectedStat] = useState("");
   const [tabValue, setTabValue] = useState(0);
 
-  // 1) loading / empty guards
-  if (loading) {
-    return <Layout>Loading your bees…</Layout>;
-  }
-  if (bees.length === 0) {
-    return <Layout>No bees found.</Layout>;
-  }
+  /* ---------- snackbar ---------- */
+  const [snackbarMsg, setSnackbarMsg] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<AlertColor>("info");
+  const closeSnackbar = () => setSnackbarOpen(false);
 
-  // 2) current BeeStats
+  /* ---------- modal ---------- */
+  const [modalOpen, setModalOpen] = useState(false);
+  const [initialising, setInitialising] = useState(false);
+  const [initResult, setInitResult] = useState<{
+    tokenId: number;
+    points: number;
+    phase: string;
+  } | null>(null);
+
+  /* ---------- progress bar ---------- */
+  const [progress, setProgress] = useState(100);
+
+  /* auto-close in 2 s (100 ms tick, –5 each) */
+  useEffect(() => {
+    if (modalOpen && !initialising && initResult) {
+      setProgress(100);
+      const interval = setInterval(() => {
+        setProgress((p) => {
+          if (p <= 0) {
+            clearInterval(interval);
+            setModalOpen(false);
+            return 0;
+          }
+          return p - 5;
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [modalOpen, initialising, initResult]);
+
+  /* ---------- initialise bee ---------- */
+  const initializeBee = useCallback(async () => {
+    const tokenId = Number(bees[currentIndex].id);
+
+    setInitialising(true);
+    setInitResult(null);
+    setModalOpen(true);
+
+    setSnackbarMsg("Initialising…");
+    setSnackbarSeverity("info");
+    setSnackbarOpen(true);
+
+    try {
+      const res = await fetch(
+        "/api/buzzkill-origins/initialiseBuzzkillOrigins",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tokenId }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+      setInitResult({
+        tokenId,
+        points: data.points,
+        phase: data.phase,
+      });
+      setInitialising(false);
+
+      setSnackbarMsg(`Initialised you earned ${formatNumber(data.points)} pts`);
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+
+      await refreshBees();
+    } catch (err: any) {
+      setModalOpen(false);
+      setInitialising(false);
+      setSnackbarMsg(`Init failed: ${err.message}`);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  }, [bees, currentIndex, refreshBees]);
+
+  /* ---------- guards ---------- */
+  if (loading) return <Layout>Loading your Buzzkill Origins…</Layout>;
+  if (!bees.length) return <Layout>No bees found.</Layout>;
+
   const currentBee: BeeStats = bees[currentIndex];
 
-  // 3) disable carousel at ends
+  /* ---------- handlers ---------- */
   const leftDisabled = currentIndex === 0;
   const rightDisabled = currentIndex === bees.length - 1;
   const showPrev = () => !leftDisabled && setCurrentIndex((i) => i - 1);
   const showNext = () => !rightDisabled && setCurrentIndex((i) => i + 1);
-
-  const handleTabChange = (_: any, newVal: number) => setTabValue(newVal);
+  const handleTabChange = (_: unknown, v: number) => setTabValue(v);
   const openUpgradeDialog = (stat: string) => {
     setSelectedStat(stat.toLowerCase());
     setUpgradeDialogOpen(true);
   };
+
   const upgradeStat = () => {
     const cost = 500;
-    if (honey < cost) return setUpgradeDialogOpen(false);
+    if (honey < cost) {
+      setUpgradeDialogOpen(false);
+      return;
+    }
     setHoney((h) => h - cost);
-    // local hack: mutate currentBee; ideally push update back into context or DB
     switch (selectedStat) {
       case "attack":
         currentBee.attack += 5;
@@ -78,6 +165,7 @@ export default function CharacterDashboard() {
     setUpgradeDialogOpen(false);
   };
 
+  /* ---------- render ---------- */
   return (
     <Layout>
       <Box
@@ -85,9 +173,8 @@ export default function CharacterDashboard() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          px: { xs: 2, sm: 3, md: 1 },
-          py: { xs: 2, sm: 2, md: 3 },
-          width: "100%",
+          px: 2,
+          py: 2,
         }}
       >
         <SemiTransparentCard
@@ -95,8 +182,8 @@ export default function CharacterDashboard() {
             width: "100%",
             maxWidth: 1400,
             minHeight: { xs: 500, md: 600 },
-            py: { xs: 1.5, sm: 1.5, md: 1 },
-            px: { xs: 1.5, sm: 2, md: 1 },
+            py: 1,
+            px: 1,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -107,18 +194,10 @@ export default function CharacterDashboard() {
               <LeftButton disabled={leftDisabled} onClick={showPrev} />
             </Grid>
 
-            <Grid item xs sx={{ textAlign: "left" }}>
-              <Grid
-                container
-                alignItems="flex-start"
-                spacing={{ xs: 2, md: 3 }}
-              >
+            <Grid item xs>
+              <Grid container spacing={{ xs: 2, md: 3 }}>
                 <Grid item xs={12} md={5}>
-                  <BeeHeader
-                    beeStats={currentBee}
-                    honey={honey}
-                    initializeBee={() => {}}
-                  />
+                  <BeeHeader beeStats={currentBee} honey={honey} />
                 </Grid>
                 <Grid
                   item
@@ -136,7 +215,7 @@ export default function CharacterDashboard() {
                         "& .MuiTab-root": {
                           fontSize: "1.1rem",
                           minHeight: 36,
-                          padding: "6px 12px",
+                          p: "6px 12px",
                         },
                         "& .MuiTabs-indicator": { height: 3 },
                       }}
@@ -146,11 +225,14 @@ export default function CharacterDashboard() {
                       <Tab label="Upgrades" />
                     </Tabs>
                   </Box>
-                  <Box sx={{ flex: 1, width: "100%" }}>
+
+                  <Box sx={{ flex: 1 }}>
                     {tabValue === 0 && (
                       <StatsTab
                         beeStats={currentBee}
                         openUpgradeDialog={openUpgradeDialog}
+                        initializeBee={initializeBee}
+                        initialising={initialising}
                       />
                     )}
                     {tabValue === 1 && <TraitsTab beeStats={currentBee} />}
@@ -179,6 +261,83 @@ export default function CharacterDashboard() {
         honey={honey}
         upgradeStat={upgradeStat}
       />
+
+      {/* init / success modal */}
+      <StyledModal open={modalOpen} onClose={() => setModalOpen(false)}>
+        {initialising && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 4,
+              p: 3,
+            }}
+          >
+            <HexagonSpinner />
+            <Typography align="center">
+              Initialising Buzzkill&nbsp;Origins #{bees[currentIndex].id} …
+            </Typography>
+          </Box>
+        )}
+
+        {!initialising && initResult && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              gap: 3,
+              p: 3,
+              width: 340,
+              position: "relative",
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Initialised Buzzkill&nbsp;Origins #{initResult.tokenId}
+            </Typography>
+            <Typography variant="body1">
+              Earned {formatNumber(initResult.points)} pts
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Phase {initResult.phase}
+            </Typography>
+
+            <LinearProgress
+              variant="determinate"
+              value={progress}
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: 4,
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: "#FFD700",
+                },
+              }}
+            />
+          </Box>
+        )}
+      </StyledModal>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          severity={snackbarSeverity}
+          variant="filled"
+          elevation={6}
+          onClose={closeSnackbar}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMsg}
+        </MuiAlert>
+      </Snackbar>
     </Layout>
   );
 }

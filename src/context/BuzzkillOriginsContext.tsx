@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useMemo,
+  useCallback,
   ReactNode,
 } from "react";
 import type { Address } from "abitype";
@@ -27,10 +28,12 @@ type OnChainBee = Pick<BeeStats, "id" | "name" | "imageAddress"> & {
   traits: BeeStats["traits"];
 };
 
-export async function fetchBeeStats(ids: number[]): Promise<BeeStats[]> {
+async function fetchBeeStats(ids: number[]): Promise<BeeStats[]> {
   if (!ids.length) return [];
   try {
-    const res = await fetch(`/api/beeStats?ids=${ids.join(",")}`);
+    const res = await fetch(
+      `/api/buzzkill-origins/getBuzzkillOriginsStats?ids=${ids.join(",")}`
+    );
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return (await res.json()) as BeeStats[];
   } catch (err) {
@@ -39,7 +42,7 @@ export async function fetchBeeStats(ids: number[]): Promise<BeeStats[]> {
   }
 }
 
-export function normalizeTraits(meta: RawMeta): OnChainBee {
+function normalizeTraits(meta: RawMeta): OnChainBee {
   const traits: BeeStats["traits"] = {
     environment: "",
     wings: "",
@@ -106,6 +109,7 @@ export interface BuzzkillOriginsContextType {
   error: boolean;
   activeBee: number | null;
   setActiveBee: (id: number | null) => void;
+  refreshBees: () => Promise<void>;
 }
 
 const BuzzkillOriginsContext = createContext<
@@ -120,7 +124,7 @@ export const BuzzkillOriginsProvider = ({
   const { address } = useAccount();
   const owner = (address ?? "") as Address;
 
-  /* Wagmi hooks — now with polling disabled in dev */
+  /* Wagmi hooks */
   const { balanceQuery, ownersQuery, owned } = useOwnedOriginsTokens(
     owner,
     4444,
@@ -134,73 +138,77 @@ export const BuzzkillOriginsProvider = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [activeBee, setActiveBee] = useState<number | null>(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
 
-  /* Main effect — runs once when ownership + URIs are ready */
-  useEffect(() => {
+  const loadBees = useCallback(async () => {
     if (
       !owned.length ||
       !uriQuery.data ||
       balanceQuery.isLoading ||
       ownersQuery.isLoading ||
-      uriQuery.isLoading ||
-      hasLoaded
-    )
+      uriQuery.isLoading
+    ) {
+      setLoading(false);
       return;
+    }
 
     setLoading(true);
     setError(false);
 
-    const run = async () => {
-      try {
-        setHasLoaded(true);
+    try {
+      const uris = uriQuery.data.map((r) => r.result as string);
+      const rawMetas: RawMeta[] = await Promise.all(
+        uris.map((u) => fetch(u).then((r) => r.json()))
+      );
 
-        const uris = uriQuery.data.map((r) => r.result as string);
-        const rawMetas: RawMeta[] = await Promise.all(
-          uris.map((u) => fetch(u).then((r) => r.json()))
-        );
+      const onChain = rawMetas.map(normalizeTraits);
+      const offChain = await fetchBeeStats(owned);
 
-        const onChain = rawMetas.map(normalizeTraits);
-        const offChain = await fetchBeeStats(owned);
+      const merged: BeeStats[] = onChain.map((oc) => {
+        const db = offChain.find((b) => b.id === oc.id);
+        return db
+          ? { ...db, ...oc, traits: oc.traits }
+          : {
+              ...oc,
+              initialized: false,
+              level: 0,
+              xp: 0,
+              maxXp: 0,
+              attack: 0,
+              defence: 0,
+              foraging: 0,
+              energy: 0,
+              maxEnergy: 0,
+              health: 0,
+              maxHealth: 0,
+              productivity: 0,
+              currentProductivity: 0,
+              maxProductivity: 0,
+              raidsCompleted: 0,
+              raidsSuccessful: 0,
+              foragesCompleted: 0,
+            };
+      });
 
-        const merged: BeeStats[] = onChain.map((oc) => {
-          const db = offChain.find((b) => b.id === oc.id);
-          return db
-            ? { ...db, ...oc, traits: oc.traits }
-            : {
-                ...oc,
-                initialized: false,
-                level: 0,
-                xp: 0,
-                maxXp: 0,
-                attack: 0,
-                defence: 0,
-                foraging: 0,
-                energy: 0,
-                maxEnergy: 0,
-                health: 0,
-                maxHealth: 0,
-                productivity: 0,
-                currentProductivity: 0,
-                maxProductivity: 0,
-                raidsCompleted: 0,
-                raidsSuccessful: 0,
-                foragesCompleted: 0,
-              };
-        });
-        logger.log("[BuzzkillOrigins] merged bee data:", merged);
-        setBees(merged);
-      } catch (err) {
-        logger.error("[BuzzkillOrigins] merge error:", err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+      logger.log("[BuzzkillOrigins] merged bee data:", merged);
+      setBees(merged);
+    } catch (err) {
+      logger.error("[BuzzkillOrigins] merge error:", err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [
+    owned,
+    uriQuery.data,
+    balanceQuery.isLoading,
+    ownersQuery.isLoading,
+    uriQuery.isLoading,
+  ]);
 
-    const t = setTimeout(run, 300); // debounce hot-reload bursts
-    return () => clearTimeout(t);
-  }, [owned, uriQuery.data]);
+  /* initial & dependency-based load */
+  useEffect(() => {
+    loadBees();
+  }, [loadBees]);
 
   /* memoised context value */
   const value = useMemo(
@@ -211,8 +219,9 @@ export const BuzzkillOriginsProvider = ({
       error,
       activeBee,
       setActiveBee,
+      refreshBees: loadBees,
     }),
-    [bees, owned.length, loading, error, activeBee]
+    [bees, owned.length, loading, error, activeBee, loadBees]
   );
 
   return (

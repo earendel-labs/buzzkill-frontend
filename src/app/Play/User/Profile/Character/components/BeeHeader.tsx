@@ -17,14 +17,9 @@ import type { BeeStats } from "../../../../../../types/OriginsStats";
 interface BeeHeaderProps {
   beeStats: BeeStats;
   honey: number;
-  initializeBee: () => void;
 }
 
-export default function BeeHeader({
-  beeStats,
-  honey,
-  initializeBee,
-}: BeeHeaderProps) {
+export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
   const theme = useTheme();
   const allowedTraits = [
     "leftHand",
@@ -40,7 +35,7 @@ export default function BeeHeader({
   return (
     <Box sx={{ py: { xs: 1, md: 1.25 }, textAlign: "center" }}>
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-        {beeStats.name} {beeStats.id}
+        {beeStats.name}
       </Typography>
 
       <Box
@@ -98,9 +93,11 @@ export default function BeeHeader({
               left: 8,
               backgroundColor:
                 beeStats.traits.character === "Queen Bee"
-                  ? "#9c27b0"
-                  : "#2196f3",
+                  ? "#F2B417"
+                  : "#76aae4",
               color: "white",
+              fontWeight: "799",
+              fontColor: "#222E50",
               boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
               zIndex: 2,
             }}
@@ -128,22 +125,18 @@ export default function BeeHeader({
           </Box>
 
           {!beeStats.initialized ? (
-            <Button
-              variant="contained"
-              onClick={initializeBee}
+            <Chip
+              label="Uninitialized"
               sx={{
-                px: 2,
-                py: 1,
                 fontSize: "1rem",
-                fontWeight: "bold",
-                background: theme.palette.Gold.main,
+                padding: "8px 16px",
+                backgroundColor: theme.palette.grey[400],
                 color: "black",
-                borderRadius: "16px",
-                textTransform: "none",
+                fontWeight: "bold",
+                boxShadow:
+                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.2)",
               }}
-            >
-              Uninitialized
-            </Button>
+            />
           ) : (
             <Chip
               label="Initialized"

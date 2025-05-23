@@ -3,12 +3,8 @@
 import React, { useState, useEffect } from "react";
 import type { ButtonProps } from "@mui/material";
 import { Button, Skeleton } from "@mui/material";
-import type { SxProps, Theme } from "@mui/system";
 import { useSound } from "@/context/SoundContext";
 
-// DefaultButton overloads the Material UI Button and adds custom sound effects.
-// It uses the SocialIconHover and SocialIconPressed sounds.
-// It accepts any ButtonProps including className, sx, children, etc.
 const DefaultButton: React.FC<ButtonProps> = (props) => {
   const { isMuted } = useSound();
   const { onClick, disabled, sx, className, children, ...rest } = props;
@@ -16,6 +12,7 @@ const DefaultButton: React.FC<ButtonProps> = (props) => {
   const [hoverSound, setHoverSound] = useState<HTMLAudioElement | null>(null);
   const [clickSound, setClickSound] = useState<HTMLAudioElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [clickLocked, setClickLocked] = useState(false);
 
   useEffect(() => {
     setHoverSound(new Audio("/Audio/Button/SocialIconHover.wav"));
@@ -24,24 +21,31 @@ const DefaultButton: React.FC<ButtonProps> = (props) => {
   }, []);
 
   const handleMouseEnter = () => {
-    if (!isMuted && hoverSound && !disabled) {
+    if (!isMuted && hoverSound && !disabled && !clickLocked) {
       hoverSound.currentTime = 0;
       hoverSound.play();
     }
   };
 
   const handleMouseDown = () => {
-    if (!isMuted && clickSound && !disabled) {
+    if (!isMuted && clickSound && !disabled && !clickLocked) {
       clickSound.currentTime = 0;
       clickSound.play();
     }
   };
 
-  const handleClick = (
+  const handleClick = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (!disabled && onClick) {
-      onClick(event);
+    if (disabled || clickLocked) return;
+
+    setClickLocked(true);
+    try {
+      if (onClick) {
+        await Promise.resolve(onClick(event));
+      }
+    } finally {
+      setClickLocked(false);
     }
   };
 
@@ -61,7 +65,7 @@ const DefaultButton: React.FC<ButtonProps> = (props) => {
       onMouseEnter={handleMouseEnter}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
-      disabled={disabled}
+      disabled={disabled || clickLocked}
       sx={{ ...sx }}
       className={className}
       {...rest}
