@@ -27,9 +27,8 @@ const NAV_LINKS = [
   { label: "Mint", href: "/Mint" },
   { label: "Leaderboard", href: "/HoneyDrops" },
   { label: "My Profile", href: "/Play/User/Profile/MyProfile" },
-  { label: "My Hatchlings", href: "/Play/User/Profile/MyBees" },
-  { label: "Rewards", href: "/Play/User/Profile/MyRewards" },
-  { label: "Check Whitelist", href: "/CheckWhitelist" },
+  { label: "My Bees", href: "/Play/User/Profile/MyBees" },
+  { label: "Rewards", href: "/Play/User/Profile/MyRewards" }, 
 ];
 
 const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {

@@ -42,12 +42,11 @@ export default function StatsTab({
 }: StatsTabProps) {
   const theme = useTheme();
 
-  /* -------- UNINITIALISED VIEW -------- */
   if (!beeStats.initialized) {
     return (
       <Box
         sx={{
-          height: "60vh",
+          height: "40vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -85,10 +84,8 @@ export default function StatsTab({
     );
   }
 
-  /* -------- INITIALISED VIEW -------- */
   return (
     <Box sx={{ p: { xs: 0, xl: 1 } }}>
-      {/* Header */}
       <Box sx={{ mb: 1 }}>
         <Typography variant="h6" sx={{ color: theme.palette.Gold.main, mb: 0 }}>
           Bee Stats
@@ -98,7 +95,6 @@ export default function StatsTab({
         </Typography>
       </Box>
 
-      {/* Primary Stats */}
       <Grid
         container
         spacing={{ xs: 0.5, lg: 1, xl: 2 }}
@@ -111,7 +107,8 @@ export default function StatsTab({
             color={theme.palette.OneIDRed.main}
             value={beeStats.attack}
             toolTipText="Boosts raid efficiency, maximizing your resource plunder"
-            onClick={() => openUpgradeDialog("Attack")}
+            // onClick={() => openUpgradeDialog("Attack")}
+            onClick={() => {}}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -121,7 +118,8 @@ export default function StatsTab({
             color={theme.palette.Blue.main}
             value={beeStats.defence}
             toolTipText="Fortifies your hive against raids and potential threats"
-            onClick={() => openUpgradeDialog("Defence")}
+            // onClick={() => openUpgradeDialog("Defence")}
+            onClick={() => {}}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -131,12 +129,12 @@ export default function StatsTab({
             color={theme.palette.success.main}
             value={beeStats.foraging}
             toolTipText="Elevates the chance of harvesting resources during forages"
-            onClick={() => openUpgradeDialog("Foraging")}
+            // onClick={() => openUpgradeDialog("Foraging")}
+            onClick={() => {}}
           />
         </Grid>
       </Grid>
 
-      {/* Skills */}
       <Typography variant="h6" sx={{ color: theme.palette.Gold.main, mb: 0 }}>
         Skills
       </Typography>
@@ -146,7 +144,8 @@ export default function StatsTab({
         label="Energy"
         stat={beeStats.energy}
         maxStat={beeStats.maxEnergy}
-        onClick={() => openUpgradeDialog("Energy")}
+        // onClick={() => openUpgradeDialog("Energy")}
+        onClick={() => {}}
         toolTipText="Sets the maximum energy your bee can consume, refreshed every 24 hours"
         color="Gold"
       />
@@ -156,7 +155,8 @@ export default function StatsTab({
         label="Health"
         stat={beeStats.health}
         maxStat={beeStats.maxHealth}
-        onClick={() => openUpgradeDialog("Health")}
+        // onClick={() => openUpgradeDialog("Health")}
+        onClick={() => {}}
         toolTipText="Damage your bee can take during raids"
         color="OneIDRed"
       />
@@ -167,12 +167,12 @@ export default function StatsTab({
         stat={beeStats.productivity}
         currentStat={beeStats.currentProductivity}
         maxStat={beeStats.maxProductivity}
-        onClick={() => openUpgradeDialog("Productivity")}
+        // onClick={() => openUpgradeDialog("Productivity")}
+        onClick={() => {}}
         toolTipText="Your NFTs yielding power set by: base, current, max"
         color="Orange"
       />
 
-      {/* Activity */}
       <Typography
         variant="h6"
         sx={{ color: theme.palette.Gold.main, mt: 2, mb: 0 }}
@@ -250,7 +250,6 @@ export default function StatsTab({
         ))}
       </Grid>
 
-      {/* View Activity Button */}
       <Box sx={{ mt: 1.5 }}>
         <DefaultButton
           fullWidth

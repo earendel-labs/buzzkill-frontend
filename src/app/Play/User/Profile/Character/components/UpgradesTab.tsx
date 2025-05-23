@@ -110,7 +110,8 @@ export default function UpgradesTab({
               </Box>
               <DefaultButton
                 variant="contained"
-                onClick={() => openUpgradeDialog(upgrade.stat)}
+                // onClick={() => openUpgradeDialog(upgrade.stat)} // Upgrade logic not yet enabled
+                disabled
                 className="goldButtonHorizontal"
                 sx={{
                   width: { xs: "100%", lg: "auto" },

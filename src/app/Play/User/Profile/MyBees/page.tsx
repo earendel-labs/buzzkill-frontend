@@ -41,7 +41,7 @@ const MyBeesTab = () => {
   return (
     <ProfileLayout loading={loadingBees}>
       <Typography variant="h5" color="white" sx={{ mb: 4 }}>
-        My Hatchlings
+        My Bees
       </Typography>
 
       {/* Unstaked Bees Section */}
