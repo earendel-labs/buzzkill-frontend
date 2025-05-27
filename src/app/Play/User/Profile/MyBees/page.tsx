@@ -92,7 +92,7 @@ const MyBeesTab = () => {
               height: "auto", // let it size to content
             }}
           >
-            <Tab label="My Bees" sx={pillTabSx(0)} />
+            <Tab label="My Buzzkill Origins" sx={pillTabSx(0)} />
             <Tab label="My Hatchlings" sx={pillTabSx(1)} />
           </Tabs>
         </Paper>
