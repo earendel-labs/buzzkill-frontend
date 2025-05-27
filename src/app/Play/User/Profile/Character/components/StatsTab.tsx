@@ -46,7 +46,7 @@ export default function StatsTab({
     return (
       <Box
         sx={{
-          height: "40vh",
+          height: "50vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
