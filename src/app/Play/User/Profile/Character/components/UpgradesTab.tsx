@@ -50,10 +50,10 @@ export default function UpgradesTab({
       stat: "Health",
     },
     {
-      name: "Productivity",
+      name: "Yield",
       desc: "Your characters yielding power set by: base, current, max",
-      value: beeStats.maxProductivity,
-      stat: "Productivity",
+      value: beeStats.maxYield,
+      stat: "Yield",
     },
   ];
 

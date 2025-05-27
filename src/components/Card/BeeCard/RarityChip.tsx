@@ -34,6 +34,14 @@ export const rarityChipStyles: Record<
   },
 };
 
+/** Display text mapping to override formatting (e.g. no dashes) */
+const displayText: Record<RarityChipProps["rarity"], string> = {
+  Common: "Common",
+  Rare: "Rare",
+  "Ultra-Rare": "Ultra Rare",
+  Legendary: "Legendary",
+};
+
 const StyledRarityChip = styled(Box)<RarityChipProps>(({ rarity }) => {
   const { background, gradient } = rarityChipStyles[rarity];
 
@@ -80,7 +88,7 @@ const RarityChip: React.FC<RarityChipProps> = ({
   ...props
 }) => (
   <StyledRarityChip rarity={rarity} {...props}>
-    {children || rarity}
+    {children || displayText[rarity]}
   </StyledRarityChip>
 );
 

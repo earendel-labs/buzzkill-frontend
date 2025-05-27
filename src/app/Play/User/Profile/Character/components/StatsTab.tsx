@@ -163,10 +163,10 @@ export default function StatsTab({
 
       <SkillsCard
         icon={<HexagonIcon sx={{ color: theme.palette.Orange.main }} />}
-        label="Productivity"
-        stat={beeStats.productivity}
-        currentStat={beeStats.currentProductivity}
-        maxStat={beeStats.maxProductivity}
+        label="Yield"
+        stat={beeStats.yield}
+        currentStat={beeStats.currentYield}
+        maxStat={beeStats.maxYield}
         // onClick={() => openUpgradeDialog("Productivity")}
         onClick={() => {}}
         toolTipText="Your NFTs yielding power set by: base, current, max"

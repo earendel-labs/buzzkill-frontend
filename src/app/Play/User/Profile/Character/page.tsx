@@ -158,8 +158,8 @@ export default function CharacterDashboard() {
       case "health":
         currentBee.maxHealth += 10;
         break;
-      case "productivity":
-        currentBee.maxProductivity += 10;
+      case "yield":
+        currentBee.maxYield += 10;
         break;
     }
     setUpgradeDialogOpen(false);

@@ -13,9 +13,9 @@ export interface BeeStats {
   maxEnergy: number;
   health: number;
   maxHealth: number;
-  productivity: number;
-  currentProductivity: number;
-  maxProductivity: number;
+  yield: number;
+  currentYield: number;
+  maxYield: number;
   raidsCompleted: number;
   raidsSuccessful: number;
   foragesCompleted: number;

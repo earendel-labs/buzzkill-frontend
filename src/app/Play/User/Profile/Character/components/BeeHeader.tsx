@@ -99,10 +99,10 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
             style={{ objectFit: "cover" }}
           />
 
-          {/* NEW rarity chip (top-left) */}
+          {/* rarity chip (top-left) */}
           <RarityChip rarity={rarityKey} />
 
-          {/* ── DO NOT REMOVE ── character chip (bottom-left) */}
+          {/* character chip (bottom-left) */}
           <Chip
             label={beeStats.traits.character}
             sx={{
