@@ -103,13 +103,13 @@ function normalizeTraits(meta: RawMeta): OnChainBee {
 
 /* ---------- context ---------- */
 export interface BuzzkillOriginsContextType {
-  bees: BeeStats[];
+  buzzkillOriginBees: BeeStats[];
   totalOwned: number;
   loading: boolean;
   error: boolean;
-  activeBee: number | null;
-  setActiveBee: (id: number | null) => void;
-  refreshBees: () => Promise<void>;
+  activeBuzzkillOriginBee: number | null;
+  setActiveBuzzkillOriginBee: (id: number | null) => void;
+  refreshBuzzkillOriginBees: () => Promise<void>;
 }
 
 const BuzzkillOriginsContext = createContext<
@@ -134,12 +134,14 @@ export const BuzzkillOriginsProvider = ({
   );
   const uriQuery = useOriginsTokenURIsBatch(owned, { watch: false });
 
-  const [bees, setBees] = useState<BeeStats[]>([]);
+  const [buzzkillOriginBees, setBuzzkillOriginBees] = useState<BeeStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [activeBee, setActiveBee] = useState<number | null>(null);
+  const [activeBuzzkillOriginBee, setActiveBuzzkillOriginBee] = useState<
+    number | null
+  >(null);
 
-  const loadBees = useCallback(async () => {
+  const loadBuzzkillOriginBees = useCallback(async () => {
     if (
       !owned.length ||
       !uriQuery.data ||
@@ -190,8 +192,8 @@ export const BuzzkillOriginsProvider = ({
             };
       });
 
-      logger.log("[BuzzkillOrigins] merged bee data:", merged);
-      setBees(merged);
+      logger.log("[BuzzkillOrigins] merged buzzkillOriginBees data:", merged);
+      setBuzzkillOriginBees(merged);
     } catch (err) {
       logger.error("[BuzzkillOrigins] merge error:", err);
       setError(true);
@@ -208,21 +210,28 @@ export const BuzzkillOriginsProvider = ({
 
   /* initial & dependency-based load */
   useEffect(() => {
-    loadBees();
-  }, [loadBees]);
+    loadBuzzkillOriginBees();
+  }, [loadBuzzkillOriginBees]);
 
   /* memoised context value */
   const value = useMemo(
     () => ({
-      bees,
+      buzzkillOriginBees,
       totalOwned: owned.length,
       loading,
       error,
-      activeBee,
-      setActiveBee,
-      refreshBees: loadBees,
+      activeBuzzkillOriginBee,
+      setActiveBuzzkillOriginBee,
+      refreshBuzzkillOriginBees: loadBuzzkillOriginBees,
     }),
-    [bees, owned.length, loading, error, activeBee, loadBees]
+    [
+      buzzkillOriginBees,
+      owned.length,
+      loading,
+      error,
+      activeBuzzkillOriginBee,
+      loadBuzzkillOriginBees,
+    ]
   );
 
   return (

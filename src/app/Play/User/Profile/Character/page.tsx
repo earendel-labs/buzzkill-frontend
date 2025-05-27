@@ -28,7 +28,8 @@ import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { formatNumber } from "@/utils/formatNumber";
 
 export default function CharacterDashboard() {
-  const { bees, loading, refreshBees } = useBuzzkillOriginsContext();
+  const { buzzkillOriginBees, loading, refreshBuzzkillOriginBees } =
+    useBuzzkillOriginsContext();
 
   /* ---------- local state ---------- */
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -75,7 +76,7 @@ export default function CharacterDashboard() {
 
   /* ---------- initialise bee ---------- */
   const initializeBee = useCallback(async () => {
-    const tokenId = Number(bees[currentIndex].id);
+    const tokenId = Number(buzzkillOriginBees[currentIndex].id);
 
     setInitialising(true);
     setInitResult(null);
@@ -108,7 +109,7 @@ export default function CharacterDashboard() {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      await refreshBees();
+      await refreshBuzzkillOriginBees();
     } catch (err: any) {
       setModalOpen(false);
       setInitialising(false);
@@ -116,17 +117,17 @@ export default function CharacterDashboard() {
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
-  }, [bees, currentIndex, refreshBees]);
+  }, [buzzkillOriginBees, currentIndex, refreshBuzzkillOriginBees]);
 
   /* ---------- guards ---------- */
   if (loading) return <Layout>Loading your Buzzkill Origins…</Layout>;
-  if (!bees.length) return <Layout>No bees found.</Layout>;
+  if (!buzzkillOriginBees.length) return <Layout>No bees found.</Layout>;
 
-  const currentBee: BeeStats = bees[currentIndex];
+  const currentBee: BeeStats = buzzkillOriginBees[currentIndex];
 
   /* ---------- handlers ---------- */
   const leftDisabled = currentIndex === 0;
-  const rightDisabled = currentIndex === bees.length - 1;
+  const rightDisabled = currentIndex === buzzkillOriginBees.length - 1;
   const showPrev = () => !leftDisabled && setCurrentIndex((i) => i - 1);
   const showNext = () => !rightDisabled && setCurrentIndex((i) => i + 1);
   const handleTabChange = (_: unknown, v: number) => setTabValue(v);
@@ -276,7 +277,8 @@ export default function CharacterDashboard() {
           >
             <HexagonSpinner />
             <Typography align="center">
-              Initialising Buzzkill&nbsp;Origins #{bees[currentIndex].id} …
+              Initialising Buzzkill&nbsp;Origins #
+              {buzzkillOriginBees[currentIndex].id} …
             </Typography>
           </Box>
         )}

@@ -1,3 +1,4 @@
+// components/BuzzkillOriginCard.tsx
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -11,7 +12,6 @@ import {
   LinearProgress,
 } from "@mui/material";
 import MuiAlert, { AlertColor } from "@mui/material/Alert";
-import Layout from "@/components/Layouts/Layout/Layout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import LeftButton from "@/components/Buttons/CarouselNavigation/LeftButton";
 import RightButton from "@/components/Buttons/CarouselNavigation/RightButton";
@@ -27,7 +27,8 @@ import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { formatNumber } from "@/utils/formatNumber";
 
 export default function BuzzkillOriginCard() {
-  const { bees, loading, refreshBees } = useBuzzkillOriginsContext();
+  const { buzzkillOriginBees, loading, refreshBuzzkillOriginBees } =
+    useBuzzkillOriginsContext();
 
   /* ---------- local state ---------- */
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -74,7 +75,7 @@ export default function BuzzkillOriginCard() {
 
   /* ---------- initialise bee ---------- */
   const initializeBee = useCallback(async () => {
-    const tokenId = Number(bees[currentIndex].id);
+    const tokenId = Number(buzzkillOriginBees[currentIndex].id);
 
     setInitialising(true);
     setInitResult(null);
@@ -107,7 +108,7 @@ export default function BuzzkillOriginCard() {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      await refreshBees();
+      await refreshBuzzkillOriginBees();
     } catch (err: any) {
       setModalOpen(false);
       setInitialising(false);
@@ -115,7 +116,7 @@ export default function BuzzkillOriginCard() {
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
-  }, [bees, currentIndex, refreshBees]);
+  }, [buzzkillOriginBees, currentIndex, refreshBuzzkillOriginBees]);
 
   /* ---------- guards ---------- */
   if (loading)
@@ -134,7 +135,7 @@ export default function BuzzkillOriginCard() {
       </Box>
     );
 
-  if (!bees.length)
+  if (!buzzkillOriginBees.length)
     return (
       <Box
         sx={{
@@ -149,11 +150,11 @@ export default function BuzzkillOriginCard() {
         <Typography variant="h6">No bees found.</Typography>
       </Box>
     );
-  const currentBee: BeeStats = bees[currentIndex];
+  const currentBee: BeeStats = buzzkillOriginBees[currentIndex];
 
   /* ---------- handlers ---------- */
   const leftDisabled = currentIndex === 0;
-  const rightDisabled = currentIndex === bees.length - 1;
+  const rightDisabled = currentIndex === buzzkillOriginBees.length - 1;
   const showPrev = () => !leftDisabled && setCurrentIndex((i) => i - 1);
   const showNext = () => !rightDisabled && setCurrentIndex((i) => i + 1);
   const handleTabChange = (_: unknown, v: number) => setTabValue(v);
@@ -303,7 +304,8 @@ export default function BuzzkillOriginCard() {
           >
             <HexagonSpinner />
             <Typography align="center">
-              Initialising Buzzkill&nbsp;Origins #{bees[currentIndex].id} …
+              Initialising Buzzkill&nbsp;Origins #
+              {buzzkillOriginBees[currentIndex].id} …
             </Typography>
           </Box>
         )}
