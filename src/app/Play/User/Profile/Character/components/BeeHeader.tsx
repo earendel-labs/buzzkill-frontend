@@ -1,26 +1,37 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Chip,
-  Grid,
-  LinearProgress,
-} from "@mui/material";
+import { Box, Typography, Chip, Grid, LinearProgress } from "@mui/material";
 import { Hexagon as HexagonIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import type { BeeStats } from "../../../../../../types/OriginsStats";
+
+import RarityChip, {
+  rarityChipStyles,
+} from "@/components/Card/BeeCard/RarityChip";
 
 interface BeeHeaderProps {
   beeStats: BeeStats;
   honey: number;
 }
 
+/** Map all incoming backend strings → internal rarity keys */
+const rarityMap: Record<string, keyof typeof rarityChipStyles> = {
+  Common: "Common",
+  Rare: "Rare",
+  "Ultra-Rare": "Ultra-Rare",
+  "Ultra Rare": "Ultra-Rare", // backend sometimes omits the dash
+  Legendary: "Legendary",
+};
+
 export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
   const theme = useTheme();
+
+  /* Which rarity key do we actually use? */
+  const rarityKey =
+    rarityMap[beeStats.rarity] || ("Common" as keyof typeof rarityChipStyles);
+  const { gradient: rarityGradient } = rarityChipStyles[rarityKey];
+
   const allowedTraits = [
     "leftHand",
     "rightHand",
@@ -38,6 +49,7 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
         {beeStats.name}
       </Typography>
 
+      {/* ────────────────── NFT + Border ────────────────── */}
       <Box
         sx={{
           mt: 1,
@@ -49,23 +61,25 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.3)",
+          boxShadow: "4px 4px 10px rgba(0,0,0,0.3)",
           mx: "auto",
           width: "100%",
           maxWidth: { xs: 250, sm: 320, md: 340, lg: 360 },
         }}
       >
+        {/* Border colour matches rarity */}
         <Box
           sx={{
             position: "absolute",
             inset: 0,
             borderRadius: "8px",
-            background:
-              "linear-gradient(135deg, #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
+            background: rarityGradient,
             content: '""',
             zIndex: 0,
           }}
         />
+
+        {/* Inner image / chips */}
         <Box
           sx={{
             width: "calc(100% - 6px)",
@@ -81,10 +95,14 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
             src={imageSrc}
             alt="Bee Warrior NFT"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
             style={{ objectFit: "cover" }}
           />
 
+          {/* NEW rarity chip (top-left) */}
+          <RarityChip rarity={rarityKey} />
+
+          {/* ── DO NOT REMOVE ── character chip (bottom-left) */}
           <Chip
             label={beeStats.traits.character}
             sx={{
@@ -95,17 +113,18 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
                 beeStats.traits.character === "Queen Bee"
                   ? "#F2B417"
                   : "#76aae4",
-              color: "white",
-              fontWeight: "799",
+              color: "#fff",
+              fontWeight: 799,
               fontColor: "#222E50",
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0px 2px 4px rgba(0,0,0,0.3)",
               zIndex: 2,
             }}
           />
         </Box>
       </Box>
 
-      <Box sx={{ p: { xs: 1, md: 0 } }}>
+      {/* ────────────────── Level / Init status ────────────────── */}
+      <Box sx={{ px: { xs: 1, md: 0 } }}>
         <Box
           sx={{
             display: "flex",
@@ -118,9 +137,9 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
             <HexagonIcon sx={{ color: "#f0c850", fontSize: "2rem" }} />
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", color: "white", lineHeight: 1.0 }}
+              sx={{ fontWeight: "bold", color: "#fff", lineHeight: 1 }}
             >
-              Level {beeStats.level}
+              Level&nbsp;{beeStats.level}
             </Typography>
           </Box>
 
@@ -129,12 +148,12 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
               label="Uninitialized"
               sx={{
                 fontSize: "1rem",
-                padding: "8px 16px",
+                px: 2,
                 backgroundColor: theme.palette.grey[400],
-                color: "black",
+                color: "#000",
                 fontWeight: "bold",
                 boxShadow:
-                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.2)",
+                  "inset 0px -1px 3px rgba(255,255,255,0.1), 0px 2px 4px rgba(0,0,0,0.2)",
               }}
             />
           ) : (
@@ -142,16 +161,12 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
               label="Initialized"
               sx={{
                 fontSize: "1rem",
-                padding: "8px 16px",
-                backgroundColor: theme.palette.Blue.main,
-                boxShadow:
-                  "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)",
-                "& .MuiLinearProgress-bar": {
-                  background: "linear-gradient(to right, #f0c850, #c9a227)",
-                  boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)",
-                },
-                color: "white",
+                px: 2,
+                backgroundColor: theme.palette.Blue?.main || "#0079d1",
+                color: "#fff",
                 fontWeight: "bold",
+                boxShadow:
+                  "inset 0px -1px 3px rgba(255,255,255,0.1), 0px 2px 4px rgba(0,0,0,0.3)",
               }}
             />
           )}
@@ -183,6 +198,7 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
             </Typography>
           </Box>
         </Box> */}
+        {/* ────────────────── XP bar ────────────────── */}
         <Box sx={{ mb: 2 }}>
           <Box
             sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}
@@ -192,33 +208,30 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
               {beeStats.xp}/{beeStats.maxXp}
             </Typography>
           </Box>
-          <Box sx={{ position: "relative" }}>
-            <Box sx={{ position: "relative" }}>
-              <LinearProgress
-                variant="determinate"
-                value={(beeStats.xp / beeStats.maxXp) * 100}
-                sx={{
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor: "rgba(0, 121, 145, 0.4)",
-                  boxShadow:
-                    "inset 0px -1px 3px rgba(255, 255, 255, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.3)",
-                  "& .MuiLinearProgress-bar": {
-                    background: "linear-gradient(to right, #f0c850, #c9a227)",
-                    boxShadow: "inset 0px 1px 2px rgba(255, 255, 255, 0.3)",
-                  },
-                }}
-              />
-            </Box>
-          </Box>
+          <LinearProgress
+            variant="determinate"
+            value={(beeStats.xp / beeStats.maxXp) * 100}
+            sx={{
+              height: 10,
+              borderRadius: 5,
+              backgroundColor: "rgba(0,121,145,0.4)",
+              boxShadow:
+                "inset 0px -1px 3px rgba(255,255,255,0.1), 0px 2px 4px rgba(0,0,0,0.3)",
+              "& .MuiLinearProgress-bar": {
+                background: "linear-gradient(to right, #f0c850, #c9a227)",
+                boxShadow: "inset 0px 1px 2px rgba(255,255,255,0.3)",
+              },
+            }}
+          />
         </Box>
 
+        {/* ────────────────── Trait list ────────────────── */}
         <Grid container spacing={1}>
           {Object.entries(beeStats.traits)
             .filter(([key]) => allowedTraits.includes(key))
             .map(([key, value]) => (
               <Grid item xs={6} key={key}>
-                <Paper sx={{ p: 1.25, bgcolor: "#1a3045" }}>
+                <Box sx={{ p: 1.25, bgcolor: "#1a3045", borderRadius: 1 }}>
                   <Typography
                     variant="body2"
                     sx={{ color: "#f0c850", mb: 0.25 }}
@@ -234,7 +247,7 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
                   >
                     {value}
                   </Typography>
-                </Paper>
+                </Box>
               </Grid>
             ))}
         </Grid>

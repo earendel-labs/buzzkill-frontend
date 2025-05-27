@@ -2,6 +2,7 @@ export interface BeeStats {
   id: string;
   name: string;
   imageAddress: string;
+  rarity: string;
   level: number;
   xp: number;
   maxXp: number;

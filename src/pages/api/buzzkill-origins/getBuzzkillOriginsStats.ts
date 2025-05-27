@@ -31,13 +31,19 @@ export default async function getBuzzkillOriginsStats(
       .select(
         `
         id,
+        rarity_tier,
+        level,
+        xp,
         energy,
         health,
         yield,
         attack,
         defence,
         forage,
-        initialised_status
+        initialised_status,
+        raids_completed,
+        raids_successful,
+        forages_completed
       `
       )
       .in("id", tokenIDs);
@@ -53,6 +59,7 @@ export default async function getBuzzkillOriginsStats(
 
     const beeStats = (data || []).map((b) => ({
       id: String(b.id),
+      rarity: b.rarity_tier,
       energy: b.energy,
       maxEnergy: 140,
       health: b.health,
@@ -64,12 +71,12 @@ export default async function getBuzzkillOriginsStats(
       defence: b.defence,
       foraging: b.forage,
       initialized: b.initialised_status,
-      level: 0,
-      xp: 0,
-      maxXp: 0,
-      raidsCompleted: 0,
-      raidsSuccessful: 0,
-      foragesCompleted: 0,
+      level: b.level,
+      xp: b.xp,
+      maxXp: 1000,
+      raidsCompleted: b.raids_completed,
+      raidsSuccessful: b.raids_successful,
+      foragesCompleted: b.forages_completed,
     }));
 
     return res.status(200).json(beeStats);
