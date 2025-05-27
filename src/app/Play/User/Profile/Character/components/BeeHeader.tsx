@@ -106,18 +106,45 @@ export default function BeeHeader({ beeStats, honey }: BeeHeaderProps) {
           <Chip
             label={beeStats.traits.character}
             sx={{
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "4px 12px",
+              borderRadius: "16px",
+              fontWeight: "bold",
+              fontSize: 16,
+              lineHeight: "14px",
               position: "absolute",
-              bottom: 8,
-              left: 8,
+              bottom: 16,
+              left: 16,
+              zIndex: 2,
+              boxShadow: "0px 2px 4px rgba(0,0,0,0.25)",
               backgroundColor:
                 beeStats.traits.character === "Queen Bee"
-                  ? "#F2B417"
-                  : "#76aae4",
-              color: "#fff",
-              fontWeight: 799,
-              fontColor: "#222E50",
-              boxShadow: "0px 2px 4px rgba(0,0,0,0.3)",
-              zIndex: 2,
+                  ? "rgba(242, 180, 23, 0.8)"
+                  : "rgba(118, 170, 228, 0.8)",
+
+              // Decorative border
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                borderRadius: "inherit",
+                background:
+                  beeStats.traits.character === "Queen Bee"
+                    ? "linear-gradient(135deg, #F2B417, #ff842e, #C3790B)"
+                    : "linear-gradient(135deg, #76aae4, #a2c8ee, #4172cf)",
+                padding: "0.5px",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+                zIndex: -1,
+              },
             }}
           />
         </Box>
