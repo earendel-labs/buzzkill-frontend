@@ -12,8 +12,8 @@ import BottomBar from "@/components/Layouts/GameLayout/BottomBar/BottomBar";
 import { Typography } from "@mui/material";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import Image from "next/image";
-import { logger } from "@/utils/logger"; 
-import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel"; 
+import { logger } from "@/utils/logger";
+import LeftPanel from "@/components/Layouts/GameLayout/LeftPanel/LeftPanel";
 
 const Play: React.FC = () => {
   const { isMuted, isMusicMuted } = useSound();

@@ -369,7 +369,7 @@ const CedarHive: React.FC = () => {
           flexDirection="column"
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading Hive Data...
           </Typography>
         </Box>
@@ -476,7 +476,7 @@ const CedarHive: React.FC = () => {
           </Grid>
         </Grid>
 
-        <BottomBar isAudioPanelVisible={false} />
+        <BottomBar isHiveLayout={true} />
       </Box>
 
       {/* Staking Confirmation Modal */}

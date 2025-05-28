@@ -6,18 +6,18 @@ import HatchlingInfoPanel from "@/components/ControlPanels/HatchlingInfoPanel/Ha
 import HiveRestrictionsInfo from "@/app/Play/Location/AzureReef/components/HiveRestrictionsInfo";
 
 type BottomBarProps = {
-  isAudioPanelVisible?: boolean;
+  isHiveLayout?: boolean;
   isRestrictedEnvironment?: boolean; // New optional flag to show HiveRestrictionsInfo
 };
 
 const BottomBar: React.FC<BottomBarProps> = ({
-  isAudioPanelVisible = true,
+  isHiveLayout = true,
   isRestrictedEnvironment = false, // Default is false
 }) => {
   return (
     <>
       {/* Hatchling Info Panel */}
-      {isAudioPanelVisible && (
+      {!isHiveLayout && (
         <Box
           sx={{
             position: "fixed",
@@ -46,20 +46,36 @@ const BottomBar: React.FC<BottomBarProps> = ({
       <Box
         sx={{
           position: "fixed",
-          bottom: {
-            sm: "1rem",
-            md: "1rem",
-            lg: "1.3rem",
-            xl: "2rem",
-            xxl: "3.125rem",
-          },
-          left: {
-            sm: "1rem",
-            md: "1rem",
-            lg: "1.7rem",
-            xl: "2.6rem",
-            xxl: "5rem",
-          },
+          bottom: isHiveLayout
+            ? {
+                sm: "1rem",
+                md: "1rem",
+                lg: "0.6rem",
+                xl: "1rem",
+                xxl: "2.125rem",
+              }
+            : {
+                sm: "1rem",
+                md: "1rem",
+                lg: "1.3rem",
+                xl: "2rem",
+                xxl: "3.125rem",
+              },
+          left: isHiveLayout
+            ? {
+                sm: "1rem",
+                md: "1rem",
+                lg: "3.8rem",
+                xl: "4.5rem",
+                xxl: "5rem",
+              }
+            : {
+                sm: "1rem",
+                md: "1rem",
+                lg: "1.7rem",
+                xl: "2.6rem",
+                xxl: "5rem",
+              },
           zIndex: 101, // Below HatchlingInfoPanel
         }}
       >
@@ -90,7 +106,7 @@ const BottomBar: React.FC<BottomBarProps> = ({
       )}
 
       {/* Audio Panel */}
-      {isAudioPanelVisible && (
+      {!isHiveLayout && (
         <Box
           sx={{
             position: "fixed",

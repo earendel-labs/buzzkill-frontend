@@ -3,7 +3,7 @@
 import React from "react";
 import { Box, Typography, Grid, Paper, useTheme } from "@mui/material";
 import { ArrowCircleUp as UpgradeIcon } from "@mui/icons-material";
-import { BeeStats } from "./types";
+import { BeeStats } from "../../../../../../types/OriginsStats";
 import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 
 interface UpgradesTabProps {
@@ -50,10 +50,10 @@ export default function UpgradesTab({
       stat: "Health",
     },
     {
-      name: "Productivity",
+      name: "Yield",
       desc: "Your characters yielding power set by: base, current, max",
-      value: beeStats.maxProductivity,
-      stat: "Productivity",
+      value: beeStats.maxYield,
+      stat: "Yield",
     },
   ];
 
@@ -110,7 +110,8 @@ export default function UpgradesTab({
               </Box>
               <DefaultButton
                 variant="contained"
-                onClick={() => openUpgradeDialog(upgrade.stat)}
+                // onClick={() => openUpgradeDialog(upgrade.stat)} // Upgrade logic not yet enabled
+                disabled
                 className="goldButtonHorizontal"
                 sx={{
                   width: { xs: "100%", lg: "auto" },

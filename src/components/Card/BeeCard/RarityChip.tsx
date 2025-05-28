@@ -2,26 +2,44 @@ import React from "react";
 import { Box, BoxProps } from "@mui/material";
 import { styled } from "@mui/system";
 
-interface RarityChipProps extends BoxProps {
-  rarity: "Common" | "Rare" | "Ultra-Rare"; // Rarity prop
+/** Acceptable rarity values for the chip */
+export interface RarityChipProps extends BoxProps {
+  rarity: "Common" | "Rare" | "Ultra-Rare" | "Legendary";
 }
 
-const rarityChipStyles = {
+/** Central colour definitions so every component can reuse them */
+export const rarityChipStyles: Record<
+  RarityChipProps["rarity"],
+  { background: string; gradient: string }
+> = {
   Common: {
-    background: "rgba(34, 46, 80, 0.4)", // Default transparency for common
+    background: "rgba(34, 46, 80, 0.4)",
     gradient:
-      "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.2) 70%, rgba(215, 215, 215, 0.25) 90%, rgba(255, 255, 255, 0.3) 100%)",
+      "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.20) 70%, rgba(215,215,215,0.25) 90%, rgba(255,255,255,0.30) 100%)",
   },
   Rare: {
-    background: "rgba(160, 82, 45, 0.5)", // Rich bronze background color
+    background: "rgba(160, 82, 45, 0.5)",
     gradient:
-      "linear-gradient(135deg, rgba(255, 183, 77, 0.2) 0%, rgba(205, 127, 50, 0.5) 50%, rgba(160, 82, 45, 0.8) 75%, rgba(255, 140, 0, 1) 100%)",
+      "linear-gradient(135deg, rgba(255,183,77,0.20) 0%, rgba(205,127,50,0.50) 50%, rgba(160,82,45,0.80) 75%, rgba(255,140,0,1) 100%)",
   },
   "Ultra-Rare": {
-    background: "rgba(255, 215, 0, 0.6)", // Richer golden background
+    background: "rgba(255, 215, 0, 0.6)",
     gradient:
-      "linear-gradient(135deg, rgba(255, 245, 157, 0.3) 0%, rgba(255, 223, 0, 0.5) 40%, rgba(255, 215, 0, 0.8) 75%, rgba(255, 230, 100, 1) 100%)",
+      "linear-gradient(135deg, rgba(255,245,157,0.30) 0%, rgba(255,223,0,0.50) 40%, rgba(255,215,0,0.80) 75%, rgba(255,230,100,1) 100%)",
   },
+  Legendary: {
+    background: "rgba(128, 0, 128, 0.7)",
+    gradient:
+      "linear-gradient(135deg, rgba(230,200,255,0.30) 0%, rgba(186,85,211,0.50) 40%, rgba(148,0,211,0.70) 70%, rgba(255,105,180,0.90) 100%)",
+  },
+};
+
+/** Display text mapping to override formatting (e.g. no dashes) */
+const displayText: Record<RarityChipProps["rarity"], string> = {
+  Common: "Common",
+  Rare: "Rare",
+  "Ultra-Rare": "Ultra Rare",
+  Legendary: "Legendary",
 };
 
 const StyledRarityChip = styled(Box)<RarityChipProps>(({ rarity }) => {
@@ -29,20 +47,21 @@ const StyledRarityChip = styled(Box)<RarityChipProps>(({ rarity }) => {
 
   return {
     backgroundColor: background,
-    color: "white",
-    display: "flex",  
-    alignItems: "bottom",  
-    justifyContent: "center", 
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     padding: "8px 16px",
     borderRadius: "14px",
     fontWeight: "bold",
-    fontSize: "16px",
-    lineHeight: "14px", 
+    fontSize: 16,
+    lineHeight: "14px",
     position: "absolute",
-    top: "16px",
-    left: "16px",
-    zIndex: 1,
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+    top: 16,
+    left: 16,
+    zIndex: 2,
+    boxShadow: "0px 2px 4px rgba(0,0,0,0.25)",
+    // Decorative border
     "&::before": {
       content: '""',
       position: "absolute",
@@ -62,16 +81,15 @@ const StyledRarityChip = styled(Box)<RarityChipProps>(({ rarity }) => {
   };
 });
 
+/** Public component */
 const RarityChip: React.FC<RarityChipProps> = ({
   rarity,
   children,
   ...props
-}) => {
-  return (
-    <StyledRarityChip rarity={rarity} {...props}>
-      {children || rarity}
-    </StyledRarityChip>
-  );
-};
+}) => (
+  <StyledRarityChip rarity={rarity} {...props}>
+    {children || displayText[rarity]}
+  </StyledRarityChip>
+);
 
 export default RarityChip;

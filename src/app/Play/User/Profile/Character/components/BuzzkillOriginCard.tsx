@@ -1,5 +1,4 @@
-// components/CharacterDashboard.tsx
-// TODO: This is no longer used, we could delete this
+// components/BuzzkillOriginCard.tsx
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -13,22 +12,21 @@ import {
   LinearProgress,
 } from "@mui/material";
 import MuiAlert, { AlertColor } from "@mui/material/Alert";
-import Layout from "@/components/Layouts/Layout/Layout";
 import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import LeftButton from "@/components/Buttons/CarouselNavigation/LeftButton";
 import RightButton from "@/components/Buttons/CarouselNavigation/RightButton";
-import UpgradeDialog from "./components/UpgradeDialog";
-import BeeHeader from "./components/BeeHeader";
-import StatsTab from "./components/StatsTab";
-import TraitsTab from "./components/TraitsTab";
-import UpgradesTab from "./components/UpgradesTab";
+import UpgradeDialog from "./UpgradeDialog";
+import BeeHeader from "./BeeHeader";
+import StatsTab from "./StatsTab";
+import TraitsTab from "./TraitsTab";
 import { useBuzzkillOriginsContext } from "@/context/BuzzkillOriginsContext";
 import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 import type { BeeStats } from "@/types/OriginsStats";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { formatNumber } from "@/utils/formatNumber";
+import { mutate } from "swr";
 
-export default function CharacterDashboard() {
+export default function BuzzkillOriginCard() {
   const { buzzkillOriginBees, loading, refreshBuzzkillOriginBees } =
     useBuzzkillOriginsContext();
 
@@ -54,10 +52,13 @@ export default function CharacterDashboard() {
     phase: string;
   } | null>(null);
 
+  /* ---------- defer data refresh until modal closes ---------- */
+  const [needsRefresh, setNeedsRefresh] = useState(false);
+
   /* ---------- progress bar ---------- */
   const [progress, setProgress] = useState(100);
 
-  /* auto-close in 2 s (100 ms tick, –5 each) */
+  /* auto-close in 2 s (100 ms tick, −15 each) */
   useEffect(() => {
     if (modalOpen && !initialising && initResult) {
       setProgress(100);
@@ -66,14 +67,21 @@ export default function CharacterDashboard() {
           if (p <= 0) {
             clearInterval(interval);
             setModalOpen(false);
+
+            /* do the heavy refresh once the modal finishes */
+            if (needsRefresh) {
+              refreshBuzzkillOriginBees(); // fire & forget
+              mutate("/api/user/getProfile"); // SWR revalidate
+              setNeedsRefresh(false);
+            }
             return 0;
           }
-          return p - 5;
+          return p - 15;
         });
       }, 100);
       return () => clearInterval(interval);
     }
-  }, [modalOpen, initialising, initResult]);
+  }, [modalOpen, initialising, initResult, needsRefresh]);
 
   /* ---------- initialise bee ---------- */
   const initializeBee = useCallback(async () => {
@@ -99,18 +107,17 @@ export default function CharacterDashboard() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
 
-      setInitResult({
-        tokenId,
-        points: data.points,
-        phase: data.phase,
-      });
+      setInitResult({ tokenId, points: data.points, phase: data.phase });
       setInitialising(false);
 
-      setSnackbarMsg(`Initialised you earned ${formatNumber(data.points)} pts`);
+      setSnackbarMsg(
+        `Initialised – you earned ${formatNumber(data.points)} pts`
+      );
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      await refreshBuzzkillOriginBees();
+      /* queue background refresh; executed when modal times out */
+      setNeedsRefresh(true);
     } catch (err: any) {
       setModalOpen(false);
       setInitialising(false);
@@ -118,11 +125,40 @@ export default function CharacterDashboard() {
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
-  }, [buzzkillOriginBees, currentIndex, refreshBuzzkillOriginBees]);
+  }, [buzzkillOriginBees, currentIndex]);
 
   /* ---------- guards ---------- */
-  if (loading) return <Layout>Loading your Buzzkill Origins…</Layout>;
-  if (!buzzkillOriginBees.length) return <Layout>No bees found.</Layout>;
+  if (loading && !modalOpen)
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          minHeight: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: 2,
+        }}
+      >
+        <Typography variant="h6">Loading your Buzzkill Origins…</Typography>
+      </Box>
+    );
+
+  if (!buzzkillOriginBees.length && !modalOpen)
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          minHeight: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          px: 2,
+        }}
+      >
+        <Typography variant="h6">No bees found.</Typography>
+      </Box>
+    );
 
   const currentBee: BeeStats = buzzkillOriginBees[currentIndex];
 
@@ -169,7 +205,7 @@ export default function CharacterDashboard() {
 
   /* ---------- render ---------- */
   return (
-    <Layout>
+    <>
       <Box
         sx={{
           display: "flex",
@@ -224,7 +260,6 @@ export default function CharacterDashboard() {
                     >
                       <Tab label="Stats" />
                       <Tab label="Traits" />
-                      <Tab label="Upgrades" />
                     </Tabs>
                   </Box>
 
@@ -238,12 +273,6 @@ export default function CharacterDashboard() {
                       />
                     )}
                     {tabValue === 1 && <TraitsTab beeStats={currentBee} />}
-                    {tabValue === 2 && (
-                      <UpgradesTab
-                        beeStats={currentBee}
-                        openUpgradeDialog={openUpgradeDialog}
-                      />
-                    )}
                   </Box>
                 </Grid>
               </Grid>
@@ -342,6 +371,6 @@ export default function CharacterDashboard() {
           {snackbarMsg}
         </MuiAlert>
       </Snackbar>
-    </Layout>
+    </>
   );
 }

@@ -1,96 +1,91 @@
-import dynamic from "next/dynamic";
+// src/components/Buttons/CarouselNavigation/LeftButton.tsx
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
+import { Box, Skeleton } from "@mui/material";
 import { useSound } from "@/context/SoundContext";
 import { logger } from "@/utils/logger";
-// Dynamic import to disable SSR for this component
-const LeftButton = dynamic(() => import("./LeftButton"), { ssr: false });
 
-const LeftButtonComponent: React.FC = () => {
+interface LeftButtonProps {
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+const LeftButton: React.FC<LeftButtonProps> = ({
+  disabled = false,
+  onClick,
+}) => {
   const { isMuted } = useSound();
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Preload images and sounds
-    const preloadResources = () => {
-      const images = [
-        "/Frames/Buttons/CarouselNavigation/LeftButton.svg",
-        "/Frames/Buttons/CarouselNavigation/LeftButtonHover.svg",
-        "/Frames/Buttons/CarouselNavigation/LeftButtonPressed.svg",
-      ];
+    const images = [
+      "/Frames/Buttons/CarouselNavigation/LeftButton.svg",
+      "/Frames/Buttons/CarouselNavigation/LeftButtonHover.svg",
+      "/Frames/Buttons/CarouselNavigation/LeftButtonPressed.svg",
+      "/Frames/Buttons/CarouselNavigation/LeftButtonDisabled.svg",
+    ];
+    const sounds = [
+      "/Audio/MapNavigation/MapNavigationHover.mp3",
+      "/Audio/MapNavigation/MapNavigationPressed.mp3",
+    ];
 
-      const sounds = [
-        "/Audio/MapNavigation/MapNavigationHover.mp3",
-        "/Audio/MapNavigation/MapNavigationPressed.mp3",
-      ];
-
-      const preloadImages = images.map((src) => {
-        return new Promise<void>((resolve, reject) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = () => resolve(); // Call resolve without passing the event
-          img.onerror = () => reject(); // Call reject without passing the event
-        });
-      });
-      const preloadSounds = sounds.map((src) => {
-        return new Promise<void>((resolve, reject) => {
-          const audio = new Audio(src);
-          audio.onloadeddata = () => resolve();
-          audio.onerror = reject;
-        });
-      });
-
-      // Wait for all resources to be preloaded
-      Promise.all([...preloadImages, ...preloadSounds])
-        .then(() => setIsLoading(false))
-        .catch((err) => logger.error("Failed to preload resources", err));
-    };
-
-    preloadResources();
+    Promise.all([
+      ...images.map(
+        (src) =>
+          new Promise<void>((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => resolve();
+            img.onerror = reject;
+          })
+      ),
+      ...sounds.map(
+        (src) =>
+          new Promise<void>((resolve, reject) => {
+            const audio = new Audio(src);
+            audio.onloadeddata = () => resolve();
+            audio.onerror = reject;
+          })
+      ),
+    ])
+      .then(() => setIsLoading(false))
+      .catch((err) => logger.error("Failed to preload resources", err));
   }, []);
 
+  const playSound = (src: string) => {
+    if (isMuted) return;
+    const s = new Audio(src);
+    s.currentTime = 0;
+    s.play().catch((e) => logger.log("Sound play error:", e));
+  };
+
   const handleMouseEnter = () => {
+    if (disabled) return;
     setIsHovered(true);
-    if (!isMuted) {
-      const hoverSound = new Audio(
-        "/Audio/MapNavigation/MapNavigationHover.mp3"
-      );
-      hoverSound.currentTime = 0;
-      hoverSound.play().catch((error) => {
-        logger.log("Hover sound play error:", error);
-      });
-    }
+    playSound("/Audio/MapNavigation/MapNavigationHover.mp3");
   };
-
   const handleMouseLeave = () => {
+    if (disabled) return;
     setIsHovered(false);
+    setIsClicked(false);
   };
-
   const handleMouseDown = () => {
+    if (disabled) return;
     setIsClicked(true);
   };
-
   const handleMouseUp = () => {
+    if (disabled) return;
     setIsClicked(false);
-    if (!isMuted) {
-      const pressedSound = new Audio(
-        "/Audio/MapNavigation/MapNavigationPressed.mp3"
-      );
-      pressedSound.currentTime = 0;
-      pressedSound.play().catch((error) => {
-        logger.log("Pressed sound play error:", error);
-      });
-    }
+    playSound("/Audio/MapNavigation/MapNavigationPressed.mp3");
+    onClick?.();
   };
 
   if (isLoading) {
     return (
       <Box
         sx={{
-          width: "68px",  
+          width: "68px",
           height: "100px",
           display: "flex",
           justifyContent: "center",
@@ -99,10 +94,10 @@ const LeftButtonComponent: React.FC = () => {
       >
         <Skeleton
           variant="rectangular"
-          width="68px" 
+          width="68px"
           height="100px"
           sx={{
-            clipPath: "polygon(100% 0, 0% 50%, 100% 100%)", 
+            clipPath: "polygon(100% 0, 0% 50%, 100% 100%)",
             backgroundColor: "#242E4E",
           }}
         />
@@ -110,9 +105,18 @@ const LeftButtonComponent: React.FC = () => {
     );
   }
 
+  const imageUrl = disabled
+    ? "/Frames/Buttons/CarouselNavigation/LeftButtonDisabled.svg"
+    : isClicked
+    ? "/Frames/Buttons/CarouselNavigation/LeftButtonPressed.svg"
+    : isHovered
+    ? "/Frames/Buttons/CarouselNavigation/LeftButtonHover.svg"
+    : "/Frames/Buttons/CarouselNavigation/LeftButton.svg";
+
   return (
     <Box
       component="button"
+      disabled={disabled}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
@@ -121,14 +125,9 @@ const LeftButtonComponent: React.FC = () => {
         background: "none",
         border: "none",
         padding: 0,
-        cursor: "pointer",
-        backgroundImage: `url(${
-          isClicked
-            ? "/Frames/Buttons/CarouselNavigation/LeftButtonPressed.svg"
-            : isHovered
-            ? "/Frames/Buttons/CarouselNavigation/LeftButtonHover.svg"
-            : "/Frames/Buttons/CarouselNavigation/LeftButton.svg"
-        })`,
+        cursor: disabled ? "not-allowed" : "pointer",
+        pointerEvents: disabled ? "none" : "auto",
+        backgroundImage: `url(${imageUrl})`,
         backgroundSize: "contain",
         backgroundPosition: "center",
         width: "100px",
@@ -139,4 +138,4 @@ const LeftButtonComponent: React.FC = () => {
   );
 };
 
-export default LeftButtonComponent;
+export default LeftButton;

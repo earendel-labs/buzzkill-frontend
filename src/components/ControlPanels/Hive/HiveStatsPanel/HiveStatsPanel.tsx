@@ -61,6 +61,7 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
           xs: "0.5rem", // Extra small devices
           sm: "1rem", // Small devices
           lg: "2rem 2rem",
+          xxl: "4rem 0rem",
         },
         width: "100%",
         maxWidth: {
@@ -79,11 +80,12 @@ const HiveStatsPanel: React.FC<HiveStatsPanelProps> = ({
         sx={{
           fontWeight: "bold",
           fontSize: {
-            xs: "1.25rem", // 1.25rem on small screens
-            sm: "1.5rem", // 1.5rem on small devices
-            md: "1.75rem", // 1.75rem on medium devices
-            lg: "2rem",
-            xl: "3rem",
+            xs: "1rem", // 1.25rem on small screens
+            sm: "1rem", // 1.5rem on small devices
+            md: "1rem", // 1.75rem on medium devices
+            lg: "1rem",
+            xl: "1rem",
+            xxl: "1rem",
           },
           color: "#D4AF37",
           marginBottom: "0.75rem",

@@ -27,8 +27,6 @@ import ConfirmModal from "../Components/HiveStakingModals";
 import useFetchStakedBees from "@/hooks/useFetchStakedBees";
 import TransactionInProgressModal from "../../../../../components/Modals/TransactionProgressModal/TransactionInProgressModal";
 
- 
-
 interface HiveHatchlingInfo {
   productivityValue: number;
   CommonBees: number;
@@ -369,7 +367,7 @@ const BlackForestHive: React.FC = () => {
           flexDirection="column"
         >
           <HexagonSpinner />
-          <Typography className="body1" padding="24px 0px">
+          <Typography className="body1" padding="44px 0px">
             Loading Hive Data...
           </Typography>
         </Box>
@@ -476,7 +474,7 @@ const BlackForestHive: React.FC = () => {
           </Grid>
         </Grid>
 
-        <BottomBar isAudioPanelVisible={false} />
+        <BottomBar isHiveLayout={true} />
       </Box>
 
       {/* Staking Confirmation Modal */}

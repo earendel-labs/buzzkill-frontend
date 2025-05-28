@@ -238,82 +238,307 @@ function WalletConnection({ children }: { children: React.ReactNode }) {
                   display: "none !important",
                 },
 
-                // Force modal width on screens ≤ 960px
-                "@media (max-width: 960px)": {
-                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
-                    {
-                      width: "100% !important",
-                      maxWidth: "100% !important",
-                    },
-                },
-                "@media (min-width: 961px)": {
-                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
-                    {
-                      width: "auto !important",
-                      maxWidth: "none !important",
-                    },
-                },
-                "@media (max-width: 630px)": {
+                // For vertical Mobile
+                "@media (max-width: 630px) and (orientation: portrait)": {
                   ".iekbcc0.ju367va[style='margin: 0px auto;']": {
                     display: "flex !important",
                     flexWrap: "wrap !important",
                     justifyContent: "center !important",
                     gap: "12px !important",
                   },
-                  // Ensure each wallet item has a minimum width
                   ".iekbcc0.ju367va[style='margin: 0px auto;'] > .iekbcc0.ju367v7b.ju367v7w":
                     {
                       minWidth: "120px !important",
                       margin: "0 auto !important",
                     },
-                },
-                // Override h1 text content for Connect title
-                "#rk_connect_title": {
-                  content: '""',
-                  position: "relative",
-                  color: "transparent",
-                },
-                // Icon on the left
-                "#rk_connect_title::before": {
-                  content: '""',
-                  display: "inline-block",
-                  width: "48px",
-                  height: "48px",
-                  verticalAlign: "middle",
-                  background: "url('/favicon.ico') no-repeat center center",
-                  backgroundSize: "contain",
-                  marginRight: "36px",
+                  "#rk_connect_title": {
+                    content: '""',
+                    position: "relative",
+                    color: "transparent",
+                  },
+                  "#rk_connect_title::before": {
+                    content: '""',
+                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    verticalAlign: "middle",
+                    background: "url('/favicon.ico') no-repeat center center",
+                    backgroundSize: "contain",
+                    marginRight: "48px",
+                  },
+                  "#rk_connect_title::after": {
+                    content: '"Connect to Buzzkill"',
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    position: "absolute",
+                    top: "28%",
+                    left: "28%",
+                    color: "#fff", // light blue
+                    whiteSpace: "nowrap",
+                  },
                 },
 
-                // Text on the right
-                "#rk_connect_title::after": {
-                  content: '"Connect to Buzzkill"',
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  position: "absolute",
-                  top: 12,
-                  left: 62,
-                  color: "#fff",
-                  whiteSpace: "nowrap",
+                // For horziontal Mobile
+                "@media (max-width: 630px) and (orientation: landscape)": {
+                  ".iekbcc0.ju367va[style='margin: 0px auto;']": {
+                    display: "flex !important",
+                    flexWrap: "wrap !important",
+                    justifyContent: "center !important",
+                    gap: "12px !important",
+                  },
+                  ".iekbcc0.ju367va[style='margin: 0px auto;'] > .iekbcc0.ju367v7b.ju367v7w":
+                    {
+                      minWidth: "120px !important",
+                      margin: "0 auto !important",
+                    },
+                  "#rk_connect_title": {
+                    content: '""',
+                    position: "relative",
+                    color: "transparent",
+                  },
+                  "#rk_connect_title::before": {
+                    content: '""',
+                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    verticalAlign: "middle",
+                    background: "url('/favicon.ico') no-repeat center center",
+                    backgroundSize: "contain",
+                    marginRight: "48px",
+                  },
+                  "#rk_connect_title::after": {
+                    content: '"Connect to Buzzkill"',
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    position: "absolute",
+                    top: "28%",
+                    left: "32%",
+                    color: "#fff", // dark blue
+                    whiteSpace: "nowrap",
+                  },
                 },
-                // Layout for the row containing info button, title, and close button
+
+                // Devices with max-width 960px in landscape mode
+                "@media (max-width: 960px) and (orientation: landscape)": {
+                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                    {
+                      width: "100vw !important",
+                      maxWidth: "none !important",
+                    },
+                  "#rk_connect_title": {
+                    content: '""',
+                    position: "relative",
+                    color: "transparent",
+                  },
+                  "#rk_connect_title::before": {
+                    content: '""',
+                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    verticalAlign: "middle",
+                    background: "url('/favicon.ico') no-repeat center center",
+                    backgroundSize: "contain",
+                    marginRight: "36px",
+                  },
+                  "#rk_connect_title::after": {
+                    content: '"Connect to Buzzkill"',
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    position: "absolute",
+                    top: "28%",
+                    left: "42%",
+                    color: "#fff", // light orange
+                    whiteSpace: "nowrap",
+                  },
+                },
+
+                // Devices with max-width 960px in portrait mode
+                "@media (min-width: 630px) and (max-width: 960px) and (orientation: portrait)":
+                  {
+                    ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                      {
+                        width: "100vw !important", // Update with portrait-specific values if needed
+                        maxWidth: "none !important", // Update with portrait-specific values if needed
+                      },
+                    "#rk_connect_title": {
+                      content: '""',
+                      position: "relative",
+                      color: "transparent", // Update if needed for portrait
+                    },
+                    "#rk_connect_title::before": {
+                      content: '""',
+                      display: "inline-block",
+                      width: "48px",
+                      height: "48px",
+                      verticalAlign: "middle",
+                      background: "url('/favicon.ico') no-repeat center center",
+                      backgroundSize: "contain",
+                      marginRight: "36px", // Update if needed for portrait
+                    },
+                    "#rk_connect_title::after": {
+                      content: '"Connect to Buzzkill"',
+                      display: "inline-block",
+                      verticalAlign: "middle",
+                      position: "absolute",
+                      top: "28%", // Update if needed for portrait
+                      left: "26%", // Update if needed for portrait
+                      color: "#fff", // light green
+                      whiteSpace: "nowrap",
+                    },
+                  },
+
+                // For screens between 961px and 1100px
+                "@media (min-width: 961px) and (max-width: 1100px) and (orientation: portrait)":
+                  {
+                    ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                      {
+                        width: "100vw !important",
+                        maxWidth: "none !important",
+                      },
+                    "#rk_connect_title": {
+                      content: '""',
+                      position: "relative",
+                      color: "transparent",
+                    },
+                    "#rk_connect_title::before": {
+                      content: '""',
+                      display: "inline-block",
+                      width: "48px",
+                      height: "48px",
+                      verticalAlign: "middle",
+                      background: "url('/favicon.ico') no-repeat center center",
+                      backgroundSize: "contain",
+                      marginRight: "36px",
+                    },
+                    "#rk_connect_title::after": {
+                      content: '"Connect to Buzzkill"',
+                      display: "inline-block",
+                      verticalAlign: "middle",
+                      position: "absolute",
+                      top: "28%",
+                      left: "42%",
+                      color: "#fff", // pink
+                      whiteSpace: "nowrap",
+                    },
+                  },
+
+                // For screens between 961px and 1100px
+                "@media (min-width: 961px) and (max-width: 1100px) and (orientation: landscape)":
+                  {
+                    ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                      {
+                        width: "100vw !important",
+                        maxWidth: "none !important",
+                      },
+                    "#rk_connect_title": {
+                      content: '""',
+                      position: "relative",
+                      color: "transparent",
+                    },
+                    "#rk_connect_title::before": {
+                      content: '""',
+                      display: "inline-block",
+                      width: "48px",
+                      height: "48px",
+                      verticalAlign: "middle",
+                      background: "url('/favicon.ico') no-repeat center center",
+                      backgroundSize: "contain",
+                      marginRight: "36px",
+                    },
+                    "#rk_connect_title::after": {
+                      content: '"Connect to Buzzkill"',
+                      display: "inline-block",
+                      verticalAlign: "middle",
+                      position: "absolute",
+                      top: "28%",
+                      left: "43%",
+                      color: "#fff", // purple
+                      whiteSpace: "nowrap",
+                    },
+                  },
+                // For screens larger than 1100px and portrait
+                "@media (min-width: 1101px) and (orientation: portrait)": {
+                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                    {
+                      width: "100vw !important",
+                      maxWidth: "none !important",
+                    },
+                  "#rk_connect_title": {
+                    content: '""',
+                    position: "relative",
+                    color: "transparent",
+                  },
+                  "#rk_connect_title::before": {
+                    content: '""',
+                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    verticalAlign: "middle",
+                    background: "url('/favicon.ico') no-repeat center center",
+                    backgroundSize: "contain",
+                    marginRight: "36px",
+                  },
+                  "#rk_connect_title::after": {
+                    content: '"Connect to Buzzkill"',
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    position: "absolute",
+                    top: "28%",
+                    left: "26%",
+                    color: "#fff", // light yellow
+                    whiteSpace: "nowrap",
+                  },
+                },
+
+                // For screens larger than 1100px
+                "@media (min-width: 1101px) and (orientation: landscape)": {
+                  ".iekbcc0._1ckjpok2._1ckjpok1.ju367vb6.ju367vdr.ju367vp.ju367vt.ju367vv.ju367vel.ju367va.ju367v15.ju367v6c.ju367v8r._1ckjpok6.ju367vq._1ckjpok7":
+                    {
+                      width: "100vw !important",
+                      maxWidth: "none !important",
+                    },
+                  "#rk_connect_title": {
+                    content: '""',
+                    position: "relative",
+                    color: "transparent",
+                  },
+                  "#rk_connect_title::before": {
+                    content: '""',
+                    display: "inline-block",
+                    width: "48px",
+                    height: "48px",
+                    verticalAlign: "middle",
+                    background: "url('/favicon.ico') no-repeat center center",
+                    backgroundSize: "contain",
+                    marginRight: "36px",
+                  },
+                  "#rk_connect_title::after": {
+                    content: '"Connect to Buzzkill"',
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    position: "absolute",
+                    top: "28%",
+                    left: "26%",
+                    color: "#fff", // light yellow
+                    whiteSpace: "nowrap",
+                  },
+                },
+
+                // Layout for the row with info button, title, and close button
                 ".iekbcc0.ju367v2r": {
                   display: "grid !important",
-                  gridTemplateColumns: "auto 1fr auto", // info button, title, close button
+                  gridTemplateColumns: "auto 1fr auto",
                   alignItems: "center !important",
-                  width: "100%", // optional, if you need full width
+                  width: "100%",
                 },
-                // Center the text within its grid cell
                 ".iekbcc0.ju367v7a.ju367v7v.ju367v3h.ju367v6k.ju367v86": {
                   textAlign: "center !important",
                 },
-                // The info button container
                 ".iekbcc0.ju367v3s.ju367v94": {
-                  justifySelf: "start", // keep it at the left
+                  justifySelf: "start",
                 },
-                // The close button container
                 ".iekbcc0.ju367v4d": {
-                  justifySelf: "end", // keep it at the right
+                  justifySelf: "end",
                 },
               }}
             />

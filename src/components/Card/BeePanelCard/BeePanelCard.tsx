@@ -1,4 +1,7 @@
-import React from "react";
+// components/BeePanelCard.tsx
+"use client";
+
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -9,59 +12,58 @@ import {
   Fade,
   Tooltip,
 } from "@mui/material";
-import { useUserContext } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/Buttons/DefaultButton/DefaultButton";
 import PrimaryButton from "@/components/Buttons/PrimaryButton/PrimaryButton";
+import SemiTransparentCard from "@/components/Card/SemiTransaprentCard";
+import { useUserContext } from "@/context/UserContext";
+import { useBuzzkillOriginsContext } from "@/context/BuzzkillOriginsContext";
+
+/* -------------------------------------------------------------------------- */
 
 const BeePanelCard: React.FC = () => {
+  /* ---------- contexts ---------- */
   const { activeBee, bees, stakedBees, loadingBees } = useUserContext();
+  const { buzzkillOriginBees } = useBuzzkillOriginsContext();
+
+  /* ---------- hooks ---------- */
   const theme = useTheme();
   const router = useRouter();
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [expanded, setExpanded] = React.useState(false);
-  // Controls fade-in/fade-out of the details
-  const [fadeIn, setFadeIn] = React.useState(false);
 
-  // Enable fade-in as soon as expanded is set
-  React.useEffect(() => {
-    if (expanded) {
-      setFadeIn(true);
-    }
+  /* ---------- local state ---------- */
+  const [expanded, setExpanded] = useState(false);
+  const [fadeIn, setFadeIn] = useState(false); // controls Fade visibility
+
+  /* ---------- effects ---------- */
+  useEffect(() => {
+    if (expanded) setFadeIn(true);
   }, [expanded]);
 
+  /* ---------- handlers ---------- */
   const handleToggleExpand = () => {
-    if (isSmallScreen) {
-      if (!expanded) {
-        setExpanded(true);
-      } else {
-        setFadeIn(false);
-        // Wait for the Fade to complete before collapsing
-        setTimeout(() => {
-          setExpanded(false);
-        }, 200);
-      }
+    if (!isSmallScreen) return;
+
+    if (!expanded) {
+      setExpanded(true);
+    } else {
+      setFadeIn(false);
+      setTimeout(() => setExpanded(false), 200); // wait for Fade-out
     }
   };
 
-  const handleMyBeesClick = () => {
-    router.push("/Play/User/Profile/MyBees");
-  };
+  const handleMyBeesClick = () => router.push("/Play/User/Profile/MyBees");
 
-  const handleMintClick = () => {
-    router.push("/Mint");
-  };
+  const handleBuyCharactersClick = () =>
+    router.push("https://dagora.xyz/launchpad/buzzkill-origins");
 
-  // Active bee image or fallback
+  /* ---------- derived ---------- */
   const activeBeeImage =
-    bees.find((bee) => bee.id === activeBee)?.imageAddress ||
+    bees.find((b) => b.id === activeBee)?.imageAddress ||
     "/NFTs/default-hatchling.png";
 
-  // Loading state
+  /* ---------- loading ---------- */
   if (loadingBees) {
     return (
       <SemiTransparentCard
@@ -80,8 +82,8 @@ const BeePanelCard: React.FC = () => {
             lg: "160px",
             xl: "220px",
           },
-          padding: { xs: "8px", sm: "8px", md: "16px" },
-          backgroundColor: "rgba(34, 46, 80, 0.6)",
+          p: { xs: 1, sm: 1, md: 2 },
+          bgcolor: "rgba(34, 46, 80, 0.6)",
           backdropFilter: "blur(20px)",
         }}
       >
@@ -95,10 +97,10 @@ const BeePanelCard: React.FC = () => {
     );
   }
 
+  /* ---------- render ---------- */
   return (
     <Box
       sx={{
-        // Keep a larger width on small screens while details are visible/fading out
         width: {
           xs: isSmallScreen && !expanded ? "90px" : "100px",
           sm: isSmallScreen && !expanded ? "120px" : "290px",
@@ -113,13 +115,8 @@ const BeePanelCard: React.FC = () => {
           lg: "160px",
           xl: "220px",
         },
-        padding: {
-          xs: "8px",
-          sm: "16px",
-          md: "24px",
-          lg: "28px 24px",
-        },
-        gap: { sm: "4px", md: "20px", lg: "16px", xl: "0px" },
+        p: { xs: 1, sm: 2, md: 3, lg: "28px 24px" },
+        gap: { sm: 0.5, md: 2.5, lg: 2 },
         position: "relative",
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
@@ -129,7 +126,7 @@ const BeePanelCard: React.FC = () => {
         zIndex: 1,
         backdropFilter: "blur(2px)",
         boxShadow:
-          "inset 4px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.12)",
+          "inset 4px 4px 4px rgba(0,0,0,0.25), inset 0px 4px 4px rgba(0,0,0,0.12)",
         "&::before": {
           content: '""',
           position: "absolute",
@@ -139,7 +136,7 @@ const BeePanelCard: React.FC = () => {
           height: "100%",
           borderRadius: "inherit",
           background:
-            "linear-gradient(135deg,  #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
+            "linear-gradient(135deg, #E9B743 4%, #E9B743 12%, #8a4829 33%, #a86c2c 44%, #E9B743 77%, #E9B743 98%)",
           padding: "3px",
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
@@ -149,7 +146,7 @@ const BeePanelCard: React.FC = () => {
         },
       }}
     >
-      {/* Tooltip on mobile when not expanded */}
+      {/* ---------- thumbnail ---------- */}
       <Tooltip
         title={
           isSmallScreen && !expanded
@@ -170,19 +167,13 @@ const BeePanelCard: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // Add left margin only if expanded on mobile
             marginLeft: isSmallScreen && expanded ? "12px" : 0,
             boxShadow:
               activeBeeImage !== "/NFTs/default-hatchling.png"
-                ? "0px 4px 4px rgba(0, 0, 0, 0.25), -2px -2px 4px rgba(0, 0, 0, 0.25)"
+                ? "0px 4px 4px rgba(0,0,0,0.25), -2px -2px 4px rgba(0,0,0,0.25)"
                 : "none",
-            ":hover": {
-              background: "none",
-              transform: "scale(1.02)",
-            },
-            ":active": {
-              transform: "scale(0.98)",
-            },
+            "&:hover": { background: "none", transform: "scale(1.02)" },
+            "&:active": { transform: "scale(0.98)" },
           }}
         >
           <Image
@@ -200,17 +191,14 @@ const BeePanelCard: React.FC = () => {
         </DefaultButton>
       </Tooltip>
 
-      {/* Collapse for mobile, always visible otherwise */}
+      {/* ---------- details ---------- */}
       {isSmallScreen ? (
         <Collapse
           in={expanded}
           orientation="vertical"
           timeout={250}
           unmountOnExit
-          sx={{
-            width: "100%",
-            padding: expanded ? "4px" : 0,
-          }}
+          sx={{ width: "100%", p: expanded ? 0.5 : 0 }}
         >
           <Fade in={fadeIn} timeout={200} mountOnEnter unmountOnExit>
             <Box>
@@ -218,8 +206,9 @@ const BeePanelCard: React.FC = () => {
                 activeBee={activeBee}
                 bees={bees}
                 stakedBees={stakedBees}
-                handleMyBeesClick={handleMyBeesClick}
-                handleMintClick={handleMintClick}
+                buzzkillOriginBees={buzzkillOriginBees}
+                onMyBees={handleMyBeesClick}
+                onBuyCharacters={handleBuyCharactersClick}
               />
             </Box>
           </Fade>
@@ -229,132 +218,158 @@ const BeePanelCard: React.FC = () => {
           activeBee={activeBee}
           bees={bees}
           stakedBees={stakedBees}
-          handleMyBeesClick={handleMyBeesClick}
-          handleMintClick={handleMintClick}
+          buzzkillOriginBees={buzzkillOriginBees}
+          onMyBees={handleMyBeesClick}
+          onBuyCharacters={handleBuyCharactersClick}
         />
       )}
     </Box>
   );
 };
 
+/* -------------------------------------------------------------------------- */
+
 interface DetailsBoxProps {
   activeBee: number | null;
-  bees: Array<any>;
-  stakedBees: Array<any>;
-  handleMyBeesClick: () => void;
-  handleMintClick: () => void;
+  bees: any[];
+  stakedBees: any[];
+  buzzkillOriginBees: any[];
+  onMyBees: () => void;
+  onBuyCharacters: () => void;
 }
 
 const DetailsBox: React.FC<DetailsBoxProps> = ({
   activeBee,
   bees,
   stakedBees,
-  handleMyBeesClick,
-  handleMintClick,
+  buzzkillOriginBees,
+  onMyBees,
+  onBuyCharacters,
 }) => {
+  /* ---------- priority 1: Buzzkill Origins ---------- */
+  if (buzzkillOriginBees.length > 0) {
+    return (
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "100%", md: "55%" },
+          p: { xs: 1, sm: 1, md: 1 },
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Typography
+          sx={{
+            mb: { xs: 1, sm: 1, md: 1.8 },
+            whiteSpace: "pre-line",
+            fontSize: { xs: "0.4rem", sm: "0.8rem", md: "1rem" },
+          }}
+        >
+          {"You have Buzzkill NFTs\nView them here"}
+        </Typography>
+        <Box display="flex" justifyContent="center">
+          <PrimaryButton
+            text="View"
+            onClick={onMyBees}
+            sx={{ p: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" } }}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
+  /* ---------- priority 2: Active hatchling ---------- */
+  if (activeBee) {
+    return (
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "100%", md: "55%" },
+          p: { xs: 1, sm: 1, md: 1 },
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ width: "100%", mb: { xs: 2, sm: 4 } }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "0.4rem", sm: "0.8rem", md: "1rem" },
+            }}
+          >
+            {`Hatchling #${activeBee}`}
+          </Typography>
+        </Box>
+        <Box sx={{ flexGrow: 1, mb: { xs: 2, sm: 6 } }}>
+          <PrimaryButton
+            text="Hatchlings"
+            onClick={onMyBees}
+            sx={{ p: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" } }}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
+  /* ---------- priority 3: Hatchlings list or staked ---------- */
+  if (bees.length > 0 || stakedBees.length > 0) {
+    return (
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "100%", md: "55%" },
+          p: { xs: 1, sm: 1, md: 1 },
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          sx={{
+            mb: { xs: 1, sm: 1, md: 1.8 },
+            whiteSpace: "pre-line",
+            fontSize: { xs: "0.4rem", sm: "0.8rem", md: "1rem" },
+          }}
+        >
+          {bees.length > 0
+            ? "Select Your Hatchling"
+            : "You have staked Hatchlings\nView them here"}
+        </Typography>
+        <Box display="flex" justifyContent="center">
+          <PrimaryButton
+            text="Hatchlings"
+            onClick={onMyBees}
+            sx={{ p: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" } }}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
+  /* ---------- priority 4: No characters ---------- */
   return (
     <Box
       sx={{
         width: { xs: "100%", sm: "100%", md: "55%" },
-        padding: { xs: "8px", sm: "4px", md: "4px" },
+        p: { xs: 1, sm: 1, md: 1 },
         textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
       }}
     >
-      {activeBee ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="flex-start"
-          alignItems="center"
-          sx={{ height: "100%" }}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              textAlign: "center",
-              mb: { xs: 2, sm: 4 },
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: {
-                  xs: "1rem",
-                  sm: "1.1rem",
-                  md: "1.2rem",
-                },
-              }}
-            >
-              {`Hatchling #${activeBee}`}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexGrow: 1,
-              mb: { xs: 2, sm: 6 },
-            }}
-          >
-            <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
-          </Box>
-        </Box>
-      ) : bees.length > 0 || stakedBees.length > 0 ? (
-        <>
-          <Typography
-            sx={{
-              mb: { xs: 1, sm: 0, md: 3 },
-              textAlign: "center",
-              maxWidth: "480px",
-              fontSize: {
-                xs: "0.4rem",
-                sm: "0.4rem",
-                md: "1rem",
-              },
-              whiteSpace: "pre-line",
-            }}
-          >
-            {bees.length > 0
-              ? "Select Your Hatchling"
-              : "You have staked Hatchlings\nView them here"}
-          </Typography>
-          <Box display="flex" justifyContent="center">
-            <PrimaryButton text="Hatchlings" onClick={handleMyBeesClick} />
-          </Box>
-        </>
-      ) : (
-        <>
-          <Typography
-            sx={{
-              mb: { xs: 1, sm: 1, md: 1.8 },
-              textAlign: "center",
-              maxWidth: "490px",
-              fontSize: {
-                xs: "0.4rem",
-                sm: "0.8rem",
-                md: "1rem",
-              },
-            }}
-          >
-            You have no Hatchlings.
-            <br />
-            Mint yours here
-          </Typography>
-          <Box display="flex" justifyContent="center">
-            <PrimaryButton
-              text="Mint"
-              onClick={handleMintClick}
-              sx={{
-                padding: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" },
-              }}
-            />
-          </Box>
-        </>
-      )}
+      <Typography
+        sx={{
+          mb: { xs: 1, sm: 1, md: 1.8 },
+          whiteSpace: "pre-line",
+          fontSize: { xs: "0.4rem", sm: "0.8rem", md: "1rem" },
+        }}
+      >
+        {"You have no characters.\nBuy them here"}
+      </Typography>
+      <Box display="flex" justifyContent="center">
+        <PrimaryButton
+          text="Buy"
+          onClick={onBuyCharacters}
+          sx={{ p: { sm: "2px 32px", md: "4px 32px", lg: "8px 32px" } }}
+        />
+      </Box>
     </Box>
   );
 };

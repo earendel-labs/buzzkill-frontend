@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Box, Typography, Grid, Paper } from "@mui/material";
-import { BeeStats } from "./types";
+import { BeeStats } from "../../../../../../types/OriginsStats";
 import { useTheme } from "@mui/material";
 interface TraitsTabProps {
   beeStats: BeeStats;

@@ -140,7 +140,7 @@ const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                 }}
               />
               <Tab
-                label="My Hatchlings"
+                label="My Bees"
                 onMouseEnter={handleMouseEnter}
                 sx={{
                   color:

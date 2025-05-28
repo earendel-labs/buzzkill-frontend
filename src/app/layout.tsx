@@ -12,6 +12,7 @@ import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import { EnvironmentProvider } from "@/context/EnvironmentContext";
 import { ProfileProvider } from "@/context/ProfileContext";
+import { BuzzkillOriginsProvider } from "@/context/BuzzkillOriginsContext";
 import { OneIDProvider } from "@/context/OneIDContext";
 import { ApolloProvider } from "@apollo/client";
 import createApolloClient from "./libs/apolloClient";
@@ -80,15 +81,17 @@ export default function RootLayout({ children, session }: RootLayoutProps) {
               <LoadingProvider>
                 <SoundProvider>
                   <UserProvider>
-                    <ProfileProvider>
-                      <CssBaseline />
-                      <GlobalScrollbarStyles />
-                      <EnvironmentProvider>
-                        {children}
-                        <Analytics />
-                        <SpeedInsights />
-                      </EnvironmentProvider>
-                    </ProfileProvider>
+                    <BuzzkillOriginsProvider>
+                      <ProfileProvider>
+                        <CssBaseline />
+                        <GlobalScrollbarStyles />
+                        <EnvironmentProvider>
+                          {children}
+                          <Analytics />
+                          <SpeedInsights />
+                        </EnvironmentProvider>
+                      </ProfileProvider>
+                    </BuzzkillOriginsProvider>
                   </UserProvider>
                 </SoundProvider>
               </LoadingProvider>

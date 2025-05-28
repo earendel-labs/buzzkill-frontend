@@ -1,6 +1,8 @@
 export interface BeeStats {
   id: string;
   name: string;
+  imageAddress: string;
+  rarity: string;
   level: number;
   xp: number;
   maxXp: number;
@@ -11,9 +13,9 @@ export interface BeeStats {
   maxEnergy: number;
   health: number;
   maxHealth: number;
-  productivity: number;
-  currentProductivity: number;
-  maxProductivity: number;
+  yield: number;
+  currentYield: number;
+  maxYield: number;
   raidsCompleted: number;
   raidsSuccessful: number;
   foragesCompleted: number;
@@ -28,6 +30,6 @@ export interface BeeStats {
     hair: string;
     eyes: string;
     headpiece: string;
-    character: "Queen" | "Worker";
+    character: "Queen Bee" | "Worker Bee";
   };
 }

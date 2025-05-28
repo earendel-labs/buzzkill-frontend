@@ -20,9 +20,8 @@ const menuItems = [
   { label: "Mint", path: "/Mint" },
   { label: "Leaderboard", path: "/HoneyDrops" },
   { label: "My Profile", path: "/Play/User/Profile/MyProfile" },
-  { label: "My Hatchlings", path: "/Play/User/Profile/MyBees" },
+  { label: "My Bees", path: "/Play/User/Profile/MyBees" },
   { label: "Rewards", path: "/Play/User/Profile/MyRewards" },
-  { label: "Check Whitelist", path: "/CheckWhitelist" },
 ];
 
 const MenuContainer = styled(Box)(({ theme }) => ({
