@@ -94,7 +94,7 @@ const VerifyPartnerNftButton: React.FC = () => {
   // For desktop, show text; on mobile, display only the icon.
   const desktopText = isVerified
     ? "NFT Ownership Confirmed"
-    : "Verify NFT Ownership";
+    : "Verify Partner NFTs";
   const buttonText = isMobile ? "" : desktopText;
   const mobileText = "";
 

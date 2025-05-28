@@ -19,12 +19,12 @@ import UpgradeDialog from "./UpgradeDialog";
 import BeeHeader from "./BeeHeader";
 import StatsTab from "./StatsTab";
 import TraitsTab from "./TraitsTab";
-import UpgradesTab from "./UpgradesTab";
 import { useBuzzkillOriginsContext } from "@/context/BuzzkillOriginsContext";
 import StyledModal from "@/components/Modals/StyledModal/StyledModal";
 import type { BeeStats } from "@/types/OriginsStats";
 import HexagonSpinner from "@/components/Loaders/HexagonSpinner/HexagonSpinner";
 import { formatNumber } from "@/utils/formatNumber";
+import { mutate } from "swr";
 
 export default function BuzzkillOriginCard() {
   const { buzzkillOriginBees, loading, refreshBuzzkillOriginBees } =
@@ -52,10 +52,13 @@ export default function BuzzkillOriginCard() {
     phase: string;
   } | null>(null);
 
+  /* ---------- defer data refresh until modal closes ---------- */
+  const [needsRefresh, setNeedsRefresh] = useState(false);
+
   /* ---------- progress bar ---------- */
   const [progress, setProgress] = useState(100);
 
-  /* auto-close in 2 s (100 ms tick, –5 each) */
+  /* auto-close in 2 s (100 ms tick, −15 each) */
   useEffect(() => {
     if (modalOpen && !initialising && initResult) {
       setProgress(100);
@@ -64,14 +67,21 @@ export default function BuzzkillOriginCard() {
           if (p <= 0) {
             clearInterval(interval);
             setModalOpen(false);
+
+            /* do the heavy refresh once the modal finishes */
+            if (needsRefresh) {
+              refreshBuzzkillOriginBees(); // fire & forget
+              mutate("/api/user/getProfile"); // SWR revalidate
+              setNeedsRefresh(false);
+            }
             return 0;
           }
-          return p - 5;
+          return p - 15;
         });
       }, 100);
       return () => clearInterval(interval);
     }
-  }, [modalOpen, initialising, initResult]);
+  }, [modalOpen, initialising, initResult, needsRefresh]);
 
   /* ---------- initialise bee ---------- */
   const initializeBee = useCallback(async () => {
@@ -97,18 +107,17 @@ export default function BuzzkillOriginCard() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
 
-      setInitResult({
-        tokenId,
-        points: data.points,
-        phase: data.phase,
-      });
+      setInitResult({ tokenId, points: data.points, phase: data.phase });
       setInitialising(false);
 
-      setSnackbarMsg(`Initialised you earned ${formatNumber(data.points)} pts`);
+      setSnackbarMsg(
+        `Initialised – you earned ${formatNumber(data.points)} pts`
+      );
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      await refreshBuzzkillOriginBees();
+      /* queue background refresh; executed when modal times out */
+      setNeedsRefresh(true);
     } catch (err: any) {
       setModalOpen(false);
       setInitialising(false);
@@ -116,10 +125,10 @@ export default function BuzzkillOriginCard() {
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
-  }, [buzzkillOriginBees, currentIndex, refreshBuzzkillOriginBees]);
+  }, [buzzkillOriginBees, currentIndex]);
 
   /* ---------- guards ---------- */
-  if (loading)
+  if (loading && !modalOpen)
     return (
       <Box
         sx={{
@@ -135,7 +144,7 @@ export default function BuzzkillOriginCard() {
       </Box>
     );
 
-  if (!buzzkillOriginBees.length)
+  if (!buzzkillOriginBees.length && !modalOpen)
     return (
       <Box
         sx={{
@@ -150,6 +159,7 @@ export default function BuzzkillOriginCard() {
         <Typography variant="h6">No bees found.</Typography>
       </Box>
     );
+
   const currentBee: BeeStats = buzzkillOriginBees[currentIndex];
 
   /* ---------- handlers ---------- */
@@ -250,7 +260,6 @@ export default function BuzzkillOriginCard() {
                     >
                       <Tab label="Stats" />
                       <Tab label="Traits" />
-                      <Tab label="Upgrades" />
                     </Tabs>
                   </Box>
 
@@ -264,12 +273,6 @@ export default function BuzzkillOriginCard() {
                       />
                     )}
                     {tabValue === 1 && <TraitsTab beeStats={currentBee} />}
-                    {tabValue === 2 && (
-                      <UpgradesTab
-                        beeStats={currentBee}
-                        openUpgradeDialog={openUpgradeDialog}
-                      />
-                    )}
                   </Box>
                 </Grid>
               </Grid>

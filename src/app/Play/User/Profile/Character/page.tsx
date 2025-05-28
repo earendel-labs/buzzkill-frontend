@@ -1,4 +1,5 @@
 // components/CharacterDashboard.tsx
+// TODO: This is no longer used, we could delete this
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
