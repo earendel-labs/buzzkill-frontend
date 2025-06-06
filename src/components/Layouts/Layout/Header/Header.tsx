@@ -29,6 +29,7 @@ const NAV_LINKS = [
   { label: "My Profile", href: "/Play/User/Profile/MyProfile" },
   { label: "My Bees", href: "/Play/User/Profile/MyBees" },
   { label: "Rewards", href: "/Play/User/Profile/MyRewards" }, 
+  { label: "Check Airdrop", href: "/CheckAirdrop" }, 
 ];
 
 const Header: React.FC<HeaderProps> = ({ isGameLayout = false }) => {

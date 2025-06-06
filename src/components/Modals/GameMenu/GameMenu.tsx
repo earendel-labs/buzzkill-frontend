@@ -22,6 +22,7 @@ const menuItems = [
   { label: "My Profile", path: "/Play/User/Profile/MyProfile" },
   { label: "My Bees", path: "/Play/User/Profile/MyBees" },
   { label: "Rewards", path: "/Play/User/Profile/MyRewards" },
+  { label: "Check Airdrop", path: "/CheckAirdrop" },
 ];
 
 const MenuContainer = styled(Box)(({ theme }) => ({
